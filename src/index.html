@@ -18,6 +18,18 @@
     />
   </head>
   <body class="mat-typography">
-    <app-root></app-root>
+    <!-- Boot splash: same markup / CSS as <ui-page-loader>; Angular replaces it when the app starts. -->
+    <app-root>
+      <div class="page-loader" role="status" aria-live="polite">
+        <svg class="page-loader-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="9" />
+          <path d="M13.2 7.5h5.6v5.7h5.7v5.6h-5.7v5.7h-5.6v-5.7H7.5v-5.6h5.7z" />
+        </svg>
+        <svg class="page-loader-pulse" viewBox="0 0 120 24" aria-hidden="true">
+          <polyline points="0,12 38,12 46,12 52,3 60,21 66,12 74,12 120,12" />
+        </svg>
+        <span class="page-loader-label">Loading e-Clinic</span>
+      </div>
+    </app-root>
   </body>
 </html>

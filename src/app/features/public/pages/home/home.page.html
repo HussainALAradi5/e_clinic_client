@@ -1,112 +1,84 @@
-<section class="hero relative overflow-hidden text-white" aria-labelledby="hero-title">
-  <div
-    class="relative z-10 mx-auto grid max-w-6xl gap-12 px-4 pt-14 pb-24 sm:px-6 md:pt-20 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:items-center lg:pb-28"
-  >
-    <div>
-      <h1
-        id="hero-title"
-        class="m-0 text-[2.6rem] leading-[1.05] font-extrabold tracking-[-0.03em] sm:text-6xl lg:text-[4.25rem]"
-      >
-        Unhurried care, ten minutes from home.
-      </h1>
-      <p class="mt-6 mb-0 max-w-[46ch] text-lg leading-relaxed text-white/75">
-        {{ clinic.tagline }} Book by phone or in the patient portal, and see your results there as
-        soon as your doctor releases them.
-      </p>
-      <div class="mt-9 flex flex-wrap items-center gap-3">
-        <a class="btn-light" [href]="tel"><mat-icon>call</mat-icon> Call {{ clinic.phone }}</a>
-        <a class="btn-ghost" [routerLink]="loginPath"><mat-icon>person</mat-icon> Patient portal</a>
-      </div>
-    </div>
-
-    <!-- The clinic's door sign: live status and this week's hours. -->
-    <aside
-      class="door-sign rounded-3xl bg-surface-container-lowest p-6 text-on-surface sm:p-7"
-      aria-labelledby="hours-title"
+<ui-brand-surface>
+  <section aria-labelledby="hero-title">
+    <div
+      class="mx-auto grid max-w-6xl gap-12 px-4 pt-14 pb-24 sm:px-6 md:pt-20 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:items-center lg:pb-28"
     >
-      <div class="flex items-center justify-between gap-4">
-        <h2 id="hours-title" class="m-0 text-lg font-bold">Opening hours</h2>
-        <span
-          class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold"
-          [class.bg-pine-100]="status().open"
-          [class.text-pine-900]="status().open"
-          [class.bg-surface-container-high]="!status().open"
-          [class.text-on-surface-variant]="!status().open"
-          role="status"
-          aria-live="polite"
+      <div>
+        <h1
+          id="hero-title"
+          class="m-0 text-[2.6rem] leading-[1.05] font-extrabold tracking-[-0.03em] sm:text-6xl lg:text-[4.25rem]"
         >
-          <span
-            class="relative inline-flex size-2 rounded-full"
-            [class.bg-sun]="status().open"
-            [class.bg-outline]="!status().open"
-            aria-hidden="true"
-          >
-            @if (status().open) {
-              <span class="pulse absolute inset-0 rounded-full bg-sun"></span>
-            }
-          </span>
-          {{ status().open ? 'Open now' : 'Closed now' }}
-        </span>
-      </div>
-      <p class="mt-1 mb-4 text-sm text-on-surface-variant">{{ statusText() }}</p>
-
-      <ul class="m-0 list-none p-0 text-sm">
-        @for (h of clinic.hours; track h.day) {
-          <li
-            class="flex items-center justify-between rounded-xl px-3 py-2"
-            [class.today]="h.day === today()"
-            [attr.aria-current]="h.day === today() ? 'date' : null"
-          >
-            <span>{{ weekdays[h.day] }}</span>
-            <span class="tabular-nums">{{ h.opens ? h.opens + ' – ' + h.closes : 'Closed' }}</span>
-          </li>
-        }
-      </ul>
-    </aside>
-  </div>
-
-  <svg class="hero-cross" viewBox="0 0 32 32" aria-hidden="true">
-    <path d="M13.2 7.5h5.6v5.7h5.7v5.6h-5.7v5.7h-5.6v-5.7H7.5v-5.6h5.7z" />
-  </svg>
-</section>
-
-<section
-  id="services"
-  class="mx-auto max-w-6xl scroll-mt-24 px-4 pt-20 pb-16 sm:px-6"
-  aria-labelledby="services-title"
->
-  <div class="max-w-2xl">
-    <h2 id="services-title" class="m-0 text-3xl font-bold tracking-tight sm:text-4xl">
-      Everything for one visit, in one building
-    </h2>
-    <p class="mt-3 mb-0 text-lg text-on-surface-variant">
-      Your doctor, the X-ray room, the lab and the pharmacy are a few steps apart, so most visits
-      need only one trip.
-    </p>
-  </div>
-
-  <ul class="m-0 mt-10 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
-    @for (service of services; track service.title) {
-      <li class="service" [class.featured]="service.featured">
-        <span class="service-icon"
-          ><mat-icon>{{ service.icon }}</mat-icon></span
-        >
-        <h3
-          class="m-0 mt-5 font-bold"
-          [class.text-2xl]="service.featured"
-          [class.text-lg]="!service.featured"
-        >
-          {{ service.title }}
-        </h3>
-        <p
-          class="mt-2 mb-0 leading-relaxed text-on-surface-variant"
-          [class.text-sm]="!service.featured"
-        >
-          {{ service.description }}
+          Unhurried care, ten minutes from home.
+        </h1>
+        <p class="mt-6 mb-0 max-w-[46ch] text-lg leading-relaxed text-white/75">
+          {{ clinic.tagline }} Book by phone or in the patient portal, and see your results there as
+          soon as your doctor releases them.
         </p>
-      </li>
+        <div class="mt-9 flex flex-wrap items-center gap-3">
+          <a class="btn-on-brand" [href]="tel"><mat-icon>call</mat-icon> Call {{ clinic.phone }}</a>
+          <a class="btn-outline-on-brand" [routerLink]="loginPath"
+            ><mat-icon>person</mat-icon> Patient portal</a
+          >
+        </div>
+      </div>
+
+      <!-- The clinic's door sign: live status and this week's hours. -->
+      <aside
+        class="door-sign rounded-3xl bg-surface-container-lowest p-6 text-on-surface sm:p-7"
+        aria-labelledby="hours-title"
+      >
+        <div class="flex items-center justify-between gap-4">
+          <h2 id="hours-title" class="m-0 text-lg font-bold">Opening hours</h2>
+          <span
+            class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold"
+            [class.bg-pine-100]="status().open"
+            [class.text-pine-900]="status().open"
+            [class.bg-surface-container-high]="!status().open"
+            [class.text-on-surface-variant]="!status().open"
+            role="status"
+            aria-live="polite"
+          >
+            <span class="live-dot" [class.off]="!status().open" aria-hidden="true"></span>
+            {{ status().open ? 'Open now' : 'Closed now' }}
+          </span>
+        </div>
+        <p class="mt-1 mb-4 text-sm text-on-surface-variant">{{ statusText() }}</p>
+
+        <ul class="m-0 list-none p-0 text-sm">
+          @for (h of clinic.hours; track h.day) {
+            <li
+              class="flex items-center justify-between rounded-xl px-3 py-2"
+              [class.today]="h.day === today()"
+              [attr.aria-current]="h.day === today() ? 'date' : null"
+            >
+              <span>{{ weekdays[h.day] }}</span>
+              <span class="tabular-nums">{{
+                h.opens ? h.opens + ' – ' + h.closes : 'Closed'
+              }}</span>
+            </li>
+          }
+        </ul>
+      </aside>
+    </div>
+  </section>
+</ui-brand-surface>
+
+<section id="services" class="mx-auto max-w-6xl scroll-mt-24 px-4 pt-20 pb-16 sm:px-6">
+  <ui-hub-section
+    size="page"
+    title="Everything for one visit, in one building"
+    description="Your doctor, the X-ray room, the lab and the pharmacy are a few steps apart, so most visits need only one trip."
+  >
+    @for (service of services; track service.title; let last = $last) {
+      <ui-hub-tile
+        [icon]="service.icon"
+        [title]="service.title"
+        [description]="service.description"
+        [layout]="service.featured ? 'featured' : 'card'"
+        [wide]="last && !service.featured"
+      />
     }
-  </ul>
+  </ui-hub-section>
 </section>
 
 <section
@@ -174,30 +146,29 @@
       </p>
     </div>
     <div class="grid gap-3 sm:grid-cols-2">
-      <a class="contact" [href]="clinic.mapUrl" target="_blank" rel="noopener noreferrer">
-        <mat-icon>map</mat-icon>
-        <span><strong>Directions</strong><small>Open in Maps</small></span>
-      </a>
-      <a class="contact" [href]="tel">
-        <mat-icon>call</mat-icon>
-        <span
-          ><strong>Reception</strong><small>{{ clinic.phone }}</small></span
-        >
-      </a>
+      <ui-hub-tile
+        icon="map"
+        title="Directions"
+        description="Open in Maps"
+        [href]="clinic.mapUrl"
+        [external]="true"
+      />
+      <ui-hub-tile icon="call" title="Reception" [description]="clinic.phone" [href]="tel" />
       @if (whatsapp) {
-        <a class="contact" [href]="whatsapp" target="_blank" rel="noopener noreferrer">
-          <mat-icon>chat</mat-icon>
-          <span
-            ><strong>WhatsApp</strong><small>{{ clinic.whatsapp }}</small></span
-          >
-        </a>
+        <ui-hub-tile
+          icon="chat"
+          title="WhatsApp"
+          [description]="clinic.whatsapp"
+          [href]="whatsapp"
+          [external]="true"
+        />
       }
-      <a class="contact" [href]="'mailto:' + clinic.email">
-        <mat-icon>mail</mat-icon>
-        <span
-          ><strong>Email</strong><small>{{ clinic.email }}</small></span
-        >
-      </a>
+      <ui-hub-tile
+        icon="mail"
+        title="Email"
+        [description]="clinic.email"
+        [href]="'mailto:' + clinic.email"
+      />
     </div>
   </div>
 </section>

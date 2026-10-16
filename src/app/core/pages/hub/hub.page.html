@@ -1,0 +1,32 @@
+@if (group(); as group) {
+  <ui-brand-surface class="rounded-[1.25rem] px-6 py-7 sm:px-8 sm:py-8">
+    <a
+      [routerLink]="homePath"
+      class="inline-flex items-center gap-1 text-sm text-white/65 no-underline hover:text-white"
+      ><mat-icon class="!size-4 !text-base">arrow_back</mat-icon> Dashboard</a
+    >
+    <div class="mt-4 flex items-center gap-4">
+      @if (group.icon) {
+        <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-white/10">
+          <mat-icon>{{ group.icon }}</mat-icon>
+        </span>
+      }
+      <div>
+        <h1 class="m-0 text-3xl font-bold tracking-tight">{{ group.label }}</h1>
+        @if (group.description) {
+          <p class="mt-1 mb-0 max-w-2xl text-white/75">{{ group.description }}</p>
+        }
+      </div>
+    </div>
+  </ui-brand-surface>
+
+  <ui-hub-nav class="mt-8" [groups]="[group]" [headings]="false" layout="card" [columns]="3" />
+} @else {
+  <ui-empty
+    icon="lock"
+    title="Nothing here for your roles"
+    message="Ask an administrator if you need access."
+  >
+    <a matButton="tonal" [routerLink]="homePath">Go to your workspace</a>
+  </ui-empty>
+}

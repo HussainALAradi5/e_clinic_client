@@ -1,7 +1,5 @@
 @if (auth.user(); as user) {
-  <section
-    class="welcome relative overflow-hidden rounded-[1.25rem] px-6 py-7 text-white sm:px-8 sm:py-9"
-  >
+  <ui-brand-surface class="rounded-[1.25rem] px-6 py-7 sm:px-8 sm:py-9">
     <p class="m-0 text-sm text-white/65">{{ today | date: 'EEEE d MMMM y' }}</p>
     <h1 class="mt-1 mb-0 text-3xl font-bold tracking-tight">{{ greeting() }}</h1>
     <p class="mt-2 mb-0 max-w-xl text-white/75">
@@ -14,10 +12,7 @@
         {{ user.userType | enumLabel: 'UserType' }} account
       }
     </p>
-    <svg class="welcome-mark" viewBox="0 0 32 32" aria-hidden="true">
-      <path d="M13.2 7.5h5.6v5.7h5.7v5.6h-5.7v5.7h-5.6v-5.7H7.5v-5.6h5.7z" />
-    </svg>
-  </section>
+  </ui-brand-surface>
 
   @if (auth.needsTwoFactorSetup()) {
     <a
@@ -33,30 +28,15 @@
   }
 
   <div class="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_20rem]">
-    <div class="space-y-8">
-      @for (group of areas(); track group.label) {
-        <section>
-          <h2 class="m-0 mb-3 text-base font-semibold text-on-surface">{{ group.label }}</h2>
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 2xl:grid-cols-3">
-            @for (item of group.items; track item.route) {
-              <a [routerLink]="item.route" class="tile">
-                <span class="tile-icon"
-                  ><mat-icon>{{ item.icon }}</mat-icon></span
-                >
-                <span class="flex-1 font-semibold">{{ item.label }}</span>
-                <mat-icon class="tile-arrow">arrow_forward</mat-icon>
-              </a>
-            }
-          </div>
-        </section>
-      } @empty {
-        <p
-          class="m-0 rounded-2xl border border-dashed border-outline-variant p-6 text-sm text-on-surface-variant"
-        >
-          Your roles do not open any area yet. Ask an administrator for access.
-        </p>
-      }
-    </div>
+    @if (areas().length) {
+      <ui-hub-nav [groups]="areas()" />
+    } @else {
+      <p
+        class="m-0 h-fit rounded-2xl border border-dashed border-outline-variant p-6 text-sm text-on-surface-variant"
+      >
+        Your roles do not open any area yet. Ask an administrator for access.
+      </p>
+    }
 
     <aside
       class="h-fit rounded-2xl border border-outline-variant bg-surface-container-lowest p-5"

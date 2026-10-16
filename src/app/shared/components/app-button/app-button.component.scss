@@ -10,7 +10,20 @@
   --mat-button-tonal-container-height: 32px;
   --mat-button-text-container-height: 32px;
 }
+// While the action runs the button keeps its colour (busy, not unavailable), ignores clicks, and the spinner takes
+// the place of its icon and label.
+.ui-busy {
+  pointer-events: none;
+  cursor: progress;
+
+  mat-icon,
+  .ui-label {
+    visibility: hidden;
+  }
+}
 .ui-spinner {
-  margin-inline-end: 8px;
+  position: absolute;
+  inset: 0;
+  margin: auto;
   --mat-progress-spinner-active-indicator-color: currentColor;
 }

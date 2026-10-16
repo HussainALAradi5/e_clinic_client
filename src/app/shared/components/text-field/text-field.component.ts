@@ -1,14 +1,22 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { errorMessage } from '@shared/utils/validators';
 
 /** `<ui-text label="First name" [control]="form.controls.firstName" />` — label, hint, error and counter wired once. */
 @Component({
   selector: 'ui-text',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+  ],
   host: { class: 'block' },
   templateUrl: './text-field.component.html',
 })
@@ -21,6 +29,14 @@ export class TextField {
   readonly multiline = input(false);
   readonly rows = input(3);
   readonly autocomplete = input<string | null>(null);
+  /** Leading icon (e.g. `mail`, `lock`). */
+  readonly icon = input<string | null>(null);
+
+  /** Password fields get a show / hide toggle. */
+  protected readonly revealed = signal(false);
+  protected readonly inputType = computed(() =>
+    this.type() === 'password' && this.revealed() ? 'text' : this.type(),
+  );
 
   /** Evaluated during change detection; MatFormField marks the view for check on every state change. */
   protected error(): string | null {

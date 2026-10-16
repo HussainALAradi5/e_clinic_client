@@ -32,7 +32,12 @@ import { ActionLock, CANCELLED, minDuration, toPromise } from '@shared/utils/act
   selector: 'ui-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatTooltipModule],
-  host: { class: 'inline-flex', '[class.hidden]': '!visible()', '[attr.aria-busy]': 'lock.busy()' },
+  host: {
+    class: 'inline-flex',
+    '[class.hidden]': '!visible()',
+    '[class.w-full]': 'block()',
+    '[attr.aria-busy]': 'lock.busy()',
+  },
   templateUrl: './app-button.component.html',
   styleUrl: './app-button.component.scss',
 })
@@ -48,6 +53,8 @@ export class AppButton {
   readonly icon = input<string | null>(null);
   readonly type = input<'button' | 'submit'>('button');
   readonly disabled = input(false);
+  /** Full width (e.g. the sign-in button). */
+  readonly block = input(false);
   /** Set when the parent handles errors itself (failed output). */
   readonly silentErrors = input(false);
 
@@ -72,8 +79,9 @@ export class AppButton {
   protected readonly visible = computed(
     () => this.allowed() || this.accessMode() === AccessMode.Disable,
   );
+  /** Busy buttons stay enabled-looking (ui-busy blocks clicks); only finished `once` locks disable. */
   protected readonly isDisabled = computed(
-    () => this.disabled() || !this.allowed() || !this.lock.accepting(),
+    () => this.disabled() || !this.allowed() || (!this.lock.accepting() && !this.lock.busy()),
   );
   protected readonly appearance = computed(() => {
     const variant = this.variant();

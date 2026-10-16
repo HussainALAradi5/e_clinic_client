@@ -1,6 +1,7 @@
 // The only SCSS file: Angular Material 3 theme. Layout and spacing come from Tailwind (tailwind.css).
 // Brand: deep pine green on a cool off-white canvas; white cards with hairline borders; one warm accent (sun).
 @use '@angular/material' as mat;
+@use './brand';
 
 html {
   color-scheme: light dark;
@@ -50,6 +51,33 @@ html {
       outlined-label-text-weight: 600,
       tonal-label-text-weight: 600,
       text-label-text-weight: 600,
+      filled-container-height: 42px,
+      outlined-container-height: 42px,
+      tonal-container-height: 42px,
+      filled-horizontal-padding: 20px,
+      outlined-horizontal-padding: 20px,
+      tonal-horizontal-padding: 20px,
+      // Tonal = mint with pine text; outlined = pine outline. Disabled filled stays pine, only fainter.
+      tonal-container-color: var(--mat-sys-primary-container),
+      tonal-label-text-color: var(--mat-sys-on-primary-container),
+      outlined-outline-color: color-mix(in srgb, var(--mat-sys-primary) 40%, transparent),
+      outlined-label-text-color: var(--mat-sys-primary),
+      filled-disabled-container-color: color-mix(in srgb, var(--mat-sys-primary) 32%, transparent),
+      filled-disabled-label-text-color: color-mix(
+          in srgb,
+          var(--mat-sys-on-primary) 90%,
+          transparent
+        ),
+      tonal-disabled-container-color: color-mix(
+          in srgb,
+          var(--mat-sys-primary-container) 60%,
+          transparent
+        ),
+      tonal-disabled-label-text-color: color-mix(
+          in srgb,
+          var(--mat-sys-on-primary-container) 45%,
+          transparent
+        ),
     )
   );
   @include mat.form-field-overrides(
@@ -137,5 +165,37 @@ body {
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+// Filled buttons: a soft top highlight and a pine glow that lifts on hover (Material sets colour, not these).
+.mat-mdc-unelevated-button:not(:disabled) {
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 0.14), rgb(255 255 255 / 0));
+  box-shadow:
+    0 1px 2px rgb(5 42 39 / 0.18),
+    0 6px 16px -10px var(--mat-sys-primary);
+  transition:
+    box-shadow 160ms ease,
+    transform 160ms ease;
+
+  &:hover {
+    box-shadow:
+      0 1px 2px rgb(5 42 39 / 0.2),
+      0 10px 22px -10px var(--mat-sys-primary);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.mat-mdc-outlined-button:not(:disabled):hover {
+  border-color: var(--mat-sys-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mat-mdc-unelevated-button:not(:disabled):hover {
+    transform: none;
   }
 }

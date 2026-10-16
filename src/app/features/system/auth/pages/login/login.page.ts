@@ -1,17 +1,20 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { environment } from '@env';
 import { GenericForm } from '@shared/components/generic-form/generic-form.component';
 import { TextField } from '@shared/components/text-field/text-field.component';
 import { HOME_PATH } from '@shared/constants/app.constants';
+import { DemoAccount } from '@shared/interfaces/auth/demo-account.interface';
 import { LoginPayload } from '@shared/interfaces/auth/auth-payloads.interface';
 import { SessionService } from '@shared/services/auth/session.service';
+import { DemoAccounts } from '../../components/demo-accounts/demo-accounts.component';
 
 /** `/login` — email + password; hands over to `/login/2fa` when a TOTP code is needed. */
 @Component({
   selector: 'app-login-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [GenericForm, TextField, RouterLink],
+  imports: [GenericForm, TextField, RouterLink, DemoAccounts],
   templateUrl: './login.page.html',
 })
 export class LoginPage {
@@ -19,6 +22,7 @@ export class LoginPage {
   readonly returnUrl = input<string | undefined>();
 
   private readonly session = inject(SessionService);
+  protected readonly demoLogins = environment.demoLogins;
 
   protected readonly form = new FormGroup({
     email: new FormControl('', {
@@ -33,4 +37,9 @@ export class LoginPage {
 
   protected readonly submit = (value: Omit<LoginPayload, 'deviceName'>): Promise<void> =>
     this.session.login(value, this.returnUrl() ?? HOME_PATH);
+
+  protected useDemo(account: DemoAccount): void {
+    this.form.setValue({ email: account.email, password: this.demoLogins?.password ?? '' });
+    this.form.markAsDirty();
+  }
 }

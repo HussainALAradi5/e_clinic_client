@@ -1,0 +1,512 @@
+// Shared look of the hub / brand building blocks (ui-brand-surface, ui-icon-badge, ui-hub-tile) and the
+// buttons used on the pine surface. Defined once here; pages only arrange the components.
+
+// Same layer order as Tailwind, so its utilities (hidden, flex, p-6 …) can still adjust these blocks.
+@layer theme, base, components, utilities;
+
+@layer components {
+  // ---- Brand surface -------------------------------------------------------------------------------
+  .brand-surface {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background:
+      radial-gradient(80% 110% at 100% 0%, rgb(127 211 197 / 0.2), transparent 60%),
+      var(--color-pine-900);
+    color: #fff;
+
+    > :not(svg) {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  .brand-surface-cross {
+    position: absolute;
+    right: -2rem;
+    bottom: -3rem;
+    width: clamp(10rem, 28vw, 26rem);
+    max-height: 140%;
+    fill: rgb(255 255 255 / 0.05);
+    transform: rotate(-10deg);
+    pointer-events: none;
+  }
+
+  .brand-surface-field {
+    position: absolute;
+    right: -6rem;
+    bottom: -6rem;
+    width: 34rem;
+    fill: rgb(255 255 255 / 0.06);
+    mask-image: radial-gradient(circle at 80% 80%, #000 20%, transparent 70%);
+    pointer-events: none;
+  }
+
+  // Buttons on the pine surface (Material buttons are for light surfaces).
+  .btn-on-brand,
+  .btn-outline-on-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 3rem;
+    padding: 0 1.25rem;
+    border-radius: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 120ms ease;
+
+    &:focus-visible {
+      outline: 2px solid var(--color-sun);
+      outline-offset: 3px;
+    }
+
+    &.btn-sm {
+      height: 2.5rem;
+      padding: 0 1.125rem;
+      font-size: 0.875rem;
+    }
+  }
+
+  .btn-on-brand {
+    border: 0;
+    background: #fff;
+    color: var(--color-pine-900);
+
+    &:hover {
+      background: var(--color-pine-100);
+    }
+  }
+
+  .btn-outline-on-brand {
+    border: 1px solid rgb(255 255 255 / 0.3);
+    background: transparent;
+    color: #fff;
+
+    &:hover {
+      background: rgb(255 255 255 / 0.08);
+    }
+  }
+
+  // The live "open now" dot — the only animation that runs on its own.
+  .live-dot {
+    position: relative;
+    display: inline-flex;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--color-sun);
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: inherit;
+      animation: live-dot 2s ease-out infinite;
+    }
+
+    &.off {
+      background: var(--mat-sys-outline);
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  @keyframes live-dot {
+    from {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    to {
+      transform: scale(3);
+      opacity: 0;
+    }
+  }
+
+  // ---- Page loader (also the boot splash in index.html) ------------------------------------------
+  .page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: var(--mat-sys-surface, #f4f7f6);
+    animation: page-loader-in 200ms ease-out both;
+  }
+
+  .page-loader-mark {
+    width: 3.5rem;
+    height: 3.5rem;
+    animation: page-loader-beat 1.2s ease-in-out infinite;
+
+    rect {
+      fill: var(--color-pine-700);
+    }
+
+    path {
+      fill: #fff;
+    }
+  }
+
+  .page-loader-pulse {
+    width: 7.5rem;
+    height: 1.5rem;
+    fill: none;
+    stroke: var(--color-pine-700);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 160;
+    stroke-dashoffset: 160;
+    opacity: 0.7;
+    animation: page-loader-trace 1.2s linear infinite;
+  }
+
+  .page-loader-label {
+    color: var(--mat-sys-on-surface-variant, #566865);
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  @keyframes page-loader-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  // Two quick beats, then rest — in time with the trace.
+  @keyframes page-loader-beat {
+    0%,
+    40%,
+    100% {
+      transform: scale(1);
+    }
+    15% {
+      transform: scale(1.12);
+    }
+    28% {
+      transform: scale(1.04);
+    }
+  }
+
+  @keyframes page-loader-trace {
+    to {
+      stroke-dashoffset: -160;
+    }
+  }
+
+  // ---- Toasts (NotifyService) --------------------------------------------------------------------
+  // The snack-bar container only positions; the card look is the ui-toast host. One accent per ToastType.
+  .toast-panel {
+    --mat-snack-bar-container-color: transparent;
+    --mat-snack-bar-container-shape: 14px;
+
+    .mat-mdc-snackbar-surface {
+      padding: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .mdc-snackbar__label {
+      padding: 0 !important;
+    }
+  }
+
+  .toast {
+    --toast-accent: var(--mat-sys-primary);
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    width: min(24rem, calc(100vw - 2rem));
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0.875rem 0.5rem 1rem 1rem;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-left: 4px solid var(--toast-accent);
+    border-radius: 14px;
+    background: var(--mat-sys-surface-container-lowest);
+    color: var(--mat-sys-on-surface);
+    box-shadow: 0 18px 40px -18px rgb(5 42 39 / 0.45);
+  }
+
+  .toast-success {
+    --toast-accent: light-dark(#14805e, #5fd3a8);
+  }
+
+  .toast-info {
+    --toast-accent: light-dark(#2563a8, #8ab8f0);
+  }
+
+  .toast-warning {
+    --toast-accent: light-dark(#b26b00, #f2b544);
+  }
+
+  .toast-error {
+    --toast-accent: light-dark(#c2362f, #ff8f86);
+  }
+
+  .toast-icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--toast-accent) 14%, transparent);
+    color: var(--toast-accent);
+  }
+
+  .toast-body {
+    flex: 1;
+    min-width: 0;
+    padding-top: 0.125rem;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .toast-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+  }
+
+  .toast-message {
+    margin-top: 0.125rem !important;
+    color: var(--mat-sys-on-surface-variant);
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+
+  .toast-reference {
+    margin-top: 0.375rem !important;
+    color: var(--mat-sys-on-surface-variant);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    user-select: all;
+  }
+
+  .toast-action {
+    margin: 0.375rem 0 0 -0.75rem;
+    --mat-button-text-label-text-color: var(--toast-accent);
+  }
+
+  .toast-close {
+    flex-shrink: 0;
+    margin-top: -0.25rem;
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  // Countdown until the toast closes by itself.
+  .toast-timer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--toast-accent);
+    opacity: 0.35;
+    transform-origin: left;
+    animation: toast-timer linear forwards;
+  }
+
+  @keyframes toast-timer {
+    from {
+      transform: scaleX(1);
+    }
+    to {
+      transform: scaleX(0);
+    }
+  }
+
+  // ---- Icon badge ----------------------------------------------------------------------------------
+  .icon-badge {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    background: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+
+    &.icon-badge-lg {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 1rem;
+    }
+
+    &.icon-badge-solid {
+      background: var(--mat-sys-primary);
+      color: var(--mat-sys-on-primary);
+    }
+  }
+
+  // ---- Hub tile ------------------------------------------------------------------------------------
+  .hub-tile {
+    display: flex;
+    height: 100%;
+    box-sizing: border-box;
+    gap: 0.875rem;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 1rem;
+    background: var(--mat-sys-surface-container-lowest);
+    color: var(--mat-sys-on-surface);
+    text-decoration: none;
+    transition:
+      border-color 120ms ease,
+      box-shadow 120ms ease;
+  }
+
+  a.hub-tile {
+    &:hover {
+      border-color: var(--mat-sys-primary);
+      box-shadow: 0 6px 20px -12px rgb(11 93 87 / 0.45);
+
+      .hub-tile-arrow {
+        color: var(--mat-sys-primary);
+        transform: translateX(2px);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--mat-sys-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  .hub-tile-text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .hub-tile-title {
+    font-weight: 600;
+  }
+
+  .hub-tile-description {
+    margin-top: 0.25rem;
+    color: var(--mat-sys-on-surface-variant);
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  .hub-tile-arrow {
+    flex-shrink: 0;
+    color: var(--mat-sys-outline);
+    transition: transform 120ms ease;
+  }
+
+  .hub-tile-row {
+    align-items: center;
+    padding: 0.875rem 1rem;
+
+    .hub-tile-description {
+      overflow: hidden;
+      margin-top: 0;
+      font-size: 0.8125rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .hub-tile-card {
+    flex-direction: column;
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+
+    .hub-tile-title {
+      margin-top: 1.25rem;
+      font-size: 1.125rem;
+      font-weight: 700;
+    }
+
+    .hub-tile-arrow {
+      position: absolute;
+      visibility: hidden;
+    }
+  }
+
+  .hub-tile-featured {
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+    padding: 2rem;
+    border-color: transparent;
+    border-radius: 1.25rem;
+    background: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+
+    .hub-tile-title {
+      margin-top: 2rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .hub-tile-description {
+      max-width: 40ch;
+      color: inherit;
+      font-size: 1rem;
+      opacity: 0.85;
+    }
+  }
+
+  // A featured tile fills two rows of a three-column hub grid.
+  @media (min-width: 1024px) {
+    ui-hub-tile.featured-host {
+      grid-row: span 2;
+    }
+  }
+
+  // A wide tile takes the whole row and lays its card out on one line.
+  @media (min-width: 1024px) {
+    ui-hub-tile.wide-host {
+      grid-column: 1 / -1;
+
+      .hub-tile-card {
+        flex-direction: row;
+        align-items: center;
+        gap: 1.25rem;
+      }
+
+      .hub-tile-text {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 1.5rem;
+      }
+
+      .hub-tile-title {
+        margin-top: 0;
+      }
+
+      .hub-tile-description {
+        margin-top: 0;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .live-dot::after,
+    .page-loader-mark {
+      animation: none;
+    }
+
+    .page-loader-pulse {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+
+    .hub-tile,
+    .hub-tile-arrow {
+      transition: none;
+    }
+  }
+}

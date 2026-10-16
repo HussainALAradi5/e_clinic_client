@@ -12,8 +12,10 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
+import { environment } from '@env';
 import { GenericForm } from '@shared/components/generic-form/generic-form.component';
 import { TextField } from '@shared/components/text-field/text-field.component';
 import { LOGIN_PATH } from '@shared/constants/app.constants';
@@ -24,7 +26,7 @@ import { SessionService } from '@shared/services/auth/session.service';
 @Component({
   selector: 'app-two-factor-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [GenericForm, TextField, MatButtonModule, RouterLink],
+  imports: [GenericForm, TextField, MatButtonModule, MatIconModule, RouterLink],
   templateUrl: './two-factor.page.html',
 })
 export class TwoFactorPage implements OnInit {
@@ -34,6 +36,7 @@ export class TwoFactorPage implements OnInit {
   private readonly injector = inject(Injector);
   private readonly formRef = viewChild.required(GenericForm);
 
+  protected readonly demoLogins = environment.demoLogins;
   protected readonly useRecoveryCode = signal(false);
   protected readonly form = new FormGroup({
     code: new FormControl('', {
@@ -74,5 +77,14 @@ export class TwoFactorPage implements OnInit {
         : [Validators.required, Validators.pattern(new RegExp(`^\\d{${TOTP_LENGTH}}$`))],
     );
     code.reset('');
+  }
+
+  /** Development builds: switch to recovery mode with a seeded demo code filled in. */
+  protected useDemoCode(): void {
+    if (!this.useRecoveryCode()) {
+      this.toggleMode();
+    }
+    this.form.setValue({ code: this.demoLogins?.recoveryCode ?? '' });
+    this.form.markAsDirty();
   }
 }

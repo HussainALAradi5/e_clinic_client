@@ -1,0 +1,17 @@
+@for (group of groups(); track group.label) {
+  <ui-hub-section
+    [title]="headings() ? group.label : null"
+    [link]="headings() ? group.route : null"
+    [columns]="columns()"
+  >
+    @for (item of group.items; track item.route) {
+      <ui-hub-tile
+        [icon]="item.icon"
+        [title]="item.label"
+        [description]="layout() === 'card' ? item.description : null"
+        [link]="item.route"
+        [layout]="layout()"
+      />
+    }
+  </ui-hub-section>
+}

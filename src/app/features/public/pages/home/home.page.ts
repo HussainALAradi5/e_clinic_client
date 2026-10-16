@@ -12,6 +12,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
+import { BrandSurface } from '@shared/components/hub/brand-surface.component';
+import { HubSection } from '@shared/components/hub/hub-section.component';
+import { HubTile } from '@shared/components/hub/hub-tile.component';
 import { LOGIN_PATH } from '@shared/constants/app.constants';
 import {
   CLINIC_INFO,
@@ -34,6 +37,9 @@ const STATUS_REFRESH_MS = 60_000;
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
+    BrandSurface,
+    HubSection,
+    HubTile,
   ],
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss',

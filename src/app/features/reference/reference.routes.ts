@@ -5,6 +5,13 @@ import { AUTHENTICATED } from '@shared/constants/app.constants';
 /** `/reference` — Reference Data (lazy): companies and countries. */
 export const REFERENCE_ROUTES: Routes = [
   {
+    path: '',
+    pathMatch: 'full',
+    title: 'Reference data · e-Clinic',
+    loadComponent: () => import('@core/pages/hub/hub.page').then((m) => m.HubPage),
+    data: { hub: '/reference' },
+  },
+  {
     path: 'companies',
     canMatch: [accessGuard('companies.read_all | companies.read_own')],
     children: [

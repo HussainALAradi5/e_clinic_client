@@ -3,18 +3,28 @@
     [matButton]="appearance()"
     [type]="type()"
     [disabled]="isDisabled()"
+    [attr.aria-disabled]="lock.busy() || null"
     [class.ui-danger]="variant() === variants.Danger"
     [class.ui-sm]="size() === sizes.Small"
+    [class.ui-busy]="lock.busy()"
+    [class.w-full]="block()"
     [matTooltip]="allowed() ? '' : 'You don\'t have permission'"
     (click)="run($event)"
   >
-    @if (lock.busy()) {
-      <mat-progress-spinner diameter="18" mode="indeterminate" class="ui-spinner" />
-    } @else if (lock.state() === states.Success || lock.state() === states.Locked) {
+    @if (lock.state() === states.Success || lock.state() === states.Locked) {
       <mat-icon>check</mat-icon>
     } @else if (icon()) {
       <mat-icon>{{ icon() }}</mat-icon>
     }
-    <ng-content />
+    <span class="ui-label"><ng-content /></span>
+    @if (lock.busy()) {
+      <!-- Replaces the label (kept invisible so the button keeps its width). -->
+      <mat-progress-spinner
+        diameter="20"
+        mode="indeterminate"
+        class="ui-spinner"
+        aria-label="Working"
+      />
+    }
   </button>
 }

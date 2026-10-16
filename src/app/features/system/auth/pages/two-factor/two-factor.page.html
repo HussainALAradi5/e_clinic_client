@@ -1,19 +1,31 @@
-<h1 class="m-0 text-2xl font-bold tracking-tight">Two-factor verification</h1>
-<p class="mt-1 mb-6 text-sm text-on-surface-variant">
+<span class="icon-badge mb-6" aria-hidden="true"
+  ><span class="material-symbols-outlined">verified_user</span></span
+>
+<h1 class="m-0 text-3xl font-bold tracking-tight">Two-factor verification</h1>
+<p class="mt-2 mb-8 text-on-surface-variant">
   @if (useRecoveryCode()) {
     Enter one of your recovery codes. Each code works once.
   } @else {
-    Enter the 6-digit code from your authenticator app for {{ session.challenge()?.email }}.
+    Enter the 6-digit code from your authenticator app for
+    <strong class="font-semibold text-on-surface">{{ session.challenge()?.email }}</strong
+    >.
   }
 </p>
 
-<ui-form [form]="form" [submit]="submit" submitLabel="Verify" [cancelLabel]="null" [compact]="true">
+<ui-form
+  [form]="form"
+  [submit]="submit"
+  submitLabel="Verify"
+  submitIcon="check_circle"
+  [cancelLabel]="null"
+  [block]="true"
+>
   @if (useRecoveryCode()) {
-    <ui-text label="Recovery code" autocomplete="off" [control]="form.controls.code" />
+    <ui-text label="Recovery code" icon="key" autocomplete="off" [control]="form.controls.code" />
   } @else {
     <ui-text
-      label="Code"
-      type="text"
+      label="6-digit code"
+      icon="pin"
       autocomplete="one-time-code"
       [maxLength]="6"
       [control]="form.controls.code"
@@ -21,9 +33,26 @@
   }
 </ui-form>
 
-<div class="mt-4 flex justify-between text-sm">
+<div class="mt-4 flex items-center justify-between text-sm">
   <button matButton type="button" (click)="toggleMode()">
+    <mat-icon>{{ useRecoveryCode() ? 'pin' : 'key' }}</mat-icon>
     {{ useRecoveryCode() ? 'Use the authenticator code' : 'Use a recovery code' }}
   </button>
-  <a matButton routerLink="/login">Back to sign in</a>
+  <a matButton routerLink="/login"><mat-icon>arrow_back</mat-icon> Back to sign in</a>
 </div>
+
+@if (demoLogins; as demo) {
+  <div class="mt-8 rounded-2xl border border-dashed border-outline-variant p-4 text-sm">
+    <p class="m-0 flex items-center gap-2 font-semibold">
+      <mat-icon class="!size-5 !text-xl text-primary">science</mat-icon> Demo accounts
+    </p>
+    <p class="mt-2 mb-3 text-xs text-on-surface-variant">
+      Click the button to enter the recovery code <strong>{{ demo.recoveryCode }}</strong> for you
+      (codes <code>demo1-11111</code> to <code>demo8-88888</code> each work once per account), or
+      add the setup key <code>JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP</code> to an authenticator app.
+    </p>
+    <button matButton="tonal" type="button" (click)="useDemoCode()">
+      <mat-icon>key</mat-icon> Use demo recovery code
+    </button>
+  </div>
+}

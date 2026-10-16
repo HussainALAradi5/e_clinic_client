@@ -1,5 +1,8 @@
 <mat-form-field class="w-full">
   <mat-label>{{ label() }}</mat-label>
+  @if (icon()) {
+    <mat-icon matPrefix class="text-on-surface-variant">{{ icon() }}</mat-icon>
+  }
   @if (multiline()) {
     <textarea
       matInput
@@ -10,11 +13,23 @@
   } @else {
     <input
       matInput
-      [type]="type()"
+      [type]="inputType()"
       [formControl]="control()"
       [attr.maxlength]="maxLength()"
       [attr.autocomplete]="autocomplete()"
     />
+  }
+  @if (type() === 'password') {
+    <button
+      matIconButton
+      matSuffix
+      type="button"
+      [attr.aria-label]="revealed() ? 'Hide password' : 'Show password'"
+      [attr.aria-pressed]="revealed()"
+      (click)="revealed.set(!revealed())"
+    >
+      <mat-icon>{{ revealed() ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
   }
   @if (hint()) {
     <mat-hint>{{ hint() }}</mat-hint>

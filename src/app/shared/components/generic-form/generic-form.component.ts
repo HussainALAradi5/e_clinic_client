@@ -46,6 +46,9 @@ export class GenericForm<T = unknown> implements HasUnsavedChanges {
   readonly allowPristine = input(false);
   /** Dialogs and auth cards: a plain footer instead of the sticky page footer. */
   readonly compact = input(false);
+  /** Full-width submit button without the footer bar (sign-in style forms). */
+  readonly block = input(false);
+  readonly submitIcon = input<string | null>(null);
 
   readonly saved = output<unknown>();
   readonly cancelled = output<void>();

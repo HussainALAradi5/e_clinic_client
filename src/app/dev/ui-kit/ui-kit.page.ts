@@ -35,6 +35,7 @@ import { MoneyPipe } from '@shared/pipes/money.pipe';
 import { RelativeTimePipe } from '@shared/pipes/relative-time.pipe';
 import { DialogService } from '@shared/services/ui/dialog.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
+import { ToastType } from '@shared/enums/ui/toast-type.enum';
 import { ThemeService } from '@shared/services/ui/theme.service';
 import { ListSelection } from '@shared/utils/list-selection';
 import { money } from '@shared/utils/money';
@@ -119,6 +120,7 @@ export class UiKitPage {
   private readonly dialogs = inject(DialogService);
 
   protected readonly statuses = STATUSES;
+  protected readonly toastTypes = Object.values(ToastType);
   protected readonly rows = ROWS;
   protected readonly sampleMoney = money('1250.5');
   protected readonly schema = SCHEMA;
@@ -214,5 +216,17 @@ export class UiKitPage {
       meta: null,
       requestId: crypto.randomUUID(),
     };
+  }
+
+  protected toast(type: ToastType): void {
+    const samples: Record<ToastType, string> = {
+      [ToastType.Success]: 'Patient record saved.',
+      [ToastType.Info]: 'A new version of the price list is available.',
+      [ToastType.Warning]: 'This appointment overlaps with another booking.',
+      [ToastType.Error]: 'The verification code is invalid or has expired.',
+    };
+    this.notify.show(type, samples[type], {
+      action: type === ToastType.Success ? 'Undo' : undefined,
+    });
   }
 }

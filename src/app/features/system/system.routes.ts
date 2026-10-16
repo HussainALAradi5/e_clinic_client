@@ -6,6 +6,13 @@ import { unsavedChangesGuard } from '@core/guards/unsaved-changes.guard';
 /** `/system` — Identity & System (lazy). Each page is guarded by the same expression as its API endpoint. */
 export const SYSTEM_ROUTES: Routes = [
   {
+    path: '',
+    pathMatch: 'full',
+    title: 'Identity & System · e-Clinic',
+    loadComponent: () => import('@core/pages/hub/hub.page').then((m) => m.HubPage),
+    data: { hub: '/system' },
+  },
+  {
     path: 'users',
     canMatch: [accessGuard('users.read_all | users.read_own')],
     children: [

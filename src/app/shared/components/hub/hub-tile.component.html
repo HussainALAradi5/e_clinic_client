@@ -1,0 +1,39 @@
+<ng-template #body>
+  <ui-icon-badge
+    [icon]="icon()"
+    [tone]="layout() === 'featured' ? 'solid' : 'soft'"
+    [size]="layout() === 'featured' ? 'lg' : 'md'"
+  />
+  <span class="hub-tile-text">
+    <span class="hub-tile-title">{{ title() }}</span>
+    @if (description()) {
+      <span class="hub-tile-description">{{ description() }}</span>
+    }
+    <ng-content />
+  </span>
+  @if (link() || href()) {
+    <mat-icon class="hub-tile-arrow" aria-hidden="true">{{
+      external() ? 'open_in_new' : 'arrow_forward'
+    }}</mat-icon>
+  }
+</ng-template>
+
+@if (link(); as route) {
+  <a class="hub-tile" [class]="'hub-tile-' + layout()" [routerLink]="route">
+    <ng-container [ngTemplateOutlet]="body" />
+  </a>
+} @else if (href(); as url) {
+  <a
+    class="hub-tile"
+    [class]="'hub-tile-' + layout()"
+    [href]="url"
+    [attr.target]="external() ? '_blank' : null"
+    [attr.rel]="external() ? 'noopener noreferrer' : null"
+  >
+    <ng-container [ngTemplateOutlet]="body" />
+  </a>
+} @else {
+  <div class="hub-tile" [class]="'hub-tile-' + layout()">
+    <ng-container [ngTemplateOutlet]="body" />
+  </div>
+}

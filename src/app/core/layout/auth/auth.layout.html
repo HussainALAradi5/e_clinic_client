@@ -1,36 +1,44 @@
 <div class="grid min-h-dvh lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
-  <aside class="brand-panel relative hidden flex-col justify-between overflow-hidden p-12 lg:flex">
-    <a routerLink="/" class="relative z-10 w-fit no-underline" aria-label="e-Clinic website">
+  <ui-brand-surface mark="field" class="hidden flex-col justify-between p-12 lg:flex">
+    <a routerLink="/" class="w-fit no-underline" aria-label="e-Clinic website">
       <ui-brand-mark tone="light" size="lg" />
     </a>
 
-    <div class="relative z-10 max-w-md">
-      <p class="m-0 text-4xl leading-tight font-bold tracking-tight text-white">
-        One record for every visit, from the front desk to the pharmacy counter.
+    <div class="max-w-lg">
+      <p class="m-0 text-4xl leading-tight font-bold tracking-tight text-white xl:text-5xl">
+        Your clinic, from the front desk to the pharmacy counter.
       </p>
-      <p class="mt-5 mb-0 text-base leading-relaxed text-white/70">
-        Staff sign in to the workspace. Patients sign in to see results, prescriptions and invoices
-        once they are released.
+      <p class="mt-5 mb-0 max-w-md text-base leading-relaxed text-white/70">
+        Staff sign in to the workspace. Patients see results, prescriptions and invoices as soon as
+        they are released.
       </p>
+
+      <ul
+        class="m-0 mt-10 flex list-none flex-col gap-3 p-0"
+        aria-label="What you can do after signing in"
+      >
+        @for (item of highlights; track item.title; let i = $index) {
+          <li class="glass-card" [style.margin-left.rem]="i * 1.5">
+            <span
+              class="grid size-10 shrink-0 place-items-center rounded-xl bg-pine-100 text-pine-900"
+            >
+              <mat-icon>{{ item.icon }}</mat-icon>
+            </span>
+            <span class="min-w-0">
+              <span class="block font-semibold text-white">{{ item.title }}</span>
+              <span class="block truncate text-sm text-white/65">{{ item.detail }}</span>
+            </span>
+          </li>
+        }
+      </ul>
     </div>
 
-    <p class="relative z-10 m-0 text-sm text-white/55">
-      {{ clinic.addressLines.join(', ') }} · {{ clinic.phone }}
+    <p class="m-0 text-sm text-white/55">
+      {{ clinic.addressLines.join(', ') }}, {{ clinic.phone }}
     </p>
+  </ui-brand-surface>
 
-    <svg class="cross-field" viewBox="0 0 400 400" aria-hidden="true">
-      @for (row of grid; track row) {
-        @for (col of grid; track col) {
-          <path
-            [attr.transform]="'translate(' + col * 50 + ' ' + row * 50 + ')'"
-            d="M21 14h8v7h7v8h-7v7h-8v-7h-7v-8h7z"
-          />
-        }
-      }
-    </svg>
-  </aside>
-
-  <div class="flex flex-col bg-surface-container-lowest">
+  <div class="auth-form-side flex flex-col">
     <header class="flex items-center justify-between px-6 pt-6 sm:px-10">
       <a routerLink="/" class="no-underline lg:invisible" aria-label="e-Clinic website">
         <ui-brand-mark />
@@ -45,7 +53,7 @@
     </header>
 
     <main class="flex flex-1 items-center justify-center px-6 py-10 sm:px-10">
-      <div class="w-full max-w-[26rem]">
+      <div class="w-full max-w-[25rem]">
         <router-outlet />
       </div>
     </main>

@@ -38,6 +38,12 @@
           >No permission</ui-button
         >
       </div>
+      <h3 class="mt-5 mb-2 text-sm font-semibold">Toasts</h3>
+      <div class="flex flex-wrap gap-2">
+        @for (type of toastTypes; track type) {
+          <button matButton="outlined" type="button" (click)="toast(type)">{{ type }}</button>
+        }
+      </div>
     </mat-card>
 
     <mat-card appearance="outlined" class="p-4">

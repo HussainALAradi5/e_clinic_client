@@ -13,13 +13,11 @@ import { NotificationBell } from '../notification-bell/notification-bell.compone
 import { BrandMark } from '@shared/components/brand-mark/brand-mark.component';
 import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { ACCOUNT_SECURITY_PATH } from '@shared/constants/app.constants';
-import { MENU } from '@shared/constants/menu.constants';
 import { ThemeMode } from '@shared/enums/ui/theme.enum';
-import { NavGroup } from '@shared/interfaces/ui/nav.interface';
-import { AccessService } from '@shared/services/auth/access.service';
 import { AuthStore } from '@shared/services/auth/auth.store';
 import { SessionService } from '@shared/services/auth/session.service';
 import { EnumService } from '@shared/services/data/enum.service';
+import { NavigationService } from '@shared/services/ui/navigation.service';
 import { ThemeService } from '@shared/services/ui/theme.service';
 
 const THEME_ORDER: ThemeMode[] = [ThemeMode.System, ThemeMode.Light, ThemeMode.Dark];
@@ -56,7 +54,6 @@ const THEME_ICONS: Record<ThemeMode, string> = {
 export class ShellLayout {
   protected readonly auth = inject(AuthStore);
   protected readonly theme = inject(ThemeService);
-  private readonly access = inject(AccessService);
   private readonly session = inject(SessionService);
 
   protected readonly securityPath = ACCOUNT_SECURITY_PATH;
@@ -69,12 +66,7 @@ export class ShellLayout {
   protected readonly menuOpen = signal(true);
   protected readonly opened = computed(() => !this.handset() && this.menuOpen());
 
-  protected readonly menu = computed<NavGroup[]>(() =>
-    MENU.map((group) => ({
-      ...group,
-      items: group.items.filter((item) => this.access.can(item.access)),
-    })).filter((group) => group.items.length > 0),
-  );
+  protected readonly menu = inject(NavigationService).menu;
 
   protected readonly initials = computed(() => {
     const user = this.auth.user();

@@ -1,0 +1,22 @@
+<span class="toast-icon" aria-hidden="true"
+  ><mat-icon>{{ icon }}</mat-icon></span
+>
+
+<div class="toast-body">
+  <p class="toast-title">{{ data.title }}</p>
+  <p class="toast-message">{{ data.message }}</p>
+  @if (data.reference) {
+    <p class="toast-reference">Reference {{ data.reference }}</p>
+  }
+  @if (data.action) {
+    <button matButton class="toast-action" type="button" (click)="ref.dismissWithAction()">
+      {{ data.action }}
+    </button>
+  }
+</div>
+
+<button matIconButton class="toast-close" type="button" aria-label="Close" (click)="ref.dismiss()">
+  <mat-icon>close</mat-icon>
+</button>
+
+<span class="toast-timer" [style.animation-duration.ms]="data.duration" aria-hidden="true"></span>

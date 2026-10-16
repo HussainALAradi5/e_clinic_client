@@ -49,28 +49,6 @@
   cursor: pointer;
 }
 
-.cta {
-  display: inline-flex;
-  align-items: center;
-  height: 2.5rem;
-  padding: 0 1.125rem;
-  border-radius: 0.625rem;
-  background: #fff;
-  color: var(--color-pine-900);
-  font-size: 0.875rem;
-  font-weight: 700;
-  text-decoration: none;
-
-  &:hover {
-    background: var(--color-pine-100);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-sun);
-    outline-offset: 2px;
-  }
-}
-
 .footer-link {
   color: rgb(255 255 255 / 0.75);
   text-decoration: none;

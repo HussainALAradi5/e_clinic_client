@@ -1,0 +1,41 @@
+@if (title()) {
+  <div class="max-w-2xl" [class.mb-10]="size() === 'page'" [class.mb-3]="size() === 'group'">
+    @if (size() === 'page') {
+      <h2 class="m-0 text-3xl font-bold tracking-tight sm:text-4xl">{{ title() }}</h2>
+    } @else {
+      <h2 class="m-0 text-base font-semibold">
+        @if (link(); as route) {
+          <a
+            [routerLink]="route"
+            class="group inline-flex items-center gap-1 text-on-surface no-underline hover:text-primary"
+            >{{ title() }}
+            <mat-icon
+              class="!size-[1.125rem] !text-[1.125rem] opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+              >arrow_forward</mat-icon
+            ></a
+          >
+        } @else {
+          {{ title() }}
+        }
+      </h2>
+    }
+    @if (description()) {
+      <p
+        class="mb-0 text-on-surface-variant"
+        [class.mt-3]="size() === 'page'"
+        [class.text-lg]="size() === 'page'"
+        [class.mt-1]="size() === 'group'"
+        [class.text-sm]="size() === 'group'"
+      >
+        {{ description() }}
+      </p>
+    }
+  </div>
+}
+<div
+  class="grid grid-cols-1 gap-3 sm:grid-cols-2"
+  [class.lg:grid-cols-3]="columns() === 3"
+  [class.gap-4]="size() === 'page'"
+>
+  <ng-content />
+</div>
