@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  ElementRef,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -31,6 +40,19 @@ export class TextField {
   readonly autocomplete = input<string | null>(null);
   /** Leading icon (e.g. `mail`, `lock`). */
   readonly icon = input<string | null>(null);
+
+  /** Focus this field when the page opens (first field of a sign-in form). */
+  readonly autofocus = input(false);
+
+  private readonly field = viewChild<ElementRef<HTMLInputElement>>('field');
+
+  constructor() {
+    afterNextRender(() => {
+      if (this.autofocus()) {
+        this.field()?.nativeElement.focus();
+      }
+    });
+  }
 
   /** Password fields get a show / hide toggle. */
   protected readonly revealed = signal(false);

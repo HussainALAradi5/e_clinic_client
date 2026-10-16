@@ -9,18 +9,14 @@ import {
   TWO_FACTOR_PATH,
 } from '@shared/constants/app.constants';
 import { ErrorCode } from '@shared/enums/api/error-code.enum';
+import { ToastType } from '@shared/enums/ui/toast-type.enum';
 import { LoginPayload } from '@shared/interfaces/auth/auth-payloads.interface';
 import { Session } from '@shared/interfaces/auth/session.interface';
+import { TwoFactorChallenge } from '@shared/interfaces/auth/two-factor-challenge.interface';
+import { NotifyService } from '@shared/services/ui/notify.service';
 import { ResourceSchemaService } from '@shared/services/data/resource-schema.service';
 import { AuthApi } from '@shared/services/identity/auth-api.service';
 import { isApiError } from '@shared/utils/guards';
-
-/** Pending 2FA login (memory only — never stored). */
-interface TwoFactorChallenge {
-  token: string;
-  email: string;
-  returnUrl: string;
-}
 
 /**
  * Sign-in flow on top of AuthApi + AuthStore: login (with the 2FA challenge hand-off), session restore on start-up,
@@ -32,6 +28,7 @@ export class SessionService {
   private readonly store = inject(AuthStore);
   private readonly schemas = inject(ResourceSchemaService);
   private readonly router = inject(Router);
+  private readonly notify = inject(NotifyService);
 
   readonly challenge = signal<TwoFactorChallenge | null>(null);
 
@@ -51,6 +48,7 @@ export class SessionService {
         throw error;
       }
       this.challenge.set({ token, email: credentials.email, returnUrl });
+      this.notify.dismiss();
       await this.router.navigateByUrl(TWO_FACTOR_PATH);
     }
   }
@@ -112,11 +110,22 @@ export class SessionService {
     this.schemas.clear();
     this.store.setSession(session);
     await this.router.navigateByUrl(returnUrl.startsWith('/') ? returnUrl : HOME_PATH);
+    this.notify.show(ToastType.Success, `Welcome back, ${session.user.firstName}.`, {
+      title: 'Signed in',
+      duration: 2500,
+    });
   }
 
   private end(): void {
+    const signedIn = this.store.isAuthenticated();
     this.store.clear();
     this.schemas.clear();
     void this.router.navigateByUrl(LOGIN_PATH);
+    if (signedIn) {
+      this.notify.show(ToastType.Info, 'See you next time.', {
+        title: 'Signed out',
+        duration: 2500,
+      });
+    }
   }
 }

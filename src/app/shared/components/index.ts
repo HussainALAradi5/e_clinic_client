@@ -28,3 +28,4 @@ export * from './brand-mark/brand-mark.component';
 export * from './hub';
 export * from './page-loader/page-loader.component';
 export * from './toast/toast.component';
+export * from './otp-input/otp-input.component';

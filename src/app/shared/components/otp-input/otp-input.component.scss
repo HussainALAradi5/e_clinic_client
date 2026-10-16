@@ -1,0 +1,72 @@
+.otp {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 0.625rem;
+}
+
+// The real input covers the boxes; its own text and caret are hidden, the boxes show the digits.
+.otp-field {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  caret-color: transparent;
+  font-size: 1px;
+  letter-spacing: 0;
+  outline: none;
+  cursor: text;
+
+  &::selection {
+    background: transparent;
+  }
+}
+
+.otp-slot {
+  display: grid;
+  place-items: center;
+  height: 3.5rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 0.875rem;
+  background: var(--mat-sys-surface-container-lowest);
+  color: var(--mat-sys-on-surface);
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+
+  &.filled {
+    border-color: color-mix(in srgb, var(--mat-sys-primary) 45%, transparent);
+    background: color-mix(in srgb, var(--mat-sys-primary-container) 35%, transparent);
+  }
+
+  &.active {
+    border-color: var(--mat-sys-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--mat-sys-primary) 18%, transparent);
+
+    // Blinking caret in the next empty box.
+    &::after {
+      content: '';
+      width: 2px;
+      height: 1.5rem;
+      background: var(--mat-sys-primary);
+      animation: otp-caret 1s steps(1) infinite;
+    }
+  }
+}
+
+.invalid .otp-slot {
+  border-color: var(--mat-sys-error);
+}
+
+@keyframes otp-caret {
+  50% {
+    opacity: 0;
+  }
+}

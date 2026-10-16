@@ -13,7 +13,7 @@ export interface DemoAccount {
 /** Demo sign-in data of a development build (`environment.demoLogins`). */
 export interface DemoLogins {
   password: string;
-  /** A seeded one-time recovery code for the two-factor step. */
-  recoveryCode: string;
+  /** Fixed two-factor code the server accepts for demo accounts outside production. */
+  twoFactorCode: string;
   accounts: DemoAccount[];
 }

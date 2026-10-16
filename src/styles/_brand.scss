@@ -201,6 +201,13 @@
     }
   }
 
+  // ---- Page transitions (router withViewTransitions) -----------------------------------------------
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 180ms;
+    animation-timing-function: ease-out;
+  }
+
   // ---- Toasts (NotifyService) --------------------------------------------------------------------
   // The snack-bar container only positions; the card look is the ui-toast host. One accent per ToastType.
   .toast-panel {
@@ -494,6 +501,11 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none;
+    }
+
     .live-dot::after,
     .page-loader-mark {
       animation: none;

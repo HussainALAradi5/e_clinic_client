@@ -3,7 +3,7 @@ import { DemoLogins } from '@shared/interfaces/auth/demo-account.interface';
 /** Seeded test accounts shown on the sign-in page (server DemoSeeder; see DEMO_USERS.md). Development only. */
 const demoLogins: DemoLogins = {
   password: 'Demo-Pass-2026!',
-  recoveryCode: 'demo1-11111',
+  twoFactorCode: '111111',
   accounts: [
     {
       role: 'Admin',

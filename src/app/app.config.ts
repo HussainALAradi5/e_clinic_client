@@ -7,7 +7,12 @@ import {
 } from '@angular/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatIconRegistry } from '@angular/material/icon';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withInMemoryScrolling,
+  withViewTransitions,
+} from '@angular/router';
 import { routes } from './app.routes';
 import { API_INTERCEPTORS } from '@core/interceptors/api.interceptors';
 import { firstValueFrom } from 'rxjs';
@@ -21,6 +26,8 @@ export const appConfig: ApplicationConfig = {
       routes,
       withComponentInputBinding(),
       withInMemoryScrolling({ scrollPositionRestoration: 'top', anchorScrolling: 'enabled' }),
+      // Pages cross-fade instead of jumping (skipped where the browser has no View Transitions).
+      withViewTransitions(),
     ),
     provideHttpClient(withInterceptors(API_INTERCEPTORS)),
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },

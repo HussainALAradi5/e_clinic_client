@@ -21,15 +21,15 @@
   [block]="true"
 >
   @if (useRecoveryCode()) {
-    <ui-text label="Recovery code" icon="key" autocomplete="off" [control]="form.controls.code" />
-  } @else {
     <ui-text
-      label="6-digit code"
-      icon="pin"
-      autocomplete="one-time-code"
-      [maxLength]="6"
+      label="Recovery code"
+      icon="key"
+      autocomplete="off"
+      [autofocus]="true"
       [control]="form.controls.code"
     />
+  } @else {
+    <ui-otp-input [control]="form.controls.code" label="6-digit code" />
   }
 </ui-form>
 
@@ -42,17 +42,14 @@
 </div>
 
 @if (demoLogins; as demo) {
-  <div class="mt-8 rounded-2xl border border-dashed border-outline-variant p-4 text-sm">
-    <p class="m-0 flex items-center gap-2 font-semibold">
-      <mat-icon class="!size-5 !text-xl text-primary">science</mat-icon> Demo accounts
+  <div
+    class="mt-8 flex items-center gap-3 rounded-2xl border border-dashed border-outline-variant p-4"
+  >
+    <mat-icon class="shrink-0 text-primary">science</mat-icon>
+    <p class="m-0 flex-1 text-sm text-on-surface-variant">
+      Demo account? The code is <strong class="text-on-surface">{{ demo.twoFactorCode }}</strong
+      >.
     </p>
-    <p class="mt-2 mb-3 text-xs text-on-surface-variant">
-      Click the button to enter the recovery code <strong>{{ demo.recoveryCode }}</strong> for you
-      (codes <code>demo1-11111</code> to <code>demo8-88888</code> each work once per account), or
-      add the setup key <code>JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP</code> to an authenticator app.
-    </p>
-    <button matButton="tonal" type="button" (click)="useDemoCode()">
-      <mat-icon>key</mat-icon> Use demo recovery code
-    </button>
+    <button matButton="tonal" type="button" (click)="useDemoCode()">Use it</button>
   </div>
 }

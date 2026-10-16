@@ -1,0 +1,25 @@
+<div class="otp" [class.invalid]="control().invalid && control().touched">
+  <input
+    #field
+    class="otp-field"
+    type="text"
+    inputmode="numeric"
+    autocomplete="one-time-code"
+    spellcheck="false"
+    [attr.aria-label]="label()"
+    [attr.maxlength]="length()"
+    [formControl]="control()"
+    (input)="onInput($event)"
+    (focus)="focused.set(true)"
+    (blur)="focused.set(false)"
+  />
+  @for (i of slots(); track i) {
+    <span
+      class="otp-slot"
+      [class.filled]="i < value().length"
+      [class.active]="focused() && i === value().length"
+      aria-hidden="true"
+      >{{ value()[i] ?? '' }}</span
+    >
+  }
+</div>

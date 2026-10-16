@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Injector,
+  input,
+  viewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { environment } from '@env';
@@ -22,6 +30,8 @@ export class LoginPage {
   readonly returnUrl = input<string | undefined>();
 
   private readonly session = inject(SessionService);
+  private readonly injector = inject(Injector);
+  private readonly formRef = viewChild.required(GenericForm);
   protected readonly demoLogins = environment.demoLogins;
 
   protected readonly form = new FormGroup({
@@ -38,8 +48,10 @@ export class LoginPage {
   protected readonly submit = (value: Omit<LoginPayload, 'deviceName'>): Promise<void> =>
     this.session.login(value, this.returnUrl() ?? HOME_PATH);
 
+  /** Development builds: fill the demo account and sign in straight away (one click). */
   protected useDemo(account: DemoAccount): void {
     this.form.setValue({ email: account.email, password: this.demoLogins?.password ?? '' });
     this.form.markAsDirty();
+    afterNextRender(() => this.formRef().requestSubmit(), { injector: this.injector });
   }
 }

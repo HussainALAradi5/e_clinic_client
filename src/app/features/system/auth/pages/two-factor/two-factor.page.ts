@@ -17,6 +17,7 @@ import { Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
 import { environment } from '@env';
 import { GenericForm } from '@shared/components/generic-form/generic-form.component';
+import { OtpInput } from '@shared/components/otp-input/otp-input.component';
 import { TextField } from '@shared/components/text-field/text-field.component';
 import { LOGIN_PATH } from '@shared/constants/app.constants';
 import { TOTP_LENGTH } from '@shared/constants/limits.constants';
@@ -26,7 +27,7 @@ import { SessionService } from '@shared/services/auth/session.service';
 @Component({
   selector: 'app-two-factor-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [GenericForm, TextField, MatButtonModule, MatIconModule, RouterLink],
+  imports: [GenericForm, TextField, OtpInput, MatButtonModule, MatIconModule, RouterLink],
   templateUrl: './two-factor.page.html',
 })
 export class TwoFactorPage implements OnInit {
@@ -79,12 +80,12 @@ export class TwoFactorPage implements OnInit {
     code.reset('');
   }
 
-  /** Development builds: switch to recovery mode with a seeded demo code filled in. */
+  /** Development builds: enter the demo accounts' fixed code (6 digits → submits by itself). */
   protected useDemoCode(): void {
-    if (!this.useRecoveryCode()) {
+    if (this.useRecoveryCode()) {
       this.toggleMode();
     }
-    this.form.setValue({ code: this.demoLogins?.recoveryCode ?? '' });
     this.form.markAsDirty();
+    this.form.controls.code.setValue(this.demoLogins?.twoFactorCode ?? '');
   }
 }
