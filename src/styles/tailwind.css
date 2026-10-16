@@ -1,7 +1,7 @@
 /* Tailwind v4: layout, spacing, grid, typography. Material styles are unlayered, so preflight never overrides them. */
 @import 'tailwindcss';
 
-/* ThemeService always sets data-theme (resolving "system"), so dark: utilities match Material's colour scheme. */
+/* ThemeService sets data-theme (light / dark), so dark: utilities match Material's colour scheme. */
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
 /* Material 3 system tokens → Tailwind colours (bg-primary, text-on-surface, border-outline-variant …). */

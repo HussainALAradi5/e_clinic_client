@@ -13,19 +13,11 @@ import { NotificationBell } from '../notification-bell/notification-bell.compone
 import { BrandMark } from '@shared/components/brand-mark/brand-mark.component';
 import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { ACCOUNT_SECURITY_PATH } from '@shared/constants/app.constants';
-import { ThemeMode } from '@shared/enums/ui/theme.enum';
 import { AuthStore } from '@shared/services/auth/auth.store';
 import { SessionService } from '@shared/services/auth/session.service';
 import { EnumService } from '@shared/services/data/enum.service';
 import { NavigationService } from '@shared/services/ui/navigation.service';
 import { ThemeService } from '@shared/services/ui/theme.service';
-
-const THEME_ORDER: ThemeMode[] = [ThemeMode.System, ThemeMode.Light, ThemeMode.Dark];
-const THEME_ICONS: Record<ThemeMode, string> = {
-  [ThemeMode.System]: 'brightness_auto',
-  [ThemeMode.Light]: 'light_mode',
-  [ThemeMode.Dark]: 'dark_mode',
-};
 
 /**
  * Staff app frame: toolbar (menu toggle, notifications, theme, user menu) + side menu filtered by AccessService.
@@ -72,18 +64,12 @@ export class ShellLayout {
     const user = this.auth.user();
     return user ? `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase() : '';
   });
-  protected readonly themeIcon = computed(() => THEME_ICONS[this.theme.mode()]);
 
   constructor() {
     // Labels and options of every enum, loaded once per session.
     inject(EnumService)
       .load()
       .subscribe({ error: () => undefined });
-  }
-
-  protected cycleTheme(): void {
-    const next = THEME_ORDER[(THEME_ORDER.indexOf(this.theme.mode()) + 1) % THEME_ORDER.length];
-    this.theme.mode.set(next);
   }
 
   protected logout(): void {

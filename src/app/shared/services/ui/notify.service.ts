@@ -1,6 +1,6 @@
 import { inject, Injectable, Injector } from '@angular/core';
 import type { MatSnackBar } from '@angular/material/snack-bar';
-import { from, map, Observable, share, switchMap } from 'rxjs';
+import { EMPTY, from, map, Observable, share, switchMap } from 'rxjs';
 import type { Toast } from '@shared/components/toast/toast.component';
 import { TOAST_STYLES } from '@shared/constants/toast.constants';
 import { ToastType } from '@shared/enums/ui/toast-type.enum';
@@ -23,7 +23,7 @@ interface ToastKit {
 @Injectable({ providedIn: 'root' })
 export class NotifyService {
   private readonly injector = inject(Injector);
-  private kit: Promise<ToastKit> | null = null;
+  private kit: Promise<ToastKit | null> | null = null;
   private loaded: ToastKit | null = null;
 
   success(message: string, action?: string, duration?: number): Observable<void> {
@@ -73,17 +73,19 @@ export class NotifyService {
     };
 
     const action$ = from(this.load()).pipe(
-      switchMap(({ snackBar, component }) =>
-        snackBar
-          .openFromComponent(component, {
-            data,
-            duration,
-            horizontalPosition: 'end',
-            verticalPosition: 'top',
-            panelClass: 'toast-panel',
-            politeness: style.politeness,
-          })
-          .onAction(),
+      switchMap((kit) =>
+        !kit
+          ? EMPTY
+          : kit.snackBar
+              .openFromComponent(kit.component, {
+                data,
+                duration,
+                horizontalPosition: 'end',
+                verticalPosition: 'top',
+                panelClass: 'toast-panel',
+                politeness: style.politeness,
+              })
+              .onAction(),
       ),
       map(() => undefined),
       share(),
@@ -93,12 +95,17 @@ export class NotifyService {
     return action$;
   }
 
-  private load(): Promise<ToastKit> {
+  /** Null when the app was torn down while the toast code was downloading (nothing left to show it in). */
+  private load(): Promise<ToastKit | null> {
     this.kit ??= Promise.all([
       import('@angular/material/snack-bar'),
       import('@shared/components/toast/toast.component'),
     ]).then(([material, toast]) => {
-      this.loaded = { snackBar: this.injector.get(material.MatSnackBar), component: toast.Toast };
+      try {
+        this.loaded = { snackBar: this.injector.get(material.MatSnackBar), component: toast.Toast };
+      } catch {
+        this.kit = null;
+      }
       return this.loaded;
     });
     return this.kit;

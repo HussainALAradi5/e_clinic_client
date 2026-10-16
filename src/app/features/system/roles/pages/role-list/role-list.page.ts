@@ -9,6 +9,7 @@ import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
 import { Role } from '@shared/interfaces/identity/role.interface';
 import { RoleApi } from '@shared/services/identity/role-api.service';
+import { NotifyService } from '@shared/services/ui/notify.service';
 import { DialogService } from '@shared/services/ui/dialog.service';
 
 /** `/system/roles-permissions` — roles with user / permission counts; bulk archive, delete and restore. */
@@ -21,6 +22,7 @@ import { DialogService } from '@shared/services/ui/dialog.service';
 export class RoleListPage {
   private readonly api = inject(RoleApi);
   private readonly dialogs = inject(DialogService);
+  private readonly notify = inject(NotifyService);
   private readonly router = inject(Router);
 
   protected readonly create = async (): Promise<void> => {
@@ -29,6 +31,7 @@ export class RoleListPage {
       save: (payload) => firstValueFrom(this.api.create(payload)),
     });
     if (role) {
+      this.notify.success(`Role ${role.displayName} created. Now choose what it may do.`);
       await this.router.navigate(['/system/roles-permissions', role.id, 'access']);
     }
   };

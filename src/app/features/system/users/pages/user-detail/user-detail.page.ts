@@ -81,13 +81,16 @@ export class UserDetailPage implements OnInit {
   protected readonly changeStatus = async (): Promise<void> => {
     const user = this.store.user();
     if (user) {
-      await this.dialogs.open<ChangeStatusDialog, ChangeStatusDialogData, boolean>(
+      const changed = await this.dialogs.open<ChangeStatusDialog, ChangeStatusDialogData, boolean>(
         ChangeStatusDialog,
         {
           user,
           save: (payload) => this.store.changeStatus(payload),
         },
       );
+      if (changed) {
+        this.notify.success(`Account status of ${user.fullName} changed.`);
+      }
     }
   };
 

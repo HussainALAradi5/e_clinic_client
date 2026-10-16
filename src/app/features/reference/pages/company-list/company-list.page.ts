@@ -9,6 +9,7 @@ import { ResourceListPage } from '@shared/components/resource-list/resource-list
 import { Company } from '@shared/interfaces/reference/company.interface';
 import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { CompanyApi } from '@shared/services/reference/company-api.service';
+import { NotifyService } from '@shared/services/ui/notify.service';
 import { DialogService } from '@shared/services/ui/dialog.service';
 import { flag } from '@shared/utils/address';
 
@@ -22,6 +23,7 @@ import { flag } from '@shared/utils/address';
 export class CompanyListPage {
   private readonly api = inject(CompanyApi);
   private readonly dialogs = inject(DialogService);
+  private readonly notify = inject(NotifyService);
   private readonly router = inject(Router);
   protected readonly flag = flag;
 
@@ -32,6 +34,7 @@ export class CompanyListPage {
       { width: '720px' },
     );
     if (company) {
+      this.notify.success(`Company ${company.name} created.`);
       await this.router.navigate(['/reference/companies', company.id]);
     }
   };

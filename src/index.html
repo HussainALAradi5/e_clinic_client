@@ -18,6 +18,13 @@
     />
   </head>
   <body class="mat-typography">
+    <!-- Apply the saved light / dark choice before the first paint (no flash). Same key as ThemeService. -->
+    <script>
+      try {
+        var mode = JSON.parse(localStorage.getItem('ec.ui') || '{}').mode;
+        document.documentElement.setAttribute('data-theme', mode === 'dark' ? 'dark' : 'light');
+      } catch (e) {}
+    </script>
     <!-- Boot splash: same markup / CSS as <ui-page-loader>; Angular replaces it when the app starts. -->
     <app-root>
       <div class="page-loader" role="status" aria-live="polite">

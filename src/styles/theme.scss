@@ -4,7 +4,8 @@
 @use './brand';
 
 html {
-  color-scheme: light dark;
+  // Light unless the user picked dark (ThemeService / the script in index.html set data-theme).
+  color-scheme: light;
   @include mat.theme(
     (
       color: (

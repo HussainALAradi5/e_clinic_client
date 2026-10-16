@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { BrandMark } from '@shared/components/brand-mark/brand-mark.component';
 import { HOME_PATH, LOGIN_PATH } from '@shared/constants/app.constants';
 import { CLINIC_INFO } from '@shared/constants/clinic-info.constants';
-import { ThemeMode } from '@shared/enums/ui/theme.enum';
 import { AuthStore } from '@shared/services/auth/auth.store';
 import { ThemeService } from '@shared/services/ui/theme.service';
 
@@ -37,13 +36,13 @@ export class PublicLayout {
   ];
 
   protected readonly scrolled = signal(false);
-  protected readonly dark = computed(() => this.theme.resolved() === ThemeMode.Dark);
+  protected readonly dark = this.theme.dark;
 
   protected onScroll(): void {
     this.scrolled.set(window.scrollY > 8);
   }
 
   protected toggleTheme(): void {
-    this.theme.mode.set(this.dark() ? ThemeMode.Light : ThemeMode.Dark);
+    this.theme.toggle();
   }
 }

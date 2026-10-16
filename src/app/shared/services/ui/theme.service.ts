@@ -3,42 +3,37 @@ import { STORAGE_KEYS } from '@shared/constants/app.constants';
 import { Density, ThemeMode } from '@shared/enums/ui/theme.enum';
 
 /**
- * Light / dark / system and density, stored per browser (no PHI). Always writes a resolved data-theme
- * so Tailwind `dark:` utilities follow Material's colour scheme.
+ * Light or dark (the user's choice, light by default) and density, stored per browser (no PHI). Writes data-theme
+ * so Tailwind `dark:` utilities and Material's colour scheme follow the same choice.
  */
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
   private readonly document = inject(DOCUMENT);
-  private readonly media = this.document.defaultView?.matchMedia('(prefers-color-scheme: dark)');
+  private readonly stored = this.read();
 
-  readonly mode = signal<ThemeMode>(this.read().mode ?? ThemeMode.System);
-  readonly density = signal<Density>(this.read().density ?? Density.Compact);
-  private readonly systemDark = signal(this.media?.matches ?? false);
-  /** The scheme actually shown (System resolved to Light or Dark). */
-  readonly resolved = computed(() => {
-    const mode = this.mode();
-    return mode === ThemeMode.System
-      ? this.systemDark()
-        ? ThemeMode.Dark
-        : ThemeMode.Light
-      : mode;
-  });
+  readonly mode = signal<ThemeMode>(
+    this.stored.mode === ThemeMode.Dark ? ThemeMode.Dark : ThemeMode.Light,
+  );
+  readonly density = signal<Density>(this.stored.density ?? Density.Compact);
+  readonly dark = computed(() => this.mode() === ThemeMode.Dark);
 
   constructor() {
-    this.media?.addEventListener('change', (e) => this.systemDark.set(e.matches));
-
     effect(() => {
       const root = this.document.documentElement;
-      root.setAttribute('data-theme', this.resolved());
+      root.setAttribute('data-theme', this.mode());
       root.setAttribute('data-density', this.density());
       this.write({ mode: this.mode(), density: this.density() });
     });
   }
 
-  private read(): { mode?: ThemeMode; density?: Density } {
+  toggle(): void {
+    this.mode.set(this.dark() ? ThemeMode.Light : ThemeMode.Dark);
+  }
+
+  private read(): { mode?: string; density?: Density } {
     try {
       return JSON.parse(localStorage.getItem(STORAGE_KEYS.uiSettings) ?? '{}') as {
-        mode?: ThemeMode;
+        mode?: string;
         density?: Density;
       };
     } catch {
