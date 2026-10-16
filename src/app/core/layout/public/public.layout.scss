@@ -1,0 +1,82 @@
+// The header sits on the pine hero; once the page scrolls it gets a solid backdrop.
+.site-header {
+  background: var(--color-pine-900);
+  transition: box-shadow 160ms ease;
+
+  &.scrolled {
+    box-shadow: 0 8px 24px -16px rgb(0 0 0 / 0.6);
+  }
+}
+
+.h-18 {
+  height: 4.5rem;
+}
+
+.nav-link,
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 0.625rem;
+  color: rgb(255 255 255 / 0.8);
+  text-decoration: none;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.08);
+    color: #fff;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-sun);
+    outline-offset: 2px;
+  }
+}
+
+.nav-link {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.icon-btn {
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  height: 2.5rem;
+  padding: 0 1.125rem;
+  border-radius: 0.625rem;
+  background: #fff;
+  color: var(--color-pine-900);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+
+  &:hover {
+    background: var(--color-pine-100);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-sun);
+    outline-offset: 2px;
+  }
+}
+
+.footer-link {
+  color: rgb(255 255 255 / 0.75);
+  text-decoration: none;
+
+  &:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+}

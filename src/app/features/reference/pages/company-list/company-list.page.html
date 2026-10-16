@@ -1,0 +1,22 @@
+<ui-resource-list
+  resource="companies"
+  endpoint="reference/companies"
+  title="Companies"
+  subtitle="Manufacturers, suppliers, insurers, external labs and referral hospitals."
+  emptyTitle="No companies found"
+  rowLink="/reference/companies/:id"
+>
+  <ui-button actions icon="add_business" access="companies.create" [action]="create"
+    >New company</ui-button
+  >
+
+  <ng-template uiCell="name" let-row>
+    <span class="font-medium">{{ row.name }}</span>
+  </ng-template>
+  <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'CompanyType' }}</ng-template>
+  <ng-template uiCell="country_code" let-row>
+    <span aria-hidden="true">{{ flag(row.countryCode) }}</span>
+    {{ row.country?.name ?? row.countryCode }}
+  </ng-template>
+  <ng-template uiCell="contact_person" let-row>{{ row.contactPerson ?? '—' }}</ng-template>
+</ui-resource-list>

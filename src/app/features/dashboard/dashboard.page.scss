@@ -1,0 +1,59 @@
+.welcome {
+  background:
+    radial-gradient(90% 140% at 100% 0%, rgb(127 211 197 / 0.22), transparent 55%),
+    var(--color-pine-900);
+}
+
+.welcome-mark {
+  position: absolute;
+  right: -1.5rem;
+  bottom: -2.5rem;
+  width: 11rem;
+  fill: rgb(255 255 255 / 0.07);
+  transform: rotate(-12deg);
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  background: var(--mat-sys-surface-container-lowest);
+  color: var(--mat-sys-on-surface);
+  text-decoration: none;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+
+  &:hover {
+    border-color: var(--mat-sys-primary);
+    box-shadow: 0 6px 20px -12px rgb(11 93 87 / 0.45);
+  }
+
+  &:hover .tile-arrow {
+    color: var(--mat-sys-primary);
+    transform: translateX(2px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
+}
+
+.tile-icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+.tile-arrow {
+  color: var(--mat-sys-outline);
+  transition: transform 120ms ease;
+}

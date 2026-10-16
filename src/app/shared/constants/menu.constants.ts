@@ -12,7 +12,7 @@ export const MENU: NavGroup[] = [
       {
         label: 'Dashboard',
         icon: 'space_dashboard',
-        route: '/',
+        route: '/dashboard',
         access: AUTHENTICATED,
         exact: true,
       },
@@ -73,6 +73,23 @@ export const MENU: NavGroup[] = [
         label: 'Saved views',
         icon: 'bookmarks',
         route: '/system/list-views',
+        access: AUTHENTICATED,
+      },
+    ],
+  },
+  {
+    label: 'Reference data',
+    items: [
+      {
+        label: 'Companies',
+        icon: 'domain',
+        route: '/reference/companies',
+        access: 'companies.read_all | companies.read_own',
+      },
+      {
+        label: 'Countries',
+        icon: 'public',
+        route: '/reference/countries',
         access: AUTHENTICATED,
       },
     ],

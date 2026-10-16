@@ -23,7 +23,6 @@ export interface User {
   fullName: string;
   email: string | null;
   phone: string;
-  language: 'en' | 'ar';
   userType: UserType;
   status: UserStatus;
   emailVerifiedAt: string | null;

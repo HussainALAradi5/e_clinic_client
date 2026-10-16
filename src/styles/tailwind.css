@@ -13,6 +13,7 @@
   --color-secondary-container: var(--mat-sys-secondary-container);
   --color-on-secondary-container: var(--mat-sys-on-secondary-container);
   --color-surface: var(--mat-sys-surface);
+  --color-surface-container-lowest: var(--mat-sys-surface-container-lowest);
   --color-surface-container-low: var(--mat-sys-surface-container-low);
   --color-surface-container: var(--mat-sys-surface-container);
   --color-surface-container-high: var(--mat-sys-surface-container-high);
@@ -25,5 +26,17 @@
   --color-on-error: var(--mat-sys-on-error);
   --color-error-container: var(--mat-sys-error-container);
   --color-on-error-container: var(--mat-sys-on-error-container);
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* `static`: always emitted as CSS variables so component styles can use them too. */
+@theme static {
+  /* Brand (pine) — fixed colours for brand surfaces that stay dark in both themes (sidebar, hero, footer). */
+  --color-pine-950: #052a27;
+  --color-pine-900: #073c39;
+  --color-pine-800: #0a4c48;
+  --color-pine-700: #0b5d57;
+  --color-pine-100: #d3efe9;
+  --color-pine-50: #ecf8f5;
+  --color-sun: #f2b544;
 }

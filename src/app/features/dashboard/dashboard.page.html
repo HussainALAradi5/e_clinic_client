@@ -1,61 +1,96 @@
-<ui-page-header [title]="greeting()" subtitle="Here is what you can work on today." />
-
 @if (auth.user(); as user) {
-  <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
-    <mat-card appearance="outlined" class="!p-5 lg:col-span-2">
-      <h2 class="m-0 mb-4 text-base font-semibold">Shortcuts</h2>
-      @if (shortcuts().length) {
-        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-          @for (item of shortcuts(); track item.route) {
-            <a
-              [routerLink]="item.route"
-              class="flex items-center gap-3 rounded-xl border border-outline-variant p-4 text-on-surface no-underline hover:bg-surface-container"
-            >
-              <mat-icon class="text-primary">{{ item.icon }}</mat-icon>
-              <span class="font-medium">{{ item.label }}</span>
-            </a>
-          }
-        </div>
+  <section
+    class="welcome relative overflow-hidden rounded-[1.25rem] px-6 py-7 text-white sm:px-8 sm:py-9"
+  >
+    <p class="m-0 text-sm text-white/65">{{ today | date: 'EEEE d MMMM y' }}</p>
+    <h1 class="mt-1 mb-0 text-3xl font-bold tracking-tight">{{ greeting() }}</h1>
+    <p class="mt-2 mb-0 max-w-xl text-white/75">
+      @if (auth.roles().length) {
+        Your access:
+        @for (role of auth.roles(); track role; let last = $last) {
+          {{ role | enumLabel: 'RoleName' }}{{ last ? '' : ', ' }}
+        }
       } @else {
-        <p class="m-0 text-sm text-on-surface-variant">
+        {{ user.userType | enumLabel: 'UserType' }} account
+      }
+    </p>
+    <svg class="welcome-mark" viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M13.2 7.5h5.6v5.7h5.7v5.6h-5.7v5.7h-5.6v-5.7H7.5v-5.6h5.7z" />
+    </svg>
+  </section>
+
+  @if (auth.needsTwoFactorSetup()) {
+    <a
+      [routerLink]="securityPath"
+      class="mt-4 flex items-center gap-3 rounded-2xl border border-error/30 bg-error-container p-4 text-on-error-container no-underline"
+    >
+      <mat-icon>gpp_maybe</mat-icon>
+      <span class="flex-1 text-sm font-medium"
+        >Set up two-factor authentication to open protected areas.</span
+      >
+      <mat-icon>chevron_right</mat-icon>
+    </a>
+  }
+
+  <div class="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_20rem]">
+    <div class="space-y-8">
+      @for (group of areas(); track group.label) {
+        <section>
+          <h2 class="m-0 mb-3 text-base font-semibold text-on-surface">{{ group.label }}</h2>
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 2xl:grid-cols-3">
+            @for (item of group.items; track item.route) {
+              <a [routerLink]="item.route" class="tile">
+                <span class="tile-icon"
+                  ><mat-icon>{{ item.icon }}</mat-icon></span
+                >
+                <span class="flex-1 font-semibold">{{ item.label }}</span>
+                <mat-icon class="tile-arrow">arrow_forward</mat-icon>
+              </a>
+            }
+          </div>
+        </section>
+      } @empty {
+        <p
+          class="m-0 rounded-2xl border border-dashed border-outline-variant p-6 text-sm text-on-surface-variant"
+        >
           Your roles do not open any area yet. Ask an administrator for access.
         </p>
       }
-    </mat-card>
+    </div>
 
-    <mat-card appearance="outlined" class="!p-5">
-      <h2 class="m-0 mb-4 text-base font-semibold">Your account</h2>
-      <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
+    <aside
+      class="h-fit rounded-2xl border border-outline-variant bg-surface-container-lowest p-5"
+      aria-labelledby="account-heading"
+    >
+      <div class="flex items-center gap-3">
+        <span
+          class="grid size-11 place-items-center rounded-xl bg-primary-container text-sm font-bold text-on-primary-container"
+          >{{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}</span
+        >
+        <div class="min-w-0">
+          <h2 id="account-heading" class="m-0 truncate text-base font-semibold">
+            {{ user.fullName }}
+          </h2>
+          <p class="m-0 truncate text-sm text-on-surface-variant">{{ user.email }}</p>
+        </div>
+      </div>
+      <dl class="mt-5 mb-0 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2.5 text-sm">
         <dt class="text-on-surface-variant">Code</dt>
-        <dd class="m-0 font-mono">{{ user.code }}</dd>
-        <dt class="text-on-surface-variant">Type</dt>
-        <dd class="m-0">{{ user.userType | enumLabel: 'UserType' }}</dd>
-        <dt class="text-on-surface-variant">Roles</dt>
-        <dd class="m-0">
-          @for (role of auth.roles(); track role; let last = $last) {
-            {{ role | enumLabel: 'RoleName' }}{{ last ? '' : ', ' }}
-          } @empty {
-            —
-          }
-        </dd>
+        <dd class="m-0 font-medium">{{ user.code }}</dd>
         <dt class="text-on-surface-variant">Last sign-in</dt>
         <dd class="m-0">
-          {{ user.lastLoginAt ? (user.lastLoginAt | date: dateTimeFormat) : '—' }}
+          {{ user.lastLoginAt ? (user.lastLoginAt | date: dateTimeFormat) : 'First time' }}
         </dd>
-        <dt class="text-on-surface-variant">2FA</dt>
+        <dt class="text-on-surface-variant">Two-factor</dt>
         <dd class="m-0">
           {{
-            user.twoFactor.enabled
-              ? 'On'
-              : user.twoFactor.required
-                ? 'Required — not set up'
-                : 'Off'
+            user.twoFactor.enabled ? 'On' : user.twoFactor.required ? 'Required, not set up' : 'Off'
           }}
         </dd>
       </dl>
-      <a matButton="tonal" class="mt-4" [routerLink]="securityPath">
+      <a matButton="tonal" class="mt-5 w-full" [routerLink]="securityPath">
         <mat-icon>shield_person</mat-icon> Account &amp; security
       </a>
-    </mat-card>
+    </aside>
   </div>
 }

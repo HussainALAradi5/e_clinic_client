@@ -7,6 +7,8 @@ export * from './common';
 export * from './identity';
 export * from './list';
 export * from './notification';
+export * from './public';
+export * from './reference';
 export * from './task';
 export * from './ui';
 export * from './upload';

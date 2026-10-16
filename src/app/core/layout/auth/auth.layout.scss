@@ -1,0 +1,15 @@
+.brand-panel {
+  background:
+    radial-gradient(120% 80% at 100% 100%, rgb(127 211 197 / 0.18), transparent 60%),
+    var(--color-pine-900);
+}
+
+// Faint field of clinic crosses fading in from the bottom-right corner.
+.cross-field {
+  position: absolute;
+  right: -6rem;
+  bottom: -6rem;
+  width: 34rem;
+  fill: rgb(255 255 255 / 0.06);
+  mask-image: radial-gradient(circle at 80% 80%, #000 20%, transparent 70%);
+}

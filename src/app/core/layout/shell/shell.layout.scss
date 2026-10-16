@@ -1,0 +1,43 @@
+// Dark pine sidebar in both themes; the content area follows the light / dark theme.
+.shell-nav {
+  --mat-sidenav-container-background-color: var(--color-pine-900);
+  --mat-sidenav-container-shape: 0;
+  --mat-sidenav-container-divider-color: transparent;
+  width: 17rem;
+  color: rgb(255 255 255 / 0.8);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.75rem;
+  color: rgb(255 255 255 / 0.78);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.07);
+    color: #fff;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-sun);
+    outline-offset: 2px;
+  }
+
+  &.active {
+    background: var(--color-pine-100);
+    color: var(--color-pine-900);
+    font-weight: 600;
+  }
+}
+
+.h-18 {
+  height: 4.5rem;
+}

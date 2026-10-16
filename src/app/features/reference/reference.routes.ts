@@ -1,0 +1,32 @@
+import { Routes } from '@angular/router';
+import { accessGuard } from '@core/guards/auth.guards';
+import { AUTHENTICATED } from '@shared/constants/app.constants';
+
+/** `/reference` — Reference Data (lazy): companies and countries. */
+export const REFERENCE_ROUTES: Routes = [
+  {
+    path: 'companies',
+    canMatch: [accessGuard('companies.read_all | companies.read_own')],
+    children: [
+      {
+        path: '',
+        title: 'Companies · e-Clinic',
+        loadComponent: () =>
+          import('./pages/company-list/company-list.page').then((m) => m.CompanyListPage),
+      },
+      {
+        path: ':id',
+        title: 'Company · e-Clinic',
+        loadComponent: () =>
+          import('./pages/company-detail/company-detail.page').then((m) => m.CompanyDetailPage),
+      },
+    ],
+  },
+  {
+    path: 'countries',
+    title: 'Countries · e-Clinic',
+    canMatch: [accessGuard(AUTHENTICATED)],
+    loadComponent: () =>
+      import('./pages/country-list/country-list.page').then((m) => m.CountryListPage),
+  },
+];

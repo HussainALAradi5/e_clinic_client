@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>{{ data.company ? 'Edit company' : 'New company' }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="data.company ? 'Save' : 'Create company'"
+    [compact]="true"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <ui-select label="Type" enum="CompanyType" [required]="true" [control]="form.controls.type" />
+      <ui-country-select label="Country" [control]="form.controls.countryCode" />
+      <ui-text label="Name" [control]="form.controls.name" />
+      <ui-text label="Contact person" [control]="form.controls.contactPerson" />
+      <ui-text label="Phone" type="tel" [control]="form.controls.phone" />
+      <ui-text label="Email" type="email" [control]="form.controls.email" />
+      <ui-text label="Website" hint="https://…" [control]="form.controls.website" />
+      <ui-text label="VAT number" [control]="form.controls.vatNumber" />
+      <ui-text label="Commercial registration" [control]="form.controls.crNumber" />
+      <ui-text
+        class="sm:col-span-2"
+        label="Description"
+        [multiline]="true"
+        [control]="form.controls.description"
+      />
+    </div>
+    <ui-address-fields class="mt-2" [form]="form.controls.address" />
+  </ui-form>
+</mat-dialog-content>

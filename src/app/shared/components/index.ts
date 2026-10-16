@@ -22,3 +22,6 @@ export * from './audit-changes/audit-changes.component';
 export * from './audit-history/audit-history.component';
 export * from './saved-views/saved-views.component';
 export * from './saved-views/save-view-dialog/save-view-dialog.component';
+export * from './country-select/country-select.component';
+export * from './address-fields/address-fields.component';
+export * from './brand-mark/brand-mark.component';

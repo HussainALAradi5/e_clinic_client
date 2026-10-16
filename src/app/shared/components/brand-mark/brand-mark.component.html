@@ -1,0 +1,21 @@
+<svg
+  [attr.width]="size() === 'lg' ? 40 : 32"
+  [attr.height]="size() === 'lg' ? 40 : 32"
+  viewBox="0 0 32 32"
+  aria-hidden="true"
+>
+  <rect width="32" height="32" rx="9" [attr.fill]="tone() === 'light' ? '#d3efe9' : '#0b5d57'" />
+  <path
+    d="M13.2 7.5h5.6v5.7h5.7v5.6h-5.7v5.7h-5.6v-5.7H7.5v-5.6h5.7z"
+    [attr.fill]="tone() === 'light' ? '#073c39' : '#ffffff'"
+  />
+  <circle cx="23.6" cy="8.4" r="2.4" fill="#f2b544" />
+</svg>
+<span
+  class="font-bold tracking-tight"
+  [class.text-lg]="size() === 'md'"
+  [class.text-2xl]="size() === 'lg'"
+  [class.text-white]="tone() === 'light'"
+  [class.text-on-surface]="tone() === 'dark'"
+  >e-Clinic</span
+>

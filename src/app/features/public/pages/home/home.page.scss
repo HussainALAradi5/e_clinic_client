@@ -1,0 +1,223 @@
+.hero {
+  background:
+    radial-gradient(70% 90% at 85% 10%, rgb(127 211 197 / 0.2), transparent 60%),
+    var(--color-pine-900);
+}
+
+// One oversized clinic cross bleeding off the hero's bottom-left corner.
+.hero-cross {
+  position: absolute;
+  right: -6rem;
+  bottom: -10rem;
+  width: 26rem;
+  fill: rgb(255 255 255 / 0.045);
+  transform: rotate(-10deg);
+}
+
+.btn-light,
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 3rem;
+  padding: 0 1.25rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-sun);
+    outline-offset: 3px;
+  }
+}
+
+.btn-light {
+  background: #fff;
+  color: var(--color-pine-900);
+
+  &:hover {
+    background: var(--color-pine-100);
+  }
+}
+
+.btn-ghost {
+  border: 1px solid rgb(255 255 255 / 0.3);
+  color: #fff;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.08);
+  }
+}
+
+.door-sign {
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.55);
+
+  .today {
+    background: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+    font-weight: 700;
+  }
+}
+
+/* The one moving element on the page: the live "open now" dot. */
+.pulse {
+  animation: pulse 2s ease-out infinite;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+.service {
+  padding: 1.5rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1.25rem;
+  background: var(--mat-sys-surface-container-lowest);
+
+  &.featured {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 100%;
+    padding: 2rem;
+    border-color: transparent;
+    background: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+
+    p {
+      color: inherit;
+      opacity: 0.85;
+      max-width: 40ch;
+    }
+
+    @media (min-width: 1024px) {
+      grid-row: span 2;
+    }
+  }
+}
+
+// The last tile closes the grid as a full-width strip (the featured tile spans two rows on desktop).
+@media (min-width: 1024px) {
+  .service:last-child:not(.featured) {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: center;
+    gap: 1.25rem;
+
+    h3 {
+      margin-top: 0;
+      min-width: 12rem;
+    }
+
+    p {
+      margin-top: 0;
+    }
+  }
+}
+
+.service-icon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.875rem;
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+
+  .featured & {
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: auto;
+    background: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+  }
+}
+
+.timeline > li::before {
+  // Connector from this step's dot to the next one (desktop only).
+  content: '';
+  position: absolute;
+  top: 1.25rem;
+  left: 3rem;
+  right: -1.5rem;
+  height: 2px;
+  background: var(--mat-sys-outline-variant);
+}
+
+.timeline > li:last-child::before {
+  display: none;
+}
+
+@media (max-width: 767.98px) {
+  .timeline > li::before {
+    display: none;
+  }
+}
+
+.step-dot {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  font-weight: 700;
+}
+
+.verify {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  background: var(--mat-sys-surface-container-lowest);
+  color: var(--mat-sys-on-surface);
+  text-decoration: none;
+
+  mat-icon {
+    color: var(--mat-sys-primary);
+  }
+
+  span {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  small {
+    overflow: hidden;
+    color: var(--mat-sys-on-surface-variant);
+    font-size: 0.8125rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    border-color: var(--mat-sys-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse {
+    animation: none;
+  }
+}

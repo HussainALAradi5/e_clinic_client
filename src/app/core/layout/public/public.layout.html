@@ -1,0 +1,94 @@
+<a
+  href="#main"
+  class="sr-only z-50 rounded-md bg-white px-3 py-2 text-pine-900 focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+  >Skip to content</a
+>
+
+<header class="site-header sticky top-0 z-30" [class.scrolled]="scrolled()">
+  <nav class="mx-auto flex h-18 max-w-6xl items-center gap-1 px-4 sm:px-6" aria-label="Main">
+    <a routerLink="/" class="mr-auto no-underline" aria-label="e-Clinic home">
+      <ui-brand-mark tone="light" />
+    </a>
+
+    <div class="hidden items-center gap-1 md:flex">
+      @for (link of links; track link.fragment) {
+        <a class="nav-link" routerLink="/" [fragment]="link.fragment">{{ link.label }}</a>
+      }
+      <a class="nav-link" routerLink="/verify">Verify a document</a>
+    </div>
+
+    <button
+      type="button"
+      class="icon-btn"
+      [attr.aria-label]="dark() ? 'Switch to light theme' : 'Switch to dark theme'"
+      (click)="toggleTheme()"
+    >
+      <mat-icon>{{ dark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
+
+    @if (auth.isAuthenticated()) {
+      <a class="cta ml-1" [routerLink]="workspacePath">Open workspace</a>
+    } @else {
+      <a class="cta ml-1" [routerLink]="loginPath">Sign in</a>
+    }
+
+    <button
+      type="button"
+      class="icon-btn md:!hidden"
+      aria-label="Open menu"
+      [matMenuTriggerFor]="menu"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" xPosition="before">
+      @for (link of links; track link.fragment) {
+        <a mat-menu-item routerLink="/" [fragment]="link.fragment">{{ link.label }}</a>
+      }
+      <a mat-menu-item routerLink="/verify">Verify a document</a>
+    </mat-menu>
+  </nav>
+</header>
+
+<main id="main" tabindex="-1" class="flex-1 outline-none">
+  <router-outlet />
+</main>
+
+<footer class="bg-pine-950 text-white/70">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.5fr_1fr_1fr]">
+    <div>
+      <ui-brand-mark tone="light" />
+      <p class="mt-4 mb-0 max-w-sm text-sm leading-relaxed">{{ clinic.tagline }}</p>
+      <p class="mt-4 mb-0 flex max-w-sm gap-2 text-sm text-white/90">
+        <mat-icon class="!size-5 shrink-0 !text-xl text-sun">emergency</mat-icon>
+        {{ clinic.emergencyNote }}
+      </p>
+    </div>
+    <div>
+      <p class="m-0 font-semibold text-white">Visit</p>
+      <address class="mt-3 text-sm leading-relaxed not-italic">
+        @for (line of clinic.addressLines; track line) {
+          {{ line }}<br />
+        }
+      </address>
+      <p class="mt-3 mb-0 space-y-1 text-sm">
+        <a class="footer-link" [href]="tel">{{ clinic.phone }}</a
+        ><br />
+        <a class="footer-link" [href]="'mailto:' + clinic.email">{{ clinic.email }}</a>
+      </p>
+    </div>
+    <div>
+      <p class="m-0 font-semibold text-white">Patients and staff</p>
+      <ul class="m-0 mt-3 list-none space-y-2 p-0 text-sm">
+        <li><a class="footer-link" [routerLink]="loginPath">Sign in</a></li>
+        <li><a class="footer-link" routerLink="/password/forgot">Forgot your password</a></li>
+        <li><a class="footer-link" routerLink="/verify">Verify a printed document</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-white/10">
+    <p class="mx-auto my-0 max-w-6xl px-4 py-6 text-xs text-white/50 sm:px-6">
+      © {{ year }} {{ clinic.name }}. Medical information on this site is general; ask your doctor
+      about your own care.
+    </p>
+  </div>
+</footer>

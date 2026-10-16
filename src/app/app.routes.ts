@@ -4,7 +4,14 @@ import { authGuard, guestGuard } from '@core/guards/auth.guards';
 import { AUTH_ROUTES } from './features/system/auth/auth.routes';
 
 export const routes: Routes = [
-  // Public: sign-in and password pages (signed-out users only).
+  // Public website: everyone, signed in or not.
+  {
+    path: '',
+    loadComponent: () => import('./core/layout/public/public.layout').then((m) => m.PublicLayout),
+    loadChildren: () => import('./features/public/public.routes').then((m) => m.PUBLIC_ROUTES),
+  },
+
+  // Sign-in and password pages (signed-out users only).
   {
     path: '',
     canMatch: [guestGuard],
@@ -18,11 +25,10 @@ export const routes: Routes = [
     loadComponent: () => import('./core/layout/shell/shell.layout').then((m) => m.ShellLayout),
     canMatch: [authGuard],
     children: [
-      // Signed-in users opening a sign-in link go home.
-      { path: 'login', redirectTo: '' },
+      // Signed-in users opening a sign-in link go to their workspace.
+      { path: 'login', redirectTo: 'dashboard' },
       {
-        path: '',
-        pathMatch: 'full',
+        path: 'dashboard',
         title: 'Dashboard · e-Clinic',
         loadComponent: () =>
           import('./features/dashboard/dashboard.page').then((m) => m.DashboardPage),
@@ -38,6 +44,11 @@ export const routes: Routes = [
       {
         path: 'system',
         loadChildren: () => import('./features/system/system.routes').then((m) => m.SYSTEM_ROUTES),
+      },
+      {
+        path: 'reference',
+        loadChildren: () =>
+          import('./features/reference/reference.routes').then((m) => m.REFERENCE_ROUTES),
       },
       ...(environment.production
         ? []

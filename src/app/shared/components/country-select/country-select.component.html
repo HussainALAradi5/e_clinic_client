@@ -1,0 +1,30 @@
+<mat-form-field class="w-full">
+  <mat-label>{{ label() }}</mat-label>
+  @if (control().value; as code) {
+    <span matTextPrefix class="mr-2" aria-hidden="true">{{ flag(code) }}</span>
+  }
+  <input
+    matInput
+    [formControl]="search"
+    [matAutocomplete]="auto"
+    (blur)="blur()"
+    autocomplete="off"
+    spellcheck="false"
+  />
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select($event.option.value)">
+    @for (country of matches(); track country.code) {
+      <mat-option [value]="country.code">
+        <span class="mr-2" aria-hidden="true">{{ flag(country.code) }}</span>
+        {{ display(country) }}
+      </mat-option>
+    } @empty {
+      <mat-option disabled>No country matches</mat-option>
+    }
+  </mat-autocomplete>
+  @if (hint()) {
+    <mat-hint>{{ hint() }}</mat-hint>
+  }
+  @if (control().invalid && control().touched) {
+    <mat-error>{{ error() }}</mat-error>
+  }
+</mat-form-field>

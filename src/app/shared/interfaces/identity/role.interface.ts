@@ -4,7 +4,6 @@ import { GenericEntity } from '@shared/interfaces/common/generic-entity.interfac
 export interface Role extends GenericEntity {
   name: string;
   displayName: string;
-  displayNameAr: string | null;
   description: string | null;
   isSystem: boolean;
   usersCount: number | null;
@@ -17,7 +16,6 @@ export interface Role extends GenericEntity {
 export interface RolePayload {
   name?: string;
   displayName?: string;
-  displayNameAr?: string | null;
   description?: string | null;
   permissions?: string[];
 }

@@ -4,7 +4,8 @@ export const API_PREFIX = '/api/v1/';
 export const REQUEST_ID_HEADER = 'X-Request-Id';
 export const IDEMPOTENCY_HEADER = 'Idempotency-Key';
 
-export const HOME_PATH = '/';
+/** Staff workspace start page (the public website lives at `/`). */
+export const HOME_PATH = '/dashboard';
 export const LOGIN_PATH = '/login';
 export const TWO_FACTOR_PATH = '/login/2fa';
 export const FORBIDDEN_PATH = '/forbidden';

@@ -4,14 +4,14 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { map } from 'rxjs';
 import { NotificationBell } from '../notification-bell/notification-bell.component';
+import { BrandMark } from '@shared/components/brand-mark/brand-mark.component';
+import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { ACCOUNT_SECURITY_PATH } from '@shared/constants/app.constants';
 import { MENU } from '@shared/constants/menu.constants';
 import { ThemeMode } from '@shared/enums/ui/theme.enum';
@@ -41,16 +41,17 @@ const THEME_ICONS: Record<ThemeMode, string> = {
     RouterLink,
     RouterLinkActive,
     MatSidenavModule,
-    MatToolbarModule,
-    MatListModule,
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
     MatDividerModule,
     MatTooltipModule,
     NotificationBell,
+    BrandMark,
+    EnumLabelPipe,
   ],
   templateUrl: './shell.layout.html',
+  styleUrl: './shell.layout.scss',
 })
 export class ShellLayout {
   protected readonly auth = inject(AuthStore);

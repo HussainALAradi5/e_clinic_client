@@ -1,22 +1,24 @@
 import { Gender } from '@shared/enums/shared/gender.enum';
 import { UserType } from '@shared/enums/identity/user-type.enum';
 import { GenericEntity, Versioned } from '@shared/interfaces/common/generic-entity.interface';
+import { Address, AddressPayload } from '@shared/interfaces/reference/address.interface';
 
 /** Mirror of PersonResource — the root record of every human (patients and staff). */
 export interface Person extends GenericEntity, Versioned {
   firstName: string;
   lastName: string;
-  firstNameAr: string | null;
-  lastNameAr: string | null;
   fullName: string;
   gender: Gender;
   dateOfBirth: string;
   /** Masked by the server (`*****6789`). */
   nationalId: string | null;
   nationalityCode: string | null;
+  /** Detail screens: nationality labels of the code. */
+  nationality?: { code: string; nationality: string } | null;
+  /** Detail screens: the person's own address. */
+  address?: Address | null;
   phone: string;
   email: string | null;
-  language: 'en' | 'ar';
   notificationOptOut: string[];
   hasAccount?: boolean;
   userType?: UserType | null;
@@ -26,16 +28,15 @@ export interface Person extends GenericEntity, Versioned {
 export interface PersonPayload extends Versioned {
   firstName?: string;
   lastName?: string;
-  firstNameAr?: string | null;
-  lastNameAr?: string | null;
   gender?: Gender;
   dateOfBirth?: string;
   nationalId?: string | null;
   nationalityCode?: string | null;
   phone?: string;
   email?: string | null;
-  language?: 'en' | 'ar';
   notificationOptOut?: string[];
+  /** Shared address payload; `null` removes the address. */
+  address?: AddressPayload | null;
 }
 
 /** POST /people/duplicates. */

@@ -1,4 +1,5 @@
 // The only SCSS file: Angular Material 3 theme. Layout and spacing come from Tailwind (tailwind.css).
+// Brand: deep pine green on a cool off-white canvas; white cards with hairline borders; one warm accent (sun).
 @use '@angular/material' as mat;
 
 html {
@@ -6,33 +7,89 @@ html {
   @include mat.theme(
     (
       color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$cyan-palette,
+        primary: mat.$cyan-palette,
+        tertiary: mat.$orange-palette,
         theme-type: color-scheme,
       ),
-      typography: Inter,
+      typography: 'Plus Jakarta Sans',
       density: -1,
     )
   );
 
-  // Rounded, flat surfaces (UI/UX guide §2): 8 px controls, 12 px cards and dialogs.
+  // Brand system colours (light, dark).
+  @include mat.theme-overrides(
+    (
+      primary: light-dark(#0b5d57, #7fd3c5),
+      on-primary: light-dark(#ffffff, #00201c),
+      primary-container: light-dark(#d3efe9, #0d4a45),
+      on-primary-container: light-dark(#06302c, #c6f0e8),
+      secondary-container: light-dark(#e6f2ef, #1d3532),
+      on-secondary-container: light-dark(#0e2b28, #cfe7e2),
+      surface: light-dark(#f4f7f6, #0d1312),
+      surface-container-lowest: light-dark(#ffffff, #0a0f0e),
+      surface-container-low: light-dark(#fafcfb, #121a19),
+      surface-container: light-dark(#eef3f1, #162020),
+      surface-container-high: light-dark(#e5edea, #1d2827),
+      surface-container-highest: light-dark(#dbe6e2, #26312f),
+      on-surface: light-dark(#10201e, #e0e9e7),
+      on-surface-variant: light-dark(#566865, #a7b7b4),
+      outline: light-dark(#7d8f8b, #84958f),
+      outline-variant: light-dark(#dbe4e1, #2c3836),
+    )
+  );
+
+  // Soft, rounded surfaces: 10 px controls, 16 px cards, 20 px dialogs.
   @include mat.button-overrides(
     (
-      filled-container-shape: 8px,
-      outlined-container-shape: 8px,
-      protected-container-shape: 8px,
-      text-container-shape: 8px,
+      filled-container-shape: 10px,
+      outlined-container-shape: 10px,
+      protected-container-shape: 10px,
+      text-container-shape: 10px,
+      tonal-container-shape: 10px,
+      filled-label-text-weight: 600,
+      outlined-label-text-weight: 600,
+      tonal-label-text-weight: 600,
+      text-label-text-weight: 600,
+    )
+  );
+  @include mat.form-field-overrides(
+    (
+      outlined-container-shape: 10px,
+      outlined-outline-color: var(--mat-sys-outline-variant),
     )
   );
   @include mat.dialog-overrides(
     (
-      container-shape: 12px,
+      container-shape: 20px,
+      container-color: var(--mat-sys-surface-container-lowest),
     )
   );
   @include mat.card-overrides(
     (
-      elevated-container-shape: 12px,
-      outlined-container-shape: 12px,
+      elevated-container-shape: 16px,
+      outlined-container-shape: 16px,
+      outlined-container-color: var(--mat-sys-surface-container-lowest),
+      outlined-outline-color: var(--mat-sys-outline-variant),
+    )
+  );
+  @include mat.table-overrides(
+    (
+      background-color: var(--mat-sys-surface-container-lowest),
+      header-headline-color: var(--mat-sys-on-surface-variant),
+      header-headline-weight: 600,
+      header-headline-size: 12px,
+      row-item-outline-color: var(--mat-sys-outline-variant),
+    )
+  );
+  @include mat.menu-overrides(
+    (
+      container-shape: 12px,
+      container-color: var(--mat-sys-surface-container-lowest),
+    )
+  );
+  @include mat.paginator-overrides(
+    (
+      container-background-color: transparent,
     )
   );
 }
@@ -51,6 +108,16 @@ body {
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
+  -webkit-font-smoothing: antialiased;
+}
+
+// Table header row: tinted band; rows highlight on hover.
+.mat-mdc-header-row {
+  background: var(--mat-sys-surface-container-low);
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  background: var(--mat-sys-surface-container-low);
 }
 
 // Record codes (PRS-000123, INV-2026-000001) never wrap in tables.

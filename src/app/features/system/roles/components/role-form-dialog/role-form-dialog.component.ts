@@ -34,15 +34,14 @@ export class RoleFormDialog {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(150)],
     }),
-    displayNameAr: new FormControl(this.role?.displayNameAr ?? null, [Validators.maxLength(150)]),
     description: new FormControl(this.role?.description ?? null, [Validators.maxLength(2000)]),
   });
 
   private saved: Role | undefined;
 
   protected readonly submit = async (): Promise<Role> => {
-    const { name, displayName, displayNameAr, description } = this.form.getRawValue();
-    const payload: RolePayload = { displayName, displayNameAr, description };
+    const { name, displayName, description } = this.form.getRawValue();
+    const payload: RolePayload = { displayName, description };
     if (!this.role?.isSystem) {
       payload.name = name;
     }

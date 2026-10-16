@@ -1,0 +1,51 @@
+<section class="mx-auto max-w-2xl px-4 pb-8 pt-14 sm:px-6" aria-labelledby="verify-title">
+  <h1 id="verify-title" class="m-0 text-3xl font-semibold tracking-tight">Verify a document</h1>
+  <p class="mb-0 mt-3 text-on-surface-variant">
+    Scan the QR code on an invoice, receipt, payslip or certificate from the clinic, or type the
+    code printed under it. We only confirm that the document is genuine; no personal or medical
+    details are shown.
+  </p>
+
+  <form class="mt-8 flex flex-wrap items-start gap-2" (submit)="submit($event)">
+    <mat-form-field class="min-w-0 flex-1" subscriptSizing="dynamic">
+      <mat-label>Document code</mat-label>
+      <input matInput [formControl]="payload" autocomplete="off" spellcheck="false" autofocus />
+    </mat-form-field>
+    <button matButton="filled" type="submit" class="mt-2" [disabled]="busy()">
+      Check document
+    </button>
+  </form>
+
+  <div class="mt-8" role="status" aria-live="polite">
+    @if (result(); as r) {
+      <div class="rounded-2xl border border-primary p-6">
+        <p class="m-0 flex items-center gap-2 text-lg font-semibold text-primary">
+          <mat-icon aria-hidden="true">verified</mat-icon> Genuine document
+        </p>
+        <dl class="mb-0 mt-4 grid grid-cols-[max-content_1fr] gap-x-6 gap-y-2 text-sm">
+          <dt class="text-on-surface-variant">Type</dt>
+          <dd class="m-0">{{ label(r.entity) }}</dd>
+          @for (entry of r.summary | keyvalue; track entry.key) {
+            <dt class="text-on-surface-variant">{{ label(entry.key) }}</dt>
+            <dd class="m-0 tabular-nums">
+              @if (isDate(entry.key) && entry.value) {
+                {{ $any(entry.value) | date: 'dd MMM yyyy' }}
+              } @else if (entry.key === 'category') {
+                {{ $any(entry.value) | enumLabel: 'AttachmentCategory' }}
+              } @else {
+                {{ entry.value }}
+              }
+            </dd>
+          }
+        </dl>
+      </div>
+    } @else if (error(); as message) {
+      <div
+        class="flex items-start gap-2 rounded-2xl bg-error-container p-6 text-on-error-container"
+      >
+        <mat-icon aria-hidden="true">gpp_bad</mat-icon>
+        <p class="m-0">{{ message }}</p>
+      </div>
+    }
+  </div>
+</section>

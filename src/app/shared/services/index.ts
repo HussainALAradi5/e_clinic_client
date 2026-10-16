@@ -19,3 +19,6 @@ export * from './ui/theme.service';
 export * from './upload/upload-queue';
 export * from './upload/upload.service';
 export * from './view/saved-view-api.service';
+export * from './reference/address-api.service';
+export * from './reference/company-api.service';
+export * from './reference/country-api.service';

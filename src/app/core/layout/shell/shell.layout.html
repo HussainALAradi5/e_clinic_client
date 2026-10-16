@@ -1,52 +1,59 @@
 <mat-sidenav-container class="h-dvh" autosize>
   <mat-sidenav
     #drawer
-    class="w-64 border-r border-outline-variant"
+    class="shell-nav w-68"
     [mode]="handset() ? 'over' : 'side'"
     [opened]="opened()"
     (closedStart)="handset() || menuOpen.set(false)"
   >
-    <a routerLink="/" class="flex h-16 items-center gap-2 px-5 text-on-surface no-underline">
-      <span class="material-symbols-outlined text-primary">local_hospital</span>
-      <span class="text-lg font-semibold tracking-tight">e-Clinic</span>
-    </a>
+    <div class="flex h-full flex-col">
+      <a routerLink="/dashboard" class="flex h-18 items-center px-5 no-underline">
+        <ui-brand-mark tone="light" />
+      </a>
 
-    <nav aria-label="Main menu" class="pb-4">
-      @for (group of menu(); track group.label) {
-        <p
-          class="mx-5 mt-4 mb-1 text-xs font-medium tracking-wide text-on-surface-variant uppercase"
-        >
-          {{ group.label }}
-        </p>
-        <mat-nav-list class="!px-2 !pt-0">
-          @for (item of group.items; track item.route) {
-            <a
-              mat-list-item
-              class="!rounded-full"
-              [routerLink]="item.route"
-              routerLinkActive
-              #rla="routerLinkActive"
-              [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
-              [activated]="rla.isActive"
-              (click)="handset() && drawer.close()"
-            >
-              <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-              <span matListItemTitle>{{ item.label }}</span>
-            </a>
-          }
-        </mat-nav-list>
-      }
-    </nav>
+      <nav aria-label="Main menu" class="flex-1 overflow-y-auto px-3 pb-4">
+        @for (group of menu(); track group.label) {
+          <p class="mx-3 mt-5 mb-1.5 text-xs font-semibold text-white/50">{{ group.label }}</p>
+          <ul class="m-0 list-none space-y-0.5 p-0">
+            @for (item of group.items; track item.route) {
+              <li>
+                <a
+                  class="nav-item"
+                  [routerLink]="item.route"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+                  (click)="handset() && drawer.close()"
+                >
+                  <mat-icon class="!size-5 !text-xl">{{ item.icon }}</mat-icon>
+                  <span>{{ item.label }}</span>
+                </a>
+              </li>
+            }
+          </ul>
+        }
+      </nav>
+
+      <a
+        routerLink="/"
+        class="nav-item mx-3 mb-4 border border-white/10"
+        matTooltip="Open the public website"
+      >
+        <mat-icon class="!size-5 !text-xl">language</mat-icon>
+        <span>Public website</span>
+      </a>
+    </div>
   </mat-sidenav>
 
   <mat-sidenav-content class="flex flex-col">
-    <mat-toolbar class="sticky top-0 z-20 !h-16 gap-2 border-b border-outline-variant !bg-surface">
+    <header
+      class="sticky top-0 z-20 flex h-16 items-center gap-1 border-b border-outline-variant bg-surface/85 px-3 backdrop-blur lg:px-5"
+    >
       <button
         matIconButton
         aria-label="Toggle menu"
         (click)="handset() ? drawer.toggle() : menuOpen.set(!menuOpen())"
       >
-        <mat-icon>menu</mat-icon>
+        <mat-icon>{{ opened() ? 'left_panel_close' : 'left_panel_open' }}</mat-icon>
       </button>
       <span class="flex-1"></span>
 
@@ -58,21 +65,27 @@
       @if (auth.user(); as user) {
         <button
           type="button"
-          class="flex items-center gap-2 rounded-full py-1 pr-3 pl-1 hover:bg-surface-container-high"
+          class="ml-1 flex items-center gap-2.5 rounded-xl py-1.5 pr-3 pl-1.5 hover:bg-surface-container-high"
           [matMenuTriggerFor]="userMenu"
           aria-label="Account menu"
         >
           <span
-            class="grid size-8 place-items-center rounded-full bg-primary-container text-xs font-semibold text-on-primary-container"
+            class="grid size-9 place-items-center rounded-lg bg-primary text-xs font-bold text-on-primary"
             >{{ initials() }}</span
           >
-          <span class="hidden text-sm font-medium text-on-surface sm:inline">{{
-            user.fullName
-          }}</span>
+          <span class="hidden text-left leading-tight sm:block">
+            <span class="block text-sm font-semibold text-on-surface">{{ user.fullName }}</span>
+            <span class="block text-xs text-on-surface-variant">{{
+              user.userType | enumLabel: 'UserType'
+            }}</span>
+          </span>
+          <mat-icon class="hidden !size-5 !text-xl text-on-surface-variant sm:block"
+            >expand_more</mat-icon
+          >
         </button>
         <mat-menu #userMenu="matMenu" xPosition="before">
           <div class="px-4 py-2">
-            <p class="m-0 text-sm font-medium">{{ user.fullName }}</p>
+            <p class="m-0 text-sm font-semibold">{{ user.fullName }}</p>
             <p class="m-0 text-xs text-on-surface-variant">{{ user.email }}</p>
           </div>
           <mat-divider />
@@ -80,13 +93,17 @@
             <mat-icon>shield_person</mat-icon>
             <span>Account &amp; security</span>
           </a>
+          <a mat-menu-item routerLink="/">
+            <mat-icon>language</mat-icon>
+            <span>Public website</span>
+          </a>
           <button mat-menu-item (click)="logout()">
             <mat-icon>logout</mat-icon>
             <span>Sign out</span>
           </button>
         </mat-menu>
       }
-    </mat-toolbar>
+    </header>
 
     @if (auth.needsTwoFactorSetup()) {
       <div
@@ -101,7 +118,7 @@
       </div>
     }
 
-    <main class="mx-auto w-full max-w-screen-2xl flex-1 p-4 lg:p-6">
+    <main class="mx-auto w-full max-w-screen-2xl flex-1 px-4 py-6 lg:px-8 lg:py-8">
       <router-outlet />
     </main>
   </mat-sidenav-content>

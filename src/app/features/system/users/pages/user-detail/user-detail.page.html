@@ -53,22 +53,20 @@
           </div>
           @if (user.person; as person) {
             <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm">
-              @if (person.firstNameAr || person.lastNameAr) {
-                <dt class="text-on-surface-variant">Name (Arabic)</dt>
-                <dd class="m-0" dir="rtl">{{ person.firstNameAr }} {{ person.lastNameAr }}</dd>
-              }
               <dt class="text-on-surface-variant">Gender</dt>
               <dd class="m-0">{{ person.gender | enumLabel: 'Gender' }}</dd>
               <dt class="text-on-surface-variant">Date of birth</dt>
               <dd class="m-0">{{ person.dateOfBirth | date: dateFormat }}</dd>
               <dt class="text-on-surface-variant">National ID</dt>
               <dd class="m-0 font-mono">{{ person.nationalId ?? '—' }}</dd>
+              <dt class="text-on-surface-variant">Nationality</dt>
+              <dd class="m-0">{{ person.nationality?.nationality ?? '—' }}</dd>
               <dt class="text-on-surface-variant">Mobile</dt>
               <dd class="m-0">{{ person.phone }}</dd>
               <dt class="text-on-surface-variant">Email</dt>
               <dd class="m-0">{{ person.email ?? '—' }}</dd>
-              <dt class="text-on-surface-variant">Language</dt>
-              <dd class="m-0">{{ person.language === 'ar' ? 'Arabic' : 'English' }}</dd>
+              <dt class="text-on-surface-variant">Address</dt>
+              <dd class="m-0">{{ person.address?.formatted ?? '—' }}</dd>
             </dl>
           }
         </mat-card>
