@@ -1,0 +1,15 @@
+<mat-form-field class="w-full">
+  <mat-label>{{ label() }}</mat-label>
+  <span matTextPrefix class="pe-1 text-on-surface-variant">{{ currency() }}&nbsp;</span>
+  <input
+    matInput
+    class="tabular-nums"
+    inputmode="decimal"
+    [formControl]="control()"
+    (blur)="normalise()"
+  />
+  @if (hint()) {
+    <mat-hint>{{ hint() }}</mat-hint>
+  }
+  <mat-error>{{ error() }}</mat-error>
+</mat-form-field>

@@ -1,0 +1,61 @@
+<ui-page-header [title]="greeting()" subtitle="Here is what you can work on today." />
+
+@if (auth.user(); as user) {
+  <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+    <mat-card appearance="outlined" class="!p-5 lg:col-span-2">
+      <h2 class="m-0 mb-4 text-base font-semibold">Shortcuts</h2>
+      @if (shortcuts().length) {
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          @for (item of shortcuts(); track item.route) {
+            <a
+              [routerLink]="item.route"
+              class="flex items-center gap-3 rounded-xl border border-outline-variant p-4 text-on-surface no-underline hover:bg-surface-container"
+            >
+              <mat-icon class="text-primary">{{ item.icon }}</mat-icon>
+              <span class="font-medium">{{ item.label }}</span>
+            </a>
+          }
+        </div>
+      } @else {
+        <p class="m-0 text-sm text-on-surface-variant">
+          Your roles do not open any area yet. Ask an administrator for access.
+        </p>
+      }
+    </mat-card>
+
+    <mat-card appearance="outlined" class="!p-5">
+      <h2 class="m-0 mb-4 text-base font-semibold">Your account</h2>
+      <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
+        <dt class="text-on-surface-variant">Code</dt>
+        <dd class="m-0 font-mono">{{ user.code }}</dd>
+        <dt class="text-on-surface-variant">Type</dt>
+        <dd class="m-0">{{ user.userType | enumLabel: 'UserType' }}</dd>
+        <dt class="text-on-surface-variant">Roles</dt>
+        <dd class="m-0">
+          @for (role of auth.roles(); track role; let last = $last) {
+            {{ role | enumLabel: 'RoleName' }}{{ last ? '' : ', ' }}
+          } @empty {
+            —
+          }
+        </dd>
+        <dt class="text-on-surface-variant">Last sign-in</dt>
+        <dd class="m-0">
+          {{ user.lastLoginAt ? (user.lastLoginAt | date: dateTimeFormat) : '—' }}
+        </dd>
+        <dt class="text-on-surface-variant">2FA</dt>
+        <dd class="m-0">
+          {{
+            user.twoFactor.enabled
+              ? 'On'
+              : user.twoFactor.required
+                ? 'Required — not set up'
+                : 'Off'
+          }}
+        </dd>
+      </dl>
+      <a matButton="tonal" class="mt-4" [routerLink]="securityPath">
+        <mat-icon>shield_person</mat-icon> Account &amp; security
+      </a>
+    </mat-card>
+  </div>
+}

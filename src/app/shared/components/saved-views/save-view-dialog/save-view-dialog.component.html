@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Save view</h2>
+<mat-dialog-content>
+  <p class="mt-0 text-sm text-on-surface-variant">
+    Saves the current filters, search, period, sort and columns.
+  </p>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Save view"
+    [compact]="true"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    <ui-text label="Name" [control]="form.controls.name" />
+    <mat-checkbox [formControl]="form.controls.isDefault">Open this view by default</mat-checkbox>
+    @if (data.canShare) {
+      <mat-checkbox [formControl]="form.controls.isShared"
+        >Share with everyone who can see this list</mat-checkbox
+      >
+    }
+  </ui-form>
+</mat-dialog-content>

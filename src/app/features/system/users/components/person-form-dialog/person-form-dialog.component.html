@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>Edit personal data</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [compact]="true"
+    (saved)="ref.close(true)"
+    (cancelled)="ref.close()"
+  >
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <ui-text label="First name" [control]="form.controls.firstName" autocomplete="given-name" />
+      <ui-text label="Last name" [control]="form.controls.lastName" autocomplete="family-name" />
+      <ui-text label="First name (Arabic)" [control]="form.controls.firstNameAr" />
+      <ui-text label="Last name (Arabic)" [control]="form.controls.lastNameAr" />
+      <ui-select label="Gender" enum="Gender" [required]="true" [control]="form.controls.gender" />
+      <ui-text label="Date of birth" type="date" [control]="form.controls.dateOfBirth" />
+      <ui-text
+        label="National ID / passport"
+        [control]="form.controls.nationalId"
+        [hint]="
+          data.person.nationalId
+            ? 'Stored: ' + data.person.nationalId + ' — leave blank to keep'
+            : null
+        "
+      />
+      <ui-text
+        label="Mobile"
+        type="tel"
+        hint="International format, e.g. +97336001234"
+        [control]="form.controls.phone"
+      />
+      <ui-text label="Email" type="email" [control]="form.controls.email" />
+      <ui-select
+        label="Language"
+        [options]="languages"
+        [required]="true"
+        [control]="form.controls.language"
+      />
+    </div>
+  </ui-form>
+</mat-dialog-content>

@@ -1,0 +1,18 @@
+<ui-resource-list
+  resource="users"
+  title="Users"
+  subtitle="Login accounts of staff and patients. Accounts are created when an employee is hired or a patient gets portal access."
+  rowLink="/system/users/:id"
+  [columns]="columns"
+>
+  <ng-template uiCell="full_name" let-row>
+    <span class="font-medium">{{ row.fullName }}</span>
+  </ng-template>
+  <ng-template uiCell="user_type" let-row>{{ row.userType | enumLabel: 'UserType' }}</ng-template>
+  <ng-template uiCell="status" let-row
+    ><ui-status [value]="row.status" enum="UserStatus"
+  /></ng-template>
+  <ng-template uiCell="last_login_at" let-row>
+    {{ row.lastLoginAt ? (row.lastLoginAt | relativeTime) : 'Never' }}
+  </ng-template>
+</ui-resource-list>

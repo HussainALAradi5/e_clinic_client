@@ -1,0 +1,25 @@
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { ApiError } from '@shared/interfaces/api/api-error.interface';
+import { isApiError } from '@shared/utils/guards';
+
+/** Error with retry; shows the request id for support. */
+@Component({
+  selector: 'ui-error',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatIconModule, MatButtonModule],
+  templateUrl: './error-state.component.html',
+})
+export class ErrorState {
+  readonly error = input<ApiError | unknown>(null);
+  readonly retry = output<void>();
+  protected readonly message = computed(() => {
+    const e = this.error();
+    return isApiError(e) ? e.message : 'Something went wrong.';
+  });
+  protected readonly requestId = computed(() => {
+    const e = this.error();
+    return isApiError(e) ? e.requestId : null;
+  });
+}

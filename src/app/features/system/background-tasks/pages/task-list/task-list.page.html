@@ -1,0 +1,32 @@
+<ui-resource-list
+  resource="background_tasks"
+  endpoint="tasks"
+  title="Background tasks"
+  subtitle="Exports, ZIP downloads and large bulk actions. Result files are kept for 7 days."
+  emptyTitle="No background tasks"
+  rowLink="/system/background-tasks/:id"
+>
+  <ng-template uiCell="created_at" let-row>
+    <span class="whitespace-nowrap tabular-nums">{{ row.createdAt | date: dateTimeFormat }}</span>
+  </ng-template>
+  <ng-template uiCell="type" let-row>
+    <span class="font-medium">{{ row.type | enumLabel: 'TaskType' }}</span>
+    @if (row.requestedBy) {
+      <span class="block text-xs text-on-surface-variant">{{ row.requestedBy.fullName }}</span>
+    }
+  </ng-template>
+  <ng-template uiCell="status" let-row>
+    <ui-status enum="GenericStatus" [value]="row.status" />
+  </ng-template>
+  <ng-template uiCell="progress" let-row>
+    <div class="flex min-w-28 items-center gap-2">
+      <mat-progress-bar mode="determinate" [value]="row.progress" class="flex-1" />
+      <span class="w-9 text-right text-xs tabular-nums">{{ row.progress }}%</span>
+    </div>
+  </ng-template>
+  <ng-template uiCell="finished_at" let-row>
+    <span class="whitespace-nowrap tabular-nums">{{
+      row.finishedAt ? (row.finishedAt | date: dateTimeFormat) : '—'
+    }}</span>
+  </ng-template>
+</ui-resource-list>

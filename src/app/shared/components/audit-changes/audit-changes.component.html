@@ -1,0 +1,22 @@
+@if (changes().length) {
+  <table class="w-full border-collapse text-sm">
+    <thead>
+      <tr class="text-left text-xs text-on-surface-variant">
+        <th class="py-1 pr-3 font-medium">Field</th>
+        <th class="py-1 pr-3 font-medium">Before</th>
+        <th class="py-1 font-medium">After</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (change of changes(); track change.field) {
+        <tr class="border-t border-outline-variant align-top">
+          <td class="py-1 pr-3 text-on-surface-variant">{{ change.field }}</td>
+          <td class="py-1 pr-3 break-all line-through decoration-error/60">{{ change.before }}</td>
+          <td class="py-1 break-all">{{ change.after }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+} @else {
+  <p class="m-0 text-sm text-on-surface-variant">No field changes recorded.</p>
+}

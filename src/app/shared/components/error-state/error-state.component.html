@@ -1,0 +1,8 @@
+<div class="flex flex-col items-center gap-2 px-4 py-12 text-center" role="alert">
+  <mat-icon class="text-error">error</mat-icon>
+  <p class="m-0 text-base font-medium text-on-surface">{{ message() }}</p>
+  @if (requestId()) {
+    <p class="m-0 text-xs text-on-surface-variant">Reference: {{ requestId() }}</p>
+  }
+  <button matButton="tonal" (click)="retry.emit()"><mat-icon>refresh</mat-icon>Try again</button>
+</div>

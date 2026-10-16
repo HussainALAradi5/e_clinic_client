@@ -1,0 +1,33 @@
+@if (selection().hasSelection()) {
+  <div
+    class="mb-3 flex flex-wrap items-center gap-2 rounded-xl bg-primary-container px-3 py-2 text-on-primary-container shadow-sm"
+    role="toolbar"
+    aria-label="Bulk actions"
+  >
+    <button matIconButton (click)="selection().clear()" aria-label="Clear selection">
+      <mat-icon>close</mat-icon>
+    </button>
+    <span class="font-medium tabular-nums"
+      >{{ selection().count().toLocaleString('en-GB') }} selected</span
+    >
+    @if (selection().limitReached()) {
+      <span class="text-xs">(maximum reached — use "select all matching")</span>
+    }
+    <span class="flex-1"></span>
+    <ng-content />
+    @for (action of actions(); track action.name) {
+      <ui-button
+        size="sm"
+        [variant]="
+          action.name === 'delete' || action.name === 'cancel' || action.name === 'reject'
+            ? 'danger'
+            : 'tonal'
+        "
+        [icon]="icon(action.name)"
+        [action]="run(action)"
+      >
+        {{ label(action.name) }}
+      </ui-button>
+    }
+  </div>
+}

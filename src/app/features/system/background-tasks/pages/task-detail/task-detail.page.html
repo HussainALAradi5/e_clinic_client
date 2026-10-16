@@ -1,0 +1,70 @@
+@if (error(); as error) {
+  <ui-error [error]="error" (retry)="load()" />
+} @else if (task(); as task) {
+  <ui-page-header
+    [title]="task.type | enumLabel: 'TaskType'"
+    [subtitle]="'Started ' + (task.createdAt | date: dateTimeFormat)"
+  >
+    <ui-status status enum="GenericStatus" [value]="task.status" />
+    @if (task.hasResult) {
+      <ui-button actions icon="download" [action]="download">Download</ui-button>
+    }
+    @if (running() && isOwner()) {
+      <ui-button
+        actions
+        icon="stop_circle"
+        [variant]="variants.Danger"
+        [confirm]="cancelConfirm"
+        [action]="cancel"
+        >Cancel</ui-button
+      >
+    }
+  </ui-page-header>
+
+  <mat-card appearance="outlined" class="mb-4">
+    <mat-card-content>
+      <div class="mb-1 flex items-center justify-between text-sm">
+        <span>Progress</span>
+        <span class="tabular-nums">{{ task.progress }}%</span>
+      </div>
+      <mat-progress-bar
+        [mode]="task.status === 'pending' ? 'indeterminate' : 'determinate'"
+        [value]="task.progress"
+      />
+      @if (task.errorMessage) {
+        <p class="mb-0 mt-3 text-sm text-error">
+          {{ task.cancelReason | enumLabel: 'TaskCancelReason' }} — {{ task.errorMessage }}
+        </p>
+      } @else if (task.cancelReason) {
+        <p class="mb-0 mt-3 text-sm text-on-surface-variant">
+          Cancelled ({{ task.cancelReason | enumLabel: 'TaskCancelReason' }}).
+        </p>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <dl class="grid grid-cols-[max-content_1fr] gap-x-6 gap-y-2 text-sm">
+    @if (task.requestedBy) {
+      <dt class="text-on-surface-variant">Started by</dt>
+      <dd class="m-0">{{ task.requestedBy.fullName }}</dd>
+    }
+    <dt class="text-on-surface-variant">Started</dt>
+    <dd class="m-0 tabular-nums">
+      {{ task.startedAt ? (task.startedAt | date: dateTimeFormat) : '—' }}
+    </dd>
+    <dt class="text-on-surface-variant">Finished</dt>
+    <dd class="m-0 tabular-nums">
+      {{ task.finishedAt ? (task.finishedAt | date: dateTimeFormat) : '—' }}
+    </dd>
+    @if (task.expiresAt) {
+      <dt class="text-on-surface-variant">Result available until</dt>
+      <dd class="m-0 tabular-nums">{{ task.expiresAt | date: dateTimeFormat }}</dd>
+    }
+    @for (entry of task.resultSummary ?? {} | keyvalue; track entry.key) {
+      <dt class="text-on-surface-variant">{{ label(entry.key) }}</dt>
+      <dd class="m-0 break-all">{{ display(entry.value) }}</dd>
+    }
+  </dl>
+} @else {
+  <ui-skeleton [rows]="6" />
+}

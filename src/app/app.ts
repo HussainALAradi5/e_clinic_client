@@ -1,12 +1,14 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterOutlet } from '@angular/router';
+import { LoadingService } from '@shared/services/ui/loading.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterOutlet, MatProgressBarModule],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('e_clinic_client');
+  protected readonly loading = inject(LoadingService);
 }

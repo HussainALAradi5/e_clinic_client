@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Change account status</h2>
+<mat-dialog-content>
+  <p class="mt-0 text-sm text-on-surface-variant">
+    {{ data.user.fullName }} — locking or deactivating signs the user out of every device.
+  </p>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Change status"
+    [compact]="true"
+    (saved)="ref.close(true)"
+    (cancelled)="ref.close()"
+  >
+    <ui-select
+      label="New status"
+      [control]="form.controls.status"
+      [options]="options()"
+      [required]="true"
+    />
+    @if (needsReason()) {
+      <ui-text
+        label="Reason"
+        [multiline]="true"
+        [maxLength]="reasonMax"
+        [control]="form.controls.reason"
+      />
+    }
+  </ui-form>
+</mat-dialog-content>

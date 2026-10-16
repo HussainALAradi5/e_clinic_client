@@ -1,0 +1,26 @@
+<ui-resource-list
+  resource="audit"
+  endpoint="audit-logs"
+  title="Audit logs"
+  subtitle="Who did what and when. Entries cannot be changed or deleted; sensitive values are masked."
+  emptyTitle="No activity in this period"
+  [defaults]="defaults"
+  (rowClick)="open($event)"
+>
+  <ui-button actions icon="download" variant="tonal" access="audit.export" [action]="export"
+    >Export CSV</ui-button
+  >
+  <ng-template uiCell="created_at" let-row>
+    <span class="whitespace-nowrap tabular-nums">{{ row.createdAt | date: dateTimeFormat }}</span>
+  </ng-template>
+  <ng-template uiCell="user" let-row>{{ row.user?.fullName ?? 'System' }}</ng-template>
+  <ng-template uiCell="action" let-row>{{ row.action | enumLabel: 'AuditAction' }}</ng-template>
+  <ng-template uiCell="auditable" let-row>
+    {{ row.auditableType ?? '—' }}
+    @if (row.auditableId) {
+      <span class="font-mono text-xs text-on-surface-variant">{{
+        row.auditableId.slice(0, 8)
+      }}</span>
+    }
+  </ng-template>
+</ui-resource-list>

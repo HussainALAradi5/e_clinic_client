@@ -1,0 +1,16 @@
+.ui-danger {
+  --mat-button-filled-container-color: var(--mat-sys-error);
+  --mat-button-filled-label-text-color: var(--mat-sys-on-error);
+  --mat-button-outlined-label-text-color: var(--mat-sys-error);
+  --mat-button-text-label-text-color: var(--mat-sys-error);
+}
+.ui-sm {
+  --mat-button-filled-container-height: 32px;
+  --mat-button-outlined-container-height: 32px;
+  --mat-button-tonal-container-height: 32px;
+  --mat-button-text-container-height: 32px;
+}
+.ui-spinner {
+  margin-inline-end: 8px;
+  --mat-progress-spinner-active-indicator-color: currentColor;
+}

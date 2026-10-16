@@ -1,0 +1,127 @@
+@if (store.error(); as error) {
+  <ui-error [error]="error" (retry)="store.load(id())" />
+} @else if (store.user(); as user) {
+  <ui-page-header
+    [title]="user.fullName"
+    [subtitle]="user.code + ' · ' + (user.userType | enumLabel: 'UserType')"
+  >
+    <ui-status status [value]="user.status" enum="UserStatus" />
+    @if (!store.isSelf()) {
+      <ng-container actions>
+        <ui-button
+          icon="badge"
+          [variant]="variants.Tonal"
+          access="roles.write & roles.assign"
+          [action]="editRoles"
+          >Roles</ui-button
+        >
+        <ui-button
+          icon="toggle_on"
+          [variant]="variants.Tonal"
+          access="users.write & users.change_status"
+          [action]="changeStatus"
+        >
+          Change status
+        </ui-button>
+      </ng-container>
+    }
+    <ui-button
+      actions
+      icon="lock_reset"
+      [variant]="variants.Outlined"
+      access="users.write"
+      [confirm]="resetConfirm"
+      [action]="sendResetLink"
+    >
+      Send reset link
+    </ui-button>
+  </ui-page-header>
+
+  <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
+    <mat-tab label="Overview">
+      <div class="grid grid-cols-1 gap-4 pt-4 xl:grid-cols-2">
+        <mat-card appearance="outlined" class="!p-5">
+          <div class="mb-3 flex items-center">
+            <h2 class="m-0 flex-1 text-base font-semibold">Personal data</h2>
+            <ui-button
+              icon="edit"
+              [variant]="variants.Text"
+              access="people.write"
+              [action]="editPerson"
+              >Edit</ui-button
+            >
+          </div>
+          @if (user.person; as person) {
+            <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm">
+              @if (person.firstNameAr || person.lastNameAr) {
+                <dt class="text-on-surface-variant">Name (Arabic)</dt>
+                <dd class="m-0" dir="rtl">{{ person.firstNameAr }} {{ person.lastNameAr }}</dd>
+              }
+              <dt class="text-on-surface-variant">Gender</dt>
+              <dd class="m-0">{{ person.gender | enumLabel: 'Gender' }}</dd>
+              <dt class="text-on-surface-variant">Date of birth</dt>
+              <dd class="m-0">{{ person.dateOfBirth | date: dateFormat }}</dd>
+              <dt class="text-on-surface-variant">National ID</dt>
+              <dd class="m-0 font-mono">{{ person.nationalId ?? '—' }}</dd>
+              <dt class="text-on-surface-variant">Mobile</dt>
+              <dd class="m-0">{{ person.phone }}</dd>
+              <dt class="text-on-surface-variant">Email</dt>
+              <dd class="m-0">{{ person.email ?? '—' }}</dd>
+              <dt class="text-on-surface-variant">Language</dt>
+              <dd class="m-0">{{ person.language === 'ar' ? 'Arabic' : 'English' }}</dd>
+            </dl>
+          }
+        </mat-card>
+
+        <mat-card appearance="outlined" class="!p-5">
+          <h2 class="m-0 mb-3 text-base font-semibold">Account</h2>
+          <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm">
+            <dt class="text-on-surface-variant">Roles</dt>
+            <dd class="m-0">
+              <mat-chip-set aria-label="Roles">
+                @for (role of user.roles ?? []; track role.id) {
+                  <mat-chip>{{ role.displayName }}</mat-chip>
+                } @empty {
+                  —
+                }
+              </mat-chip-set>
+            </dd>
+            <dt class="text-on-surface-variant">Email verified</dt>
+            <dd class="m-0">
+              {{ user.emailVerifiedAt ? (user.emailVerifiedAt | date: dateTimeFormat) : 'No' }}
+            </dd>
+            <dt class="text-on-surface-variant">Two-factor</dt>
+            <dd class="m-0">
+              {{ user.twoFactor.enabled ? 'On' : 'Off'
+              }}{{ user.twoFactor.required ? ' (required by role)' : '' }}
+            </dd>
+            <dt class="text-on-surface-variant">Last sign-in</dt>
+            <dd class="m-0">
+              {{
+                user.lastLoginAt
+                  ? (user.lastLoginAt | date: dateTimeFormat) + ' · ' + user.lastLoginIp
+                  : 'Never'
+              }}
+            </dd>
+            @if (user.lockedAt) {
+              <dt class="text-on-surface-variant">Locked</dt>
+              <dd class="m-0">{{ user.lockedAt | date: dateTimeFormat }}</dd>
+            }
+          </dl>
+        </mat-card>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="History" *hasAccess="'audit.read_all | audit.read_own'">
+      <ng-template matTabContent>
+        <div class="pt-4">
+          <ui-audit-history type="user" [id]="user.id" />
+          <h3 class="mt-6 mb-2 text-sm font-semibold text-on-surface-variant">Personal data</h3>
+          <ui-audit-history type="person" [id]="user.id" />
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+} @else {
+  <ui-skeleton [rows]="8" [height]="20" />
+}

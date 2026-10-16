@@ -1,0 +1,5 @@
+/** Mirror of Gender. */
+export enum Gender {
+  Male = 'male',
+  Female = 'female',
+}

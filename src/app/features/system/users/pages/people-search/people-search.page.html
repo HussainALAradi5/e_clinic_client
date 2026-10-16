@@ -1,0 +1,66 @@
+<div class="grid grid-cols-1 gap-4 2xl:grid-cols-[1fr_22rem]">
+  <ui-resource-list
+    resource="people"
+    title="People"
+    subtitle="Every patient and staff member has one person record. Search here before registering anyone."
+    [columns]="columns"
+    (rowClick)="edit($event)"
+  >
+    <ng-template uiCell="full_name" let-row>
+      <span class="font-medium">{{ row.fullName }}</span>
+    </ng-template>
+    <ng-template uiCell="gender" let-row>{{ row.gender | enumLabel: 'Gender' }}</ng-template>
+    <ng-template uiCell="date_of_birth" let-row>
+      {{ row.dateOfBirth | date: dateFormat }}
+      <span class="text-on-surface-variant">({{ row.dateOfBirth | age }})</span>
+    </ng-template>
+    <ng-template uiCell="account" let-row>
+      @if (row.hasAccount) {
+        <span class="inline-flex items-center gap-1 text-sm">
+          <mat-icon class="!size-4 !text-base">badge</mat-icon
+          >{{ row.userType | enumLabel: 'UserType' }}
+        </span>
+      } @else {
+        —
+      }
+    </ng-template>
+  </ui-resource-list>
+
+  <mat-card appearance="outlined" class="h-fit !p-5">
+    <h2 class="m-0 mb-1 text-base font-semibold">Duplicate check</h2>
+    <p class="mt-0 mb-4 text-sm text-on-surface-variant">
+      Exact national ID, or the same mobile and date of birth.
+    </p>
+    <ui-form
+      [form]="duplicateForm"
+      [submit]="checkDuplicates"
+      submitLabel="Check"
+      [cancelLabel]="null"
+      [compact]="true"
+    >
+      <ui-text label="National ID / passport" [control]="duplicateForm.controls.nationalId" />
+      <ui-text label="Mobile" type="tel" [control]="duplicateForm.controls.phone" />
+      <ui-text label="Date of birth" type="date" [control]="duplicateForm.controls.dateOfBirth" />
+    </ui-form>
+
+    @if (candidates(); as found) {
+      <div class="mt-4 border-t border-outline-variant pt-4">
+        @for (person of found; track person.id) {
+          <div class="flex items-center gap-3 py-2">
+            <mat-icon class="text-amber-600">person_alert</mat-icon>
+            <div class="min-w-0 flex-1 text-sm">
+              <p class="m-0 font-medium">{{ person.fullName }}</p>
+              <p class="m-0 text-on-surface-variant">
+                {{ person.code }} · {{ person.dateOfBirth | date: dateFormat }} · {{ person.phone }}
+              </p>
+            </div>
+          </div>
+        } @empty {
+          <p class="m-0 flex items-center gap-2 text-sm text-emerald-700 dark:text-emerald-400">
+            <mat-icon>check_circle</mat-icon> No existing person matches.
+          </p>
+        }
+      </div>
+    }
+  </mat-card>
+</div>

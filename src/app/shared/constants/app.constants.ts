@@ -1,0 +1,29 @@
+/** App-wide constants (API, routes, storage, clinic locale). */
+
+export const API_PREFIX = '/api/v1/';
+export const REQUEST_ID_HEADER = 'X-Request-Id';
+export const IDEMPOTENCY_HEADER = 'Idempotency-Key';
+
+export const HOME_PATH = '/';
+export const LOGIN_PATH = '/login';
+export const TWO_FACTOR_PATH = '/login/2fa';
+export const FORBIDDEN_PATH = '/forbidden';
+export const ACCOUNT_SECURITY_PATH = '/account/security';
+
+/** `device_name` sent on sign-in (shown in the token list / audit). */
+export const DEVICE_NAME = 'angular-web';
+
+/** Permission expression atom that is true for any signed-in user. */
+export const AUTHENTICATED = 'authenticated';
+
+/** Browser storage keys (no PHI is ever stored). */
+export const STORAGE_KEYS = {
+  token: 'ec.token',
+  uiSettings: 'ec.ui',
+} as const;
+
+/** Clinic time zone and display formats (ClinicClock mirror). Weeks start on Sunday. */
+export const CLINIC_TIME_ZONE = 'Asia/Bahrain';
+export const CLINIC_LOCALE = 'en-GB';
+export const DATE_FORMAT = 'dd MMM yyyy';
+export const TIME_FORMAT = 'HH:mm';

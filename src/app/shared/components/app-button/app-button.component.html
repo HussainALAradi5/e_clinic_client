@@ -1,0 +1,20 @@
+@if (visible()) {
+  <button
+    [matButton]="appearance()"
+    [type]="type()"
+    [disabled]="isDisabled()"
+    [class.ui-danger]="variant() === variants.Danger"
+    [class.ui-sm]="size() === sizes.Small"
+    [matTooltip]="allowed() ? '' : 'You don\'t have permission'"
+    (click)="run($event)"
+  >
+    @if (lock.busy()) {
+      <mat-progress-spinner diameter="18" mode="indeterminate" class="ui-spinner" />
+    } @else if (lock.state() === states.Success || lock.state() === states.Locked) {
+      <mat-icon>check</mat-icon>
+    } @else if (icon()) {
+      <mat-icon>{{ icon() }}</mat-icon>
+    }
+    <ng-content />
+  </button>
+}

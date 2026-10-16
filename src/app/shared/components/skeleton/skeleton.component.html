@@ -1,0 +1,9 @@
+<div class="flex flex-col gap-2">
+  @for (row of rowList(); track $index) {
+    <div
+      class="animate-pulse rounded-md bg-surface-container-high"
+      [style.height.px]="height()"
+      [style.width]="row"
+    ></div>
+  }
+</div>

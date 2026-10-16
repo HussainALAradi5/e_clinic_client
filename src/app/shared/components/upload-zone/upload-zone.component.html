@@ -1,0 +1,131 @@
+<div
+  class="flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed px-4 py-8 text-center transition-colors"
+  [class]="
+    dragging()
+      ? 'border-primary bg-primary-container/40'
+      : 'border-outline-variant hover:bg-surface-container'
+  "
+  tabindex="0"
+  role="button"
+  [attr.aria-label]="'Upload files: drop here or press Enter to browse'"
+  (click)="input.click()"
+  (keydown.enter)="input.click()"
+  (dragover)="onDrag($event, true)"
+  (dragleave)="onDrag($event, false)"
+  (drop)="onDrop($event)"
+>
+  <mat-icon class="text-primary">cloud_upload</mat-icon>
+  <p class="m-0 text-sm text-on-surface">
+    <span class="font-semibold text-primary">Choose files</span> or drag them here
+  </p>
+  <p class="m-0 text-xs text-on-surface-variant">
+    Up to {{ maxFiles() }} files{{ accept() ? ' · ' + accept() : '' }} · large files resume
+    automatically
+  </p>
+  <input
+    #input
+    class="hidden"
+    type="file"
+    [multiple]="multiple()"
+    [accept]="accept() ?? ''"
+    (change)="onPick($event)"
+  />
+</div>
+
+@if (rejected().length) {
+  <ul class="m-0 mt-2 list-none p-0 text-sm text-error" role="alert">
+    @for (message of rejected(); track $index) {
+      <li>{{ message }}</li>
+    }
+  </ul>
+}
+
+@if (queue?.items()?.length) {
+  <ul class="m-0 mt-3 flex list-none flex-col gap-2 p-0">
+    @for (item of queue!.items(); track item.key) {
+      <li class="flex items-center gap-3 rounded-lg border border-outline-variant px-3 py-2">
+        <mat-icon class="text-on-surface-variant">{{ fileIcon(item) }}</mat-icon>
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-2 text-sm">
+            <span class="truncate font-medium">{{ item.file.name }}</span>
+            <span class="shrink-0 text-xs text-on-surface-variant"
+              >{{ item.file.size / 1048576 | number: '1.1-1' }} MB</span
+            >
+          </div>
+          @if (
+            item.status === status.Uploading ||
+            item.status === status.Paused ||
+            item.status === status.Queued
+          ) {
+            <mat-progress-bar
+              class="mt-1"
+              [mode]="item.status === status.Queued ? 'buffer' : 'determinate'"
+              [value]="item.progress"
+            />
+          } @else if (item.status === status.Failed) {
+            <p class="m-0 text-xs text-error">{{ item.error }}</p>
+          } @else if (item.status === status.Done) {
+            <p class="m-0 text-xs text-on-surface-variant">
+              {{ item.attachment?.scanStatus === scan.Clean ? 'Uploaded' : 'Uploaded · scanning…' }}
+            </p>
+          }
+        </div>
+        @switch (item.status) {
+          @case (status.Uploading) {
+            @if (item.resumable) {
+              <button
+                matIconButton
+                matTooltip="Pause"
+                (click)="queue!.pause(item.key)"
+                aria-label="Pause"
+              >
+                <mat-icon>pause</mat-icon>
+              </button>
+            }
+            <button
+              matIconButton
+              matTooltip="Cancel"
+              (click)="queue!.cancel(item.key)"
+              aria-label="Cancel"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+          @case (status.Paused) {
+            <button
+              matIconButton
+              matTooltip="Resume"
+              (click)="queue!.resume(item.key)"
+              aria-label="Resume"
+            >
+              <mat-icon>play_arrow</mat-icon>
+            </button>
+          }
+          @case (status.Failed) {
+            <button
+              matIconButton
+              matTooltip="Retry"
+              (click)="queue!.retry(item.key)"
+              aria-label="Retry"
+            >
+              <mat-icon>refresh</mat-icon>
+            </button>
+          }
+          @case (status.Done) {
+            <mat-icon class="text-green-600">check_circle</mat-icon>
+          }
+        }
+        @if (item.status !== status.Uploading) {
+          <button
+            matIconButton
+            matTooltip="Remove"
+            (click)="queue!.remove(item.key)"
+            aria-label="Remove"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        }
+      </li>
+    }
+  </ul>
+}

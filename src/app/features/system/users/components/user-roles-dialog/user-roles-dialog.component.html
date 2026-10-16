@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Roles</h2>
+<mat-dialog-content>
+  <p class="mt-0 text-sm text-on-surface-variant">
+    Rights are the sum of all roles. Saving signs the user out of every device.
+  </p>
+  @if (roles.isLoading()) {
+    <ui-skeleton [rows]="6" />
+  } @else if (roles.error()) {
+    <ui-error [error]="roles.error()" (retry)="roles.reload()" />
+  } @else {
+    <ul class="m-0 flex list-none flex-col gap-1 p-0">
+      @for (role of roles.value(); track role.id) {
+        <li>
+          <mat-checkbox
+            [checked]="selected().has(role.name)"
+            (change)="toggle(role.name, $event.checked)"
+          >
+            <span class="font-medium">{{ role.displayName }}</span>
+            @if (role.description) {
+              <span class="block text-xs text-on-surface-variant">{{ role.description }}</span>
+            }
+          </mat-checkbox>
+        </li>
+      }
+    </ul>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button matButton mat-dialog-close>Cancel</button>
+  <ui-button [action]="save" [disabled]="!changed() || selected().size === 0">Save roles</ui-button>
+</mat-dialog-actions>

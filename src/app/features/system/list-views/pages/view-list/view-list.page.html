@@ -1,0 +1,47 @@
+<ui-resource-list
+  resource="list_views"
+  endpoint="views"
+  title="Saved views"
+  subtitle="Filters, sort and columns saved from any list. Shared views are visible to everyone who can read that list."
+  emptyTitle="No saved views — use the Views menu on any list to save one"
+  [views]="false"
+>
+  <ng-template uiCell="name" let-row>
+    <span class="font-medium">{{ row.name }}</span>
+    @if (!row.isMine) {
+      <span class="ml-1 text-xs text-on-surface-variant">(shared with you)</span>
+    }
+  </ng-template>
+  <ng-template uiCell="resource" let-row>{{ label(row.resource) }}</ng-template>
+  <ng-template uiCell="is_shared" let-row>
+    <mat-icon class="!size-5 !text-xl" [class.text-on-surface-variant]="!row.isShared">{{
+      row.isShared ? 'group' : 'person'
+    }}</mat-icon>
+  </ng-template>
+  <ng-template uiCell="is_default" let-row>
+    @if (row.isDefault) {
+      <mat-icon class="!size-5 !text-xl text-primary">star</mat-icon>
+    }
+  </ng-template>
+  <ng-template uiCell="updated_at" let-row>
+    <span class="whitespace-nowrap tabular-nums">{{ row.updatedAt | date: dateFormat }}</span>
+    @if (row.isMine) {
+      @if (!row.isDefault) {
+        <button
+          matIconButton
+          aria-label="Make default"
+          matTooltip="Make default"
+          (click)="makeDefault(row, $event)"
+        >
+          <mat-icon>star_outline</mat-icon>
+        </button>
+      }
+      <button matIconButton aria-label="Rename" matTooltip="Rename" (click)="rename(row, $event)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button matIconButton aria-label="Delete" matTooltip="Delete" (click)="remove(row, $event)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    }
+  </ng-template>
+</ui-resource-list>

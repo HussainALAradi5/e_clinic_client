@@ -1,0 +1,124 @@
+@if (store.error(); as error) {
+  <ui-error [error]="error" (retry)="store.load(id(), true)" />
+} @else if (store.role(); as role) {
+  <ui-page-header
+    [title]="'Access — ' + role.displayName"
+    subtitle="Rights per resource. Read all includes read own; create, write and delete need a read right."
+  >
+    <a actions matButton [routerLink]="['/system/roles-permissions', role.id]">Back to role</a>
+    @if (!store.readOnlyMatrix()) {
+      <ng-container actions>
+        <button matButton="outlined" type="button" [disabled]="!dirty()" (click)="discard()">
+          Discard
+        </button>
+        <ui-button icon="save" access="roles.write" [disabled]="!dirty()" [action]="save">
+          Save{{ dirty() ? ' (' + diff().changedRows.length + ')' : '' }}
+        </ui-button>
+      </ng-container>
+    }
+  </ui-page-header>
+
+  @if (store.readOnlyMatrix()) {
+    <p class="mb-4 flex items-center gap-2 rounded-lg bg-surface-container px-4 py-3 text-sm">
+      <mat-icon>lock</mat-icon> Super admin always holds every right; this matrix is read-only.
+    </p>
+  }
+
+  <label
+    class="mb-4 flex max-w-sm items-center gap-2 rounded-full border border-outline-variant px-4 py-2"
+  >
+    <mat-icon class="text-on-surface-variant">search</mat-icon>
+    <input
+      #searchBox
+      class="w-full border-0 bg-transparent text-sm text-on-surface outline-none"
+      placeholder="Find a resource or module"
+      [value]="search()"
+      (input)="search.set(searchBox.value)"
+    />
+  </label>
+
+  <div class="overflow-x-auto rounded-xl border border-outline-variant">
+    <table class="w-full min-w-[56rem] border-collapse text-sm">
+      <thead class="sticky top-0 z-10 bg-surface-container">
+        <tr class="text-left">
+          <th class="px-4 py-2 font-medium">Resource</th>
+          @for (flag of flags; track flag) {
+            <th class="w-24 px-2 py-2 text-center font-medium">{{ flagLabels[flag] }}</th>
+          }
+          <th class="px-4 py-2 font-medium">Special actions</th>
+        </tr>
+      </thead>
+      @for (group of groups(); track group.module) {
+        <tbody>
+          <tr class="bg-surface-container-low">
+            <th
+              class="px-4 py-1.5 text-left text-xs font-semibold tracking-wide text-on-surface-variant uppercase"
+            >
+              {{ humanise(group.module) }}
+            </th>
+            @for (flag of flags; track flag) {
+              <td class="text-center">
+                <button
+                  matIconButton
+                  type="button"
+                  class="!size-8 !p-1"
+                  [disabled]="store.readOnlyMatrix()"
+                  [matTooltip]="'Toggle ' + flagLabels[flag] + ' for ' + humanise(group.module)"
+                  (click)="toggleColumn(group, flag)"
+                >
+                  <mat-icon class="!text-lg">{{
+                    columnState(group, flag) === 'all'
+                      ? 'check_box'
+                      : columnState(group, flag) === 'some'
+                        ? 'indeterminate_check_box'
+                        : 'check_box_outline_blank'
+                  }}</mat-icon>
+                </button>
+              </td>
+            }
+            <td></td>
+          </tr>
+          @for (row of group.rows; track row.resource) {
+            <tr class="border-t border-outline-variant hover:bg-surface-container-low">
+              <th class="px-4 py-1 text-left font-normal">
+                <button
+                  type="button"
+                  class="cursor-pointer border-0 bg-transparent p-0 text-left text-on-surface hover:text-primary disabled:cursor-default"
+                  [disabled]="store.readOnlyMatrix()"
+                  matTooltip="Toggle all rights of this resource"
+                  (click)="toggleRow(row)"
+                >
+                  {{ humanise(row.resource) }}
+                </button>
+              </th>
+              @for (flag of flags; track flag) {
+                <td class="text-center">
+                  <mat-checkbox
+                    [checked]="row[flagKeys[flag]]"
+                    [disabled]="store.readOnlyMatrix()"
+                    [aria-label]="flagLabels[flag] + ' ' + row.resource"
+                    (change)="toggleFlag(row, flag, $event.checked)"
+                  />
+                </td>
+              }
+              <td class="px-4 py-1">
+                <mat-chip-set>
+                  @for (action of row.availableActions; track action) {
+                    <mat-chip-option
+                      [selected]="row.actions.includes(action)"
+                      [disabled]="store.readOnlyMatrix()"
+                      (selectionChange)="$event.isUserInput && toggleAction(row, action)"
+                      >{{ humanise(action) }}</mat-chip-option
+                    >
+                  }
+                </mat-chip-set>
+              </td>
+            </tr>
+          }
+        </tbody>
+      }
+    </table>
+  </div>
+} @else {
+  <ui-skeleton [rows]="12" [height]="24" />
+}

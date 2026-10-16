@@ -1,0 +1,100 @@
+<ui-page-header
+  title="Scan station"
+  subtitle="Scan a patient card, wristband, label or printed document — or type the code and press Enter."
+/>
+
+<div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+  <section class="flex flex-col gap-4">
+    <mat-button-toggle-group [formControl]="purpose" aria-label="Scan purpose" class="self-start">
+      @for (p of purposes; track p) {
+        <mat-button-toggle [value]="p">{{ p | enumLabel: 'ScanPurpose' }}</mat-button-toggle>
+      }
+    </mat-button-toggle-group>
+
+    <form class="flex flex-wrap items-start gap-2" (submit)="submit($event)">
+      <mat-form-field class="min-w-64 flex-1" subscriptSizing="dynamic">
+        <mat-label>Code</mat-label>
+        <mat-icon matPrefix>qr_code_scanner</mat-icon>
+        <input matInput [formControl]="payload" autocomplete="off" autofocus spellcheck="false" />
+      </mat-form-field>
+      <button matButton="filled" type="submit" class="mt-2" [disabled]="busy()">Resolve</button>
+      @if (cameraSupported) {
+        @if (cameraOn()) {
+          <button matButton="outlined" type="button" class="mt-2" (click)="stopCamera()">
+            <mat-icon>videocam_off</mat-icon> Stop camera
+          </button>
+        } @else {
+          <button matButton="outlined" type="button" class="mt-2" (click)="startCamera()">
+            <mat-icon>photo_camera</mat-icon> Use camera
+          </button>
+        }
+      }
+    </form>
+
+    @if (cameraOn()) {
+      <video
+        #video
+        class="aspect-video w-full max-w-xl rounded-xl bg-black object-cover"
+        muted
+        playsinline
+      ></video>
+    }
+
+    @if (error(); as message) {
+      <div
+        class="flex items-center gap-2 rounded-xl bg-error-container px-4 py-3 text-on-error-container"
+        role="alert"
+      >
+        <mat-icon>error</mat-icon>
+        <span>{{ message }}</span>
+      </div>
+    }
+
+    @if (result(); as r) {
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-icon mat-card-avatar class="text-primary">verified</mat-icon>
+          <mat-card-title>{{ label(r.entity) }} · {{ r.code }}</mat-card-title>
+          <mat-card-subtitle>Signature valid</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <dl class="mt-2 grid grid-cols-[max-content_1fr] gap-x-6 gap-y-1 text-sm">
+            @for (entry of r.summary | keyvalue; track entry.key) {
+              <dt class="text-on-surface-variant">{{ label(entry.key) }}</dt>
+              <dd class="m-0">{{ isScalar(entry.value) ? entry.value : '—' }}</dd>
+            }
+          </dl>
+          @if (codeImage(); as src) {
+            <img [src]="src" alt="Code of the record" class="mt-3 size-40" />
+          }
+        </mat-card-content>
+        @if (canShowCode() && !codeImage()) {
+          <mat-card-actions>
+            <button matButton (click)="showCode(r)">
+              <mat-icon>qr_code_2</mat-icon> Show code
+            </button>
+          </mat-card-actions>
+        }
+      </mat-card>
+    }
+  </section>
+
+  <aside>
+    <h2 class="mb-2 mt-0 text-sm font-semibold text-on-surface-variant">Recent scans</h2>
+    <ul class="m-0 flex list-none flex-col gap-1 p-0">
+      @for (entry of history(); track entry.at) {
+        <li class="flex items-start gap-2 rounded-lg px-2 py-1 text-sm hover:bg-surface-container">
+          <mat-icon class="!size-4 shrink-0 !text-base" [class.text-error]="!entry.ok">{{
+            entry.ok ? 'check_circle' : 'cancel'
+          }}</mat-icon>
+          <span class="min-w-0 flex-1 truncate" [title]="entry.payload">{{ entry.label }}</span>
+          <span class="tabular-nums text-xs text-on-surface-variant">{{
+            entry.at | date: timeFormat
+          }}</span>
+        </li>
+      } @empty {
+        <li class="text-sm text-on-surface-variant">Nothing scanned yet.</li>
+      }
+    </ul>
+  </aside>
+</div>

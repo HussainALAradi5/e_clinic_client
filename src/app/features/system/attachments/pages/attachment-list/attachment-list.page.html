@@ -1,0 +1,63 @@
+<ui-resource-list
+  resource="attachments"
+  title="Attachments"
+  subtitle="Files are stored privately, virus-scanned and downloaded through 5-minute links only."
+  emptyTitle="No files found"
+>
+  @if (picked().length > 1) {
+    <ui-button bulk size="sm" variant="tonal" icon="folder_zip" [action]="zip"
+      >Download ZIP</ui-button
+    >
+  }
+
+  <ng-template uiCell="original_name" let-row>
+    <div class="flex items-center gap-2">
+      @if (row.isSensitive) {
+        <mat-icon
+          class="!size-4 !text-base text-error"
+          matTooltip="Medical (PHI) — needs view-medical rights"
+          >health_and_safety</mat-icon
+        >
+      }
+      <span class="font-medium">{{ row.originalName }}</span>
+    </div>
+    @if (row.description) {
+      <span class="block text-xs text-on-surface-variant">{{ row.description }}</span>
+    }
+  </ng-template>
+  <ng-template uiCell="category" let-row>{{
+    row.category | enumLabel: 'AttachmentCategory'
+  }}</ng-template>
+  <ng-template uiCell="size_bytes" let-row>
+    <span class="whitespace-nowrap tabular-nums">{{ size(row.sizeBytes) }}</span>
+  </ng-template>
+  <ng-template uiCell="scan_status" let-row>
+    <ui-status enum="FileScanStatus" [value]="row.scanStatus" />
+  </ng-template>
+  <ng-template uiCell="attachable_type" let-row>
+    {{ row.attachableType }}
+    <span class="font-mono text-xs text-on-surface-variant">{{ row.attachableId.slice(-8) }}</span>
+  </ng-template>
+  <ng-template uiCell="created_at" let-row>
+    <span class="whitespace-nowrap tabular-nums">{{ row.createdAt | date: dateFormat }}</span>
+    @if (row.scanStatus === clean) {
+      <button
+        matIconButton
+        class="ml-1"
+        aria-label="Preview"
+        matTooltip="Open"
+        (click)="download(row, true, $event)"
+      >
+        <mat-icon>open_in_new</mat-icon>
+      </button>
+      <button
+        matIconButton
+        aria-label="Download"
+        matTooltip="Download"
+        (click)="download(row, false, $event)"
+      >
+        <mat-icon>download</mat-icon>
+      </button>
+    }
+  </ng-template>
+</ui-resource-list>

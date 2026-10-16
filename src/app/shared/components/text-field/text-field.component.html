@@ -1,0 +1,26 @@
+<mat-form-field class="w-full">
+  <mat-label>{{ label() }}</mat-label>
+  @if (multiline()) {
+    <textarea
+      matInput
+      [formControl]="control()"
+      [rows]="rows()"
+      [attr.maxlength]="maxLength()"
+    ></textarea>
+  } @else {
+    <input
+      matInput
+      [type]="type()"
+      [formControl]="control()"
+      [attr.maxlength]="maxLength()"
+      [attr.autocomplete]="autocomplete()"
+    />
+  }
+  @if (hint()) {
+    <mat-hint>{{ hint() }}</mat-hint>
+  }
+  @if (maxLength()) {
+    <mat-hint align="end">{{ length() }} / {{ maxLength() }}</mat-hint>
+  }
+  <mat-error>{{ error() }}</mat-error>
+</mat-form-field>

@@ -1,0 +1,87 @@
+<nav
+  class="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 py-2 text-sm text-on-surface-variant"
+  aria-label="Pagination"
+>
+  <label class="flex items-center gap-2">
+    Rows
+    <mat-select
+      class="w-16"
+      [value]="meta().perPage"
+      (selectionChange)="change({ page: 1, perPage: $event.value })"
+      aria-label="Rows per page"
+    >
+      @for (size of pageSizes(); track size) {
+        <mat-option [value]="size">{{ size }}</mat-option>
+      }
+    </mat-select>
+  </label>
+
+  @if (cursorMode()) {
+    <span class="flex items-center">
+      <button
+        matIconButton
+        [disabled]="!meta().prevCursor"
+        (click)="change({ perPage: meta().perPage, cursor: meta().prevCursor! })"
+        matTooltip="Previous ([)"
+        aria-label="Previous page"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button
+        matIconButton
+        [disabled]="!meta().nextCursor"
+        (click)="change({ perPage: meta().perPage, cursor: meta().nextCursor! })"
+        matTooltip="Next (])"
+        aria-label="Next page"
+      >
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </span>
+  } @else {
+    <span class="tabular-nums" aria-live="polite">{{ range() }}</span>
+    <label class="hidden items-center gap-2 md:flex">
+      Page
+      <input
+        class="w-14 rounded-md border border-outline-variant bg-transparent px-2 py-1 text-on-surface tabular-nums"
+        type="number"
+        min="1"
+        [max]="lastPage()"
+        [value]="page()"
+        (change)="jump($event)"
+        aria-label="Go to page"
+      />
+      of {{ lastPage() }}
+    </label>
+    <span class="flex items-center">
+      <button matIconButton [disabled]="page() <= 1" (click)="go(1)" aria-label="First page">
+        <mat-icon>first_page</mat-icon>
+      </button>
+      <button
+        matIconButton
+        [disabled]="page() <= 1"
+        (click)="go(page() - 1)"
+        matTooltip="Previous ([)"
+        aria-label="Previous page"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button
+        matIconButton
+        [disabled]="page() >= lastPage()"
+        (click)="go(page() + 1)"
+        matTooltip="Next (])"
+        aria-label="Next page"
+      >
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+      <button
+        matIconButton
+        [disabled]="page() >= lastPage()"
+        (click)="go(lastPage())"
+        aria-label="Last page"
+      >
+        <mat-icon>last_page</mat-icon>
+      </button>
+    </span>
+  }
+</nav>

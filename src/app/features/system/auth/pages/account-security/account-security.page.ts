@@ -1,0 +1,159 @@
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { firstValueFrom } from 'rxjs';
+import { AppButton } from '@shared/components/app-button/app-button.component';
+import { GenericForm } from '@shared/components/generic-form/generic-form.component';
+import { PageHeader } from '@shared/components/page-header/page-header.component';
+import { PasswordStrength } from '@shared/components/password-strength/password-strength.component';
+import { TextField } from '@shared/components/text-field/text-field.component';
+import { TOTP_LENGTH } from '@shared/constants/limits.constants';
+import { ButtonVariant } from '@shared/enums/ui/button.enum';
+import {
+  ChangePasswordPayload,
+  TwoFactorSetup,
+} from '@shared/interfaces/auth/auth-payloads.interface';
+import { ConfirmConfig } from '@shared/interfaces/ui/confirm-config.interface';
+import { AuthStore } from '@shared/services/auth/auth.store';
+import { SessionService } from '@shared/services/auth/session.service';
+import { AuthApi } from '@shared/services/identity/auth-api.service';
+import { NotifyService } from '@shared/services/ui/notify.service';
+import { downloadBlob } from '@shared/utils/download';
+import { AppValidators } from '@shared/utils/validators';
+
+/** `/account/security` — change password, set up / disable TOTP 2FA, sign out of all devices. */
+@Component({
+  selector: 'app-account-security-page',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    PageHeader,
+    GenericForm,
+    TextField,
+    PasswordStrength,
+    AppButton,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
+  templateUrl: './account-security.page.html',
+})
+export class AccountSecurityPage implements OnInit {
+  /** `?setup=2fa` (sent by the 2FA-required redirect) scrolls to the 2FA section. */
+  readonly setup = input<string | undefined>();
+
+  protected readonly auth = inject(AuthStore);
+  private readonly api = inject(AuthApi);
+  private readonly session = inject(SessionService);
+  private readonly notify = inject(NotifyService);
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  protected readonly variants = ButtonVariant;
+  protected readonly twoFactor = computed(() => this.auth.user()?.twoFactor);
+  protected readonly enrolment = signal<TwoFactorSetup | null>(null);
+  protected readonly recoveryCodes = signal<string[] | null>(null);
+  protected readonly qrCode = computed<SafeUrl | null>(() => {
+    const setup = this.enrolment();
+    // Server-generated SVG shown as an image (cannot run scripts).
+    return setup
+      ? this.sanitizer.bypassSecurityTrustUrl(`data:image/svg+xml;base64,${btoa(setup.qrCodeSvg)}`)
+      : null;
+  });
+  protected readonly secret = computed(
+    () => new URL(this.enrolment()?.otpauthUrl ?? 'otpauth://x').searchParams.get('secret') ?? '',
+  );
+
+  protected readonly passwordForm = new FormGroup({
+    currentPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    password: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, AppValidators.strongPassword],
+    }),
+    passwordConfirmation: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, AppValidators.matchField('password')],
+    }),
+  });
+  protected readonly newPassword = toSignal(this.passwordForm.controls.password.valueChanges, {
+    initialValue: '',
+  });
+  protected readonly confirmForm = new FormGroup({
+    code: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.pattern(new RegExp(`^\\d{${TOTP_LENGTH}}$`))],
+    }),
+  });
+  protected readonly disableForm = new FormGroup({
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+  });
+
+  protected readonly logoutAllConfirm: ConfirmConfig = {
+    title: 'Sign out of all devices?',
+    message: 'Every session, including this one, ends now. You will need to sign in again.',
+    confirmLabel: 'Sign out everywhere',
+    danger: true,
+  };
+
+  ngOnInit(): void {
+    if (this.setup() === '2fa') {
+      setTimeout(() =>
+        this.host.nativeElement
+          .querySelector('#two-factor')
+          ?.scrollIntoView({ behavior: 'smooth' }),
+      );
+    }
+  }
+
+  protected readonly changePassword = async (value: ChangePasswordPayload): Promise<void> => {
+    await firstValueFrom(this.api.changePassword(value));
+    this.passwordForm.reset();
+    this.notify.success('Password changed. Your other devices were signed out.');
+  };
+
+  protected readonly startEnrolment = async (): Promise<void> => {
+    this.recoveryCodes.set(null);
+    this.enrolment.set(await firstValueFrom(this.api.enableTwoFactor()));
+  };
+
+  protected readonly confirmEnrolment = async (value: { code: string }): Promise<void> => {
+    const result = await firstValueFrom(this.api.confirmTwoFactor(value.code));
+    await firstValueFrom(this.session.refresh());
+    this.enrolment.set(null);
+    this.recoveryCodes.set(result.recoveryCodes);
+    this.confirmForm.reset();
+    this.notify.success('Two-factor authentication is on.');
+  };
+
+  protected readonly disableTwoFactor = async (value: { password: string }): Promise<void> => {
+    await firstValueFrom(this.api.disableTwoFactor(value.password));
+    this.disableForm.reset();
+    await firstValueFrom(this.session.refresh());
+    this.notify.success('Two-factor authentication is off.');
+  };
+
+  protected readonly logoutAll = (): Promise<number> => firstValueFrom(this.session.logoutAll());
+
+  protected copyCodes(codes: string[]): void {
+    void navigator.clipboard.writeText(codes.join('\n')).then(() => this.notify.success('Copied.'));
+  }
+
+  protected downloadCodes(codes: string[]): void {
+    downloadBlob(
+      new Blob([codes.join('\n') + '\n'], { type: 'text/plain' }),
+      'e-clinic-recovery-codes.txt',
+    );
+  }
+}

@@ -1,0 +1,130 @@
+<main class="mx-auto flex max-w-6xl flex-col gap-6 p-4 md:p-6">
+  <ui-page-header
+    title="UI kit"
+    subtitle="Shared components used by every feature (light / dark, keyboard friendly)."
+  >
+    <mat-button-toggle-group
+      actions
+      [value]="theme.mode()"
+      (change)="theme.mode.set($event.value)"
+      aria-label="Theme"
+    >
+      <mat-button-toggle value="light">Light</mat-button-toggle>
+      <mat-button-toggle value="system">System</mat-button-toggle>
+      <mat-button-toggle value="dark">Dark</mat-button-toggle>
+    </mat-button-toggle-group>
+  </ui-page-header>
+
+  <section class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    <mat-card appearance="outlined" class="p-4">
+      <h2 class="m-0 mb-3 text-lg font-semibold">Buttons that lock on click</h2>
+      <div class="flex flex-wrap gap-2">
+        <ui-button [action]="save" icon="save">Save (1 s)</ui-button>
+        <ui-button variant="tonal" lock="once" [action]="save" icon="send">Submit once</ui-button>
+        <ui-button variant="outlined" [action]="fail">Fails → toast</ui-button>
+        <ui-button
+          variant="danger"
+          icon="event_busy"
+          [action]="save"
+          [confirm]="{
+            title: 'Cancel appointment?',
+            reason: true,
+            danger: true,
+            confirmLabel: 'Cancel appointment',
+          }"
+          >Cancel…</ui-button
+        >
+        <ui-button variant="text" access="nobody.has_this" accessMode="disable"
+          >No permission</ui-button
+        >
+      </div>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="p-4">
+      <h2 class="m-0 mb-3 text-lg font-semibold">Status chips & pipes</h2>
+      <div class="flex flex-wrap gap-2">
+        @for (s of statuses; track s) {
+          <ui-status enum="GenericStatus" [value]="s" />
+        }
+        <ui-status enum="InvoiceStatus" value="partially_paid" />
+        <ui-status enum="AppointmentStatus" value="checked_in" />
+      </div>
+      <dl class="mt-4 grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+        <dt class="text-on-surface-variant">money</dt>
+        <dd class="m-0 tabular-nums">{{ sampleMoney | money }}</dd>
+        <dt class="text-on-surface-variant">duration</dt>
+        <dd class="m-0">{{ 95 | duration }}</dd>
+        <dt class="text-on-surface-variant">age</dt>
+        <dd class="m-0">{{ '1990-05-20' | age }}</dd>
+        <dt class="text-on-surface-variant">mask</dt>
+        <dd class="m-0">{{ '880512345' | mask }}</dd>
+        <dt class="text-on-surface-variant">relativeTime</dt>
+        <dd class="m-0">{{ rows[3].updatedAt | relativeTime }}</dd>
+      </dl>
+    </mat-card>
+  </section>
+
+  <mat-card appearance="outlined" class="p-4">
+    <h2 class="m-0 mb-3 text-lg font-semibold">Filter · table · selection · paginator</h2>
+    <ui-generic-filter
+      class="mb-3"
+      [schema]="schema"
+      [query]="query()"
+      (queryChange)="setQuery($event)"
+    />
+    @if (selection.hasSelection()) {
+      <p class="m-0 mb-2 text-sm">{{ selection.count() }} selected ({{ selection.mode() }} mode)</p>
+    }
+    <ui-data-table
+      [columns]="columns"
+      [page]="page()"
+      [sort]="query().sort ?? []"
+      [selection]="selection"
+      (sortChange)="setQuery({ ...query(), sort: $event })"
+      (selectAllMatching)="selection.selectAllMatching(query(), rows.length)"
+    >
+      <ng-template uiCell="status" let-row
+        ><ui-status enum="GenericStatus" [value]="row.status"
+      /></ng-template>
+      <ng-template uiCell="price" let-row
+        ><span class="tabular-nums">{{ row.price | money }}</span></ng-template
+      >
+      <ng-template uiCell="updated_at" let-row>{{ row.updatedAt | relativeTime }}</ng-template>
+    </ui-data-table>
+    <ui-paginator
+      [meta]="page().meta"
+      (pageChange)="setQuery({ ...query(), page: $event.page, perPage: $event.perPage })"
+    />
+  </mat-card>
+
+  <section class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    <mat-card appearance="outlined" class="p-4">
+      <h2 class="m-0 mb-3 text-lg font-semibold">Generic form (server 422 mapping)</h2>
+      <ui-form [form]="form" [submit]="submit" submitLabel="Save patient" [cancelLabel]="null">
+        <div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
+          <ui-text label="First name" [control]="form.controls.firstName" [maxLength]="50" />
+          <ui-text label="Phone" type="tel" [control]="form.controls.phone" hint="+973…" />
+          <ui-select
+            label="Gender"
+            [control]="form.controls.gender"
+            [options]="genders"
+            [required]="true"
+          />
+          <ui-money label="Deposit" [control]="form.controls.deposit" />
+        </div>
+      </ui-form>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="p-4">
+      <h2 class="m-0 mb-3 text-lg font-semibold">States</h2>
+      <ui-skeleton [rows]="3" />
+      <ui-empty
+        title="No appointments today"
+        message="Book the first one to get started."
+        icon="event_available"
+      >
+        <ui-button variant="tonal" icon="add" [action]="save">Book appointment</ui-button>
+      </ui-empty>
+    </mat-card>
+  </section>
+</main>

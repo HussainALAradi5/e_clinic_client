@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content class="flex flex-col gap-3">
+  @if (data.message) {
+    <p class="text-on-surface-variant">{{ data.message }}</p>
+  }
+  @if (data.reason) {
+    <mat-form-field class="w-full">
+      <mat-label>{{ data.reasonLabel ?? 'Reason' }}</mat-label>
+      <textarea
+        matInput
+        cdkFocusInitial
+        rows="3"
+        [formControl]="reason"
+        [maxlength]="maxLength"
+      ></textarea>
+      <mat-hint align="end">{{ reason.value.length }} / {{ maxLength }}</mat-hint>
+      @if (reason.hasError('required')) {
+        <mat-error>A reason is required.</mat-error>
+      }
+    </mat-form-field>
+  }
+  @if (data.typeToConfirm) {
+    <mat-form-field class="w-full">
+      <mat-label>Type {{ data.typeToConfirm }} to confirm</mat-label>
+      <input matInput [formControl]="typed" autocomplete="off" />
+    </mat-form-field>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>{{ data.cancelLabel ?? 'Cancel' }}</button>
+  <button
+    mat-flat-button
+    [class.ui-danger]="data.danger"
+    [disabled]="!canConfirm()"
+    [mat-dialog-close]="data.reason ? reason.value.trim() : true"
+  >
+    {{ data.confirmLabel ?? 'Confirm' }}
+  </button>
+</mat-dialog-actions>

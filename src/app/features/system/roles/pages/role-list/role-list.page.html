@@ -1,0 +1,19 @@
+<ui-resource-list
+  resource="roles"
+  title="Roles & permissions"
+  subtitle="A user's rights are the sum of their roles. System roles cannot be renamed or deleted."
+  rowLink="/system/roles-permissions/:id"
+>
+  <ui-button actions icon="add" access="roles.create" [action]="create">New role</ui-button>
+
+  <ng-template uiCell="display_name" let-row>
+    <span class="font-medium">{{ row.displayName }}</span>
+    @if (row.isSystem) {
+      <mat-icon
+        class="ml-1 !size-4 align-middle !text-base text-on-surface-variant"
+        title="System role"
+        >lock</mat-icon
+      >
+    }
+  </ng-template>
+</ui-resource-list>

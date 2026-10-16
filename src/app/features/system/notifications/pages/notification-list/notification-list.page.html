@@ -1,0 +1,40 @@
+<ui-resource-list
+  resource="notifications"
+  title="Notifications"
+  subtitle="Every SMS, email, WhatsApp, push and in-app message with its delivery status. Failed messages can be resent."
+  emptyTitle="No notifications in this view"
+>
+  <ng-template uiCell="scheduled_for" let-row>
+    <span class="whitespace-nowrap tabular-nums">{{
+      row.scheduledFor | date: dateTimeFormat
+    }}</span>
+    @if (row.person) {
+      <span class="block text-xs text-on-surface-variant">{{ row.person.fullName }}</span>
+    }
+  </ng-template>
+  <ng-template uiCell="channel" let-row>{{
+    row.channel | enumLabel: 'NotificationChannel'
+  }}</ng-template>
+  <ng-template uiCell="template" let-row>
+    <span class="font-mono text-xs">{{ row.template }}</span>
+    @if (row.subject) {
+      <span class="block text-sm">{{ row.subject }}</span>
+    }
+  </ng-template>
+  <ng-template uiCell="destination" let-row>
+    <span class="font-mono text-xs">{{ row.destination ?? '—' }}</span>
+  </ng-template>
+  <ng-template uiCell="status" let-row>
+    <ui-status enum="NotificationStatus" [value]="row.status" />
+    @if (row.lastError) {
+      <span class="block max-w-60 truncate text-xs text-error" [title]="row.lastError">{{
+        row.lastError
+      }}</span>
+    }
+  </ng-template>
+  <ng-template uiCell="sent_at" let-row>
+    <span class="whitespace-nowrap tabular-nums">{{
+      row.sentAt ? (row.sentAt | date: dateTimeFormat) : '—'
+    }}</span>
+  </ng-template>
+</ui-resource-list>

@@ -1,0 +1,22 @@
+<h1 class="m-0 text-xl font-semibold">Sign in</h1>
+<p class="mt-1 mb-6 text-sm text-on-surface-variant">Use your clinic account.</p>
+
+<ui-form
+  [form]="form"
+  [submit]="submit"
+  submitLabel="Sign in"
+  [cancelLabel]="null"
+  [compact]="true"
+>
+  <ui-text label="Email" type="email" autocomplete="username" [control]="form.controls.email" />
+  <ui-text
+    label="Password"
+    type="password"
+    autocomplete="current-password"
+    [control]="form.controls.password"
+  />
+</ui-form>
+
+<p class="mt-4 mb-0 text-center text-sm">
+  <a routerLink="/password/forgot" class="text-primary">Forgot your password?</a>
+</p>

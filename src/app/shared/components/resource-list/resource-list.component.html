@@ -1,0 +1,55 @@
+<ui-page-header [title]="title()" [subtitle]="subtitle()">
+  @if (views() && store.schema()) {
+    <ui-saved-views
+      actions
+      [resource]="resource()"
+      [query]="store.query()"
+      [columns]="visibleColumns()"
+      [applyDefault]="pristineUrl"
+      (apply)="applyView($event)"
+    />
+  }
+  <ng-content select="[actions]" />
+</ui-page-header>
+
+@if (store.schema(); as schema) {
+  <ui-generic-filter
+    class="mb-3"
+    [schema]="schema"
+    [query]="store.query()"
+    (queryChange)="setQuery($event)"
+  />
+  @if (selectable()) {
+    <ui-bulk-bar
+      [endpoint]="endpointPath()"
+      [selection]="selection"
+      [actions]="schema.bulkActions"
+      (completed)="store.reload()"
+    >
+      <ng-content select="[bulk]" />
+    </ui-bulk-bar>
+  }
+}
+
+@if (store.error(); as error) {
+  <ui-error [error]="error" (retry)="store.reload()" />
+} @else if (!store.loading() && store.isEmpty()) {
+  <ui-empty
+    [title]="emptyTitle()"
+    icon="search_off"
+    message="Try changing the filters or the period."
+  />
+} @else {
+  <ui-data-table
+    [columns]="tableColumns()"
+    [page]="store.page()"
+    [loading]="store.loading()"
+    [sort]="store.query().sort ?? []"
+    [selection]="selectable() ? selection : null"
+    [cellDefs]="cells()"
+    (sortChange)="setQuery({ ...store.query(), sort: $event, page: 1 })"
+    (rowClick)="open($event)"
+    (selectAllMatching)="selection.selectAllMatching(store.query(), store.total())"
+  />
+  <ui-paginator [meta]="store.page().meta" (pageChange)="onPage($event)" />
+}

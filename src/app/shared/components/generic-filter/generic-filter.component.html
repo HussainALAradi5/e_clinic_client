@@ -1,0 +1,183 @@
+<div class="flex flex-wrap items-center gap-2">
+  @if (schema().search) {
+    <mat-form-field subscriptSizing="dynamic" class="w-full sm:w-72">
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [formControl]="search" placeholder="Search" aria-label="Search" />
+      @if (search.value) {
+        <button matIconSuffix matIconButton aria-label="Clear search" (click)="search.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+  }
+
+  @if (schema().dateFields.length) {
+    @if (schema().dateFields.length > 1) {
+      <mat-form-field subscriptSizing="dynamic" class="w-40">
+        <mat-label>Date</mat-label>
+        <mat-select
+          [value]="query().dateField ?? schema().dateFields[0]"
+          (selectionChange)="patch({ dateField: $event.value })"
+        >
+          @for (field of schema().dateFields; track field) {
+            <mat-option [value]="field">{{ label(field) }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+    <mat-form-field subscriptSizing="dynamic" class="w-44">
+      <mat-label>Period</mat-label>
+      <mat-select
+        [value]="query().dateRange ?? (query().dateFrom || query().dateTo ? customRange : null)"
+        (selectionChange)="setPreset($event.value)"
+      >
+        <mat-option [value]="null">Any time</mat-option>
+        @for (preset of presets; track preset.value) {
+          <mat-option [value]="preset.value">{{ preset.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    @if (query().dateRange === customRange) {
+      <mat-form-field subscriptSizing="dynamic" class="w-40">
+        <mat-label>From</mat-label>
+        <input
+          matInput
+          type="date"
+          [value]="query().dateFrom ?? ''"
+          (change)="patch({ dateFrom: value($event) })"
+        />
+      </mat-form-field>
+      <mat-form-field subscriptSizing="dynamic" class="w-40">
+        <mat-label>To</mat-label>
+        <input
+          matInput
+          type="date"
+          [value]="query().dateTo ?? ''"
+          (change)="patch({ dateTo: value($event) })"
+        />
+      </mat-form-field>
+    }
+  }
+
+  <mat-chip-set aria-label="Active filters">
+    @for (def of activeFilters(); track def.field) {
+      <mat-chip [matMenuTriggerFor]="editor" (click)="edit(def)" (removed)="remove(def)">
+        <span class="font-medium">{{ label(def.field) }}:</span> {{ summary(def) }}
+        <button matChipRemove [attr.aria-label]="'Remove ' + label(def.field) + ' filter'">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+    }
+  </mat-chip-set>
+
+  @if (availableFilters().length) {
+    <button matButton [matMenuTriggerFor]="fields"><mat-icon>filter_list</mat-icon>Filter</button>
+  }
+  @if (hasActive()) {
+    <button matButton (click)="clearAll()">Clear all</button>
+  }
+  @if (schema().archivable) {
+    <mat-slide-toggle
+      class="ms-auto"
+      [checked]="!!query().includeArchived"
+      (change)="patch({ includeArchived: $event.checked || undefined })"
+    >
+      Show archived
+    </mat-slide-toggle>
+  }
+</div>
+
+<mat-menu #fields="matMenu">
+  @for (def of availableFilters(); track def.field) {
+    <button mat-menu-item [matMenuTriggerFor]="editor" (mouseenter)="edit(def)" (click)="edit(def)">
+      {{ label(def.field) }}
+    </button>
+  }
+</mat-menu>
+
+<mat-menu #editor="matMenu" class="ui-filter-editor">
+  @if (editing(); as def) {
+    <div
+      class="flex w-72 flex-col gap-3 p-3"
+      (click)="$event.stopPropagation()"
+      (keydown)="$event.stopPropagation()"
+    >
+      <p class="m-0 text-sm font-semibold">{{ label(def.field) }}</p>
+      @switch (def.type) {
+        @case (types.Enum) {
+          <div class="flex max-h-64 flex-col overflow-y-auto">
+            @for (option of enumOptions(def); track option.value) {
+              <mat-checkbox
+                [checked]="draft().values.includes(option.value)"
+                (change)="toggleValue(option.value)"
+                >{{ option.label }}</mat-checkbox
+              >
+            }
+          </div>
+        }
+        @case (types.Boolean) {
+          <mat-select
+            [value]="draft().text"
+            (selectionChange)="setDraft({ text: $event.value })"
+            aria-label="Value"
+          >
+            <mat-option value="true">Yes</mat-option>
+            <mat-option value="false">No</mat-option>
+          </mat-select>
+        }
+        @case (types.Number) {
+          <ng-container *ngTemplateOutlet="minMax; context: { type: 'number' }" />
+        }
+        @case (types.Money) {
+          <ng-container *ngTemplateOutlet="minMax; context: { type: 'number' }" />
+        }
+        @case (types.Date) {
+          <ng-container *ngTemplateOutlet="minMax; context: { type: 'date' }" />
+        }
+        @case (types.Datetime) {
+          <ng-container *ngTemplateOutlet="minMax; context: { type: 'date' }" />
+        }
+        @default {
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-label>{{
+              def.operators.includes(operators.Like) ? 'Contains' : 'Equals'
+            }}</mat-label>
+            <input
+              matInput
+              [value]="draft().text"
+              (input)="setDraft({ text: value($event) })"
+              (keydown.enter)="apply(def)"
+            />
+          </mat-form-field>
+        }
+      }
+      <div class="flex justify-end gap-2">
+        <button matButton (click)="remove(def)">Clear</button>
+        <button matButton="filled" (click)="apply(def)">Apply</button>
+      </div>
+    </div>
+  }
+</mat-menu>
+
+<ng-template #minMax let-type="type">
+  <div class="grid grid-cols-2 gap-2">
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>{{ type === 'date' ? 'From' : 'Min' }}</mat-label>
+      <input
+        matInput
+        [type]="type"
+        [value]="draft().min"
+        (input)="setDraft({ min: value($event) })"
+      />
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>{{ type === 'date' ? 'To' : 'Max' }}</mat-label>
+      <input
+        matInput
+        [type]="type"
+        [value]="draft().max"
+        (input)="setDraft({ max: value($event) })"
+      />
+    </mat-form-field>
+  </div>
+</ng-template>
