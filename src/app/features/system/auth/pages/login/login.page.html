@@ -39,7 +39,3 @@
 <p class="mt-6 mb-0 text-center text-sm text-on-surface-variant">
   New patient? Ask reception to create your portal account.
 </p>
-
-@if (demoLogins; as demo) {
-  <app-demo-accounts class="mt-8" [demo]="demo" (picked)="useDemo($event)" />
-}

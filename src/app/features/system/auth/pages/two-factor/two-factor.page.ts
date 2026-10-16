@@ -15,7 +15,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
-import { environment } from '@env';
 import { GenericForm } from '@shared/components/generic-form/generic-form.component';
 import { OtpInput } from '@shared/components/otp-input/otp-input.component';
 import { TextField } from '@shared/components/text-field/text-field.component';
@@ -37,7 +36,6 @@ export class TwoFactorPage implements OnInit {
   private readonly injector = inject(Injector);
   private readonly formRef = viewChild.required(GenericForm);
 
-  protected readonly demoLogins = environment.demoLogins;
   protected readonly useRecoveryCode = signal(false);
   protected readonly form = new FormGroup({
     code: new FormControl('', {
@@ -78,14 +76,5 @@ export class TwoFactorPage implements OnInit {
         : [Validators.required, Validators.pattern(new RegExp(`^\\d{${TOTP_LENGTH}}$`))],
     );
     code.reset('');
-  }
-
-  /** Development builds: enter the demo accounts' fixed code (6 digits → submits by itself). */
-  protected useDemoCode(): void {
-    if (this.useRecoveryCode()) {
-      this.toggleMode();
-    }
-    this.form.markAsDirty();
-    this.form.controls.code.setValue(this.demoLogins?.twoFactorCode ?? '');
   }
 }

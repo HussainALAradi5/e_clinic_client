@@ -40,16 +40,3 @@
   </button>
   <a matButton routerLink="/login"><mat-icon>arrow_back</mat-icon> Back to sign in</a>
 </div>
-
-@if (demoLogins; as demo) {
-  <div
-    class="mt-8 flex items-center gap-3 rounded-2xl border border-dashed border-outline-variant p-4"
-  >
-    <mat-icon class="shrink-0 text-primary">science</mat-icon>
-    <p class="m-0 flex-1 text-sm text-on-surface-variant">
-      Demo account? The code is <strong class="text-on-surface">{{ demo.twoFactorCode }}</strong
-      >.
-    </p>
-    <button matButton="tonal" type="button" (click)="useDemoCode()">Use it</button>
-  </div>
-}
