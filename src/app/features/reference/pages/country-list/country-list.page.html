@@ -7,7 +7,7 @@
   (rowClick)="edit($event)"
 >
   <ng-template uiCell="code" let-row>
-    <span aria-hidden="true">{{ flag(row.code) }}</span>
+    <ui-flag [code]="row.code" />
     <span class="ml-1 tabular-nums">{{ row.code }}</span>
   </ng-template>
   <ng-template uiCell="is_active" let-row>{{ row.isActive ? 'Yes' : 'Hidden' }}</ng-template>

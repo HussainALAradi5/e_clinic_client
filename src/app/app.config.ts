@@ -14,6 +14,7 @@ import {
   withViewTransitions,
 } from '@angular/router';
 import { routes } from './app.routes';
+import { provideClinicDates } from '@core/date/iso-date-adapter';
 import { API_INTERCEPTORS } from '@core/interceptors/api.interceptors';
 import { firstValueFrom } from 'rxjs';
 import { SessionService } from '@shared/services/auth/session.service';
@@ -30,6 +31,7 @@ export const appConfig: ApplicationConfig = {
       withViewTransitions(),
     ),
     provideHttpClient(withInterceptors(API_INTERCEPTORS)),
+    provideClinicDates(),
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
     provideAppInitializer(() => {
       inject(MatIconRegistry).setDefaultFontSetClass('material-symbols-outlined');

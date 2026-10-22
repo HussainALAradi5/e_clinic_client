@@ -15,8 +15,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Country } from '@shared/interfaces/reference/country.interface';
 import { CountryApi } from '@shared/services/reference/country-api.service';
-import { flag } from '@shared/utils/address';
 import { errorMessage } from '@shared/utils/validators';
+import { Flag } from '@shared/components/flag/flag.component';
 
 const MAX_SHOWN = 50;
 
@@ -28,7 +28,7 @@ const MAX_SHOWN = 50;
 @Component({
   selector: 'ui-country-select',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule],
+  imports: [Flag, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule],
   host: { class: 'block' },
   templateUrl: './country-select.component.html',
 })
@@ -45,7 +45,6 @@ export class CountrySelect implements OnInit {
 
   protected readonly search = new FormControl('', { nonNullable: true });
   private readonly term = signal('');
-  protected readonly flag = flag;
 
   protected readonly matches = computed(() => {
     const term = this.term().trim().toLowerCase();
@@ -79,6 +78,12 @@ export class CountrySelect implements OnInit {
       }
     });
   }
+
+  /** What the field shows for a picked code (the option value), instead of the code itself. */
+  protected readonly nameOf = (code: string | null): string => {
+    const country = this.countries().find((c) => c.code === code);
+    return country ? this.display(country) : (code ?? '');
+  };
 
   protected display(country: Country): string {
     return this.mode() === 'nationality' ? country.nationality : country.name;

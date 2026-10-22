@@ -60,7 +60,7 @@
             <dl class="m-0 grid grid-cols-[max-content_1fr] gap-x-6 gap-y-2 text-sm">
               <dt class="text-on-surface-variant">Country</dt>
               <dd class="m-0">
-                <span aria-hidden="true">{{ flag(company.countryCode) }}</span>
+                <ui-flag [code]="company.countryCode" />
                 {{ company.country?.name }}
               </dd>
               <dt class="text-on-surface-variant">Address</dt>

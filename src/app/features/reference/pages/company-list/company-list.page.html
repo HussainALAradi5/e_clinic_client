@@ -15,7 +15,7 @@
   </ng-template>
   <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'CompanyType' }}</ng-template>
   <ng-template uiCell="country_code" let-row>
-    <span aria-hidden="true">{{ flag(row.countryCode) }}</span>
+    <ui-flag [code]="row.countryCode" />
     {{ row.country?.name ?? row.countryCode }}
   </ng-template>
   <ng-template uiCell="contact_person" let-row>{{ row.contactPerson ?? '—' }}</ng-template>

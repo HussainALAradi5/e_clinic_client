@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  <span aria-hidden="true">{{ flag }}</span> {{ data.country.name }} ({{ data.country.code }})
+  <ui-flag [code]="data.country.code" /> {{ data.country.name }} ({{ data.country.code }})
 </h2>
 <mat-dialog-content>
   <ui-form

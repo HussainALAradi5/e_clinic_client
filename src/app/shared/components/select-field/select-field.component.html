@@ -1,11 +1,30 @@
 <mat-form-field class="w-full">
   <mat-label>{{ label() }}</mat-label>
   <mat-select [formControl]="control()" [multiple]="multiple()">
+    @if (badges() && enum(); as name) {
+      <mat-select-trigger>
+        @let picked = selected();
+        <span class="inline-flex flex-nowrap items-center gap-1 overflow-hidden">
+          @for (value of picked.slice(0, 2); track value) {
+            <ui-status [value]="value" [enum]="name" />
+          }
+          @if (picked.length > 2) {
+            <span class="text-xs text-on-surface-variant">+{{ picked.length - 2 }}</span>
+          }
+        </span>
+      </mat-select-trigger>
+    }
     @if (!multiple() && !required()) {
       <mat-option [value]="null">—</mat-option>
     }
     @for (option of items(); track option.value) {
-      <mat-option [value]="option.value">{{ option.label }}</mat-option>
+      <mat-option [value]="option.value">
+        @if (badges() && enum(); as name) {
+          <ui-status [value]="option.value" [enum]="name" />
+        } @else {
+          {{ option.label }}
+        }
+      </mat-option>
     }
   </mat-select>
   @if (hint()) {

@@ -1,0 +1,8 @@
+@if (css(); as classes) {
+  <span
+    [class]="classes"
+    [attr.role]="label() ? 'img' : null"
+    [attr.aria-label]="label()"
+    [attr.aria-hidden]="label() ? null : 'true'"
+  ></span>
+}

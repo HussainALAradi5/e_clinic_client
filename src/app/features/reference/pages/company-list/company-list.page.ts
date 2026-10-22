@@ -11,13 +11,13 @@ import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { CompanyApi } from '@shared/services/reference/company-api.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
 import { DialogService } from '@shared/services/ui/dialog.service';
-import { flag } from '@shared/utils/address';
+import { Flag } from '@shared/components/flag/flag.component';
 
 /** `/reference/companies` — manufacturers, suppliers, insurers, labs and hospitals; bulk archive / delete / restore. */
 @Component({
   selector: 'app-company-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, AppButton, EnumLabelPipe],
+  imports: [Flag, ResourceListPage, CellDef, AppButton, EnumLabelPipe],
   templateUrl: './company-list.page.html',
 })
 export class CompanyListPage {
@@ -25,7 +25,6 @@ export class CompanyListPage {
   private readonly dialogs = inject(DialogService);
   private readonly notify = inject(NotifyService);
   private readonly router = inject(Router);
-  protected readonly flag = flag;
 
   protected readonly create = async (): Promise<void> => {
     const company = await this.dialogs.open<CompanyFormDialog, CompanyFormDialogData, Company>(

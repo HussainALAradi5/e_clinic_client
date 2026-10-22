@@ -10,6 +10,7 @@ import {
   untracked,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -64,6 +65,7 @@ function hhmm(total: number): string {
   imports: [
     PageHeader,
     MatButtonModule,
+    MatDatepickerModule,
     MatButtonToggleModule,
     MatIconModule,
     DatePipe,
@@ -174,7 +176,7 @@ export class CalendarPage {
     this.date.set(clinicIsoDate());
   }
 
-  protected pickDate(value: string): void {
+  protected pickDate(value: string | null): void {
     if (value) this.date.set(value);
   }
 

@@ -1,0 +1,16 @@
+@if (host.fields().length > 1) {
+  <div class="seg" role="radiogroup" aria-label="Date to filter on">
+    @for (f of host.fields(); track f.value) {
+      <button
+        type="button"
+        role="radio"
+        [attr.aria-checked]="host.current().field === f.value"
+        [class.on]="host.current().field === f.value"
+        (click)="host.chooseField(f.value)"
+      >
+        {{ f.label }}
+      </button>
+    }
+  </div>
+}
+<mat-calendar-header />

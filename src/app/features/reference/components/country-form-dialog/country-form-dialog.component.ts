@@ -6,19 +6,25 @@ import { CountryFormDialogData } from '../../interfaces/dialog-data.interface';
 import { GenericForm } from '@shared/components/generic-form/generic-form.component';
 import { TextField } from '@shared/components/text-field/text-field.component';
 import { Country, CountryPayload } from '@shared/interfaces/reference/country.interface';
-import { flag } from '@shared/utils/address';
+import { Flag } from '@shared/components/flag/flag.component';
 
 /** Edits a country's labels, dial code, picker order and active flag (deactivating keeps existing data). */
 @Component({
   selector: 'app-country-form-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatDialogModule, MatSlideToggleModule, ReactiveFormsModule, GenericForm, TextField],
+  imports: [
+    Flag,
+    MatDialogModule,
+    MatSlideToggleModule,
+    ReactiveFormsModule,
+    GenericForm,
+    TextField,
+  ],
   templateUrl: './country-form-dialog.component.html',
 })
 export class CountryFormDialog {
   protected readonly data = inject<CountryFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<CountryFormDialog, Country>);
-  protected readonly flag = flag(this.data.country.code);
   private readonly country = this.data.country;
 
   protected readonly form = new FormGroup({

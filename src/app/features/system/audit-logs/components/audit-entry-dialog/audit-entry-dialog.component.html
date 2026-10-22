@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>{{ entry.action | enumLabel: 'AuditAction' }}</h2>
-<mat-dialog-content class="flex flex-col gap-4">
+<mat-dialog-content class="!flex flex-col gap-4">
   <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-sm">
     <dt class="text-on-surface-variant">When</dt>
     <dd class="m-0">{{ entry.createdAt | date: dateTimeFormat }}</dd>

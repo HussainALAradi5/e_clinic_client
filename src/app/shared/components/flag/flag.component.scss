@@ -1,0 +1,10 @@
+// A small rounded tile with a hairline, so white flags stay visible on white and dark surfaces.
+.flag {
+  width: 1.375em;
+  height: 1.03em;
+  border-radius: 3px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.12);
+}

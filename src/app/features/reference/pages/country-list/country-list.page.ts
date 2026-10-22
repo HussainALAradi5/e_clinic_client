@@ -9,13 +9,13 @@ import { AccessService } from '@shared/services/auth/access.service';
 import { CountryApi } from '@shared/services/reference/country-api.service';
 import { DialogService } from '@shared/services/ui/dialog.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
-import { flag } from '@shared/utils/address';
+import { Flag } from '@shared/components/flag/flag.component';
 
 /** `/reference/countries` — ISO country list; reference editors relabel, reorder and hide countries. */
 @Component({
   selector: 'app-country-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef],
+  imports: [Flag, ResourceListPage, CellDef],
   templateUrl: './country-list.page.html',
 })
 export class CountryListPage {
@@ -24,7 +24,6 @@ export class CountryListPage {
   private readonly notify = inject(NotifyService);
   private readonly access = inject(AccessService);
   private readonly list = viewChild.required(ResourceListPage);
-  protected readonly flag = flag;
 
   protected async edit(row: { id: string }): Promise<void> {
     if (!this.access.can('reference.write')) {

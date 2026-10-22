@@ -16,8 +16,8 @@ import { ConfirmConfig } from '@shared/interfaces/ui/confirm-config.interface';
 import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { DialogService } from '@shared/services/ui/dialog.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
-import { flag } from '@shared/utils/address';
 import { humanise } from '@shared/utils/text';
+import { Flag } from '@shared/components/flag/flag.component';
 
 /** `/reference/companies/:id` — contacts, address, where the company is used, history; edit / archive / delete. */
 @Component({
@@ -25,6 +25,7 @@ import { humanise } from '@shared/utils/text';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [CompanyStore],
   imports: [
+    Flag,
     PageHeader,
     AppButton,
     ErrorState,
@@ -46,7 +47,6 @@ export class CompanyDetailPage implements OnInit {
   private readonly router = inject(Router);
 
   protected readonly variants = ButtonVariant;
-  protected readonly flag = flag;
   protected readonly label = humanise;
   protected readonly usage = computed(() => Object.entries(this.store.company()?.usage ?? {}));
   protected readonly inUse = computed(() => this.usage().some(([, count]) => count > 0));

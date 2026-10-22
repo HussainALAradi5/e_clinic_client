@@ -10,6 +10,15 @@
       [rows]="rows()"
       [attr.maxlength]="maxLength()"
     ></textarea>
+  } @else if (type() === 'date') {
+    <input
+      #field
+      matInput
+      [matDatepicker]="picker"
+      [formControl]="control()"
+      [attr.autocomplete]="'off'"
+      (click)="picker.open()"
+    />
   } @else {
     <input
       #field
@@ -20,6 +29,10 @@
       [attr.autocomplete]="autocomplete()"
     />
   }
+  @if (type() === 'date') {
+    <mat-datepicker-toggle matIconSuffix [for]="picker" />
+  }
+  <mat-datepicker #picker />
   @if (type() === 'password') {
     <button
       matIconButton

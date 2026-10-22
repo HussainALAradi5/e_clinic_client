@@ -11,52 +11,41 @@
     </mat-form-field>
   }
 
-  @if (schema().dateFields.length) {
-    @if (schema().dateFields.length > 1) {
-      <mat-form-field subscriptSizing="dynamic" class="w-40">
-        <mat-label>Date</mat-label>
-        <mat-select
-          [value]="query().dateField ?? schema().dateFields[0]"
-          (selectionChange)="patch({ dateField: $event.value })"
-        >
-          @for (field of schema().dateFields; track field) {
-            <mat-option [value]="field">{{ label(field) }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    }
+  @if (dateFields().length) {
+    <ui-date-range-filter
+      class="w-full sm:w-80"
+      [fields]="dateFields()"
+      [value]="dateValue()"
+      (valueChange)="setDate($event)"
+    />
+  }
+
+  @for (def of quickFilters(); track def.field) {
     <mat-form-field subscriptSizing="dynamic" class="w-44">
-      <mat-label>Period</mat-label>
+      <mat-label>{{ label(def.field) }}</mat-label>
       <mat-select
-        [value]="query().dateRange ?? (query().dateFrom || query().dateTo ? customRange : null)"
-        (selectionChange)="setPreset($event.value)"
+        multiple
+        [value]="selectedValues(def)"
+        (selectionChange)="setValues(def, $event.value)"
       >
-        <mat-option [value]="null">Any time</mat-option>
-        @for (preset of presets; track preset.value) {
-          <mat-option [value]="preset.value">{{ preset.label }}</mat-option>
+        <mat-select-trigger>
+          @let picked = selectedValues(def);
+          <span class="inline-flex flex-nowrap items-center gap-1 overflow-hidden">
+            @for (value of picked.slice(0, 2); track value) {
+              <ui-status [value]="value" [enum]="def.enum!" />
+            }
+            @if (picked.length > 2) {
+              <span class="text-xs text-on-surface-variant">+{{ picked.length - 2 }}</span>
+            }
+          </span>
+        </mat-select-trigger>
+        @for (option of enumOptions(def); track option.value) {
+          <mat-option [value]="option.value">
+            <ui-status [value]="option.value" [enum]="def.enum!" />
+          </mat-option>
         }
       </mat-select>
     </mat-form-field>
-    @if (query().dateRange === customRange) {
-      <mat-form-field subscriptSizing="dynamic" class="w-40">
-        <mat-label>From</mat-label>
-        <input
-          matInput
-          type="date"
-          [value]="query().dateFrom ?? ''"
-          (change)="patch({ dateFrom: value($event) })"
-        />
-      </mat-form-field>
-      <mat-form-field subscriptSizing="dynamic" class="w-40">
-        <mat-label>To</mat-label>
-        <input
-          matInput
-          type="date"
-          [value]="query().dateTo ?? ''"
-          (change)="patch({ dateTo: value($event) })"
-        />
-      </mat-form-field>
-    }
   }
 
   <mat-chip-set aria-label="Active filters">
@@ -110,8 +99,13 @@
               <mat-checkbox
                 [checked]="draft().values.includes(option.value)"
                 (change)="toggleValue(option.value)"
-                >{{ option.label }}</mat-checkbox
               >
+                @if (hasTones(def.enum)) {
+                  <ui-status [value]="option.value" [enum]="def.enum!" />
+                } @else {
+                  {{ option.label }}
+                }
+              </mat-checkbox>
             }
           </div>
         }

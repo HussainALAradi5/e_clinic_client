@@ -12,10 +12,14 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { errorMessage } from '@shared/utils/validators';
 
-/** `<ui-text label="First name" [control]="form.controls.firstName" />` — label, hint, error and counter wired once. */
+/**
+ * `<ui-text label="First name" [control]="form.controls.firstName" />` — label, hint, error and counter wired once.
+ * `type="date"` opens the clinic calendar (value stays an ISO date, typing 22/10/2026 works too).
+ */
 @Component({
   selector: 'ui-text',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,6 +29,7 @@ import { errorMessage } from '@shared/utils/validators';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
+    MatDatepickerModule,
   ],
   host: { class: 'block' },
   templateUrl: './text-field.component.html',

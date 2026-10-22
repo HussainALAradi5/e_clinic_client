@@ -1,7 +1,7 @@
 <mat-form-field class="w-full">
   <mat-label>{{ label() }}</mat-label>
   @if (control().value; as code) {
-    <span matTextPrefix class="mr-2" aria-hidden="true">{{ flag(code) }}</span>
+    <ui-flag matTextPrefix class="mr-2" [code]="code" />
   }
   <input
     matInput
@@ -11,10 +11,14 @@
     autocomplete="off"
     spellcheck="false"
   />
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select($event.option.value)">
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    [displayWith]="nameOf"
+    (optionSelected)="select($event.option.value)"
+  >
     @for (country of matches(); track country.code) {
       <mat-option [value]="country.code">
-        <span class="mr-2" aria-hidden="true">{{ flag(country.code) }}</span>
+        <ui-flag class="mr-2" [code]="country.code" />
         {{ display(country) }}
       </mat-option>
     } @empty {

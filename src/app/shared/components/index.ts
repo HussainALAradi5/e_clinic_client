@@ -37,3 +37,5 @@ export * from './person-fields/person-fields.component';
 export * from './entity-actions/entity-actions.component';
 export * from './print-sheet/print-sheet.component';
 export * from './code-image/code-image.component';
+export * from './date-range-filter/date-range-filter.component';
+export * from './flag/flag.component';

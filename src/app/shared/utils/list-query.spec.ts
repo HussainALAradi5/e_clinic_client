@@ -42,6 +42,16 @@ describe('list query', () => {
     expect(params.has('only_deleted')).toBe(false);
   });
 
+  it('sends fixed days as one open-ended date range', () => {
+    expect(toHttpParams({ dateFrom: '2026-10-01', dateTo: '2026-10-22' }).get('date_range')).toBe(
+      '2026-10-01..2026-10-22',
+    );
+    expect(toHttpParams({ dateFrom: '2026-10-01' }).get('date_range')).toBe('2026-10-01..');
+    expect(
+      toHttpParams({ dateRange: DateRangePreset.Custom, dateTo: '2026-10-22' }).get('date_range'),
+    ).toBe('..2026-10-22');
+  });
+
   it('round-trips through the URL', () => {
     expect(queryFromUrl(queryToUrl(query))).toEqual({
       ...query,

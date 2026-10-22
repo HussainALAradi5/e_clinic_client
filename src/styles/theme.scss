@@ -2,6 +2,7 @@
 // Brand: deep pine green on a cool off-white canvas; white cards with hairline borders; one warm accent (sun).
 @use '@angular/material' as mat;
 @use './brand';
+@use './flags';
 
 html {
   // Light unless the user picked dark (ThemeService / the script in index.html set data-theme).
@@ -91,6 +92,26 @@ html {
     (
       container-shape: 20px,
       container-color: var(--mat-sys-surface-container-lowest),
+    )
+  );
+  // Calendars: pine selection, mint range band, rounded panel — light-dark tokens, so both themes follow.
+  @include mat.datepicker-overrides(
+    (
+      calendar-container-background-color: var(--mat-sys-surface-container-lowest),
+      calendar-container-shape: 20px,
+      calendar-container-elevation-shadow: 0 24px 48px -20px rgb(5 42 39 / 0.45),
+      calendar-date-selected-state-background-color: var(--mat-sys-primary),
+      calendar-date-selected-state-text-color: var(--mat-sys-on-primary),
+      calendar-date-today-outline-color: var(--color-sun),
+      calendar-date-hover-state-background-color: var(--mat-sys-primary-container),
+      calendar-date-focus-state-background-color: var(--mat-sys-primary-container),
+      range-input-separator-color: var(--mat-sys-on-surface-variant),
+      calendar-date-in-range-state-background-color: var(--mat-sys-primary-container),
+      calendar-date-in-comparison-range-state-background-color: var(--mat-sys-secondary-container),
+      calendar-body-label-text-color: var(--mat-sys-on-surface-variant),
+      calendar-period-button-text-color: var(--mat-sys-on-surface),
+      calendar-header-text-color: var(--mat-sys-on-surface-variant),
+      toggle-active-state-icon-color: var(--mat-sys-primary),
     )
   );
   @include mat.card-overrides(
@@ -199,4 +220,33 @@ body {
   .mat-mdc-unelevated-button:not(:disabled):hover {
     transform: none;
   }
+}
+
+// Dialogs: room under the title for the floating label of a first field (Material clips it otherwise).
+.mat-mdc-dialog-container .mat-mdc-dialog-title + .mat-mdc-dialog-content {
+  padding-top: 0.75rem !important;
+}
+
+// Calendar days as soft rounded pills; no month label squeezed into the first row.
+.mat-calendar-body-label {
+  visibility: hidden;
+}
+
+.mat-calendar-body tr:has(> .mat-calendar-body-label[colspan='7']) {
+  display: none;
+}
+
+.mat-calendar-body-cell-content {
+  border-radius: 10px !important;
+  font-weight: 500;
+}
+
+.mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border-width: 2px;
+}
+
+// Form fields in a column or grid: room between a field's hint / error and the floating label of the field below
+// (toolbar fields use dynamic subscripts and stay compact).
+.mat-mdc-form-field-subscript-wrapper:not(.mat-mdc-form-field-subscript-dynamic-size) {
+  margin-bottom: 0.625rem;
 }

@@ -30,13 +30,20 @@
       <mat-icon>chevron_right</mat-icon>
     </button>
   </div>
-  <input
-    type="date"
-    class="rounded-lg border border-outline-variant bg-surface px-3 py-2 text-sm"
-    aria-label="Date"
-    [value]="date()"
-    (change)="pickDate($any($event.target).value)"
-  />
+  <span class="relative inline-flex">
+    <button matButton="outlined" type="button" (click)="datePicker.open()">
+      <mat-icon>calendar_month</mat-icon> Go to date
+    </button>
+    <input
+      class="pointer-events-none absolute inset-0 opacity-0"
+      tabindex="-1"
+      aria-hidden="true"
+      [matDatepicker]="datePicker"
+      [value]="date()"
+      (dateChange)="pickDate($event.value)"
+    />
+    <mat-datepicker #datePicker />
+  </span>
   <select
     class="rounded-lg border border-outline-variant bg-surface px-3 py-2 text-sm"
     aria-label="Doctor"

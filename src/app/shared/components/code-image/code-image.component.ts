@@ -18,13 +18,7 @@ import { CodeApi } from '@shared/services/code/code-api.service';
   selector: 'ui-code-image',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block' },
-  template: `
-    @if (url(); as src) {
-      <img class="block size-full" [src]="src" [alt]="label()" />
-    } @else {
-      <span class="block size-full animate-pulse rounded-lg bg-black/5" aria-hidden="true"></span>
-    }
-  `,
+  templateUrl: './code-image.component.html',
 })
 export class CodeImage {
   readonly entity = input.required<string>();

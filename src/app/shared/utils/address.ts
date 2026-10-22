@@ -72,10 +72,3 @@ export function toAddressPayload(form: AddressForm): AddressPayload | null {
   const filled = entries.some(([k, v]) => k !== 'countryCode' && v !== null);
   return filled ? payload : null;
 }
-
-/** Flag emoji from an ISO alpha-2 code ('BH' → 🇧🇭). */
-export function flag(code: string): string {
-  return code.length === 2
-    ? String.fromCodePoint(...[...code.toUpperCase()].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65))
-    : '';
-}

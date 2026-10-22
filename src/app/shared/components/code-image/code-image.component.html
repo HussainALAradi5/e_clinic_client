@@ -1,0 +1,5 @@
+@if (url(); as src) {
+  <img class="block size-full" [src]="src" [alt]="label()" />
+} @else {
+  <span class="block size-full animate-pulse rounded-lg bg-black/5" aria-hidden="true"></span>
+}

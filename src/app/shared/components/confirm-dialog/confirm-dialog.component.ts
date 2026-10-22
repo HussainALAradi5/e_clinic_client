@@ -31,6 +31,9 @@ export class ConfirmDialog {
     validators: [Validators.required],
   });
   protected readonly typed = new FormControl('', { nonNullable: true });
+  /** "Cancel" next to "Cancel treatment" is ambiguous: the way back reads "Keep it" then. */
+  protected readonly dismissLabel =
+    this.data.cancelLabel ?? (this.data.confirmLabel?.startsWith('Cancel') ? 'Keep it' : 'Cancel');
 
   protected canConfirm(): boolean {
     const reasonOk = !this.data.reason || this.reason.value.trim().length > 0;

@@ -71,6 +71,11 @@ export const TONE_CLASSES: Record<StatusTone, string> = {
   [RedOutline]: 'border border-red-400 text-red-700 dark:border-red-500 dark:text-red-300',
 };
 
+/** The enum has a colour per value (status / priority badges). */
+export function hasTones(enumName: string | null | undefined): boolean {
+  return !!enumName && enumName in STATUS_TONES;
+}
+
 export function statusTone(enumName: string, value: string | null | undefined): StatusTone {
   return (value && STATUS_TONES[enumName]?.[value]) || Grey;
 }

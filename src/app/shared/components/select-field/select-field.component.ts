@@ -2,15 +2,20 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { StatusChip } from '@shared/components/status-chip/status-chip.component';
+import { hasTones } from '@shared/constants/status-tones.constants';
 import { EnumOption } from '@shared/interfaces/common/enum-meta.interface';
 import { EnumService } from '@shared/services/data/enum.service';
 import { errorMessage } from '@shared/utils/validators';
 
-/** `<ui-select label="Gender" enum="Gender" [control]="…" />` or `[options]="[{ value, label }]"`. */
+/**
+ * `<ui-select label="Gender" enum="Gender" [control]="…" />` or `[options]="[{ value, label }]"`. Enums with colours
+ * (statuses, priorities) show their badges in the list and in the field.
+ */
 @Component({
   selector: 'ui-select',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatSelectModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatSelectModule, StatusChip],
   host: { class: 'block' },
   templateUrl: './select-field.component.html',
 })
@@ -27,6 +32,13 @@ export class SelectField {
   protected readonly items = computed(
     () => this.options() ?? (this.enum() ? this.enums.options(this.enum()!) : []),
   );
+
+  protected readonly badges = computed(() => hasTones(this.enum()));
+  /** Selected values, for the badge trigger. */
+  protected selected(): string[] {
+    const value = this.control().value as string | string[] | null;
+    return value === null || value === undefined ? [] : Array.isArray(value) ? value : [value];
+  }
 
   protected error(): string | null {
     return errorMessage(this.control().errors, this.label());

@@ -1,0 +1,33 @@
+<mat-form-field subscriptSizing="dynamic" class="w-full">
+  <mat-label>{{ label() }}</mat-label>
+  <mat-date-range-input [rangePicker]="picker" separator="–" (click)="picker.open()">
+    <input
+      matStartDate
+      placeholder="Any time"
+      autocomplete="off"
+      [value]="range().from"
+      (dateChange)="picked('from', $event.value)"
+    />
+    <input
+      matEndDate
+      placeholder=""
+      autocomplete="off"
+      [value]="range().to"
+      (dateChange)="picked('to', $event.value)"
+    />
+  </mat-date-range-input>
+  <span matIconSuffix class="flex items-center">
+    @if (active()) {
+      <button matIconButton type="button" aria-label="Any time" (click)="clear($event)">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+    <mat-datepicker-toggle [for]="picker" />
+  </span>
+  <mat-date-range-picker
+    #picker
+    [calendarHeaderComponent]="header"
+    panelClass="ui-range-picker"
+    (closed)="applyDraft()"
+  />
+</mat-form-field>

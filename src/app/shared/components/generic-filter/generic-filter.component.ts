@@ -22,11 +22,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { DATE_PRESETS } from '@shared/constants/date-presets.constants';
+import { DateRangeFilter } from '@shared/components/date-range-filter/date-range-filter.component';
+import { StatusChip } from '@shared/components/status-chip/status-chip.component';
+import { hasTones } from '@shared/constants/status-tones.constants';
 import { FilterFieldType } from '@shared/enums/list/filter-field-type.enum';
-import { DateRangePreset } from '@shared/enums/shared/date-range-preset.enum';
 import { FilterOperator } from '@shared/enums/shared/filter-operator.enum';
 import { Money } from '@shared/interfaces/common/money.interface';
+import { DateRangeValue } from '@shared/interfaces/list/date-range-filter.interface';
 import { FilterValue, ListQuery } from '@shared/interfaces/list/list-query.interface';
 import { FilterDef, ResourceSchema } from '@shared/interfaces/list/resource-schema.interface';
 import { FilterDraft } from '@shared/interfaces/ui/filter-draft.interface';
@@ -37,7 +39,8 @@ import { humanise } from '@shared/utils/text';
 const EMPTY_DRAFT: FilterDraft = { values: [], text: '', min: '', max: '' };
 
 /**
- * Search + date presets + filter chips built from the resource schema; emits a ListQuery in the server grammar
+ * Search, one date-range calendar, colour-badge pickers for statuses / priorities and filter chips, all built from
+ * the resource schema; emits a ListQuery in the server grammar
  * (root-level AND of field conditions). Debounced search; every change resets to page 1.
  */
 @Component({
@@ -56,6 +59,8 @@ const EMPTY_DRAFT: FilterDraft = { values: [], text: '', min: '', max: '' };
     MatCheckboxModule,
     MatSelectModule,
     MatSlideToggleModule,
+    DateRangeFilter,
+    StatusChip,
   ],
   host: { class: 'block' },
   templateUrl: './generic-filter.component.html',
@@ -66,27 +71,41 @@ export class GenericFilter implements OnInit {
   readonly queryChange = output<ListQuery>();
 
   private readonly enums = inject(EnumService);
-  protected readonly presets = DATE_PRESETS;
+  protected readonly hasTones = hasTones;
   protected readonly types = FilterFieldType;
   protected readonly operators = FilterOperator;
-  protected readonly customRange = DateRangePreset.Custom;
   protected readonly search = new FormControl('', { nonNullable: true });
   protected readonly editing = signal<FilterDef | null>(null);
   protected readonly draft = signal<FilterDraft>(EMPTY_DRAFT);
 
   protected readonly conditions = computed(() => rootConditions(this.query().filter));
+  /** Coloured enums (status, priority) sit in the toolbar as badge pickers; the rest live under Filter. */
+  protected readonly quickFilters = computed(() =>
+    this.schema().filters.filter((f) => f.type === FilterFieldType.Enum && hasTones(f.enum)),
+  );
+  private readonly menuFilters = computed(() =>
+    this.schema().filters.filter((f) => !this.quickFilters().includes(f)),
+  );
   protected readonly activeFilters = computed(() =>
-    this.schema().filters.filter((f) => f.field in this.conditions()),
+    this.menuFilters().filter((f) => f.field in this.conditions()),
   );
   protected readonly availableFilters = computed(() =>
-    this.schema().filters.filter((f) => !(f.field in this.conditions())),
+    this.menuFilters().filter((f) => !(f.field in this.conditions())),
   );
+  protected readonly dateFields = computed(() =>
+    this.schema().dateFields.map((field) => ({ value: field, label: this.label(field) })),
+  );
+  protected readonly dateValue = computed<DateRangeValue>(() => {
+    const q = this.query();
+    return { field: q.dateField, preset: q.dateRange, from: q.dateFrom, to: q.dateTo };
+  });
   protected readonly hasActive = computed(
     () =>
-      this.activeFilters().length > 0 ||
+      Object.keys(this.conditions()).length > 0 ||
       !!this.query().search ||
       !!this.query().dateRange ||
-      !!this.query().dateFrom,
+      !!this.query().dateFrom ||
+      !!this.query().dateTo,
   );
 
   constructor() {
@@ -155,8 +174,32 @@ export class GenericFilter implements OnInit {
     this.editing.set(null);
   }
 
-  protected setPreset(preset: DateRangePreset | null): void {
-    this.patch({ dateRange: preset ?? undefined, dateFrom: undefined, dateTo: undefined });
+  protected setDate(value: DateRangeValue): void {
+    this.patch({
+      dateField: value.field,
+      dateRange: value.preset,
+      dateFrom: value.from,
+      dateTo: value.to,
+    });
+  }
+
+  protected selectedValues(def: FilterDef): (string | number)[] {
+    const ops = this.conditions()[def.field] ?? {};
+    const value = ops[FilterOperator.In] ?? ops[FilterOperator.Eq];
+    return Array.isArray(value)
+      ? value
+      : value === undefined || value === null
+        ? []
+        : [value as string];
+  }
+
+  protected setValues(def: FilterDef, values: (string | number)[]): void {
+    const condition: Record<string, FilterValue> | null = values.length
+      ? def.operators.includes(FilterOperator.In)
+        ? { in: values }
+        : { eq: values[values.length - 1] }
+      : null;
+    this.patch({ filter: setRootCondition(this.query().filter, def.field, condition) });
   }
 
   protected clearAll(): void {

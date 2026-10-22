@@ -10,10 +10,12 @@ import { EnumService } from '@shared/services/data/enum.service';
   templateUrl: './status-chip.component.html',
 })
 export class StatusChip {
-  readonly value = input.required<string | null | undefined>();
+  readonly value = input.required<string | number | null | undefined>();
   readonly enum = input.required<string>();
 
   private readonly enums = inject(EnumService);
   protected readonly label = computed(() => this.enums.label(this.enum(), this.value()));
-  protected readonly classes = computed(() => TONE_CLASSES[statusTone(this.enum(), this.value())]);
+  protected readonly classes = computed(
+    () => TONE_CLASSES[statusTone(this.enum(), this.value()?.toString())],
+  );
 }

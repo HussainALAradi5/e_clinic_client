@@ -1,4 +1,4 @@
-import { addressForm, flag, toAddressPayload } from './address';
+import { addressForm, toAddressPayload } from './address';
 
 describe('address form', () => {
   it('requires building, road and block in Bahrain and line 1 elsewhere', () => {
@@ -21,9 +21,5 @@ describe('address form', () => {
       building: '2504',
       area: null,
     });
-  });
-
-  it('turns ISO codes into flags', () => {
-    expect(flag('bh')).toBe('🇧🇭');
   });
 });

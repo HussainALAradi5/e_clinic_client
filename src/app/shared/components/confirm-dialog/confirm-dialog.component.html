@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>{{ data.title }}</h2>
-<mat-dialog-content class="flex flex-col gap-3">
+<mat-dialog-content class="!flex flex-col gap-5">
   @if (data.message) {
-    <p class="text-on-surface-variant">{{ data.message }}</p>
+    <p class="m-0 text-on-surface-variant">{{ data.message }}</p>
   }
   @if (data.reason) {
     <mat-form-field class="w-full">
@@ -27,7 +27,7 @@
   }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>{{ data.cancelLabel ?? 'Cancel' }}</button>
+  <button mat-button mat-dialog-close>{{ dismissLabel }}</button>
   <button
     mat-flat-button
     [class.ui-danger]="data.danger"

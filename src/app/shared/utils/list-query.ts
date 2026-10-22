@@ -61,14 +61,23 @@ export function toHttpParams(query: ListQuery): HttpParams {
   );
   set('search', query.search?.trim());
   set('date_field', query.dateField ? toSnake(query.dateField) : undefined);
-  set('date_from', query.dateFrom);
-  set('date_to', query.dateTo);
-  set('date_range', query.dateRange);
+  set('date_range', dateRangeParam(query));
   set('include_archived', query.includeArchived);
   set('only_deleted', query.onlyDeleted);
   set('include', query.include?.join(','));
 
   return query.filter ? appendFilter(params, query.filter, 'filter') : params;
+}
+
+/**
+ * The one `date_range` parameter: a rolling preset (`this_month`), or fixed days `from..to` where either side may be
+ * open (`2026-10-01..`).
+ */
+function dateRangeParam(query: ListQuery): string | undefined {
+  if (query.dateRange && query.dateRange !== DateRangePreset.Custom) return query.dateRange;
+  return query.dateFrom || query.dateTo
+    ? `${query.dateFrom ?? ''}..${query.dateTo ?? ''}`
+    : undefined;
 }
 
 /** ListQuery → router query params (bookmarkable list state; filter tree as JSON). */

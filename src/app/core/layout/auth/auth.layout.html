@@ -17,8 +17,8 @@
         class="m-0 mt-10 flex list-none flex-col gap-3 p-0"
         aria-label="What you can do after signing in"
       >
-        @for (item of highlights; track item.title; let i = $index) {
-          <li class="glass-card" [style.margin-left.rem]="i * 1.5">
+        @for (item of highlights; track item.title) {
+          <li class="glass-card">
             <span
               class="grid size-10 shrink-0 place-items-center rounded-xl bg-pine-100 text-pine-900"
             >

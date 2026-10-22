@@ -117,6 +117,7 @@ export function errorMessage(
     maxQuantity: () => `${label} may not be more than ${(value as { max: string }).max}.`,
     dateAfter: () => `${label} must be on or after the start date.`,
     afterToday: () => `${label} must be after today.`,
+    matDatepickerParse: () => 'Enter a date like 22 Oct 2026 or 22/10/2026.',
     matchField: () => 'The values do not match.',
     strongPassword: () =>
       'Use at least 10 characters with upper and lower case letters, a number and a symbol.',
