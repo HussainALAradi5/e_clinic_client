@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>{{ clinicWide ? 'Add clinic holiday' : 'Day off or special hours' }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Save"
+    [compact]="true"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <ui-text label="Date" type="date" [control]="form.controls.date" />
+      <ui-select label="Kind" [required]="true" [options]="types" [control]="form.controls.type" />
+      @if (type() === custom) {
+        <ui-text label="From" type="time" [control]="form.controls.startTime" />
+        <ui-text label="Until" type="time" [control]="form.controls.endTime" />
+      }
+    </div>
+    <ui-text
+      label="Reason"
+      [hint]="clinicWide ? 'e.g. National Day' : null"
+      [control]="form.controls.reason"
+    />
+    @if (affected().length) {
+      <div
+        class="mb-3 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm dark:border-amber-700 dark:bg-amber-950/40"
+        role="alert"
+      >
+        <p class="m-0 mb-1 flex items-center gap-2 font-medium">
+          <mat-icon class="!text-lg">event_busy</mat-icon> {{ affected().length }} booking(s) fall
+          on this change:
+        </p>
+        <ul class="m-0 pl-5">
+          @for (a of affected(); track a.id) {
+            <li>{{ a.date }} {{ a.startTime }} — {{ a.patient }} ({{ a.code }})</li>
+          }
+        </ul>
+      </div>
+      <mat-checkbox class="-ml-2 block" [formControl]="form.controls.cancelAffected"
+        >Cancel these bookings and tell the patients</mat-checkbox
+      >
+    }
+  </ui-form>
+</mat-dialog-content>

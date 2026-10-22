@@ -1,0 +1,79 @@
+@if (error()) {
+  <ui-error class="block p-6" [error]="error()" />
+} @else if (slip(); as s) {
+  <app-print-sheet
+    verifyNote="Confidential — for the employee named above. Questions about this payslip go to HR."
+    [title]="title()"
+    [recordId]="s.id"
+    [reference]="s.run?.code ?? ''"
+  >
+    <dl class="m-0 mb-6 grid grid-cols-[auto_1fr_auto_1fr] gap-x-4 gap-y-1">
+      <dt class="text-black/60">Employee</dt>
+      <dd class="m-0 font-semibold">{{ s.employee?.fullName }}</dd>
+      <dt class="text-black/60">Staff no.</dt>
+      <dd class="m-0">{{ s.employee?.code }}</dd>
+      <dt class="text-black/60">Job title</dt>
+      <dd class="m-0">{{ s.employee?.jobTitle }}</dd>
+      <dt class="text-black/60">Department</dt>
+      <dd class="m-0">{{ s.department?.name }}</dd>
+      <dt class="text-black/60">Paid to</dt>
+      <dd class="m-0">
+        {{ s.employee?.bankName ?? '—'
+        }}{{ s.employee?.ibanLast4 ? ' ·· ' + s.employee?.ibanLast4 : '' }}
+      </dd>
+      <dt class="text-black/60">Paid on</dt>
+      <dd class="m-0">{{ s.run?.paidOn ? (s.run?.paidOn | date: dateFormat) : 'Not yet' }}</dd>
+    </dl>
+
+    <div class="grid grid-cols-2 gap-8">
+      <section>
+        <h2 class="m-0 mb-2 border-b border-black/30 pb-1 text-[11pt] font-semibold">Earnings</h2>
+        @for (i of earnings(); track $index) {
+          <div class="flex justify-between py-0.5">
+            <span>{{ i.name }}</span
+            ><span class="tabular-nums">{{ i.amount | money }}</span>
+          </div>
+        }
+        <div class="mt-2 flex justify-between border-t border-black/30 pt-1 font-semibold">
+          <span>Gross</span><span class="tabular-nums">{{ s.grossSalary | money }}</span>
+        </div>
+      </section>
+      <section>
+        <h2 class="m-0 mb-2 border-b border-black/30 pb-1 text-[11pt] font-semibold">Deductions</h2>
+        @for (i of deductions(); track $index) {
+          <div class="flex justify-between py-0.5">
+            <span>{{ i.name }}</span
+            ><span class="tabular-nums">{{ i.amount | money }}</span>
+          </div>
+        } @empty {
+          <p class="m-0 text-black/60">None</p>
+        }
+        <div class="mt-2 flex justify-between border-t border-black/30 pt-1 font-semibold">
+          <span>Total deducted</span
+          ><span class="tabular-nums">{{ s.totalDeductions | money }}</span>
+        </div>
+      </section>
+    </div>
+
+    <div class="mt-6 flex items-baseline justify-between rounded border-2 border-black px-4 py-3">
+      <span class="text-[12pt] font-semibold">Net pay</span>
+      <span class="text-[16pt] font-bold tabular-nums">{{ s.netSalary | money }}</span>
+    </div>
+    @if (s.carriedForward.amount !== '0.000') {
+      <p class="m-0 mt-2 text-[9pt]">
+        {{ s.carriedForward | money }} of deductions did not fit this month and is carried to the
+        next payslip.
+      </p>
+    }
+
+    <h2 class="m-0 mb-2 mt-6 text-[10pt] font-semibold text-black/70">Attendance this month</h2>
+    <p class="m-0 text-[9pt]">
+      {{ s.workingDays }} working days · {{ s.presentDays | qty }} worked ·
+      {{ s.absentDays | qty }} absent · {{ s.paidLeaveDays | qty }} paid leave ·
+      {{ s.unpaidLeaveDays | qty }} unpaid leave · {{ s.overtimeMinutes / 60 | number: '1.0-2' }} h
+      approved overtime
+    </p>
+  </app-print-sheet>
+} @else {
+  <p class="p-6 text-sm">Loading…</p>
+}

@@ -1,0 +1,82 @@
+<h2 mat-dialog-title>{{ editing ? 'Edit ' + editing.code : 'Prescribe treatment' }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="editing ? 'Save' : 'Prescribe'"
+    [compact]="true"
+    (cancelled)="ref.close()"
+  >
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      @if (!data.patient && !editing) {
+        <ui-entity-select
+          class="sm:col-span-2"
+          label="Patient"
+          endpoint="patients"
+          icon="person_search"
+          [display]="patientName"
+          [detail]="patientDetail"
+          [control]="form.controls.patientId"
+        />
+      }
+      <ui-text
+        class="sm:col-span-2"
+        label="Treatment"
+        hint="e.g. Knee physiotherapy"
+        [control]="form.controls.title"
+      />
+      <ui-select
+        label="Type"
+        enum="TreatmentType"
+        [required]="true"
+        [control]="form.controls.type"
+      />
+      <ui-select
+        label="Priority"
+        enum="TreatmentPriority"
+        [required]="true"
+        hint="Urgent: first session within 24 h · High: 72 h"
+        [control]="form.controls.priority"
+      />
+      <ui-text label="Planned sessions" type="number" [control]="form.controls.plannedSessions" />
+      <ui-text
+        label="Session length (min)"
+        type="number"
+        hint="Blank = usual length for the type"
+        [control]="form.controls.sessionDurationMinutes"
+      />
+      @if (!editing && !data.doctorId) {
+        <ui-entity-select
+          class="sm:col-span-2"
+          label="Responsible doctor"
+          endpoint="doctors"
+          icon="stethoscope"
+          [display]="doctorName"
+          [control]="form.controls.doctorId"
+        />
+      }
+      <ui-entity-select
+        class="sm:col-span-2"
+        label="Billed per session (optional)"
+        endpoint="billing/services"
+        [display]="serviceName"
+        [filter]="procedures"
+        [control]="form.controls.billableServiceId"
+      />
+      <ui-text
+        class="sm:col-span-2"
+        label="Diagnosis"
+        [multiline]="true"
+        [rows]="2"
+        [control]="form.controls.diagnosis"
+      />
+      <ui-text
+        class="sm:col-span-2"
+        label="Plan and instructions"
+        [multiline]="true"
+        [rows]="3"
+        [control]="form.controls.plan"
+      />
+    </div>
+  </ui-form>
+</mat-dialog-content>

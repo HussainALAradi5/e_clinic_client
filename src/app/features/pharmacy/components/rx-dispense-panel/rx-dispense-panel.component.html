@@ -1,0 +1,102 @@
+@if (prescription(); as rx) {
+  <mat-card appearance="outlined" class="!p-0">
+    <header class="flex flex-wrap items-start gap-3 border-b border-outline-variant/60 px-5 py-4">
+      <div class="min-w-0 flex-1">
+        <p class="m-0 text-lg font-semibold">{{ rx.patient?.fullName }}</p>
+        <p class="m-0 text-sm text-on-surface-variant">
+          {{ rx.patient?.code }} · <span class="font-mono">{{ rx.code }}</span> · Dr
+          {{ rx.doctor?.fullName }} · valid until {{ rx.validUntil | date: dateFormat }}
+        </p>
+      </div>
+      <ui-status [value]="rx.status" enum="GenericStatus" />
+    </header>
+
+    @if (rx.notes) {
+      <p
+        class="m-0 flex items-start gap-2 bg-amber-50 px-5 py-3 text-sm text-amber-950 dark:bg-amber-950/40 dark:text-amber-100"
+      >
+        <mat-icon class="!text-lg">sticky_note_2</mat-icon> {{ rx.notes }}
+      </p>
+    }
+
+    <div class="px-5 pt-4">
+      <ui-text
+        label="Scan a pack to check it"
+        icon="barcode_scanner"
+        hint="The barcode must match a medicine on the prescription"
+        [control]="scan"
+        (keydown.enter)="$event.preventDefault(); check()"
+      />
+    </div>
+
+    <ol class="m-0 list-none p-0">
+      @for (item of items(); track item.id; let i = $index) {
+        <li
+          class="grid grid-cols-[minmax(0,1fr)_8rem] items-start gap-x-4 border-t border-outline-variant/60 px-5 py-3"
+          [class.opacity-55]="done(item)"
+        >
+          <div class="min-w-0">
+            <p class="m-0 flex flex-wrap items-center gap-2 font-medium">
+              {{ item.medication.name }}
+              @if (item.medication.isControlled) {
+                <span
+                  class="rounded bg-red-100 px-1.5 py-0.5 text-[11px] font-semibold text-red-800 dark:bg-red-900/50 dark:text-red-200"
+                  >CD</span
+                >
+              }
+              @if (verified().has(item.id)) {
+                <span
+                  class="inline-flex items-center gap-0.5 text-xs font-semibold text-green-700 dark:text-green-300"
+                  ><mat-icon class="!size-4 !text-base">verified</mat-icon> checked</span
+                >
+              }
+            </p>
+            <p class="m-0 text-sm text-on-surface-variant">
+              {{ item.dose }} · {{ item.frequency }} · {{ item.durationDays }} days{{
+                item.instructions ? ' · ' + item.instructions : ''
+              }}
+            </p>
+            <p class="m-0 text-xs text-on-surface-variant tabular-nums">
+              {{ item.dispensedQuantity | qty }} of {{ item.quantity | qty }}
+              {{ item.medication.unit | enumLabel: 'DispenseUnit' | lowercase }} handed over ·
+              <span class="font-semibold">{{ remaining(item) | qty }} left</span>
+            </p>
+          </div>
+          @if (done(item)) {
+            <p class="m-0 pt-3 text-right text-sm font-medium text-green-700 dark:text-green-300">
+              Done
+            </p>
+          } @else {
+            <ui-text label="Now" type="number" [control]="quantities.at(i)" />
+          }
+        </li>
+      }
+    </ol>
+
+    <footer class="border-t border-outline-variant/60 px-5 pt-4">
+      @if (needsWitness()) {
+        <ui-select
+          label="Witness"
+          hint="A second pharmacist checks controlled drugs"
+          [options]="witnesses()"
+          [required]="true"
+          [control]="witness"
+        />
+      }
+      <ui-text
+        label="Counselling notes"
+        hint="Optional — shown on the dispensing record"
+        [control]="notes"
+      />
+      <div class="flex justify-end pb-4">
+        <ui-button icon="local_pharmacy" [disabled]="!ready()" [action]="dispense"
+          >Dispense</ui-button
+        >
+      </div>
+    </footer>
+  </mat-card>
+} @else {
+  <mat-card appearance="outlined" class="!p-6"
+    ><p class="m-0 text-sm text-on-surface-variant">Loading…</p></mat-card
+  >
+}

@@ -1,0 +1,99 @@
+@if (error(); as e) {
+  <ui-error [error]="e" (retry)="load()" />
+} @else if (claim(); as c) {
+  <ui-page-header
+    [title]="'Claim ' + c.code"
+    [subtitle]="(c.insurer?.name ?? '') + ' · ' + (c.patient?.fullName ?? '')"
+  >
+    <ng-container status><ui-status [value]="c.status" enum="ApprovalStatus" /></ng-container>
+    <ng-container actions>
+      @if (isDraft()) {
+        <ui-button icon="send" access="claims.write" [action]="submit">Mark as sent</ui-button>
+      }
+      @if (isPending()) {
+        <ui-button icon="gavel" access="claims.write & claims.decide" [action]="decide"
+          >Record decision</ui-button
+        >
+      }
+      <a matButton="outlined" [routerLink]="['/billing/invoices', c.invoiceId]"
+        ><mat-icon>receipt_long</mat-icon> {{ c.invoice?.invoiceNumber }}</a
+      >
+      <a matButton="outlined" [routerLink]="['/print/claim', c.id]" target="_blank"
+        ><mat-icon>print</mat-icon> Claim form</a
+      >
+      @if (isDraft() || isPending()) {
+        <ui-button icon="block" [variant]="variants.Danger" access="claims.write" [action]="cancel"
+          >Cancel</ui-button
+        >
+      }
+    </ng-container>
+  </ui-page-header>
+
+  <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_22rem]">
+    <div class="flex min-w-0 flex-col gap-4">
+      <mat-card appearance="outlined" class="overflow-x-auto !p-0">
+        <table class="w-full border-collapse text-sm">
+          <caption class="sr-only">
+            Invoice lines
+          </caption>
+          <thead>
+            <tr class="border-b border-outline-variant text-left text-xs text-on-surface-variant">
+              <th class="px-4 py-3 font-medium" scope="col">Service</th>
+              <th class="px-2 py-3 text-right font-medium" scope="col">Qty</th>
+              <th class="px-4 py-3 text-right font-medium" scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of c.invoice?.items ?? []; track item.id) {
+              <tr class="border-b border-outline-variant/60 last:border-0">
+                <td class="px-4 py-2.5">
+                  {{ item.description }}
+                  <span class="block text-xs text-on-surface-variant"
+                    >{{ item.billableService?.code ?? 'Free-text line'
+                    }}{{ item.source?.code ? ' · ' + item.source?.code : '' }}</span
+                  >
+                </td>
+                <td class="px-2 py-2.5 text-right tabular-nums">{{ +item.quantity }}</td>
+                <td class="px-4 py-2.5 text-right tabular-nums">{{ item.lineTotal | money }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </mat-card>
+      @if (c.diagnoses?.length) {
+        <mat-card appearance="outlined" class="!p-5">
+          <h2 class="m-0 mb-2 text-base font-semibold">Diagnoses</h2>
+          <ul class="m-0 list-none p-0">
+            @for (d of c.diagnoses; track d.code + d.visit) {
+              <li class="flex gap-3 py-1 text-sm">
+                <span class="w-16 font-mono font-medium">{{ d.code }}</span>
+                <span class="flex-1">{{ d.title }}</span>
+                <span class="text-xs text-on-surface-variant"
+                  >{{ d.isPrimary ? 'Primary · ' : '' }}{{ d.visit }}</span
+                >
+              </li>
+            }
+          </ul>
+        </mat-card>
+      }
+    </div>
+    <mat-card appearance="outlined" class="self-start !p-5"
+      ><ui-facts [items]="facts()"
+    /></mat-card>
+  </div>
+
+  <mat-tab-group
+    *hasAccess="'audit.read_all | audit.read_own'"
+    class="mt-4"
+    mat-stretch-tabs="false"
+    animationDuration="0ms"
+  >
+    <mat-tab label="History">
+      <ng-template matTabContent
+        ><ui-audit-history class="block pt-4" type="insurance_claim" [id]="c.id"
+      /></ng-template>
+    </mat-tab>
+  </mat-tab-group>
+} @else {
+  <ui-skeleton [rows]="8" />
+}

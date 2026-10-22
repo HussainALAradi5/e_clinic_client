@@ -1,0 +1,88 @@
+@if (error()) {
+  <ui-error class="block p-6" [error]="error()" />
+} @else if (invoice(); as inv) {
+  <app-print-sheet
+    entity="invoice"
+    verifyNote="Scan the code to check this invoice is genuine. It shows amounts only."
+    [title]="title()"
+    [recordId]="inv.id"
+    [reference]="inv.invoiceNumber ?? inv.code"
+  >
+    <dl class="m-0 mb-6 grid grid-cols-[8rem_1fr] gap-y-1">
+      <dt class="text-black/60">Patient</dt>
+      <dd class="m-0 font-medium">{{ inv.patient?.fullName }} · {{ inv.patient?.code }}</dd>
+      @if (inv.patient?.insurer) {
+        <dt class="text-black/60">Insurer</dt>
+        <dd class="m-0">{{ inv.patient?.insurer?.name }}</dd>
+      }
+      <dt class="text-black/60">Invoice no.</dt>
+      <dd class="m-0 font-mono">{{ inv.invoiceNumber ?? 'Draft — not issued' }}</dd>
+      <dt class="text-black/60">Date</dt>
+      <dd class="m-0">{{ inv.issueDate ? (inv.issueDate | date: dateFormat) : '—' }}</dd>
+    </dl>
+
+    <table class="mb-6 w-full border-collapse text-[10pt]">
+      <thead>
+        <tr class="border-b border-black/40 text-left">
+          <th class="py-1.5 font-semibold">Description</th>
+          <th class="py-1.5 text-right font-semibold">Qty</th>
+          <th class="py-1.5 text-right font-semibold">Price</th>
+          <th class="py-1.5 text-right font-semibold">Discount</th>
+          <th class="py-1.5 text-right font-semibold">VAT</th>
+          <th class="py-1.5 text-right font-semibold">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of inv.items ?? []; track item.id) {
+          <tr class="border-b border-black/10">
+            <td class="py-1.5">
+              {{ item.description }}
+              @if (item.doctor) {
+                <span class="block text-[9pt] text-black/60">{{ item.doctor.fullName }}</span>
+              }
+            </td>
+            <td class="py-1.5 text-right tabular-nums">{{ +item.quantity }}</td>
+            <td class="py-1.5 text-right tabular-nums">{{ item.unitPrice.amount }}</td>
+            <td class="py-1.5 text-right tabular-nums">
+              {{ item.discountAmount.amount !== '0.000' ? '−' + item.discountAmount.amount : '' }}
+            </td>
+            <td class="py-1.5 text-right tabular-nums">
+              {{ item.taxAmount.amount !== '0.000' ? item.taxAmount.amount : '' }}
+            </td>
+            <td class="py-1.5 text-right tabular-nums">{{ item.lineTotal.amount }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <div class="flex justify-end">
+      <dl class="m-0 grid w-72 grid-cols-[1fr_auto] gap-y-1 tabular-nums">
+        <dt class="text-black/60">Subtotal</dt>
+        <dd class="m-0 text-right">{{ inv.subtotal.amount }}</dd>
+        @if (inv.discountTotal.amount !== '0.000') {
+          <dt class="text-black/60">Discount</dt>
+          <dd class="m-0 text-right">−{{ inv.discountTotal.amount }}</dd>
+        }
+        <dt class="text-black/60">VAT</dt>
+        <dd class="m-0 text-right">{{ inv.taxTotal.amount }}</dd>
+        <dt class="border-t border-black/40 pt-1 font-semibold">Total</dt>
+        <dd class="m-0 border-t border-black/40 pt-1 text-right font-semibold">
+          {{ inv.total | money }}
+        </dd>
+        @for (p of payments(); track p.id) {
+          <dt class="text-black/60">
+            Paid {{ p.paidAt | date: dateFormat }} · {{ p.method | enumLabel: 'PaymentMethod' }}
+          </dt>
+          <dd class="m-0 text-right">−{{ p.amount.amount }}</dd>
+        }
+        <dt class="border-t border-black/40 pt-1 font-semibold">Balance due</dt>
+        <dd class="m-0 border-t border-black/40 pt-1 text-right font-semibold">
+          {{ inv.balanceDue | money }}
+        </dd>
+      </dl>
+    </div>
+    @if (inv.notes) {
+      <p class="m-0 mt-6 whitespace-pre-line text-[10pt] text-black/70">{{ inv.notes }}</p>
+    }
+  </app-print-sheet>
+}

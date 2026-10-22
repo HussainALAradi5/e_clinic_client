@@ -1,0 +1,132 @@
+<h2 mat-dialog-title>
+  {{ editing ? 'Edit prescription ' + editing.code : 'Prescribe medicines' }}
+</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="editing ? 'Save' : 'Send to pharmacy'"
+    submitIcon="prescriptions"
+    [compact]="true"
+    (cancelled)="ref.close()"
+  >
+    @if (data.patient || editing) {
+      <p class="m-0 mb-3 text-sm">
+        <span class="font-medium">{{ editing?.patient?.fullName ?? data.patient?.fullName }}</span>
+        <span class="text-on-surface-variant">
+          · {{ editing?.patient?.code ?? data.patient?.code }}</span
+        >
+      </p>
+    }
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      @if (!data.patient && !editing) {
+        <ui-entity-select
+          class="sm:col-span-2"
+          label="Patient"
+          endpoint="patients"
+          icon="person_search"
+          [display]="patientName"
+          [detail]="patientDetail"
+          [control]="form.controls.patientId"
+          (picked)="patientPicked($any($event))"
+        />
+      }
+      @if (!isDoctor && !editing) {
+        <ui-entity-select
+          class="sm:col-span-2"
+          label="Prescribing doctor"
+          endpoint="doctors"
+          icon="stethoscope"
+          [display]="doctorName"
+          [control]="form.controls.doctorId"
+        />
+      }
+    </div>
+
+    @if (allergies(); as text) {
+      <p
+        class="m-0 mb-4 flex items-start gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-900 dark:bg-red-950/40 dark:text-red-200"
+        role="note"
+      >
+        <mat-icon class="!text-lg">warning</mat-icon>
+        <span><span class="font-semibold">Recorded allergies:</span> {{ text }}</span>
+      </p>
+    }
+
+    <ol class="m-0 list-none p-0" aria-label="Medicines">
+      @for (group of items.controls; track group; let i = $index) {
+        <li
+          class="mb-3 grid grid-cols-2 gap-x-3 rounded-xl border border-outline-variant/70 px-4 pt-4 sm:grid-cols-6"
+          [formGroup]="group"
+        >
+          <ui-entity-select
+            class="col-span-2 sm:col-span-5"
+            label="Medicine"
+            endpoint="pharmacy/medications"
+            icon="medication"
+            [display]="medicationName"
+            [detail]="medicationDetail"
+            [initial]="initial(i)"
+            [control]="group.controls.medicationId"
+          />
+          <div class="col-span-2 flex items-start justify-end pt-1 sm:col-span-1">
+            <button
+              matIconButton
+              type="button"
+              aria-label="Remove medicine"
+              [disabled]="items.length <= 1"
+              (click)="remove(i)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+          <ui-text
+            class="sm:col-span-2"
+            label="Dose"
+            hint="e.g. 1 tablet, 5 ml"
+            [control]="group.controls.dose"
+          />
+          <ui-text
+            class="sm:col-span-2"
+            label="How often"
+            hint="e.g. 3 times daily"
+            [control]="group.controls.frequency"
+          />
+          <ui-select
+            class="col-span-2 sm:col-span-2"
+            label="Route"
+            enum="MedicationRoute"
+            [required]="true"
+            [control]="group.controls.route"
+          />
+          <ui-text label="Days" type="number" [control]="group.controls.durationDays" />
+          <ui-text
+            label="Total to hand over"
+            type="number"
+            hint="In the medicine's unit"
+            [control]="group.controls.quantity"
+          />
+          <ui-text
+            class="col-span-2 sm:col-span-4"
+            label="Instructions for the patient"
+            hint="e.g. after meals"
+            [control]="group.controls.instructions"
+          />
+        </li>
+      }
+    </ol>
+    <button class="mb-4" matButton type="button" (click)="add()">
+      <mat-icon>add</mat-icon> Medicine
+    </button>
+
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-[12rem_minmax(0,1fr)]">
+      <ui-text
+        label="Valid until"
+        type="date"
+        [hint]="'Default ' + defaultValidity"
+        [control]="form.controls.validUntil"
+      />
+      <ui-text label="Note to the pharmacist" [control]="form.controls.notes" />
+    </div>
+  </ui-form>
+</mat-dialog-content>

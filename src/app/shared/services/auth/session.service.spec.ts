@@ -61,14 +61,15 @@ describe('SessionService', () => {
     });
     expect(navigate).toHaveBeenCalledWith('/login/2fa');
 
-    const verify = session.verifyTwoFactor('123456', false);
+    const verify = session.verifyTwoFactor('123456', false, true);
     const req = backend.expectOne((r) => r.url.endsWith('/auth/two-factor/challenge'));
     expect(req.request.body).toEqual({
       challenge_token: 'ch-1',
       device_name: 'angular-web',
+      remember_device: true,
       code: '123456',
     });
-    req.flush({ success: true, data: SESSION });
+    req.flush({ success: true, data: { ...SESSION, trusted_device_token: 'td-1' } });
     await verify;
 
     const store = TestBed.inject(AuthStore);
@@ -77,6 +78,14 @@ describe('SessionService', () => {
     expect(store.permissions()).toEqual(['users.read_all']);
     expect(session.challenge()).toBeNull();
     expect(navigate).toHaveBeenLastCalledWith('/system/users');
+
+    // The trusted device is sent with the next sign-in of the same email.
+    const again = session.login({ email: 'Sara@example.com', password: 'secret' });
+    const next = backend.expectOne((r) => r.url.endsWith('/auth/login'));
+    expect(next.request.body.trusted_device_token).toBe('td-1');
+    next.flush({ success: true, data: SESSION });
+    await again;
+    localStorage.clear();
   });
 
   it('rethrows other sign-in errors', async () => {
@@ -89,5 +98,24 @@ describe('SessionService', () => {
       );
     await expect(login).rejects.toMatchObject({ code: 'AUTH_INVALID_CREDENTIALS' });
     expect(session.challenge()).toBeNull();
+  });
+
+  it('starts patients in their portal and staff on the dashboard', async () => {
+    const navigate = vi.spyOn(router, 'navigateByUrl');
+    const signIn = async (userType: string): Promise<void> => {
+      const login = session.login({ email: `${userType}@example.com`, password: 'secret' });
+      backend
+        .expectOne((r) => r.url.endsWith('/auth/login'))
+        .flush({
+          success: true,
+          data: { ...SESSION, user: { ...SESSION.user, user_type: userType } },
+        });
+      await login;
+    };
+
+    await signIn('patient');
+    expect(navigate).toHaveBeenLastCalledWith('/portal');
+    await signIn('receptionist');
+    expect(navigate).toHaveBeenLastCalledWith('/dashboard');
   });
 });

@@ -1,0 +1,71 @@
+<ui-page-header
+  title="Front desk"
+  subtitle="Today's patients from arrival to the end of the visit. The board refreshes every 30 seconds."
+>
+  <ng-container actions>
+    <a matButton="outlined" routerLink="/clinic/calendar"
+      ><mat-icon>calendar_view_day</mat-icon> Calendar</a
+    >
+    <ui-button icon="person_add" access="appointments.create" [action]="walkIn"
+      >Book walk-in</ui-button
+    >
+  </ng-container>
+</ui-page-header>
+
+<div class="mb-4 flex flex-wrap items-center gap-3">
+  <ui-text
+    class="w-full sm:w-72"
+    label="Find a patient"
+    icon="search"
+    hint="Name, file no., mobile or check-in code"
+    [control]="search"
+  />
+  <div class="mb-5 flex flex-wrap gap-2" role="group" aria-label="Doctor">
+    @for (d of doctors(); track d.id) {
+      <button
+        type="button"
+        class="rounded-full border px-3 py-1 text-sm"
+        [class]="
+          doctor() === d.id
+            ? 'border-primary bg-primary-container text-on-primary-container'
+            : 'border-outline-variant'
+        "
+        [attr.aria-pressed]="doctor() === d.id"
+        (click)="toggleDoctor(d.id)"
+      >
+        {{ d.name }}
+      </button>
+    }
+  </div>
+</div>
+
+@if (appointments() === null) {
+  <p class="text-sm text-on-surface-variant">Loading today's bookings…</p>
+} @else {
+  <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    @for (lane of lanes(); track lane.title) {
+      <section
+        class="flex min-h-48 flex-col rounded-2xl bg-surface-container-low p-3"
+        [attr.aria-label]="lane.title"
+      >
+        <header class="mb-3 px-1">
+          <h2 class="m-0 flex items-center gap-2 text-base font-semibold">
+            {{ lane.title }}
+            <span
+              class="rounded-full bg-surface-container-high px-2 text-sm font-medium tabular-nums"
+              >{{ lane.items.length }}</span
+            >
+          </h2>
+          <p class="m-0 text-xs text-on-surface-variant">{{ lane.hint }}</p>
+        </header>
+        <div class="flex flex-col gap-2">
+          @for (a of lane.items; track a.id) {
+            <app-appointment-card [appointment]="a" [now]="now()" (changed)="changed($event)" />
+          } @empty {
+            <p class="m-0 px-1 text-sm text-on-surface-variant">Nobody here.</p>
+          }
+        </div>
+      </section>
+    }
+  </div>
+}

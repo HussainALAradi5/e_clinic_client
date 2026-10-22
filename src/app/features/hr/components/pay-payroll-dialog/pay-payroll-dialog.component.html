@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>
+  Salaries paid: {{ data.run.totalNet | money }}
+  <span class="block text-sm font-normal text-on-surface-variant"
+    >{{ data.run.code }} · {{ data.run.employeeCount }} employees</span
+  >
+</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Mark as paid"
+    [compact]="true"
+    [allowPristine]="true"
+    (cancelled)="ref.close()"
+  >
+    <ui-text label="Transferred on" type="date" [control]="form.controls.paidOn" />
+    <ui-text
+      label="Bank / WPS file reference"
+      hint="Optional — printed on the payment entry"
+      [control]="form.controls.reference"
+    />
+    <p class="m-0 text-sm text-on-surface-variant">
+      Every employee is told their payslip is ready.
+    </p>
+  </ui-form>
+</mat-dialog-content>

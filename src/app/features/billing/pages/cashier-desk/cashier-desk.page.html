@@ -1,0 +1,228 @@
+<ui-page-header
+  title="Cashier desk"
+  subtitle="Issue the patient's bill, take payment, and keep your drawer balanced."
+>
+  <a actions matButton="outlined" routerLink="/billing/invoices"
+    ><mat-icon>receipt_long</mat-icon> All invoices</a
+  >
+</ui-page-header>
+
+<div class="grid gap-4 xl:grid-cols-[22rem_minmax(0,1fr)]">
+  <!-- Drawer -->
+  <aside class="flex flex-col gap-4" aria-label="Cash drawer">
+    @if (operatesDrawer) {
+      @if (drawer() === undefined) {
+        <ui-skeleton [rows]="4" />
+      } @else if (drawer(); as d) {
+        <mat-card appearance="outlined" class="!p-5">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <p class="m-0 text-xs text-on-surface-variant">
+                {{ d.code }} · since {{ d.openedAt | date: timeFormat }}
+              </p>
+              <p class="m-0 text-sm text-on-surface-variant">Cash expected in the drawer</p>
+            </div>
+            <ui-status [value]="d.status" enum="CashSessionStatus" />
+          </div>
+          <p class="m-0 mt-1 text-4xl font-semibold tracking-tight tabular-nums">
+            {{ d.report?.expected | money }}
+          </p>
+          @if (d.report; as r) {
+            <dl class="m-0 mt-4 grid grid-cols-[1fr_auto] gap-y-1 text-sm tabular-nums">
+              <dt class="text-on-surface-variant">Opening float</dt>
+              <dd class="m-0 text-right">{{ r.openingFloat.amount }}</dd>
+              <dt class="text-on-surface-variant">Cash taken · {{ r.payments }}</dt>
+              <dd class="m-0 text-right">+{{ r.cashIn.amount }}</dd>
+              <dt class="text-on-surface-variant">Cash refunds · {{ r.refunds }}</dt>
+              <dd class="m-0 text-right">−{{ r.cashRefunds.amount }}</dd>
+              <dt class="text-on-surface-variant">Cash expenses · {{ r.expenses }}</dt>
+              <dd class="m-0 text-right">−{{ r.cashExpenses.amount }}</dd>
+            </dl>
+            @if (r.byMethod.length) {
+              <p class="m-0 mt-4 text-xs text-on-surface-variant">Taken this shift</p>
+              <ul class="m-0 mt-1 flex list-none flex-wrap gap-2 p-0">
+                @for (m of r.byMethod; track m.method) {
+                  <li class="rounded-full bg-surface-container px-3 py-1 text-xs tabular-nums">
+                    {{ m.method | enumLabel: 'PaymentMethod' }} {{ m.total.amount }}
+                  </li>
+                }
+              </ul>
+            }
+          }
+          @if (d.status === drawerStates.Open) {
+            <div class="mt-4 flex gap-2">
+              <ui-button class="flex-1" icon="calculate" [block]="true" [action]="closeDrawer"
+                >Count and close</ui-button
+              >
+              <a
+                matIconButton
+                aria-label="Print shift report"
+                [routerLink]="['/print/z-report', d.id]"
+                target="_blank"
+                ><mat-icon>print</mat-icon></a
+              >
+            </div>
+          } @else {
+            <p
+              class="m-0 mt-4 rounded-xl bg-tertiary-container px-3 py-2 text-sm text-on-tertiary-container"
+            >
+              Counted {{ d.countedClosing | money }} — the difference of
+              {{ d.difference | money }} waits for a supervisor.
+            </p>
+          }
+        </mat-card>
+      } @else {
+        <mat-card appearance="outlined" class="!p-5">
+          <div class="flex items-center gap-3">
+            <span
+              class="grid size-11 place-items-center rounded-full bg-surface-container-high text-on-surface-variant"
+              ><mat-icon>lock</mat-icon></span
+            >
+            <div>
+              <p class="m-0 font-semibold">Drawer closed</p>
+              <p class="m-0 text-sm text-on-surface-variant">
+                Open it with your float before taking cash.
+              </p>
+            </div>
+          </div>
+          <ui-button class="mt-4 block" icon="lock_open" [block]="true" [action]="openDrawer"
+            >Open drawer</ui-button
+          >
+        </mat-card>
+      }
+    }
+
+    @if (takings(); as t) {
+      <mat-card appearance="outlined" class="!p-5">
+        <h2 class="m-0 mb-2 text-sm font-semibold">Taken today</h2>
+        @if (t.totals.length) {
+          <dl class="m-0 grid grid-cols-[1fr_auto] gap-y-1 text-sm tabular-nums">
+            @for (row of t.totals; track row.method) {
+              <dt class="text-on-surface-variant">{{ row.method | enumLabel: 'PaymentMethod' }}</dt>
+              <dd class="m-0 text-right">{{ row.total }}</dd>
+            }
+            <dt class="border-t border-outline-variant pt-1 font-semibold">Total</dt>
+            <dd class="m-0 border-t border-outline-variant pt-1 text-right font-semibold">
+              {{ t.grandTotal | money }}
+            </dd>
+            @if (t.refunds !== '0.000') {
+              <dt class="text-on-surface-variant">Refunded</dt>
+              <dd class="m-0 text-right">{{ t.refunds }}</dd>
+            }
+          </dl>
+        } @else {
+          <p class="m-0 text-sm text-on-surface-variant">No payments yet today.</p>
+        }
+      </mat-card>
+    }
+  </aside>
+
+  <div class="flex min-w-0 flex-col gap-4">
+    <!-- Drafts to issue -->
+    @if (drafts(); as list) {
+      @if (list.length) {
+        <section aria-labelledby="drafts-title">
+          <h2 id="drafts-title" class="m-0 mb-2 text-base font-semibold">
+            Drafts to issue
+            <span class="font-normal text-on-surface-variant">· {{ list.length }}</span>
+          </h2>
+          <mat-card appearance="outlined" class="!p-0">
+            <ul class="m-0 list-none p-0">
+              @for (inv of list; track inv.id) {
+                <li
+                  class="flex flex-wrap items-center gap-3 border-b border-outline-variant/60 px-4 py-3 last:border-0"
+                >
+                  <div class="min-w-0 flex-1">
+                    <a
+                      class="font-medium hover:underline"
+                      [routerLink]="['/billing/invoices', inv.id]"
+                      >{{ inv.patient?.fullName }}</a
+                    >
+                    <p class="m-0 text-xs text-on-surface-variant">
+                      {{ inv.patient?.code }} · {{ inv.code }}
+                    </p>
+                  </div>
+                  <span class="font-medium tabular-nums">{{ inv.total | money }}</span>
+                  <ui-button
+                    icon="task_alt"
+                    [variant]="variants.Tonal"
+                    access="invoices.write & invoices.issue"
+                    [action]="issue.bind(this, inv)"
+                    >Issue</ui-button
+                  >
+                </li>
+              }
+            </ul>
+          </mat-card>
+        </section>
+      }
+    }
+
+    <!-- Outstanding -->
+    <section aria-labelledby="outstanding-title">
+      <div class="mb-2 flex flex-wrap items-center gap-3">
+        <h2 id="outstanding-title" class="m-0 flex-1 text-base font-semibold">
+          Waiting for payment
+        </h2>
+        <mat-form-field class="w-full sm:w-80" subscriptSizing="dynamic">
+          <mat-icon matPrefix>search</mat-icon>
+          <input
+            matInput
+            placeholder="Patient name, file or invoice number"
+            aria-label="Search unpaid invoices"
+            [formControl]="search"
+          />
+        </mat-form-field>
+      </div>
+      @if (outstanding(); as page) {
+        @if (page.data.length) {
+          <mat-card appearance="outlined" class="!p-0">
+            <ul class="m-0 list-none p-0">
+              @for (inv of page.data; track inv.id) {
+                <li
+                  class="flex flex-wrap items-center gap-3 border-b border-outline-variant/60 px-4 py-3 last:border-0"
+                >
+                  <div class="min-w-0 flex-1">
+                    <a
+                      class="font-medium hover:underline"
+                      [routerLink]="['/billing/invoices', inv.id]"
+                      >{{ inv.patient?.fullName }}</a
+                    >
+                    <p class="m-0 text-xs text-on-surface-variant">
+                      <span class="font-mono">{{ inv.invoiceNumber }}</span> ·
+                      {{ inv.issueDate | date: dateFormat }}
+                      @if (inv.status === invoiceStates.PartiallyPaid) {
+                        · paid {{ inv.paidAmount.amount }} of {{ inv.total.amount }}
+                      }
+                    </p>
+                  </div>
+                  <span class="text-lg font-semibold tabular-nums">{{
+                    inv.balanceDue | money
+                  }}</span>
+                  <ui-button
+                    icon="point_of_sale"
+                    access="payments.create"
+                    [action]="pay.bind(this, inv)"
+                    >Take payment</ui-button
+                  >
+                </li>
+              }
+            </ul>
+          </mat-card>
+        } @else {
+          <ui-empty
+            icon="task_alt"
+            title="Nothing waiting"
+            [message]="
+              search.value
+                ? 'No unpaid invoice matches the search.'
+                : 'Every issued invoice is paid.'
+            "
+          />
+        }
+      } @else {
+        <ui-skeleton [rows]="5" />
+      }
+    </section>
+  </div>
+</div>

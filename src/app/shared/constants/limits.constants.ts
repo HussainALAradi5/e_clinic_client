@@ -15,6 +15,10 @@ export const REASON_MAX_LENGTH = 500;
 /** Password policy (security doc §2) and TOTP code length. */
 export const PASSWORD_MIN_LENGTH = 10;
 export const TOTP_LENGTH = 6;
+/** Seconds before "Send a new code" can be used again (forgot password). */
+export const RESEND_CODE_SECONDS = 60;
+/** How long "Don't ask again on this device" skips the 2FA code (server: clinic.auth.trusted_device_days). */
+export const TRUSTED_DEVICE_DAYS = 30;
 
 export const MONEY_DECIMALS = 3;
 export const MONEY_PATTERN = /^-?\d{1,11}(\.\d{1,3})?$/;
@@ -31,3 +35,6 @@ export const UPLOAD_LIMITS = {
 /** Minimum spinner time so fast requests do not flicker; success tick duration. */
 export const MIN_BUSY_MS = 300;
 export const SUCCESS_MS = 1200;
+
+/** Stock corrections above this many units (or of controlled drugs) need another pharmacist (config pharmacy.adjustment_approval_threshold). */
+export const STOCK_ADJUSTMENT_APPROVAL_LIMIT = 10;

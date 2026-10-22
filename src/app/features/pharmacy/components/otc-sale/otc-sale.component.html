@@ -1,0 +1,55 @@
+<mat-card appearance="outlined" class="!p-5">
+  <div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
+    <ui-entity-select
+      label="Patient"
+      endpoint="patients"
+      icon="person_search"
+      [display]="patientName"
+      [detail]="patientDetail"
+      [control]="patientId"
+    />
+    <ui-text
+      label="Scan a pack"
+      icon="barcode_scanner"
+      hint="Adds the medicine, or one more unit"
+      [control]="scan"
+      (keydown.enter)="$event.preventDefault(); scanned()"
+    />
+  </div>
+
+  <ol class="m-0 list-none p-0" aria-label="Medicines">
+    @for (line of lines.controls; track line; let i = $index) {
+      <li class="grid grid-cols-[minmax(0,1fr)_7rem_auto] items-start gap-x-3" [formGroup]="line">
+        <ui-entity-select
+          label="Medicine (no prescription needed)"
+          endpoint="pharmacy/medications"
+          icon="medication"
+          [display]="medicationName"
+          [detail]="medicationDetail"
+          [filter]="overTheCounter"
+          [initial]="$any(picked()[i])"
+          [control]="line.controls.medicationId"
+          (picked)="pick(i, $any($event))"
+        />
+        <ui-text label="Qty" type="number" [control]="line.controls.quantity" />
+        <button
+          class="mt-1"
+          matIconButton
+          type="button"
+          aria-label="Remove"
+          [disabled]="lines.length <= 1"
+          (click)="remove(i)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </li>
+    }
+  </ol>
+  <div class="flex flex-wrap items-center gap-3">
+    <button matButton type="button" (click)="add(null)"><mat-icon>add</mat-icon> Medicine</button>
+    <span class="flex-1"></span>
+    <span class="text-sm text-on-surface-variant">To pay</span>
+    <span class="text-xl font-semibold tabular-nums">{{ total() }}</span>
+    <ui-button icon="shopping_bag" [action]="sell">Hand over</ui-button>
+  </div>
+</mat-card>

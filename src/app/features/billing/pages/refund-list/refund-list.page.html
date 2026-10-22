@@ -1,0 +1,69 @@
+<ui-resource-list
+  resource="refunds"
+  endpoint="billing/refunds"
+  title="Refunds"
+  subtitle="Requested at the desk, approved by someone else, then paid out by the cashier."
+  emptyTitle="No refunds waiting"
+  [defaults]="defaults"
+  [columns]="columns"
+>
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="created_at" let-row>
+    {{ row.createdAt | date: dateTimeFormat }}
+    <span class="block text-xs text-on-surface-variant">{{ row.requestedBy?.fullName }}</span>
+  </ng-template>
+  <ng-template uiCell="patient" let-row>
+    <span class="font-medium">{{ row.patient?.fullName }}</span>
+    <a
+      class="block font-mono text-xs text-primary"
+      [routerLink]="['/billing/invoices', row.invoiceId]"
+      >{{ row.invoice?.invoiceNumber ?? row.invoice?.code }}</a
+    >
+  </ng-template>
+  <ng-template uiCell="amount" let-row
+    ><span class="tabular-nums">{{ row.amount | money }}</span></ng-template
+  >
+  <ng-template uiCell="method" let-row>{{ row.method | enumLabel: 'PaymentMethod' }}</ng-template>
+  <ng-template uiCell="reason" let-row
+    ><span class="line-clamp-2 max-w-72">{{ row.reason }}</span></ng-template
+  >
+  <ng-template uiCell="processed_at" let-row>{{
+    row.processedAt ? (row.processedAt | date: dateTimeFormat) : '—'
+  }}</ng-template>
+  <ng-template uiCell="status" let-row>
+    <div class="flex flex-wrap items-center gap-1">
+      @if (row.isProcessed) {
+        <span class="text-sm text-on-surface-variant">Paid out</span>
+      } @else {
+        <ui-status [value]="row.status" enum="ApprovalStatus" />
+      }
+      @if (pending(row)) {
+        <ui-button
+          icon="check"
+          [variant]="variants.Text"
+          access="refunds.write & refunds.approve"
+          [action]="approve.bind(this, row)"
+          >Approve</ui-button
+        >
+        <ui-button
+          icon="close"
+          [variant]="variants.Text"
+          access="refunds.write & refunds.approve"
+          [action]="reject.bind(this, row)"
+          >Reject</ui-button
+        >
+      }
+      @if (toPayOut(row)) {
+        <ui-button
+          icon="payments"
+          [variant]="variants.Text"
+          access="refunds.write & refunds.process"
+          [action]="payOut.bind(this, row)"
+          >Pay out</ui-button
+        >
+      }
+    </div>
+  </ng-template>
+</ui-resource-list>

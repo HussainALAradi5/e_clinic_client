@@ -1,0 +1,33 @@
+<ui-resource-list
+  resource="accounts"
+  endpoint="accounting/accounts"
+  title="Chart of accounts"
+  subtitle="Group and posting accounts. Prices post to revenue accounts; automatic postings use the mapped accounts."
+  emptyTitle="No accounts found"
+  rowLink="/accounting/chart-of-accounts/:id"
+>
+  <ng-container actions>
+    <a matButton="outlined" routerLink="tree"><mat-icon>account_tree</mat-icon> Tree</a>
+    <a matButton="outlined" routerLink="mappings"
+      ><mat-icon>alt_route</mat-icon> Posting accounts</a
+    >
+    <ui-button icon="add" access="accounts.create" [action]="create">New account</ui-button>
+  </ng-container>
+
+  <ng-template uiCell="code" let-row>
+    <span class="font-mono tabular-nums">{{ row.code }}</span>
+  </ng-template>
+  <ng-template uiCell="name" let-row>
+    <span [class.font-semibold]="row.isGroup" [style.padding-left.rem]="(row.level - 1) * 0.75">{{
+      row.name
+    }}</span>
+  </ng-template>
+  <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'AccountType' }}</ng-template>
+  <ng-template uiCell="normal_balance" let-row>{{
+    row.normalBalance | enumLabel: 'BalanceSide'
+  }}</ng-template>
+  <ng-template uiCell="parent" let-row>{{
+    row.parent ? row.parent.code + ' ' + row.parent.name : '—'
+  }}</ng-template>
+  <ng-template uiCell="is_group" let-row>{{ row.isGroup ? 'Group' : 'Posting' }}</ng-template>
+</ui-resource-list>

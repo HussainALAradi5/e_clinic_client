@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Reschedule {{ data.appointment.code }}</h2>
+<mat-dialog-content>
+  <p class="mt-0 text-sm text-on-surface-variant">
+    Now: {{ data.appointment.scheduledDate }} at {{ data.appointment.startTime }} with
+    {{ data.appointment.provider?.fullName }}. Pick a new free time — the patient is told.
+  </p>
+  <ui-text class="max-w-48" label="New date" type="date" [control]="dateControl" />
+  <app-slot-picker
+    [providerId]="data.appointment.providerId"
+    [date]="date()"
+    [type]="data.appointment.type"
+    [(start)]="start"
+  />
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="ref.close()">Close</button>
+  <ui-button icon="update" [disabled]="!start()" [action]="move">Move appointment</ui-button>
+</mat-dialog-actions>

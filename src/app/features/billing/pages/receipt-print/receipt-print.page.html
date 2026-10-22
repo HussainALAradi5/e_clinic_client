@@ -1,0 +1,46 @@
+@if (error()) {
+  <ui-error class="block p-6" [error]="error()" />
+} @else if (payment(); as p) {
+  <app-print-sheet
+    paper="receipt"
+    entity="payment"
+    verifyNote="Scan to check this receipt."
+    [title]="p.status === voided ? 'Receipt — VOIDED' : 'Payment receipt'"
+    [recordId]="p.id"
+    [reference]="p.code"
+  >
+    <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5">
+      <dt class="text-black/60">Date</dt>
+      <dd class="m-0 text-right">{{ p.paidAt | date: dateTimeFormat }}</dd>
+      <dt class="text-black/60">Patient</dt>
+      <dd class="m-0 text-right">{{ p.patient?.fullName }}</dd>
+      <dt class="text-black/60">File</dt>
+      <dd class="m-0 text-right">{{ p.patient?.code }}</dd>
+      <dt class="text-black/60">Invoice</dt>
+      <dd class="m-0 text-right font-mono">{{ p.invoice?.invoiceNumber }}</dd>
+      <dt class="text-black/60">Method</dt>
+      <dd class="m-0 text-right">
+        {{ p.method | enumLabel: 'PaymentMethod' }}{{ p.cardLast4 ? ' ·· ' + p.cardLast4 : '' }}
+      </dd>
+      @if (p.referenceNumber) {
+        <dt class="text-black/60">Reference</dt>
+        <dd class="m-0 text-right">{{ p.referenceNumber }}</dd>
+      }
+      <dt class="mt-2 border-t border-dashed border-black/40 pt-2 text-[11pt] font-semibold">
+        Paid
+      </dt>
+      <dd
+        class="m-0 mt-2 border-t border-dashed border-black/40 pt-2 text-right text-[11pt] font-semibold"
+      >
+        {{ p.amount | money }}
+      </dd>
+      <dt class="text-black/60">Balance left</dt>
+      <dd class="m-0 text-right">{{ p.invoice?.balanceDue | money }}</dd>
+      <dt class="text-black/60">Received by</dt>
+      <dd class="m-0 text-right">{{ p.receivedBy?.fullName }}</dd>
+    </dl>
+    @if (p.status === voided) {
+      <p class="m-0 mt-3 text-center font-semibold">Voided: {{ p.voidReason }}</p>
+    }
+  </app-print-sheet>
+}

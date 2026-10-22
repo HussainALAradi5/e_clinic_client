@@ -1,0 +1,22 @@
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" class="mb-2" />
+}
+@if (error(); as e) {
+  <p class="m-0 flex items-center gap-2 text-sm text-error">
+    <mat-icon class="!text-lg">event_busy</mat-icon>{{ e.message }}
+  </p>
+} @else if (slots(); as list) {
+  @if (list.length) {
+    <mat-chip-listbox aria-label="Free times" [value]="start()" (change)="start.set($event.value)">
+      @for (slot of list; track slot.start) {
+        <mat-chip-option [value]="slot.startTime">{{ slot.startTime }}</mat-chip-option>
+      }
+    </mat-chip-listbox>
+  } @else {
+    <p class="m-0 flex items-center gap-2 text-sm text-on-surface-variant">
+      <mat-icon class="!text-lg">event_busy</mat-icon> No free time that day — try another date.
+    </p>
+  }
+} @else {
+  <p class="m-0 text-sm text-on-surface-variant">Choose who and when to see free times.</p>
+}

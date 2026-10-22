@@ -1,0 +1,51 @@
+import { AttendanceSource } from '@shared/enums/hr/attendance-source.enum';
+import { AttendanceStatus } from '@shared/enums/hr/attendance-status.enum';
+import { EmployeeSummary } from '@shared/interfaces/common/summary.interface';
+
+/** Mirror of AttendanceResource — one employee's working day. */
+export interface Attendance {
+  id: string;
+  employeeId: string;
+  employee?: EmployeeSummary;
+  date: string;
+  checkInAt: string | null;
+  checkOutAt: string | null;
+  workedMinutes: number;
+  lateMinutes: number;
+  overtimeMinutes: number;
+  overtimeApproved: boolean;
+  status: AttendanceStatus;
+  source: AttendanceSource;
+  notes: string | null;
+  needsReview: boolean;
+  isLocked: boolean;
+  updatedAt: string | null;
+}
+
+/** The signed-in employee's day and shift (check-in card). */
+export interface AttendanceToday {
+  attendance: Attendance | null;
+  shift: { start: string; end: string };
+}
+
+/** One employee's month as payroll sees it. */
+export interface AttendanceSummary {
+  workingDays: number;
+  presentDays: string;
+  absentDays: string;
+  paidLeaveDays: string;
+  unpaidLeaveDays: string;
+  lateMinutes: number;
+  approvedOvertimeMinutes: number;
+  pendingOvertimeMinutes: number;
+}
+
+/** HR correction: times (clinic time, HH:mm) or, without a check-in, what the day was. */
+export interface ManualAttendancePayload {
+  employeeId: string;
+  date: string;
+  checkIn: string | null;
+  checkOut: string | null;
+  status: AttendanceStatus | null;
+  reason: string;
+}

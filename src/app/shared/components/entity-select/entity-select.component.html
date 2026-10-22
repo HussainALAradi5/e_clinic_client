@@ -1,0 +1,38 @@
+<mat-form-field class="w-full">
+  <mat-label>{{ label() }}</mat-label>
+  @if (icon()) {
+    <mat-icon matPrefix class="mr-1">{{ icon() }}</mat-icon>
+  }
+  <input
+    matInput
+    [formControl]="search"
+    [matAutocomplete]="auto"
+    [attr.autofocus]="autofocus() ? '' : null"
+    (focus)="open()"
+    (blur)="blur()"
+    autocomplete="off"
+    spellcheck="false"
+  />
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="choose($event.option.value)">
+    @for (row of options(); track row.id) {
+      <mat-option [value]="row">
+        <span class="block leading-tight">{{ display()(row) }}</span>
+        @if (detail(); as detailOf) {
+          @if (detailOf(row); as line) {
+            <span class="block text-xs text-on-surface-variant">{{ line }}</span>
+          }
+        }
+      </mat-option>
+    } @empty {
+      <mat-option disabled>{{
+        loading() ? 'Searching…' : 'No match — try another name or code'
+      }}</mat-option>
+    }
+  </mat-autocomplete>
+  @if (hint()) {
+    <mat-hint>{{ hint() }}</mat-hint>
+  }
+  @if (control().invalid && control().touched) {
+    <mat-error>{{ error() }}</mat-error>
+  }
+</mat-form-field>

@@ -1,0 +1,123 @@
+@if (detail.error(); as error) {
+  <ui-error [error]="error" (retry)="detail.load(id())" />
+} @else if (detail.record(); as e) {
+  <ui-page-header [title]="e.description" [subtitle]="e.code + ' · ' + e.payeeName">
+    <ng-container status>
+      @if (e.isPaid) {
+        <ui-status value="paid" enum="InvoiceStatus" />
+      } @else {
+        <ui-status [value]="e.status" enum="ApprovalStatus" />
+      }
+    </ng-container>
+    <ng-container actions>
+      @if (isDraft()) {
+        <ui-button
+          icon="edit"
+          [variant]="variants.Outlined"
+          access="expenses.create"
+          [action]="edit"
+          >Edit</ui-button
+        >
+        <ui-button icon="send" access="expenses.create" [action]="submit"
+          >Submit for approval</ui-button
+        >
+      }
+      @if (isPending()) {
+        <ui-button icon="check" access="expenses.write & expenses.approve" [action]="approve"
+          >Approve</ui-button
+        >
+        <ui-button
+          icon="close"
+          [variant]="variants.Outlined"
+          access="expenses.write & expenses.approve"
+          [action]="reject"
+          >Reject</ui-button
+        >
+      }
+      @if (toPay()) {
+        <ui-button icon="payments" access="expenses.write & expenses.pay" [action]="pay"
+          >Pay</ui-button
+        >
+      }
+      @if (e.journalEntryId) {
+        <a matButton="outlined" [routerLink]="['/accounting/journal', e.journalEntryId]"
+          ><mat-icon>menu_book</mat-icon> Journal entry</a
+        >
+      }
+      @if (cancellable()) {
+        <ui-button
+          icon="block"
+          [variant]="variants.Danger"
+          access="expenses.create"
+          [action]="cancel"
+          >Cancel</ui-button
+        >
+      }
+      @if (deletable()) {
+        <ui-button
+          icon="delete"
+          [variant]="variants.Text"
+          access="expenses.create"
+          [action]="remove"
+          [confirm]="{ title: 'Delete this expense?', confirmLabel: 'Delete', danger: true }"
+          >Delete</ui-button
+        >
+      }
+    </ng-container>
+  </ui-page-header>
+
+  <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+    <mat-card appearance="outlined" class="self-start !p-5"
+      ><ui-facts [items]="facts()"
+    /></mat-card>
+    <mat-card appearance="outlined" class="self-start !p-5">
+      <h2 class="m-0 mb-3 text-base font-semibold">Vendor invoice</h2>
+      @if (scans().length) {
+        <ul class="m-0 mb-3 list-none p-0">
+          @for (f of scans(); track f.id) {
+            <li
+              class="flex items-center gap-2 border-b border-outline-variant/60 py-2 text-sm last:border-0"
+            >
+              <mat-icon class="!text-lg text-on-surface-variant">{{
+                f.mimeType.startsWith('image/') ? 'image' : 'description'
+              }}</mat-icon>
+              <span class="flex-1 truncate">{{ f.originalName }}</span>
+              <span class="text-xs text-on-surface-variant"
+                >{{ f.sizeBytes / 1024 | number: '1.0-0' }} KB</span
+              >
+              <ui-button
+                icon="open_in_new"
+                [variant]="variants.Text"
+                [action]="openScan.bind(this, f)"
+                >View</ui-button
+              >
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="m-0 mb-3 text-sm text-on-surface-variant">No scan yet.</p>
+      }
+      <ui-upload-zone
+        *hasAccess="'expenses.create | expenses.write'"
+        [category]="scanCategory"
+        [owner]="owner()"
+        (uploaded)="loadScans()"
+      />
+    </mat-card>
+  </div>
+
+  <mat-tab-group
+    *hasAccess="'audit.read_all | audit.read_own'"
+    class="mt-4"
+    mat-stretch-tabs="false"
+    animationDuration="0ms"
+  >
+    <mat-tab label="History">
+      <ng-template matTabContent
+        ><ui-audit-history class="block pt-4" type="expense" [id]="e.id"
+      /></ng-template>
+    </mat-tab>
+  </mat-tab-group>
+} @else {
+  <ui-skeleton [rows]="8" />
+}

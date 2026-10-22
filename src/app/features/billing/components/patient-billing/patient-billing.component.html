@@ -1,0 +1,51 @@
+@if (invoices(); as list) {
+  <div class="mb-3 flex flex-wrap items-center gap-3">
+    <div class="flex-1">
+      <p class="m-0 text-xs text-on-surface-variant">Still to pay</p>
+      <p class="m-0 text-2xl font-semibold tabular-nums">{{ owed() | money }}</p>
+    </div>
+    <ui-button
+      icon="add"
+      [variant]="variants.Outlined"
+      access="invoices.create"
+      [action]="addLines"
+      >{{ draft() ? 'Add to draft' : 'New invoice' }}</ui-button
+    >
+  </div>
+  @if (list.length) {
+    <ul class="m-0 list-none rounded-xl border border-outline-variant p-0">
+      @for (inv of list; track inv.id) {
+        <li
+          class="flex flex-wrap items-center gap-3 border-b border-outline-variant/60 px-4 py-3 last:border-0"
+        >
+          <div class="min-w-0 flex-1">
+            <a
+              class="font-mono font-medium hover:underline"
+              [routerLink]="['/billing/invoices', inv.id]"
+              >{{ inv.invoiceNumber ?? 'Draft · ' + inv.code }}</a
+            >
+            <p class="m-0 text-xs text-on-surface-variant">
+              {{ inv.issueDate ? (inv.issueDate | date: dateFormat) : 'Not issued yet' }} · total
+              {{ inv.total | money }}
+            </p>
+          </div>
+          <ui-status [value]="inv.status" enum="InvoiceStatus" />
+          @if (payable(inv)) {
+            <span class="font-semibold tabular-nums">{{ inv.balanceDue | money }}</span>
+            <ui-button
+              icon="point_of_sale"
+              [variant]="variants.Tonal"
+              access="payments.create"
+              [action]="pay.bind(this, inv)"
+              >Pay</ui-button
+            >
+          }
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="m-0 text-sm text-on-surface-variant">No invoices yet.</p>
+  }
+} @else {
+  <p class="m-0 text-sm text-on-surface-variant">Loading…</p>
+}

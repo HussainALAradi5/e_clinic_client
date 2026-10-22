@@ -1,0 +1,41 @@
+<ui-resource-list
+  resource="inventory"
+  endpoint="pharmacy/inventory/stock"
+  title="Stock by lot"
+  subtitle="What is on the shelf, lot by lot. Expired and quarantined lots are never dispensed."
+  emptyTitle="No stock found"
+  (rowClick)="open($any($event))"
+  [defaults]="defaults"
+>
+  <ui-button
+    actions
+    icon="inventory_2"
+    access="inventory.create & inventory.receive"
+    [action]="receive"
+    >Receive stock</ui-button
+  >
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="medication" let-row
+    ><span class="font-medium">{{ row.medication?.name }}</span></ng-template
+  >
+  <ng-template uiCell="batch_number" let-row
+    ><span class="font-mono">{{ row.batchNumber }}</span>
+    @if (row.isQuarantined) {
+      <span class="ml-2 text-xs font-semibold text-error">Quarantined</span>
+    }
+  </ng-template>
+  <ng-template uiCell="expiry_date" let-row>
+    <span class="mr-2 tabular-nums">{{ row.expiryDate | date: dateFormat }}</span>
+    <app-expiry-chip [status]="row.expiryStatus" />
+  </ng-template>
+  <ng-template uiCell="qty_on_hand" let-row
+    ><span class="tabular-nums font-medium">{{ row.qtyOnHand | qty }}</span>
+    <span class="text-xs text-on-surface-variant"> / {{ row.qtyReceived | qty }}</span></ng-template
+  >
+  <ng-template uiCell="unit_cost" let-row
+    ><span class="tabular-nums">{{ row.unitCost | money }}</span></ng-template
+  >
+  <ng-template uiCell="supplier" let-row>{{ row.supplier?.name ?? '—' }}</ng-template>
+</ui-resource-list>

@@ -1,0 +1,21 @@
+<h2 mat-dialog-title class="!text-center">{{ data.title }}</h2>
+<mat-dialog-content class="!flex flex-col items-center">
+  <div class="rounded-2xl bg-white p-4 shadow-sm">
+    <ui-code-image
+      class="size-56"
+      [entity]="data.entity"
+      [recordId]="data.recordId"
+      [pixels]="448"
+      [label]="'Code of ' + data.title"
+    />
+  </div>
+  <div class="mt-4 text-center">
+    @for (line of data.lines; track $index) {
+      <p class="m-0 text-sm" [class.font-semibold]="$first">{{ line }}</p>
+    }
+  </div>
+  <p class="m-0 mt-3 max-w-xs text-center text-xs text-on-surface-variant">{{ data.hint }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button matButton="filled" mat-dialog-close>Done</button>
+</mat-dialog-actions>

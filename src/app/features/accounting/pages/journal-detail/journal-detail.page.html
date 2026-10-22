@@ -1,0 +1,99 @@
+@if (detail.error(); as error) {
+  <ui-error [error]="error" (retry)="detail.load(id())" />
+} @else if (detail.record(); as e) {
+  <ui-page-header
+    [title]="e.entryNumber ? 'Entry ' + e.entryNumber : 'Draft entry'"
+    [subtitle]="(e.entryDate | date: dateFormat) + ' · ' + e.description"
+  >
+    <ng-container status><ui-status [value]="e.status" enum="JournalEntryStatus" /></ng-container>
+    <ng-container actions>
+      @if (source(); as s) {
+        <a matButton="outlined" [routerLink]="s.link"
+          ><mat-icon>open_in_new</mat-icon> {{ s.label }}</a
+        >
+      }
+      @if (isDraft()) {
+        <ui-button icon="edit" [variant]="variants.Outlined" access="journal.create" [action]="edit"
+          >Edit</ui-button
+        >
+        <ui-button icon="task_alt" access="journal.write & journal.post" [action]="post"
+          >Post</ui-button
+        >
+        <ui-button
+          icon="delete"
+          [variant]="variants.Danger"
+          access="journal.create"
+          [action]="remove"
+          [confirm]="{ title: 'Delete this draft entry?', confirmLabel: 'Delete', danger: true }"
+          >Delete</ui-button
+        >
+      }
+      @if (reversible()) {
+        <ui-button
+          icon="undo"
+          [variant]="variants.Outlined"
+          access="journal.write & journal.reverse"
+          [action]="reverse"
+          >Reverse</ui-button
+        >
+      }
+    </ng-container>
+  </ui-page-header>
+
+  <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
+    <mat-card appearance="outlined" class="self-start overflow-x-auto !p-0">
+      <table class="w-full border-collapse text-sm">
+        <caption class="sr-only">
+          Lines
+        </caption>
+        <thead>
+          <tr class="border-b border-outline-variant text-left text-xs text-on-surface-variant">
+            <th class="px-4 py-3 font-medium" scope="col">Account</th>
+            <th class="px-2 py-3 font-medium" scope="col">For</th>
+            <th class="px-2 py-3 text-right font-medium" scope="col">Debit</th>
+            <th class="px-4 py-3 text-right font-medium" scope="col">Credit</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (l of e.lines ?? []; track l.id) {
+            <tr class="border-b border-outline-variant/60 align-top">
+              <td class="px-4 py-2.5">
+                <a
+                  class="font-mono text-primary"
+                  [routerLink]="['/accounting/chart-of-accounts', l.accountId]"
+                  >{{ l.account?.code }}</a
+                >
+                {{ l.account?.name }}
+                @if (l.description) {
+                  <span class="block text-xs text-on-surface-variant">{{ l.description }}</span>
+                }
+              </td>
+              <td class="px-2 py-2.5 text-xs text-on-surface-variant">
+                {{ l.patient?.fullName ?? '' }}{{ l.doctor ? ' · ' + l.doctor.fullName : ''
+                }}{{ l.department ? ' · ' + l.department.name : '' }}
+              </td>
+              <td class="px-2 py-2.5 text-right tabular-nums">
+                {{ l.debit.amount !== '0.000' ? l.debit.amount : '' }}
+              </td>
+              <td class="px-4 py-2.5 text-right tabular-nums">
+                {{ l.credit.amount !== '0.000' ? l.credit.amount : '' }}
+              </td>
+            </tr>
+          }
+        </tbody>
+        <tfoot>
+          <tr class="font-semibold">
+            <td class="px-4 py-3" colspan="2">Total</td>
+            <td class="px-2 py-3 text-right tabular-nums">{{ e.totalDebit | money }}</td>
+            <td class="px-4 py-3 text-right tabular-nums">{{ e.totalCredit | money }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </mat-card>
+    <mat-card appearance="outlined" class="self-start !p-5"
+      ><ui-facts [items]="facts()"
+    /></mat-card>
+  </div>
+} @else {
+  <ui-skeleton [rows]="8" />
+}

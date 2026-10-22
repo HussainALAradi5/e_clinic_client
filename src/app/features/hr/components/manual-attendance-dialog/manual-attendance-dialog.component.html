@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>
+  Correct attendance
+  @if (data.employee) {
+    <span class="block text-sm font-normal text-on-surface-variant">{{
+      data.employee.fullName
+    }}</span>
+  }
+</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Save day"
+    [compact]="true"
+    [allowPristine]="true"
+    (cancelled)="ref.close()"
+  >
+    @if (!data.employee) {
+      <ui-entity-select
+        label="Employee"
+        endpoint="hr/employees"
+        icon="badge"
+        [display]="employeeName"
+        [detail]="employeeTitle"
+        [filter]="activeOnly"
+        [control]="form.controls.employeeId"
+      />
+    }
+    <ui-text label="Day" type="date" [control]="form.controls.date" />
+    <mat-button-toggle-group
+      class="mb-4"
+      hideSingleSelectionIndicator
+      aria-label="What to record"
+      [formControl]="form.controls.mode"
+    >
+      <mat-button-toggle value="times">Times worked</mat-button-toggle>
+      <mat-button-toggle value="day">Day not worked</mat-button-toggle>
+    </mat-button-toggle-group>
+    @if (mode() === 'times') {
+      <div class="grid grid-cols-2 gap-x-4">
+        <ui-text label="Checked in" type="time" [control]="form.controls.checkIn" />
+        <ui-text label="Checked out" type="time" [control]="form.controls.checkOut" />
+      </div>
+    } @else {
+      <ui-select
+        label="The day was"
+        [options]="dayResults"
+        [required]="true"
+        [control]="form.controls.status"
+      />
+    }
+    <ui-text
+      label="Reason"
+      hint="Kept in the history, e.g. 'Forgot to check in'"
+      [control]="form.controls.reason"
+    />
+  </ui-form>
+</mat-dialog-content>

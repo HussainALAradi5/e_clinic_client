@@ -1,0 +1,44 @@
+<div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+  <ui-entity-select
+    label="Department"
+    endpoint="hr/departments"
+    [display]="departmentName"
+    [initial]="$any(department())"
+    [control]="form().controls.departmentId"
+  />
+  <ui-text label="Job title" [control]="form().controls.jobTitle" />
+  <ui-select
+    label="Contract"
+    enum="EmploymentType"
+    [required]="true"
+    [control]="form().controls.employmentType"
+  />
+  <ui-text label="Hire date" type="date" [control]="form().controls.hireDate" />
+  <ui-text label="Probation ends" type="date" [control]="form().controls.probationEndDate" />
+  <ui-select
+    label="Weekly days off"
+    [multiple]="true"
+    [options]="days"
+    [control]="form().controls.weeklyOffDays"
+  />
+  <ui-text label="Shift starts" type="time" [control]="form().controls.workStartTime" />
+  <ui-text label="Shift ends" type="time" [control]="form().controls.workEndTime" />
+</div>
+@if (salary()) {
+  <h3 class="m-0 mb-2 mt-1 text-sm font-semibold text-on-surface-variant">Salary</h3>
+  <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+    <ui-money label="Basic salary (monthly)" [control]="form().controls.basicSalary" />
+    <ui-text label="Bank" [control]="form().controls.bankName" />
+    <ui-text
+      label="IBAN"
+      [hint]="
+        storedIban() ? 'Stored: ' + storedIban() + ' — leave blank to keep' : 'BH + 20 characters'
+      "
+      [control]="form().controls.iban"
+    />
+    <ui-text
+      label="Social insurance (GOSI) number"
+      [control]="form().controls.socialInsuranceNumber"
+    />
+  </div>
+}

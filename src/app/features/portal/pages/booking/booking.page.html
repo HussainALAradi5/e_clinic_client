@@ -1,0 +1,157 @@
+<header class="mb-5">
+  <a matButton [routerLink]="visitsPath" class="!-ml-3 mb-1"
+    ><mat-icon>arrow_back</mat-icon> My visits</a
+  >
+  <h1 class="m-0 text-2xl font-bold tracking-tight">Book a visit</h1>
+  <p class="m-0 text-on-surface-variant">
+    Pick a doctor and a free time. The clinic confirms your booking; you can cancel online up to 2
+    hours before.
+  </p>
+</header>
+
+<ol class="steps">
+  <li class="step">
+    <h2 class="step-title">What is the visit for?</h2>
+    <mat-button-toggle-group
+      hideSingleSelectionIndicator
+      aria-label="Kind of visit"
+      [value]="type()"
+      (change)="pickType($event.value)"
+    >
+      @for (t of types; track t.value) {
+        <mat-button-toggle [value]="t.value">{{ t.label }}</mat-button-toggle>
+      }
+    </mat-button-toggle-group>
+  </li>
+
+  <li class="step">
+    <h2 class="step-title">Choose a doctor</h2>
+    @if (allDoctors() === null) {
+      <ui-skeleton [rows]="3" [height]="48" />
+    } @else {
+      @if (specialties().length > 1) {
+        <div class="chips mb-3" role="group" aria-label="Specialty">
+          <button
+            type="button"
+            class="chip"
+            [class.on]="specialty() === null"
+            [attr.aria-pressed]="specialty() === null"
+            (click)="pickSpecialty(null)"
+          >
+            All
+          </button>
+          @for (s of specialties(); track s.id) {
+            <button
+              type="button"
+              class="chip"
+              [class.on]="specialty() === s.id"
+              [attr.aria-pressed]="specialty() === s.id"
+              (click)="pickSpecialty(s.id)"
+            >
+              {{ s.name }}
+            </button>
+          }
+        </div>
+      }
+      <div class="grid gap-2 sm:grid-cols-2" role="radiogroup" aria-label="Doctor">
+        @for (d of doctors(); track d.id) {
+          <button
+            type="button"
+            role="radio"
+            class="option doctor"
+            [class.on]="doctor()?.id === d.id"
+            [attr.aria-checked]="doctor()?.id === d.id"
+            (click)="pickDoctor(d)"
+          >
+            <span class="initials" aria-hidden="true">{{ d.fullName.charAt(0) }}</span>
+            <span class="min-w-0 flex-1 text-left">
+              <span class="block font-semibold">{{ d.displayName }}</span>
+              <span class="block truncate text-sm text-on-surface-variant"
+                >{{ d.specialty?.name }}
+                @if (d.title) {
+                  · {{ d.title }}
+                }
+              </span>
+            </span>
+          </button>
+        } @empty {
+          <p class="m-0 text-sm text-on-surface-variant">
+            No doctor of this specialty takes online bookings at the moment. Please call the clinic.
+          </p>
+        }
+      </div>
+    }
+  </li>
+
+  @if (doctor(); as d) {
+    <li class="step">
+      <h2 class="step-title">Pick a day and time</h2>
+      <div class="days" role="radiogroup" aria-label="Day">
+        @for (day of days; track day) {
+          <button
+            type="button"
+            role="radio"
+            class="day"
+            [class.on]="date() === day"
+            [attr.aria-checked]="date() === day"
+            [attr.aria-label]="day + 'T00:00:00' | date: 'EEEE d MMMM'"
+            (click)="pickDate(day)"
+          >
+            <span class="text-xs">{{ day + 'T00:00:00' | date: 'EEE' }}</span>
+            <span class="text-lg leading-tight font-bold">{{ day + 'T00:00:00' | date: 'd' }}</span>
+            <span class="text-xs">{{ day + 'T00:00:00' | date: 'MMM' }}</span>
+          </button>
+        }
+      </div>
+
+      @if (slots(); as list) {
+        @if (list.length) {
+          <div class="slots mt-3" role="radiogroup" aria-label="Time">
+            @for (s of list; track s.start) {
+              <button
+                type="button"
+                role="radio"
+                class="option slot"
+                [class.on]="slot()?.start === s.start"
+                [attr.aria-checked]="slot()?.start === s.start"
+                (click)="slot.set(s)"
+              >
+                {{ s.startTime }}
+              </button>
+            }
+          </div>
+        } @else {
+          <p class="m-0 mt-3 text-sm text-on-surface-variant">
+            {{ d.displayName }} has no free time online that day. Try another day.
+          </p>
+        }
+      } @else {
+        <div class="mt-3"><ui-skeleton [rows]="2" [height]="40" /></div>
+      }
+    </li>
+  }
+
+  @if (summary(); as text) {
+    <li class="step">
+      <h2 class="step-title">Anything the doctor should know?</h2>
+      <ui-text
+        label="Reason for the visit (optional)"
+        [multiline]="true"
+        [rows]="2"
+        [maxLength]="500"
+        [control]="reason"
+      />
+      <div class="confirm">
+        <div>
+          <p class="m-0 font-semibold">{{ text }}</p>
+          @if (price(); as p) {
+            <p class="m-0 text-sm text-on-surface-variant">
+              Fee {{ p | money }}, paid at the clinic (insurance applied there).
+            </p>
+          }
+        </div>
+        <ui-button icon="event_available" [lock]="lockOnce" [action]="book">Book visit</ui-button>
+      </div>
+    </li>
+  }
+</ol>

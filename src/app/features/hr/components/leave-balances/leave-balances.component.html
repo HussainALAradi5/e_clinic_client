@@ -1,0 +1,33 @@
+@if (balances(); as list) {
+  <ul class="m-0 grid list-none gap-3 p-0 sm:grid-cols-2 xl:grid-cols-3">
+    @for (b of list; track b.id) {
+      <li class="rounded-xl border border-outline-variant p-4">
+        <p class="m-0 text-sm font-medium">{{ b.leaveType.name }}</p>
+        @if (b.remainingDays !== null) {
+          <p class="m-0 mt-1">
+            <span class="text-2xl font-semibold tabular-nums">{{ b.remainingDays | qty }}</span>
+            <span class="text-sm text-on-surface-variant">
+              of {{ b.entitledDays | qty }}
+              @if (b.carriedForwardDays !== '0.0') {
+                + {{ b.carriedForwardDays | qty }} carried
+              }
+              left</span
+            >
+          </p>
+        } @else {
+          <p class="m-0 mt-1 text-sm text-on-surface-variant">
+            {{ b.leaveType.isPaid ? 'No yearly limit' : 'Unpaid — deducted from salary' }}
+          </p>
+        }
+        <p class="m-0 mt-1 text-xs text-on-surface-variant">
+          {{ b.usedDays | qty }} taken
+          @if (b.pendingDays !== '0.0') {
+            · {{ b.pendingDays | qty }} waiting for approval
+          }
+        </p>
+      </li>
+    }
+  </ul>
+} @else {
+  <ui-skeleton [rows]="3" />
+}

@@ -1,0 +1,49 @@
+<div class="mb-2 flex items-center">
+  <h2 class="m-0 flex-1 text-base font-semibold">Consents</h2>
+  <ui-button icon="draw" [variant]="variants.Tonal" access="consents.create" [action]="record"
+    >Record consent</ui-button
+  >
+</div>
+@for (c of consents() ?? []; track c.id) {
+  <div
+    class="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-outline-variant/60 py-2.5 text-sm"
+  >
+    <mat-icon
+      class="!text-lg"
+      [class]="c.isValid ? 'text-green-700 dark:text-green-400' : 'text-on-surface-variant'"
+      >{{ c.isValid ? 'verified' : 'block' }}</mat-icon
+    >
+    <span class="min-w-48 flex-1">
+      <span class="font-medium">{{ c.type | enumLabel: 'ConsentType' }}</span>
+      <span class="text-on-surface-variant"> · {{ c.scope ? c.scope.code : 'whole file' }}</span>
+      <span class="block text-xs text-on-surface-variant">
+        Signed {{ c.signedAt | date: dateFormat }} by {{ c.signedByName
+        }}{{ c.signerRelationship !== 'self' ? ' (' + c.signerRelationship + ')' : '' }}
+        @if (c.revokedAt) {
+          — revoked {{ c.revokedAt | date: dateFormat }}: {{ c.revocationReason }}
+        } @else if (c.validUntil) {
+          — valid until {{ c.validUntil | date: dateFormat }}
+        }
+      </span>
+    </span>
+    <a
+      class="text-sm text-primary underline"
+      [routerLink]="['/print/consent', c.id]"
+      target="_blank"
+      >Print</a
+    >
+    @if (!c.revokedAt) {
+      <ui-button
+        icon="block"
+        [variant]="variants.Text"
+        access="consents.write"
+        [action]="revoke.bind(this, c)"
+        >Revoke</ui-button
+      >
+    }
+  </div>
+} @empty {
+  <p class="m-0 text-sm text-on-surface-variant">
+    {{ consents() === null ? 'Loading…' : 'No consent on file yet.' }}
+  </p>
+}

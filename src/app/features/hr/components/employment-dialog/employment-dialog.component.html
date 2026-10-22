@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Edit employment — {{ data.employee.fullName }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [compact]="true"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    <app-employment-fields
+      [form]="form"
+      [salary]="data.canManageSalary"
+      [department]="data.employee.department ?? null"
+      [storedIban]="data.employee.iban ?? null"
+    />
+  </ui-form>
+</mat-dialog-content>

@@ -1,0 +1,79 @@
+@if (detail.error(); as error) {
+  <ui-error [error]="error" (retry)="reload()" />
+} @else if (detail.record(); as department) {
+  <ui-page-header [title]="department.name" [subtitle]="department.code">
+    <ui-entity-actions
+      actions
+      resource="departments"
+      noun="department"
+      [record]="department"
+      [deleteBlocked]="staff().length > 0"
+      [edit]="edit"
+      [archive]="archive"
+      [unarchive]="unarchive"
+      [remove]="remove"
+      [restore]="restore"
+    />
+  </ui-page-header>
+
+  <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
+    <mat-tab label="Details">
+      <div class="grid gap-4 pt-4 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <mat-card appearance="outlined" class="!p-5"><ui-facts [items]="facts()" /></mat-card>
+        <mat-card appearance="outlined" class="!p-5">
+          <div class="mb-2 flex items-center">
+            <h2 class="m-0 flex-1 text-base font-semibold">Sub-departments</h2>
+            <ui-button
+              icon="add"
+              [variant]="variants.Text"
+              access="departments.create"
+              [action]="addChild"
+              >Add</ui-button
+            >
+          </div>
+          @for (child of department.children ?? []; track child.id) {
+            <a
+              class="flex justify-between rounded px-1 py-1.5 text-sm hover:bg-surface-container"
+              [routerLink]="['/hr/departments', child.id]"
+            >
+              <span>{{ child.name }}</span
+              ><span class="tabular-nums text-on-surface-variant">{{
+                child.employeesCount ?? 0
+              }}</span>
+            </a>
+          } @empty {
+            <p class="m-0 text-sm text-on-surface-variant">None.</p>
+          }
+        </mat-card>
+      </div>
+    </mat-tab>
+    <mat-tab [label]="'Staff (' + staff().length + ')'">
+      <div class="pt-4">
+        @for (employee of staff(); track employee.id) {
+          <a
+            class="flex items-center gap-3 border-b border-outline-variant/60 px-1 py-2 text-sm hover:bg-surface-container"
+            [routerLink]="['/hr/employees', employee.id]"
+          >
+            <span class="flex-1 font-medium">{{ employee.fullName }}</span>
+            <span class="flex-1 text-on-surface-variant">{{ employee.jobTitle }}</span>
+            <ui-status [value]="employee.status" enum="EmployeeStatus" />
+          </a>
+        } @empty {
+          <p class="text-sm text-on-surface-variant">Nobody works in this department yet.</p>
+        }
+        @if (staff().length) {
+          <p class="mt-2 text-xs text-on-surface-variant">
+            A department with staff cannot be deleted — move them or archive it.
+          </p>
+        }
+      </div>
+    </mat-tab>
+    <mat-tab label="History" *hasAccess="'audit.read_all | audit.read_own'">
+      <ng-template matTabContent>
+        <ui-audit-history class="block pt-4" type="department" [id]="department.id" />
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+} @else {
+  <ui-skeleton [rows]="8" />
+}

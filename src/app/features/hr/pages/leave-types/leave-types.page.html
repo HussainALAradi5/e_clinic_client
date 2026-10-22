@@ -1,0 +1,64 @@
+<ui-page-header
+  title="Leave types"
+  subtitle="Yearly days are pro-rated for new joiners; unused days carry forward up to the limit on 1 January."
+>
+  <ui-button actions icon="add" access="leaves.create & leaves.manage_types" [action]="create"
+    >New leave type</ui-button
+  >
+</ui-page-header>
+
+@if (types(); as list) {
+  <mat-card appearance="outlined" class="overflow-x-auto !p-0">
+    <table class="w-full border-collapse text-sm">
+      <thead>
+        <tr class="text-left text-xs text-on-surface-variant">
+          <th class="px-4 py-3 font-medium">Code</th>
+          <th class="px-4 py-3 font-medium">Name</th>
+          <th class="px-4 py-3 text-right font-medium">Days a year</th>
+          <th class="px-4 py-3 text-right font-medium">Carry forward</th>
+          <th class="px-4 py-3 text-right font-medium">Notice</th>
+          <th class="px-4 py-3 font-medium">Rules</th>
+          <th class="px-4 py-3"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (t of list; track t.id) {
+          <tr class="border-t border-outline-variant/60" [class.opacity-60]="t.isArchived">
+            <td class="px-4 py-3 font-mono">{{ t.code }}</td>
+            <td class="px-4 py-3">
+              <span class="font-medium">{{ t.name }}</span>
+              @if (t.nameAr) {
+                <span class="block text-xs text-on-surface-variant" dir="rtl">{{ t.nameAr }}</span>
+              }
+            </td>
+            <td class="px-4 py-3 text-right tabular-nums">
+              {{ t.isLimited ? (t.annualQuotaDays | qty) : '—' }}
+            </td>
+            <td class="px-4 py-3 text-right tabular-nums">
+              {{ t.maxCarryForwardDays === '0.0' ? '—' : (t.maxCarryForwardDays | qty) }}
+            </td>
+            <td class="px-4 py-3 text-right tabular-nums">
+              {{ t.minNoticeDays ? t.minNoticeDays + ' d' : '—' }}
+            </td>
+            <td class="px-4 py-3 text-on-surface-variant">
+              {{ t.isPaid ? 'Paid' : 'Unpaid (deducted)'
+              }}{{ t.requiresAttachment ? ' · certificate' : '' }}
+            </td>
+            <td class="px-4 py-3 text-right">
+              <ui-button
+                icon="edit"
+                [variant]="variants.Text"
+                size="sm"
+                access="leaves.write & leaves.manage_types"
+                [action]="edit.bind(this, t)"
+                >Edit</ui-button
+              >
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </mat-card>
+} @else {
+  <ui-skeleton [rows]="5" />
+}

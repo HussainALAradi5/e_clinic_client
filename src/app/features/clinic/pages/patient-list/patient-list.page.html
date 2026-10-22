@@ -1,0 +1,31 @@
+<ui-resource-list
+  resource="patients"
+  endpoint="patients"
+  title="Patients"
+  subtitle="Search before registering — the file number (MRN) is the person code on cards and wristbands."
+  emptyTitle="No patients found"
+  rowLink="/clinic/patients/:id"
+>
+  <ui-button actions icon="person_add" access="patients.create" [action]="register"
+    >Register patient</ui-button
+  >
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="full_name" let-row>
+    <span class="font-medium">{{ row.fullName }}</span>
+    @if (row.hasMedicalAlerts) {
+      <span
+        class="ml-2 rounded-full bg-error-container px-2 py-0.5 text-[11px] font-medium text-on-error-container"
+        >Allergy</span
+      >
+    }
+  </ng-template>
+  <ng-template uiCell="gender" let-row>{{ row.gender | enumLabel: 'Gender' }}</ng-template>
+  <ng-template uiCell="date_of_birth" let-row
+    >{{ row.dateOfBirth | date: dateFormat }}
+    <span class="text-on-surface-variant">({{ row.age }})</span></ng-template
+  >
+  <ng-template uiCell="insurer" let-row>{{ row.insurer?.name ?? 'Self-pay' }}</ng-template>
+  <ng-template uiCell="created_at" let-row>{{ row.createdAt | date: dateFormat }}</ng-template>
+</ui-resource-list>

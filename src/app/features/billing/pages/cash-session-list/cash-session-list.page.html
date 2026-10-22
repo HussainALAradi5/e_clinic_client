@@ -1,0 +1,30 @@
+<ui-resource-list
+  resource="cash_sessions"
+  endpoint="finance/cash-sessions"
+  title="Cash drawers"
+  subtitle="Each cashier's shift: the float, the count at close, differences and bank deposits."
+  emptyTitle="No drawer shifts found"
+  rowLink="/billing/cash-drawers/:id"
+>
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="cashier" let-row>{{ row.cashier?.fullName }}</ng-template>
+  <ng-template uiCell="opened_at" let-row>{{ row.openedAt | date: dateTimeFormat }}</ng-template>
+  <ng-template uiCell="closed_at" let-row>{{
+    row.closedAt ? (row.closedAt | date: dateTimeFormat) : '—'
+  }}</ng-template>
+  <ng-template uiCell="status" let-row
+    ><ui-status [value]="row.status" enum="CashSessionStatus"
+  /></ng-template>
+  <ng-template uiCell="difference" let-row>
+    <span
+      class="tabular-nums"
+      [class.text-error]="row.difference && row.difference.amount !== '0.000'"
+      >{{ row.difference ? (row.difference | money) : '—' }}</span
+    >
+  </ng-template>
+  <ng-template uiCell="deposited_at" let-row>{{
+    row.depositedAt ? (row.depositedAt | date: dateFormat) : '—'
+  }}</ng-template>
+</ui-resource-list>

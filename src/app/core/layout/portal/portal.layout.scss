@@ -1,0 +1,111 @@
+// Pine header like the staff sidebar and the public site; the page follows the light / dark theme.
+.portal-header {
+  background: var(--color-pine-900);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+.header-link {
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  color: rgb(255 255 255 / 0.78);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    color: #fff;
+    background: rgb(255 255 255 / 0.08);
+  }
+
+  &.active {
+    color: var(--color-pine-900);
+    background: var(--color-pine-100);
+  }
+}
+
+.header-link,
+.avatar,
+.tab {
+  &:focus-visible {
+    outline: 2px solid var(--color-sun);
+    outline-offset: 2px;
+  }
+}
+
+// The bell is a Material icon button on the dark header.
+.on-pine {
+  --mat-icon-button-icon-color: rgb(255 255 255 / 0.85);
+  --mat-icon-button-state-layer-color: #fff;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: 0.75rem;
+  background: var(--color-sun);
+  color: var(--color-pine-950);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+// Phone tab bar: thumb reach, safe-area aware, the active tab carries a pine pill behind its icon.
+.tab-bar {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 0.35rem 0.25rem calc(0.35rem + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--mat-sys-outline-variant);
+  background: color-mix(in srgb, var(--mat-sys-surface) 92%, transparent);
+  backdrop-filter: blur(12px);
+
+  // Wider screens use the header links instead.
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.2rem 0;
+  border-radius: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  .tab-icon {
+    width: 3.5rem;
+    height: 1.9rem;
+    border-radius: 999px;
+    font-size: 1.35rem;
+    line-height: 1.9rem;
+    text-align: center;
+    transition: background-color 150ms ease;
+  }
+
+  &.active {
+    color: var(--mat-sys-on-surface);
+
+    .tab-icon {
+      background: var(--color-pine-100);
+      color: var(--color-pine-900);
+      font-variation-settings: 'FILL' 1;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab .tab-icon {
+    transition: none;
+  }
+}

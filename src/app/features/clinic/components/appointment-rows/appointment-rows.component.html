@@ -1,0 +1,18 @@
+@for (a of appointments(); track a.id) {
+  <a
+    class="grid grid-cols-[6.5rem_3.5rem_1fr_auto] items-center gap-3 border-b border-outline-variant/60 px-1 py-2 text-sm hover:bg-surface-container"
+    [routerLink]="['/clinic/appointments', a.id]"
+  >
+    <span class="text-on-surface-variant">{{ a.scheduledDate | date: dateFormat }}</span>
+    <span class="font-medium tabular-nums">{{ a.startTime }}</span>
+    <span class="min-w-0 truncate">
+      {{ show() === 'patient' ? a.patient?.fullName : a.provider?.fullName }}
+      <span class="text-on-surface-variant"
+        >· {{ a.type | enumLabel: 'AppointmentType' }}{{ a.room ? ' · ' + a.room.code : '' }}</span
+      >
+    </span>
+    <ui-status [value]="a.status" enum="AppointmentStatus" />
+  </a>
+} @empty {
+  <p class="m-0 py-2 text-sm text-on-surface-variant">{{ empty() }}</p>
+}

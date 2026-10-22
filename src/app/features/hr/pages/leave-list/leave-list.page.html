@@ -1,0 +1,37 @@
+<ui-resource-list
+  resource="leaves"
+  endpoint="hr/leaves"
+  title="Leave"
+  subtitle="Requests through approval — nobody decides their own. Approved leave marks attendance and blocks a doctor's bookable days."
+  emptyTitle="No leave requests found"
+  rowLink="/hr/leaves/:id"
+>
+  <a actions *hasAccess="'leaves.manage_types'" matButton="outlined" routerLink="/hr/leave-types"
+    ><mat-icon>tune</mat-icon> Leave types</a
+  >
+  <ui-button actions icon="beach_access" access="leaves.create & leaves.request" [action]="request"
+    >Request leave</ui-button
+  >
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="employee" let-row>
+    <span class="font-medium">{{ row.employee?.fullName }}</span>
+    <span class="block text-xs text-on-surface-variant">{{ row.employee?.jobTitle }}</span>
+  </ng-template>
+  <ng-template uiCell="leave_type" let-row>{{ row.leaveType?.name }}</ng-template>
+  <ng-template uiCell="start_date" let-row
+    ><span class="tabular-nums">{{ row.startDate | date: dateFormat }}</span></ng-template
+  >
+  <ng-template uiCell="end_date" let-row
+    ><span class="tabular-nums">{{ row.endDate | date: dateFormat }}</span></ng-template
+  >
+  <ng-template uiCell="total_days" let-row
+    ><span class="tabular-nums">{{
+      row.isHalfDay ? '½' : (row.totalDays | qty)
+    }}</span></ng-template
+  >
+  <ng-template uiCell="status" let-row
+    ><ui-status [value]="row.status" enum="ApprovalStatus"
+  /></ng-template>
+</ui-resource-list>

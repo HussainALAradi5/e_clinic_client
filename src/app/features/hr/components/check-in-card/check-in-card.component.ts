@@ -1,0 +1,59 @@
+import { DatePipe } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { firstValueFrom } from 'rxjs';
+import { HrActions } from '../../services/hr-actions.service';
+import { AppButton } from '@shared/components/app-button/app-button.component';
+import { StatusChip } from '@shared/components/status-chip/status-chip.component';
+import { TIME_FORMAT } from '@shared/constants/app.constants';
+import { ButtonVariant } from '@shared/enums/ui/button.enum';
+import { AttendanceToday } from '@shared/interfaces/hr/attendance.interface';
+import { AttendanceApi } from '@shared/services/hr/attendance-api.service';
+
+/** Today at work: the shift, check-in / check-out (clinic network only) and minutes late or over. */
+@Component({
+  selector: 'app-check-in-card',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatCardModule, MatIconModule, AppButton, StatusChip, DatePipe],
+  templateUrl: './check-in-card.component.html',
+})
+export class CheckInCard implements OnInit {
+  private readonly api = inject(AttendanceApi);
+  private readonly actions = inject(HrActions);
+  protected readonly today = signal<AttendanceToday | null>(null);
+  protected readonly variants = ButtonVariant;
+  protected readonly timeFormat = TIME_FORMAT;
+  protected readonly zone = '+0300';
+
+  protected readonly day = computed(() => this.today()?.attendance ?? null);
+  protected readonly canCheckIn = computed(() => !this.day()?.checkInAt);
+  protected readonly canCheckOut = computed(
+    () => !!this.day()?.checkInAt && !this.day()?.checkOutAt,
+  );
+
+  async ngOnInit(): Promise<void> {
+    await this.load();
+  }
+
+  protected async load(): Promise<void> {
+    this.today.set(await firstValueFrom(this.api.today()));
+  }
+
+  protected readonly checkIn = async (): Promise<void> => {
+    await this.actions.checkIn();
+    await this.load();
+  };
+
+  protected readonly checkOut = async (): Promise<void> => {
+    await this.actions.checkOut();
+    await this.load();
+  };
+}

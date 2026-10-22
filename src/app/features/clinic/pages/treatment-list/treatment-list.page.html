@@ -1,0 +1,42 @@
+<ui-resource-list
+  resource="treatments"
+  endpoint="treatments"
+  title="Treatments"
+  subtitle="Plans of sessions (physiotherapy, wound care, infusions …). Attendance and progress come from the booked sessions."
+  emptyTitle="No treatments found"
+  rowLink="/clinic/treatments/:id"
+>
+  <ng-container actions>
+    <a matButton="outlined" routerLink="/clinic/treatments/queue"
+      ><mat-icon>low_priority</mat-icon> Scheduling queue</a
+    >
+    <ui-button icon="add" access="treatments.create" [action]="prescribe">Prescribe</ui-button>
+  </ng-container>
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="patient" let-row>
+    <span class="font-medium">{{ row.patient?.fullName }}</span>
+    <span class="block text-xs text-on-surface-variant">{{ row.patient?.code }}</span>
+  </ng-template>
+  <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'TreatmentType' }}</ng-template>
+  <ng-template uiCell="priority" let-row
+    ><ui-status [value]="row.priority" enum="TreatmentPriority"
+  /></ng-template>
+  <ng-template uiCell="status" let-row
+    ><ui-status [value]="row.status" enum="GenericStatus"
+  /></ng-template>
+  <ng-template uiCell="doctor" let-row>{{ row.doctor?.fullName }}</ng-template>
+  <ng-template uiCell="progress" let-row>
+    @if (row.progress; as p) {
+      <span class="tabular-nums">{{ p.attendedSessions }} / {{ p.plannedSessions }}</span>
+      @if (p.consecutiveAbsences >= 2) {
+        <span
+          class="ml-2 rounded-full bg-error-container px-2 py-0.5 text-[11px] font-medium text-on-error-container"
+          >{{ p.consecutiveAbsences }} missed</span
+        >
+      }
+    }
+  </ng-template>
+  <ng-template uiCell="created_at" let-row>{{ row.createdAt | date: dateFormat }}</ng-template>
+</ui-resource-list>

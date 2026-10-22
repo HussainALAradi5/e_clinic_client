@@ -9,6 +9,22 @@
       (apply)="applyView($event)"
     />
   }
+  @if (store.schema(); as schema) {
+    <ng-container actions>
+      @if (schema.importable) {
+        <button matButton="outlined" type="button" (click)="openImport()">
+          <mat-icon>upload_file</mat-icon> Import
+        </button>
+      }
+      @if (schema.exportFormats.length) {
+        <ui-export-menu
+          [formats]="schema.exportFormats"
+          [selectedCount]="selection.count()"
+          [run]="exportAs"
+        />
+      }
+    </ng-container>
+  }
   <ng-content select="[actions]" />
 </ui-page-header>
 

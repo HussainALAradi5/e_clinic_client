@@ -1,0 +1,82 @@
+<h2 mat-dialog-title>{{ doctor ? 'Edit doctor profile' : 'New doctor' }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="doctor ? 'Save' : 'Create doctor'"
+    [compact]="true"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    @if (!doctor) {
+      <ui-entity-select
+        label="Employee"
+        endpoint="hr/employees"
+        icon="badge"
+        hint="Hire the person in HR first; the account becomes a doctor account with the doctor role"
+        [display]="employeeName"
+        [detail]="employeeDetail"
+        [filter]="activeStaff"
+        [control]="form.controls.employeeId"
+      />
+    }
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <ui-entity-select
+        label="Specialty"
+        endpoint="doctors/specialties"
+        [display]="specialtyName"
+        [initial]="$any(doctor?.specialty ?? null)"
+        [control]="form.controls.specialtyId"
+      />
+      <ui-text label="Title" hint="e.g. Consultant" [control]="form.controls.title" />
+      <ui-text label="NHRA licence number" [control]="form.controls.licenseNumber" />
+      <ui-text
+        label="Licence valid until"
+        type="date"
+        [control]="form.controls.licenseExpiryDate"
+      />
+      <ui-entity-select
+        label="Consultation fee"
+        endpoint="billing/services"
+        [display]="serviceName"
+        [filter]="consultations"
+        [initial]="$any(doctor?.consultationService ?? null)"
+        [control]="form.controls.consultationServiceId"
+      />
+      <ui-entity-select
+        label="Follow-up fee"
+        endpoint="billing/services"
+        [display]="serviceName"
+        [filter]="consultations"
+        [initial]="$any(doctor?.followUpService ?? null)"
+        [control]="form.controls.followUpServiceId"
+      />
+      <ui-text
+        label="Slot length (minutes)"
+        type="number"
+        [control]="form.controls.defaultSlotMinutes"
+      />
+      <ui-text
+        label="Daily limit (optional)"
+        type="number"
+        hint="Most bookings per day"
+        [control]="form.controls.maxDailyAppointments"
+      />
+      <ui-entity-select
+        class="sm:col-span-2"
+        label="Usual room"
+        endpoint="rooms"
+        [display]="roomName"
+        [filter]="visitRooms"
+        [initial]="$any(doctor?.defaultRoom ?? null)"
+        [control]="form.controls.defaultRoomId"
+      />
+    </div>
+    <ui-text
+      label="Short bio"
+      hint="Shown to patients when they book online"
+      [multiline]="true"
+      [control]="form.controls.bio"
+    />
+  </ui-form>
+</mat-dialog-content>

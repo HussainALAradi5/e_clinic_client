@@ -8,6 +8,7 @@ const { Grey, Blue, Teal, Green, Amber, Red, RedOutline } = StatusTone;
 /** One colour map for every status enum (components doc §6) — `completed` is always green. Unlisted values are grey. */
 export const STATUS_TONES: Record<string, Record<string, StatusTone>> = {
   GenericStatus: { pending: Grey, in_progress: Blue, completed: Green, cancelled: RedOutline },
+  TreatmentPriority: { medium: Grey, high: Amber, urgent: Red },
   ApprovalStatus: {
     draft: Grey,
     pending: Grey,
@@ -25,14 +26,38 @@ export const STATUS_TONES: Record<string, Record<string, StatusTone>> = {
     no_show: Red,
     rescheduled: Amber,
   },
-  AttendanceStatus: { late: Amber, on_leave: Amber },
-  EmployeeStatus: { active: Green, terminated: Red },
+  CashSessionStatus: { open: Blue, closing: Amber, closed: Green },
+  EmployeeStatus: { active: Green, suspended: Amber, terminated: Red },
+  ExpiryStatus: { ok: Green, expiring: Amber, expired: Red },
+  AttendanceStatus: {
+    present: Green,
+    late: Amber,
+    absent: Red,
+    half_day: Amber,
+    on_leave: Blue,
+    holiday: Teal,
+    weekend: Grey,
+  },
+  PayrollStatus: {
+    draft: Grey,
+    calculated: Blue,
+    approved: Teal,
+    paid: Green,
+    cancelled: RedOutline,
+  },
   FileScanStatus: { clean: Green, infected: Red },
-  FiscalStatus: { locked: Red },
+  FiscalStatus: { open: Green, closed: Grey, locked: Red },
+  JournalEntryStatus: { draft: Grey, posted: Green, reversed: RedOutline },
   InvoiceStatus: { issued: Blue, partially_paid: Amber, paid: Green, cancelled: RedOutline },
   NotificationStatus: { sent: Blue, delivered: Green, failed: Red, cancelled: RedOutline },
   PaymentStatus: { completed: Green, voided: Red },
-  PayrollStatus: { approved: Green, paid: Green, cancelled: RedOutline },
+  StockMovementType: {
+    receipt: Green,
+    dispense: Blue,
+    return: Teal,
+    adjustment: Amber,
+    expiry_writeoff: Red,
+  },
   UserStatus: { active: Green, locked: Red },
 };
 

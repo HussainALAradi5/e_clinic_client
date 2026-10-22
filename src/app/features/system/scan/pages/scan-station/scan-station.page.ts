@@ -16,6 +16,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { CodeImage } from '@shared/components/code-image/code-image.component';
 import { PageHeader } from '@shared/components/page-header/page-header.component';
 import { TIME_FORMAT } from '@shared/constants/app.constants';
 import { ScanPurpose } from '@shared/enums/code/scan-purpose.enum';
@@ -43,6 +44,7 @@ const HISTORY_SIZE = 10;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     PageHeader,
+    CodeImage,
     ReactiveFormsModule,
     MatButtonModule,
     MatButtonToggleModule,
@@ -71,7 +73,7 @@ export class ScanStationPage {
   protected readonly busy = signal(false);
   protected readonly history = signal<ScanHistoryEntry[]>([]);
   protected readonly cameraOn = signal(false);
-  protected readonly codeImage = signal<string | null>(null);
+  protected readonly codeShown = signal(false);
   protected readonly cameraSupported = typeof window !== 'undefined' && 'BarcodeDetector' in window;
   protected readonly canShowCode = computed(() =>
     this.access.can('(codes.read_all | codes.read_own) & codes.generate'),
@@ -83,10 +85,7 @@ export class ScanStationPage {
   private timer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
-    this.destroyRef.onDestroy(() => {
-      this.stopCamera();
-      this.revokeImage();
-    });
+    this.destroyRef.onDestroy(() => this.stopCamera());
   }
 
   protected submit(event: Event): void {
@@ -133,16 +132,6 @@ export class ScanStationPage {
     this.cameraOn.set(false);
   }
 
-  protected showCode(result: ScanResult): void {
-    this.codes.image(result.entity, result.id, { size: 240 }).subscribe({
-      next: (image) => {
-        this.revokeImage();
-        this.codeImage.set(image.url);
-      },
-      error: () => this.codeImage.set(null),
-    });
-  }
-
   protected isScalar(value: unknown): boolean {
     return value === null || ['string', 'number', 'boolean'].includes(typeof value);
   }
@@ -171,7 +160,7 @@ export class ScanStationPage {
   private resolve(payload: string): void {
     this.busy.set(true);
     this.error.set(null);
-    this.revokeImage();
+    this.codeShown.set(false);
     this.codes.scan(payload, this.purpose.value).subscribe({
       next: (result) => {
         this.busy.set(false);
@@ -193,13 +182,5 @@ export class ScanStationPage {
     this.history.update((list) =>
       [{ at: Date.now(), payload, ok, label }, ...list].slice(0, HISTORY_SIZE),
     );
-  }
-
-  private revokeImage(): void {
-    const url = this.codeImage();
-    if (url) {
-      URL.revokeObjectURL(url);
-      this.codeImage.set(null);
-    }
   }
 }

@@ -1,0 +1,51 @@
+<h2 mat-dialog-title>Insurer remittance</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Record remittance"
+    [compact]="true"
+    [allowPristine]="true"
+    (cancelled)="ref.close()"
+  >
+    <ui-entity-select
+      label="Insurer"
+      endpoint="reference/companies"
+      icon="health_and_safety"
+      [display]="insurerName"
+      [filter]="insurers"
+      [control]="form.controls.insurerId"
+    />
+    @if (claims(); as list) {
+      @if (list.length) {
+        <ul class="m-0 mb-3 list-none rounded-xl border border-outline-variant p-0">
+          @for (c of list; track c.id) {
+            <li
+              class="flex items-center gap-2 border-b border-outline-variant/60 px-2 py-1 last:border-0"
+            >
+              <mat-checkbox [checked]="picked().has(c.id)" (change)="toggle(c.id)">
+                <span class="font-mono">{{ c.code }}</span> · {{ c.patient?.fullName }}
+              </mat-checkbox>
+              <span class="flex-1"></span>
+              <span class="pr-2 text-sm tabular-nums">{{ c.approvedAmount | money }}</span>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="m-0 mb-3 text-sm text-on-surface-variant">
+          No approved claims of this insurer wait for payment.
+        </p>
+      }
+    }
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <ui-text label="Received on" type="date" [control]="form.controls.date" />
+      <ui-text label="Bank reference" [control]="form.controls.reference" />
+    </div>
+    <p class="m-0 mb-2 rounded-xl bg-surface-container px-4 py-3 text-sm">
+      Transfer amount: <span class="font-semibold tabular-nums">{{ total() | money }}</span>
+      <span class="block text-xs text-on-surface-variant"
+        >Must equal the bank transfer; untick claims it does not cover.</span
+      >
+    </p>
+  </ui-form>
+</mat-dialog-content>

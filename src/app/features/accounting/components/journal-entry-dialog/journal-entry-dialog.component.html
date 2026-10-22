@@ -1,0 +1,100 @@
+<h2 mat-dialog-title>{{ entry ? 'Edit draft entry' : 'New journal entry' }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="form.controls.postNow.value ? 'Save and post' : 'Save draft'"
+    [compact]="true"
+    [allowPristine]="!entry"
+    (cancelled)="ref.close()"
+  >
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-[11rem_10rem_minmax(0,1fr)]">
+      <ui-text label="Date" type="date" [control]="form.controls.entryDate" />
+      <ui-select label="Kind" [options]="types" [required]="true" [control]="form.controls.type" />
+      <ui-text label="Description" [maxLength]="500" [control]="form.controls.description" />
+    </div>
+
+    <ol class="m-0 list-none p-0" aria-label="Lines">
+      @for (group of lines.controls; track group; let i = $index) {
+        <li
+          class="grid grid-cols-2 gap-x-3 border-t border-outline-variant/60 pt-3 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_8.5rem_8.5rem_auto]"
+          [formGroup]="group"
+        >
+          <ui-entity-select
+            class="col-span-2 sm:col-span-1"
+            label="Account"
+            endpoint="accounting/accounts"
+            icon="account_tree"
+            [display]="accountName"
+            [filter]="postable"
+            [initial]="initial(i)"
+            [control]="group.controls.accountId"
+          />
+          <ui-text
+            class="col-span-2 sm:col-span-1"
+            label="Line note"
+            [control]="group.controls.description"
+          />
+          <ui-money label="Debit" [control]="group.controls.debit" />
+          <ui-money label="Credit" [control]="group.controls.credit" />
+          <div class="col-span-2 flex justify-end gap-1 pb-5 sm:col-span-1">
+            <button
+              matIconButton
+              type="button"
+              aria-label="Fill with the amount that balances the entry"
+              [disabled]="difference() === '0.000'"
+              (click)="balance(i)"
+            >
+              <mat-icon>balance</mat-icon>
+            </button>
+            <button
+              matIconButton
+              type="button"
+              aria-label="Remove line"
+              [disabled]="lines.length <= 2"
+              (click)="remove(i)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </li>
+      }
+    </ol>
+
+    <div class="mb-4 flex flex-wrap items-center gap-4 border-t border-outline-variant pt-3">
+      <button matButton type="button" (click)="add()"><mat-icon>add</mat-icon> Line</button>
+      <span class="flex-1"></span>
+      <dl class="m-0 flex gap-6 text-sm tabular-nums">
+        <div>
+          <dt class="text-xs text-on-surface-variant">Debit</dt>
+          <dd class="m-0 font-semibold">{{ debit() }}</dd>
+        </div>
+        <div>
+          <dt class="text-xs text-on-surface-variant">Credit</dt>
+          <dd class="m-0 font-semibold">{{ credit() }}</dd>
+        </div>
+        <div>
+          <dt class="text-xs text-on-surface-variant">Difference</dt>
+          <dd
+            class="m-0 font-semibold"
+            [class.text-error]="difference() !== '0.000'"
+            [class.text-primary]="balanced()"
+          >
+            {{ balanced() ? 'Balanced' : difference() }}
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    @if (canPost) {
+      <mat-checkbox class="-ml-2 block" [formControl]="form.controls.postNow"
+        >Post now (it can then only be reversed)</mat-checkbox
+      >
+      @if (form.controls.postNow.value && !balanced()) {
+        <p class="m-0 mb-2 text-sm text-error" role="alert">
+          Debits and credits must be equal to post.
+        </p>
+      }
+    }
+  </ui-form>
+</mat-dialog-content>

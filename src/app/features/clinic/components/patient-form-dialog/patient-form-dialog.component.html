@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Edit patient file — {{ data.patient.fullName }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [compact]="true"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    <app-patient-fields [form]="form" [insurer]="data.patient.insurer ?? null" />
+  </ui-form>
+</mat-dialog-content>

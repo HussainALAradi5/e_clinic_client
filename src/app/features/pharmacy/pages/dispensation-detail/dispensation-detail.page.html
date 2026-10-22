@@ -1,0 +1,119 @@
+@if (error()) {
+  <ui-error [error]="error()" (retry)="load()" />
+} @else if (dispensation(); as d) {
+  <ui-page-header
+    [title]="d.code"
+    [subtitle]="(d.kind | enumLabel: 'DispensationKind') + ' · ' + (d.patient?.fullName ?? '')"
+  >
+    <ui-status status [value]="d.status" enum="GenericStatus" />
+    <ng-container actions>
+      <a matButton="filled" target="_blank" [routerLink]="['/print/medicine-label', d.id]"
+        ><mat-icon>label</mat-icon> Print label</a
+      >
+      @if (d.invoice; as inv) {
+        <a
+          *hasAccess="'invoices.read_all | invoices.read_own'"
+          matButton="outlined"
+          [routerLink]="['/billing/invoices', inv.id]"
+          ><mat-icon>receipt_long</mat-icon> {{ inv.invoiceNumber ?? 'Draft invoice' }}</a
+        >
+      }
+      @if (d.prescription; as rx) {
+        <a matButton="outlined" [routerLink]="['/pharmacy/prescriptions', rx.id]"
+          ><mat-icon>prescriptions</mat-icon> {{ rx.code }}</a
+        >
+      }
+      @if (d.appointment; as a) {
+        <a matButton="outlined" [routerLink]="['/clinic/appointments', a.id]"
+          ><mat-icon>event</mat-icon> {{ a.code }}</a
+        >
+      }
+      @if (d.journalEntryId) {
+        <a
+          *hasAccess="'journal.read_all | journal.read_own'"
+          matButton="outlined"
+          [routerLink]="['/accounting/journal', d.journalEntryId]"
+          ><mat-icon>menu_book</mat-icon> Cost entry</a
+        >
+      }
+      @if (returnable()) {
+        <ui-button
+          icon="assignment_return"
+          [variant]="variants.Danger"
+          access="dispensing.write & dispensing.dispense"
+          [action]="giveBack"
+          >Return to stock</ui-button
+        >
+      }
+    </ng-container>
+  </ui-page-header>
+
+  <div class="grid gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+    <mat-card appearance="outlined" class="self-start !p-0">
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-sm">
+          <thead>
+            <tr class="text-left text-xs text-on-surface-variant">
+              <th class="px-5 py-3 font-medium">Medicine</th>
+              <th class="px-3 py-3 font-medium">Lot</th>
+              <th class="px-3 py-3 text-right font-medium">Qty</th>
+              <th class="px-5 py-3 text-right font-medium">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of d.items; track item.id) {
+              <tr class="border-t border-outline-variant/60">
+                <td class="px-5 py-2">
+                  <span class="block font-medium">{{ item.medication.name }}</span>
+                  @if (item.route) {
+                    <span class="block text-xs text-on-surface-variant"
+                      >{{ item.route | enumLabel: 'MedicationRoute'
+                      }}{{ item.dose ? ' · ' + item.dose : '' }}</span
+                    >
+                  }
+                </td>
+                <td class="px-3 py-2">
+                  <span class="block font-mono">{{ item.batch?.batchNumber }}</span>
+                  <span class="block text-xs text-on-surface-variant"
+                    >exp. {{ item.batch?.expiryDate | date: dateFormat }}</span
+                  >
+                </td>
+                <td class="px-3 py-2 text-right tabular-nums">{{ item.quantity | qty }}</td>
+                <td class="px-5 py-2 text-right tabular-nums">
+                  {{ item.lineTotal | money }}
+                  <span class="block text-xs text-on-surface-variant"
+                    >{{ item.unitPrice | money }} each</span
+                  >
+                </td>
+              </tr>
+            }
+          </tbody>
+          <tfoot>
+            <tr class="border-t border-outline-variant">
+              <td class="px-5 py-3 font-semibold" colspan="3">Charged to the patient</td>
+              <td class="px-5 py-3 text-right font-semibold tabular-nums">{{ total() | money }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </mat-card>
+    <mat-card appearance="outlined" class="self-start !p-5"
+      ><ui-facts [items]="facts()"
+    /></mat-card>
+  </div>
+
+  <mat-tab-group
+    *hasAccess="'audit.read_all | audit.read_own'"
+    class="mt-4"
+    mat-stretch-tabs="false"
+    animationDuration="0ms"
+  >
+    <mat-tab label="History">
+      <ng-template matTabContent
+        ><ui-audit-history class="block pt-4" type="dispensation" [id]="d.id"
+      /></ng-template>
+    </mat-tab>
+  </mat-tab-group>
+} @else {
+  <ui-skeleton [rows]="8" />
+}

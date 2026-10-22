@@ -1,0 +1,36 @@
+<ui-resource-list
+  resource="prescriptions"
+  endpoint="pharmacy/prescriptions"
+  title="Prescriptions"
+  subtitle="Written by the doctors and collected at the pharmacy — pending, partly handed over or completed."
+  emptyTitle="No prescriptions found"
+  rowLink="/pharmacy/prescriptions/:id"
+>
+  <ui-button actions icon="prescriptions" access="prescriptions.create" [action]="create"
+    >Prescribe</ui-button
+  >
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="patient" let-row>
+    <span class="block font-medium">{{ row.patient?.fullName }}</span>
+    <span class="block text-xs text-on-surface-variant">{{ row.patient?.code }}</span>
+  </ng-template>
+  <ng-template uiCell="doctor" let-row>{{ row.doctor?.fullName }}</ng-template>
+  <ng-template uiCell="items" let-row>
+    <span class="line-clamp-2 max-w-sm text-sm">
+      @for (item of row.items; track item.id; let last = $last) {
+        {{ item.medication.name }}{{ last ? '' : ', ' }}
+      }
+    </span>
+  </ng-template>
+  <ng-template uiCell="status" let-row
+    ><ui-status [value]="row.status" enum="GenericStatus"
+  /></ng-template>
+  <ng-template uiCell="valid_until" let-row
+    ><span class="tabular-nums">{{ row.validUntil | date: dateFormat }}</span></ng-template
+  >
+  <ng-template uiCell="created_at" let-row
+    ><span class="tabular-nums">{{ row.createdAt | date: dateFormat }}</span></ng-template
+  >
+</ui-resource-list>

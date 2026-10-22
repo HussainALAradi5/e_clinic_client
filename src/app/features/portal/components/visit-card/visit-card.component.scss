@@ -1,0 +1,97 @@
+:host {
+  display: block;
+}
+
+// The next visit as a ticket: pine card, big clock time, a torn edge before the actions.
+.pass {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgb(242 181 68 / 0.16), transparent 60%),
+    var(--color-pine-900);
+  color: #fff;
+}
+
+.pass-time {
+  margin-top: 0.15rem;
+  font-size: clamp(2.5rem, 11vw, 3.5rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.pass-tear {
+  position: relative;
+  height: 1px;
+  margin: 0 1.25rem;
+  background-image: linear-gradient(to right, rgb(255 255 255 / 0.35) 50%, transparent 0);
+  background-size: 10px 1px;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: -0.75rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--mat-sys-surface-container-low);
+  }
+
+  &::before {
+    left: -2rem;
+  }
+
+  &::after {
+    right: -2rem;
+  }
+}
+
+.pass-link {
+  border: 0;
+  background: none;
+  color: rgb(255 255 255 / 0.75);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+
+  &:hover {
+    color: #fff;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-sun);
+    outline-offset: 2px;
+  }
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  background: var(--mat-sys-surface);
+}
+
+.date-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 3.25rem;
+  padding: 0.35rem 0;
+  border-radius: 0.75rem;
+  background: var(--color-pine-50);
+  color: var(--color-pine-900);
+}
+
+:host-context([data-theme='dark']) .date-block {
+  background: rgb(211 239 233 / 0.12);
+  color: var(--color-pine-100);
+}

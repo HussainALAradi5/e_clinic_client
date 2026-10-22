@@ -1,0 +1,35 @@
+<header class="mb-4 flex flex-wrap items-end justify-between gap-3">
+  <div>
+    <h1 class="m-0 text-2xl font-bold tracking-tight">My visits</h1>
+    <p class="m-0 text-on-surface-variant">Show the check-in code at the desk when you arrive.</p>
+  </div>
+  <a matButton="filled" [routerLink]="bookPath"><mat-icon>add</mat-icon> Book a visit</a>
+</header>
+
+<mat-button-toggle-group
+  class="mb-4"
+  hideSingleSelectionIndicator
+  aria-label="Which visits"
+  [ngModel]="view()"
+  (ngModelChange)="show($event)"
+>
+  <mat-button-toggle value="upcoming">Upcoming</mat-button-toggle>
+  <mat-button-toggle value="past">Past</mat-button-toggle>
+</mat-button-toggle-group>
+
+@if (visits(); as list) {
+  <div class="space-y-2">
+    @for (v of list; track v.id) {
+      <app-visit-card [visit]="v" (changed)="changed($event)" />
+    } @empty {
+      <ui-empty icon="event" [title]="empty().title" [message]="empty().message" />
+    }
+  </div>
+  @if (more()) {
+    <div class="mt-4 text-center">
+      <button matButton (click)="load(true)">Show more</button>
+    </div>
+  }
+} @else {
+  <ui-skeleton [rows]="5" [height]="56" />
+}

@@ -1,0 +1,101 @@
+<h2 mat-dialog-title>Book an appointment</h2>
+<mat-dialog-content>
+  <mat-stepper #stepper [linear]="true" animationDuration="200ms">
+    <mat-step [stepControl]="who" label="Patient">
+      <div class="pt-3">
+        <ui-entity-select
+          label="Patient"
+          endpoint="patients"
+          icon="person_search"
+          hint="Name, file number or mobile"
+          [autofocus]="true"
+          [display]="patientName"
+          [detail]="patientDetail"
+          [initial]="patient()"
+          [control]="who.controls.patientId"
+          (picked)="patient.set($event)"
+        />
+        <div class="mt-2 flex flex-wrap items-center gap-2">
+          @if (canRegister) {
+            <ui-button icon="person_add" [variant]="variants.Text" [action]="register"
+              >New patient</ui-button
+            >
+          }
+          <span class="flex-1"></span>
+          <button matButton="filled" matStepperNext type="button" [disabled]="who.invalid">
+            Next
+          </button>
+        </div>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="what" label="Visit">
+      <div class="grid grid-cols-1 gap-x-4 pt-3 sm:grid-cols-2">
+        <ui-select
+          label="Type"
+          [required]="true"
+          [options]="types"
+          [control]="what.controls.type"
+        />
+        <ui-select
+          label="Booked by"
+          [required]="true"
+          [options]="sources"
+          [control]="what.controls.source"
+        />
+        <ui-entity-select
+          class="sm:col-span-2"
+          label="Doctor"
+          endpoint="doctors"
+          icon="stethoscope"
+          [display]="doctorName"
+          [detail]="doctorDetail"
+          [filter]="bookable"
+          [initial]="doctor()"
+          [control]="what.controls.providerId"
+          (picked)="pickDoctor($event)"
+        />
+        <ui-entity-select
+          class="sm:col-span-2"
+          label="Room (optional)"
+          endpoint="rooms"
+          hint="The doctor's usual room is filled in"
+          [display]="roomName"
+          [filter]="visitRooms"
+          [initial]="$any(doctor()?.defaultRoom ?? null)"
+          [control]="what.controls.roomId"
+        />
+      </div>
+      <div class="flex gap-2">
+        <button matButton matStepperPrevious type="button">Back</button>
+        <span class="flex-1"></span>
+        <button matButton="filled" matStepperNext type="button" [disabled]="what.invalid">
+          Next
+        </button>
+      </div>
+    </mat-step>
+
+    <mat-step label="Time">
+      <div class="grid grid-cols-1 gap-x-4 pt-3 sm:grid-cols-[12rem_1fr]">
+        <ui-text label="Date" type="date" [control]="when.controls.date" />
+        <ui-text label="Reason for visit" [control]="when.controls.reason" />
+      </div>
+      <app-slot-picker
+        class="mb-4"
+        [providerId]="providerId()"
+        [date]="date()"
+        [type]="type()"
+        [roomId]="roomId()"
+        [(start)]="start"
+      />
+      @if (summary()) {
+        <p class="m-0 mb-3 rounded-lg bg-surface-container px-3 py-2 text-sm">{{ summary() }}</p>
+      }
+      <div class="flex gap-2">
+        <button matButton matStepperPrevious type="button">Back</button>
+        <span class="flex-1"></span>
+        <ui-button icon="event_available" [disabled]="!start()" [action]="book">Book</ui-button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</mat-dialog-content>

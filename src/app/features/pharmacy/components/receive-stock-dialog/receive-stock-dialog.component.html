@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>Receive stock</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Receive"
+    [compact]="true"
+    (cancelled)="ref.close()"
+  >
+    <ui-entity-select
+      label="Medication"
+      endpoint="pharmacy/medications"
+      icon="medication"
+      [display]="medicationName"
+      [detail]="medicationDetail"
+      [initial]="$any(data.medication)"
+      [autofocus]="!data.medication"
+      [control]="form.controls.medicationId"
+      (picked)="picked.set($any($event))"
+    />
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <ui-text
+        label="Lot / batch number"
+        hint="As printed on the pack"
+        [control]="form.controls.batchNumber"
+      />
+      <ui-text
+        label="Expiry date"
+        type="date"
+        hint="Must be after today"
+        [control]="form.controls.expiryDate"
+      />
+      <ui-text
+        label="Quantity"
+        type="number"
+        [hint]="unitHint()"
+        [control]="form.controls.quantity"
+      />
+      <ui-money label="Cost per unit" [control]="form.controls.unitCost" />
+      <ui-entity-select
+        class="sm:col-span-2"
+        label="Supplier"
+        endpoint="reference/companies"
+        icon="local_shipping"
+        [display]="companyName"
+        [filter]="suppliers"
+        [control]="form.controls.supplierId"
+      />
+    </div>
+
+    <div class="mb-3 flex flex-wrap items-center gap-4 rounded-xl bg-surface-container px-4 py-3">
+      <mat-checkbox class="-ml-2 flex-1" [formControl]="form.controls.createExpense"
+        >Book the purchase for finance to approve and pay</mat-checkbox
+      >
+      <div class="text-right">
+        <p class="m-0 text-xs text-on-surface-variant">Delivery value</p>
+        <p class="m-0 text-lg font-semibold tabular-nums">{{ total() ?? '—' }}</p>
+      </div>
+    </div>
+    @if (form.controls.createExpense.value) {
+      <ui-text label="Supplier invoice number" [control]="form.controls.vendorInvoiceNumber" />
+    }
+  </ui-form>
+</mat-dialog-content>

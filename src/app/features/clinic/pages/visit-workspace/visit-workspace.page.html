@@ -1,0 +1,338 @@
+@if (error()) {
+  <ui-error [error]="error()" (retry)="load()" />
+} @else if (appointment() && patient() && record()) {
+  @let a = appointment()!;
+  @let p = patient()!;
+  @let r = record()!;
+  <ui-page-header
+    [title]="p.fullName"
+    [subtitle]="
+      (a.type | enumLabel: 'AppointmentType') +
+      ' · ' +
+      (a.scheduledDate | date: dateFormat) +
+      ' ' +
+      a.startTime +
+      ' · ' +
+      a.provider?.fullName
+    "
+  >
+    <ui-status status [value]="a.status" enum="AppointmentStatus" />
+    <ng-container actions>
+      <app-appointment-actions
+        [appointment]="a"
+        [only]="['check-in', 'start']"
+        (changed)="visitChanged($event)"
+      />
+      <a matButton="outlined" [routerLink]="['/clinic/patients', p.id]"
+        ><mat-icon>folder_shared</mat-icon> Patient file</a
+      >
+    </ng-container>
+  </ui-page-header>
+
+  <div class="grid gap-4 xl:grid-cols-[18rem_minmax(0,1fr)]">
+    <aside class="flex flex-col gap-3">
+      <mat-card appearance="outlined" class="!p-4 text-sm">
+        <p class="m-0 font-semibold">{{ p.code }}</p>
+        <p class="m-0 text-on-surface-variant">
+          {{ p.gender | enumLabel: 'Gender' }} · {{ p.age }} years · {{ p.phone }}
+        </p>
+        @if (p.bloodGroup) {
+          <p class="m-0 mt-2">
+            <span class="text-on-surface-variant">Blood group</span>
+            {{ p.bloodGroup | enumLabel: 'BloodGroup' }}
+          </p>
+        }
+        @if (p.allergies) {
+          <p class="m-0 mt-2 rounded-lg bg-error-container px-2 py-1.5 text-on-error-container">
+            <strong>Allergies:</strong> {{ p.allergies }}
+          </p>
+        }
+        @if (p.chronicConditions) {
+          <p
+            class="m-0 mt-2 rounded-lg bg-amber-50 px-2 py-1.5 text-amber-900 dark:bg-amber-950/40 dark:text-amber-200"
+          >
+            <strong>Chronic:</strong> {{ p.chronicConditions }}
+          </p>
+        }
+        @if (a.reason) {
+          <p class="m-0 mt-2">
+            <span class="text-on-surface-variant">Booked for</span> {{ a.reason }}
+          </p>
+        }
+        @if (a.treatmentId) {
+          <a
+            class="mt-2 block text-primary underline"
+            [routerLink]="['/clinic/treatments', a.treatmentId]"
+            >Session {{ a.sessionNumber }} of its treatment plan</a
+          >
+        }
+      </mat-card>
+      <mat-card appearance="outlined" class="!p-4 text-sm">
+        <h2 class="m-0 mb-2 text-sm font-semibold">Vitals</h2>
+        <div class="grid grid-cols-2 gap-x-3">
+          <ui-text label="Temp °C" type="number" [control]="vitals.controls.temperatureC" />
+          <ui-text label="Pulse /min" type="number" [control]="vitals.controls.pulseBpm" />
+          <ui-text label="BP systolic" type="number" [control]="vitals.controls.systolicBp" />
+          <ui-text label="BP diastolic" type="number" [control]="vitals.controls.diastolicBp" />
+          <ui-text label="Resp. /min" type="number" [control]="vitals.controls.respiratoryRate" />
+          <ui-text label="SpO₂ %" type="number" [control]="vitals.controls.spo2Percent" />
+          <ui-text label="Weight kg" type="number" [control]="vitals.controls.weightKg" />
+          <ui-text label="Height cm" type="number" [control]="vitals.controls.heightCm" />
+        </div>
+        <p class="m-0 text-on-surface-variant">
+          BMI <strong class="text-on-surface">{{ bmi() ?? '—' }}</strong>
+        </p>
+      </mat-card>
+    </aside>
+
+    <section class="min-w-0">
+      @if (r.isSigned) {
+        <div
+          class="mb-3 flex flex-wrap items-center gap-3 rounded-xl bg-surface-container px-4 py-3 text-sm"
+        >
+          <mat-icon class="text-primary">verified</mat-icon>
+          <span class="flex-1"
+            >Signed by {{ r.signedBy?.fullName }} on {{ r.signedAt | date: dateTimeFormat }} —
+            read-only.</span
+          >
+          <ui-button
+            icon="post_add"
+            [variant]="variants.Tonal"
+            access="records.write"
+            [action]="addAddendum"
+            >Add addendum</ui-button
+          >
+        </div>
+      }
+
+      <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
+        <mat-tab label="Notes">
+          @if (canReadNotes) {
+            <div class="grid gap-x-4 pt-4 lg:grid-cols-2">
+              <ui-text
+                label="S — Chief complaint"
+                hint="In the patient's words"
+                [multiline]="true"
+                [rows]="2"
+                [control]="notes.controls.chiefComplaint"
+              />
+              <ui-text
+                label="S — History of present illness"
+                [multiline]="true"
+                [rows]="2"
+                [control]="notes.controls.history"
+              />
+              <ui-text
+                class="lg:col-span-2"
+                label="O — Examination"
+                [multiline]="true"
+                [rows]="4"
+                [control]="notes.controls.examination"
+              />
+              <ui-text
+                label="A — Assessment"
+                [multiline]="true"
+                [rows]="4"
+                [control]="notes.controls.assessment"
+              />
+              <ui-text
+                label="P — Plan, advice, follow-up"
+                [multiline]="true"
+                [rows]="4"
+                [control]="notes.controls.plan"
+              />
+            </div>
+            @if (r.addenda?.length) {
+              <h3 class="mb-2 mt-2 text-sm font-semibold">Addenda</h3>
+              @for (ad of r.addenda; track ad.id) {
+                <p
+                  class="m-0 mb-2 rounded-lg border-l-4 border-primary bg-surface-container-low px-3 py-2 text-sm"
+                >
+                  <span class="block text-xs text-on-surface-variant"
+                    >{{ ad.createdAt | date: dateTimeFormat }} · {{ ad.author }}</span
+                  >
+                  {{ ad.text }}
+                </p>
+              }
+            }
+          } @else {
+            <p class="pt-4 text-sm text-on-surface-variant">
+              Clinical notes need the "view medical data" right.
+            </p>
+          }
+        </mat-tab>
+
+        <mat-tab [label]="'Diagnoses (' + diagnoses().length + ')'">
+          <div class="pt-4">
+            @if (editable()) {
+              <app-icd10-picker class="mb-3" (picked)="addDiagnosis($event)" />
+            }
+            @for (d of diagnoses(); track d.icd10CodeId) {
+              <div class="flex items-center gap-3 border-b border-outline-variant/60 py-2 text-sm">
+                <mat-radio-button
+                  [checked]="d.isPrimary"
+                  [disabled]="!editable()"
+                  (change)="makePrimary(d)"
+                  [attr.aria-label]="'Primary: ' + d.code"
+                />
+                <span class="w-20 font-mono font-semibold">{{ d.code }}</span>
+                <span class="flex-1">
+                  {{ d.title }}
+                  @if (d.titleAr) {
+                    <span class="block text-xs text-on-surface-variant" dir="rtl" lang="ar">{{
+                      d.titleAr
+                    }}</span>
+                  }
+                </span>
+                @if (d.isPrimary) {
+                  <span
+                    class="rounded-full bg-primary-container px-2 py-0.5 text-[11px] font-medium text-on-primary-container"
+                    >Primary</span
+                  >
+                }
+                @if (editable()) {
+                  <button
+                    matIconButton
+                    type="button"
+                    [attr.aria-label]="'Remove ' + d.code"
+                    (click)="removeDiagnosis(d)"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                }
+              </div>
+            } @empty {
+              <p class="m-0 text-sm text-on-surface-variant">
+                No diagnosis yet — search by code or words above.
+              </p>
+            }
+          </div>
+        </mat-tab>
+
+        <mat-tab [label]="'Orders (' + orders().length + ')'">
+          <div class="pt-4">
+            <div class="mb-2 flex items-center">
+              <p class="m-0 flex-1 text-sm text-on-surface-variant">
+                Imaging, lab tests, ECG and referrals from this visit.
+              </p>
+              <ui-button
+                icon="add"
+                [variant]="variants.Tonal"
+                access="orders.create"
+                [action]="newOrder"
+                >New order</ui-button
+              >
+            </div>
+            @for (o of orders(); track o.id) {
+              <a
+                class="flex items-center gap-3 border-b border-outline-variant/60 px-1 py-2 text-sm hover:bg-surface-container"
+                [routerLink]="['/clinic/clinical-orders', o.id]"
+              >
+                <span class="font-mono text-xs text-on-surface-variant">{{ o.code }}</span>
+                <span class="flex-1">{{ o.description }}</span>
+                @if (o.isAbnormal) {
+                  <span
+                    class="rounded-full bg-error-container px-2 py-0.5 text-[11px] font-medium text-on-error-container"
+                    >Abnormal</span
+                  >
+                }
+                <ui-status [value]="o.priority" enum="TreatmentPriority" />
+                <ui-status [value]="o.status" enum="GenericStatus" />
+              </a>
+            } @empty {
+              <p class="m-0 text-sm text-on-surface-variant">Nothing ordered in this visit.</p>
+            }
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Treatment">
+          <div class="pt-4">
+            <div class="mb-2 flex items-center">
+              <p class="m-0 flex-1 text-sm text-on-surface-variant">
+                Open treatment plans of {{ p.fullName }}.
+              </p>
+              <ui-button
+                icon="add"
+                [variant]="variants.Tonal"
+                access="treatments.create"
+                [action]="prescribe"
+                >Prescribe</ui-button
+              >
+            </div>
+            @for (t of plans(); track t.id) {
+              <a
+                class="block border-b border-outline-variant/60 px-1 py-2.5 text-sm hover:bg-surface-container"
+                [routerLink]="['/clinic/treatments', t.id]"
+              >
+                <span class="flex items-center gap-2">
+                  <span class="flex-1 font-medium">{{ t.title }}</span>
+                  <ui-status [value]="t.priority" enum="TreatmentPriority" />
+                  <ui-status [value]="t.status" enum="GenericStatus" />
+                </span>
+                @if (t.progress; as pr) {
+                  <app-progress-meter class="mt-2" [progress]="pr" [compact]="true" />
+                }
+              </a>
+            } @empty {
+              <p class="m-0 text-sm text-on-surface-variant">No open treatment plan.</p>
+            }
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Consents">
+          @if (consentContext(); as ctx) {
+            <app-consents-panel class="pt-4" [context]="ctx" />
+          }
+        </mat-tab>
+      </mat-tab-group>
+    </section>
+  </div>
+
+  <footer
+    class="sticky bottom-0 z-10 -mx-4 mt-4 flex flex-wrap items-center gap-3 border-t border-outline-variant bg-surface px-4 py-3"
+  >
+    <span class="flex items-center gap-1.5 text-sm text-on-surface-variant" aria-live="polite">
+      @switch (saveState()) {
+        @case ('saving') {
+          <mat-icon class="!text-lg">sync</mat-icon> Saving…
+        }
+        @case ('saved') {
+          <mat-icon class="!text-lg text-green-700 dark:text-green-400">cloud_done</mat-icon> Saved
+          {{ r.updatedAt | date: 'HH:mm' }}
+        }
+        @case ('error') {
+          <mat-icon class="!text-lg text-error">error</mat-icon> Not saved — check the fields and
+          try again
+        }
+        @default {
+          @if (r.isSigned) {
+            <mat-icon class="!text-lg">lock</mat-icon> Signed and locked
+          } @else if (editable()) {
+            <mat-icon class="!text-lg">edit_note</mat-icon> Changes save as you type
+          } @else {
+            <mat-icon class="!text-lg">visibility</mat-icon> Read only
+          }
+        }
+      }
+    </span>
+    <span class="flex-1"></span>
+    @if (canSign()) {
+      <ui-button
+        icon="draw"
+        [variant]="a.status === 'in_progress' ? variants.Outlined : variants.Filled"
+        [confirm]="{
+          title: 'Sign this note?',
+          message: 'After signing, corrections are added as dated addenda.',
+          confirmLabel: 'Sign',
+        }"
+        [action]="sign"
+        >Sign</ui-button
+      >
+      @if (a.status === 'in_progress') {
+        <ui-button icon="done_all" [action]="signAndComplete">Sign &amp; complete visit</ui-button>
+      }
+    }
+  </footer>
+} @else {
+  <ui-skeleton [rows]="10" />
+}

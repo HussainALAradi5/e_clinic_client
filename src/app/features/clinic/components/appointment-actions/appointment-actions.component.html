@@ -1,0 +1,10 @@
+@for (item of items(); track item.key) {
+  <ui-button
+    [icon]="item.icon"
+    [variant]="item.variant"
+    [size]="size()"
+    [access]="item.access"
+    [action]="item.go"
+    >{{ item.label }}</ui-button
+  >
+}

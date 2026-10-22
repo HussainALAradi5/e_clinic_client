@@ -1,0 +1,42 @@
+<header class="mb-4 flex flex-wrap items-end justify-between gap-3">
+  <div>
+    <h1 class="m-0 text-2xl font-bold tracking-tight">My profile</h1>
+    <p class="m-0 text-on-surface-variant">Your details as the clinic holds them.</p>
+  </div>
+  <a matButton [routerLink]="securityPath"
+    ><mat-icon>shield_person</mat-icon> Password &amp; security</a
+  >
+</header>
+
+@if (patient(); as p) {
+  <div class="grid gap-4 lg:grid-cols-2">
+    <section class="rounded-2xl border border-outline-variant bg-surface p-5">
+      <div class="mb-3 flex items-center justify-between gap-3">
+        <h2 class="m-0 text-base font-semibold">How we reach you</h2>
+        <ui-button icon="edit" variant="tonal" size="sm" [action]="edit">Edit</ui-button>
+      </div>
+      <ui-facts [items]="contact()" />
+    </section>
+
+    <section class="rounded-2xl border border-outline-variant bg-surface p-5">
+      <h2 class="m-0 mb-3 text-base font-semibold">About you</h2>
+      <ui-facts [items]="personal()" />
+      <p class="m-0 mt-3 text-sm text-on-surface-variant">
+        Something wrong here? Bring your ID to the front desk or call {{ clinicPhone }}.
+      </p>
+    </section>
+
+    <section class="rounded-2xl border border-outline-variant bg-surface p-5 lg:col-span-2">
+      <h2 class="m-0 mb-3 text-base font-semibold">Insurance</h2>
+      @if (insurance().length) {
+        <ui-facts [items]="insurance()" />
+      } @else {
+        <p class="m-0 text-sm text-on-surface-variant">
+          No insurance on file. Bring your card to the front desk to add it.
+        </p>
+      }
+    </section>
+  </div>
+} @else {
+  <ui-skeleton [rows]="6" [height]="28" />
+}

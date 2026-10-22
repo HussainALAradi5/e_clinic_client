@@ -1,0 +1,96 @@
+<mat-card appearance="outlined" class="!p-5">
+  <div class="mb-3 flex flex-wrap items-center gap-2">
+    <h2 class="m-0 flex-1 text-base font-semibold">Medicines</h2>
+    <ui-button
+      icon="prescriptions"
+      [variant]="variants.Outlined"
+      access="prescriptions.create"
+      [action]="prescribe"
+      >Prescribe</ui-button
+    >
+    @if (running()) {
+      <ui-button
+        icon="vaccines"
+        [variant]="variants.Tonal"
+        access="dispensing.administer"
+        [action]="give"
+        >Give medicine</ui-button
+      >
+    }
+  </div>
+
+  @if (medicines(); as m) {
+    @if (empty()) {
+      <p class="m-0 text-sm text-on-surface-variant">Nothing prescribed or given on this visit.</p>
+    }
+    @for (rx of m.prescriptions; track rx.id) {
+      <section class="mb-3 rounded-xl border border-outline-variant/70 px-4 py-3">
+        <header class="mb-2 flex flex-wrap items-center gap-2">
+          <a
+            class="font-mono text-sm font-medium hover:underline"
+            [routerLink]="['/pharmacy/prescriptions', rx.id]"
+            >{{ rx.code }}</a
+          >
+          <ui-status [value]="rx.status" enum="GenericStatus" />
+          <span class="ml-auto text-xs text-on-surface-variant"
+            >{{ rx.doctor?.fullName }} · until {{ rx.validUntil }}</span
+          >
+        </header>
+        <ul class="m-0 list-none p-0">
+          @for (item of rx.items; track item.id) {
+            <li class="flex flex-wrap items-baseline gap-x-3 py-1 text-sm">
+              <span class="font-medium">{{ item.medication.name }}</span>
+              <span class="text-on-surface-variant"
+                >{{ item.dose }} · {{ item.frequency }} · {{ item.durationDays }} d ·
+                {{ item.route | enumLabel: 'MedicationRoute' }}</span
+              >
+              <span class="ml-auto tabular-nums text-on-surface-variant"
+                >{{ item.dispensedQuantity | qty }} / {{ item.quantity | qty }} handed over</span
+              >
+            </li>
+          }
+        </ul>
+      </section>
+    }
+    @if (m.dispensations.length) {
+      <h3 class="m-0 mb-2 mt-4 text-sm font-semibold text-on-surface-variant">
+        Given and handed over
+      </h3>
+      <ul class="m-0 list-none p-0">
+        @for (d of m.dispensations; track d.id) {
+          @for (item of d.items; track item.id) {
+            <li
+              class="flex flex-wrap items-center gap-x-3 border-b border-outline-variant/60 py-2 text-sm last:border-0"
+              [class.opacity-60]="d.status === cancelled"
+            >
+              <mat-icon class="!text-lg text-on-surface-variant">{{
+                d.kind === administered ? 'vaccines' : 'local_pharmacy'
+              }}</mat-icon>
+              <span class="font-medium">{{ item.medication.name }}</span>
+              <span class="tabular-nums">× {{ item.quantity | qty }}</span>
+              @if (item.route) {
+                <span class="text-on-surface-variant"
+                  >{{ item.route | enumLabel: 'MedicationRoute'
+                  }}{{ item.dose ? ' · ' + item.dose : '' }}</span
+                >
+              }
+              <a
+                class="ml-auto font-mono text-xs text-on-surface-variant hover:underline"
+                [routerLink]="['/pharmacy/dispensations', d.id]"
+                >{{ d.code }}</a
+              >
+              <span class="text-xs text-on-surface-variant"
+                >{{ d.dispensedAt | date: dateTimeFormat }} · {{ d.dispensedBy?.fullName }}</span
+              >
+              @if (d.status === cancelled) {
+                <ui-status [value]="d.status" enum="GenericStatus" />
+              }
+            </li>
+          }
+        }
+      </ul>
+    }
+  } @else {
+    <p class="m-0 text-sm text-on-surface-variant">Loading…</p>
+  }
+</mat-card>

@@ -1,0 +1,27 @@
+<ui-resource-list
+  resource="journal"
+  endpoint="accounting/journal-entries"
+  title="Journal"
+  subtitle="Every invoice, payment, refund, drawer difference and expense posts here by itself. Write manual entries for the rest."
+  emptyTitle="No journal entries found"
+  rowLink="/accounting/journal/:id"
+>
+  <ui-button actions icon="add" access="journal.create" [action]="create">New entry</ui-button>
+  <ng-template uiCell="entry_number" let-row
+    ><span class="font-mono">{{ row.entryNumber ?? 'Draft' }}</span></ng-template
+  >
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono text-on-surface-variant">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="entry_date" let-row>{{ row.entryDate | date: dateFormat }}</ng-template>
+  <ng-template uiCell="description" let-row
+    ><span class="line-clamp-2 max-w-md">{{ row.description }}</span></ng-template
+  >
+  <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'JournalEntryType' }}</ng-template>
+  <ng-template uiCell="status" let-row
+    ><ui-status [value]="row.status" enum="JournalEntryStatus"
+  /></ng-template>
+  <ng-template uiCell="total_debit" let-row
+    ><span class="tabular-nums">{{ row.totalDebit | money }}</span></ng-template
+  >
+</ui-resource-list>

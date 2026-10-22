@@ -1,0 +1,20 @@
+<ui-resource-list
+  resource="departments"
+  endpoint="hr/departments"
+  title="Departments"
+  subtitle="Where every employee belongs; rooms and cost centers follow them."
+  emptyTitle="No departments found"
+  rowLink="/hr/departments/:id"
+>
+  <ui-button actions icon="add" access="departments.create" [action]="create"
+    >New department</ui-button
+  >
+  <ng-template uiCell="name" let-row
+    ><span class="font-medium">{{ row.name }}</span></ng-template
+  >
+  <ng-template uiCell="parent" let-row>{{ row.parent?.name ?? '—' }}</ng-template>
+  <ng-template uiCell="manager" let-row>{{ row.manager?.fullName ?? '—' }}</ng-template>
+  <ng-template uiCell="employees_count" let-row
+    ><span class="tabular-nums">{{ row.employeesCount ?? 0 }}</span></ng-template
+  >
+</ui-resource-list>

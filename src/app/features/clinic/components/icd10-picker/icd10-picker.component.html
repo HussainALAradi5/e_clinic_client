@@ -1,0 +1,23 @@
+<mat-form-field class="w-full" appearance="outline" subscriptSizing="dynamic">
+  <mat-label>Add diagnosis (ICD-10)</mat-label>
+  <mat-icon matPrefix>search</mat-icon>
+  <input
+    matInput
+    [formControl]="search"
+    [matAutocomplete]="auto"
+    [readonly]="disabled()"
+    placeholder="Code or words, e.g. J06 or sore throat"
+  />
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select($event)">
+    @for (code of results(); track code.id) {
+      <mat-option [value]="code">
+        <span class="font-mono font-semibold">{{ code.code }}</span> {{ code.title }}
+        @if (code.titleAr) {
+          <span class="block text-xs text-on-surface-variant" dir="rtl" lang="ar">{{
+            code.titleAr
+          }}</span>
+        }
+      </mat-option>
+    }
+  </mat-autocomplete>
+</mat-form-field>

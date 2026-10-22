@@ -3,12 +3,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { BrandMark } from '@shared/components/brand-mark/brand-mark.component';
-import { HOME_PATH, LOGIN_PATH } from '@shared/constants/app.constants';
+import { LOGIN_PATH } from '@shared/constants/app.constants';
 import { CLINIC_INFO } from '@shared/constants/clinic-info.constants';
 import { AuthStore } from '@shared/services/auth/auth.store';
 import { ThemeService } from '@shared/services/ui/theme.service';
 
-/** Public website frame (no sign-in): navbar, page, footer. Signed-in staff get a link back to their workspace. */
+/** Public website frame (no sign-in): navbar, page, footer. Signed-in users get a link back to their workspace or portal. */
 @Component({
   selector: 'app-public-layout',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,7 +26,6 @@ export class PublicLayout {
 
   protected readonly clinic = CLINIC_INFO;
   protected readonly loginPath = LOGIN_PATH;
-  protected readonly workspacePath = HOME_PATH;
   protected readonly tel = 'tel:' + CLINIC_INFO.phone.replaceAll(' ', '');
   protected readonly year = new Date().getFullYear();
   protected readonly links = [

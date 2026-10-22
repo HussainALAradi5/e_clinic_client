@@ -2,5 +2,5 @@
 export interface TwoFactorChallenge {
   token: string;
   email: string;
-  returnUrl: string;
+  returnUrl?: string;
 }

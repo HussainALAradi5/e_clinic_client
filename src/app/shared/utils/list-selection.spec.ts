@@ -46,4 +46,16 @@ describe('ListSelection.pickedIds', () => {
     selection.selectAllMatching({}, 40);
     expect(selection.pickedIds()).toEqual([]);
   });
+
+  it('exports the ticked ids, or the "all matching" query with its sort minus unticked rows', () => {
+    const selection = new ListSelection();
+    selection.setPage(['a', 'b'], true);
+    expect(selection.toExportTarget()).toEqual({ ids: ['a', 'b'] });
+
+    selection.selectAllMatching({ page: 2, perPage: 25, search: 'ali', sort: ['-createdAt'] }, 40);
+    selection.toggle('x1');
+    expect(selection.toExportTarget()).toEqual({
+      filter: { search: 'ali', sort: '-created_at', filter: { and: [{ id: { nin: ['x1'] } }] } },
+    });
+  });
 });

@@ -1,0 +1,95 @@
+<h2 mat-dialog-title>New order · {{ data.patient.fullName }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="referral() ? 'Write referral' : 'Order'"
+    [compact]="true"
+    [allowPristine]="true"
+    (cancelled)="ref.close()"
+  >
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <ui-select
+        label="Kind"
+        enum="ClinicalOrderType"
+        [required]="true"
+        [control]="form.controls.type"
+      />
+      <ui-select
+        label="Priority"
+        enum="TreatmentPriority"
+        [required]="true"
+        [control]="form.controls.priority"
+      />
+      @if (referral()) {
+        <div class="mb-4 sm:col-span-2">
+          <p class="m-0 mb-2 text-sm text-on-surface-variant">Refer to</p>
+          <mat-button-toggle-group
+            hideSingleSelectionIndicator
+            aria-label="Refer to"
+            [formControl]="form.controls.target"
+          >
+            <mat-button-toggle value="specialty">A specialty</mat-button-toggle>
+            <mat-button-toggle value="doctor">A doctor</mat-button-toggle>
+            <mat-button-toggle value="company">Another hospital</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+        @switch (target()) {
+          @case ('doctor') {
+            <ui-entity-select
+              class="sm:col-span-2"
+              label="Doctor"
+              endpoint="doctors"
+              icon="stethoscope"
+              [display]="doctorName"
+              [control]="form.controls.referredToDoctorId"
+            />
+          }
+          @case ('company') {
+            <ui-entity-select
+              class="sm:col-span-2"
+              label="Hospital"
+              endpoint="reference/companies"
+              icon="local_hospital"
+              [display]="companyName"
+              [filter]="hospitals"
+              [control]="form.controls.referredToCompanyId"
+            />
+          }
+          @default {
+            <ui-entity-select
+              class="sm:col-span-2"
+              label="Specialty"
+              endpoint="doctors/specialties"
+              [display]="specialtyName"
+              [control]="form.controls.referredToSpecialtyId"
+            />
+          }
+        }
+      } @else {
+        <ui-entity-select
+          class="sm:col-span-2"
+          label="Test or exam"
+          endpoint="billing/services"
+          hint="Billed when the result is in"
+          [display]="serviceName"
+          [filter]="services()"
+          [control]="form.controls.billableServiceId"
+        />
+        <ui-text
+          class="sm:col-span-2"
+          label="Body part / sample"
+          hint="e.g. Chest PA, Left knee, Blood"
+          [control]="form.controls.bodyPart"
+        />
+      }
+      <ui-text
+        class="sm:col-span-2"
+        [label]="referral() ? 'Reason for referral' : 'Clinical question'"
+        [multiline]="true"
+        [rows]="3"
+        [control]="form.controls.clinicalNotes"
+      />
+    </div>
+  </ui-form>
+</mat-dialog-content>

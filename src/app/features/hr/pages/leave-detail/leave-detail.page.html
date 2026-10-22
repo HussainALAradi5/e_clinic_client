@@ -1,0 +1,107 @@
+@if (error()) {
+  <ui-error [error]="error()" (retry)="load()" />
+} @else if (leave(); as l) {
+  <ui-page-header
+    [title]="
+      (l.leaveType?.name ?? 'Leave') +
+      ' · ' +
+      (l.isHalfDay ? 'half a day' : (l.totalDays | qty) + ' day(s)')
+    "
+    [subtitle]="l.code + ' · ' + (l.employee?.fullName ?? '')"
+  >
+    <ui-status status [value]="l.status" enum="ApprovalStatus" />
+    <ng-container actions>
+      @if (isDraft() && mine()) {
+        <ui-button icon="send" access="leaves.write & leaves.request" [action]="submit"
+          >Send for approval</ui-button
+        >
+      }
+      @if (decidable()) {
+        <ui-button icon="check" access="leaves.write & leaves.approve" [action]="approve"
+          >Approve</ui-button
+        >
+        <ui-button
+          icon="close"
+          [variant]="variants.Outlined"
+          access="leaves.write & leaves.approve"
+          [action]="reject"
+          >Reject</ui-button
+        >
+      }
+      @if (cancellable()) {
+        <ui-button
+          icon="block"
+          [variant]="variants.Danger"
+          access="leaves.write & leaves.request"
+          [action]="cancel"
+          >Cancel leave</ui-button
+        >
+      }
+    </ng-container>
+  </ui-page-header>
+
+  <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+    <mat-card appearance="outlined" class="self-start !p-5"
+      ><ui-facts [items]="facts()"
+    /></mat-card>
+    <mat-card appearance="outlined" class="self-start !p-5">
+      <h2 class="m-0 mb-3 text-base font-semibold">Supporting documents</h2>
+      @for (f of documents(); track f.id) {
+        <div
+          class="flex items-center gap-2 border-b border-outline-variant/60 py-2 text-sm last:border-0"
+        >
+          <mat-icon class="!text-lg text-on-surface-variant">{{
+            f.mimeType.startsWith('image/') ? 'image' : 'description'
+          }}</mat-icon>
+          <span class="flex-1 truncate">{{ f.originalName }}</span>
+          <span class="text-xs text-on-surface-variant"
+            >{{ f.sizeBytes / 1024 | number: '1.0-0' }} KB</span
+          >
+          <ui-button icon="open_in_new" [variant]="variants.Text" [action]="view.bind(this, f)"
+            >View</ui-button
+          >
+        </div>
+      } @empty {
+        <p class="m-0 mb-3 text-sm text-on-surface-variant">
+          {{
+            l.leaveType?.requiresAttachment
+              ? 'A certificate is needed before this request can be sent.'
+              : 'None needed for this type of leave.'
+          }}
+        </p>
+      }
+      @if (isDraft() || (l.leaveType?.requiresAttachment && l.status === 'pending')) {
+        <ui-upload-zone
+          *hasAccess="'leaves.write'"
+          class="mt-3 block"
+          [category]="certificate"
+          [owner]="owner()"
+          accept="application/pdf,image/jpeg,image/png"
+          (uploaded)="loadDocuments()"
+        />
+      }
+    </mat-card>
+  </div>
+
+  @if (!mine()) {
+    <section class="mt-6" *hasAccess="'leaves.read_all'">
+      <h2 class="m-0 mb-3 text-base font-semibold">{{ l.employee?.fullName }}'s leave this year</h2>
+      <app-leave-balances [employeeId]="l.employeeId" [version]="version()" />
+    </section>
+  }
+
+  <mat-tab-group
+    *hasAccess="'audit.read_all | audit.read_own'"
+    class="mt-4"
+    mat-stretch-tabs="false"
+    animationDuration="0ms"
+  >
+    <mat-tab label="History">
+      <ng-template matTabContent
+        ><ui-audit-history class="block pt-4" type="leave_request" [id]="l.id"
+      /></ng-template>
+    </mat-tab>
+  </mat-tab-group>
+} @else {
+  <ui-skeleton [rows]="8" />
+}

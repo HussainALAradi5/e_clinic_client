@@ -64,13 +64,18 @@
               <dd class="m-0">{{ isScalar(entry.value) ? entry.value : '—' }}</dd>
             }
           </dl>
-          @if (codeImage(); as src) {
-            <img [src]="src" alt="Code of the record" class="mt-3 size-40" />
+          @if (codeShown()) {
+            <ui-code-image
+              class="mt-3 size-40"
+              [entity]="r.entity"
+              [recordId]="r.id"
+              label="Code of the record"
+            />
           }
         </mat-card-content>
-        @if (canShowCode() && !codeImage()) {
+        @if (canShowCode() && !codeShown()) {
           <mat-card-actions>
-            <button matButton (click)="showCode(r)">
+            <button matButton (click)="codeShown.set(true)">
               <mat-icon>qr_code_2</mat-icon> Show code
             </button>
           </mat-card-actions>

@@ -1,0 +1,23 @@
+<ui-resource-list
+  resource="employees"
+  endpoint="hr/employees"
+  title="Employees"
+  subtitle="Staff records. Personal data lives on the person, the sign-in on the account — one id for all three."
+  emptyTitle="No employees found"
+  rowLink="/hr/employees/:id"
+>
+  <ui-button actions icon="person_add" access="employees.create" [action]="hire"
+    >Hire employee</ui-button
+  >
+  <ng-template uiCell="full_name" let-row
+    ><span class="font-medium">{{ row.fullName }}</span></ng-template
+  >
+  <ng-template uiCell="department" let-row>{{ row.department?.name ?? '—' }}</ng-template>
+  <ng-template uiCell="employment_type" let-row>{{
+    row.employmentType | enumLabel: 'EmploymentType'
+  }}</ng-template>
+  <ng-template uiCell="hire_date" let-row>{{ row.hireDate | date: dateFormat }}</ng-template>
+  <ng-template uiCell="status" let-row
+    ><ui-status [value]="row.status" enum="EmployeeStatus"
+  /></ng-template>
+</ui-resource-list>

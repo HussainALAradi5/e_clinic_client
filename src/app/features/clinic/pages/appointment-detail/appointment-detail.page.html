@@ -1,0 +1,124 @@
+@if (error()) {
+  <ui-error [error]="error()" (retry)="load()" />
+} @else if (appointment(); as a) {
+  <ui-page-header
+    [title]="a.code"
+    [subtitle]="
+      (a.scheduledDate | date: 'EEEE ' + dateFormat) + ' · ' + a.startTime + '–' + a.endTime
+    "
+  >
+    <ui-status status [value]="a.status" enum="AppointmentStatus" />
+    <ng-container actions>
+      @if (documentable()) {
+        <a
+          *hasAccess="'records.read_all | records.read_own'"
+          matButton="filled"
+          [routerLink]="['/clinic/appointments', a.id, 'visit']"
+          ><mat-icon>clinical_notes</mat-icon>
+          {{ a.status === 'completed' ? 'Visit note' : 'Open visit' }}</a
+        >
+      }
+      @if (a.invoice; as inv) {
+        <a
+          *hasAccess="'invoices.read_all | invoices.read_own'"
+          matButton="outlined"
+          [routerLink]="['/billing/invoices', inv.id]"
+          ><mat-icon>receipt_long</mat-icon> {{ inv.invoiceNumber ?? 'Draft invoice' }}</a
+        >
+      } @else if (billable()) {
+        <ui-button
+          icon="request_quote"
+          [variant]="variants.Outlined"
+          access="invoices.create"
+          [action]="bill"
+          >Bill visit</ui-button
+        >
+      }
+      @if (a.treatmentId) {
+        <a matButton="outlined" [routerLink]="['/clinic/treatments', a.treatmentId]"
+          ><mat-icon>healing</mat-icon> Treatment</a
+        >
+      }
+      <a matButton="outlined" routerLink="/clinic/appointments"
+        ><mat-icon>arrow_back</mat-icon> Appointments</a
+      >
+    </ng-container>
+  </ui-page-header>
+
+  @if (a.allowedTransitions.length) {
+    <app-appointment-actions class="mb-4" [appointment]="a" (changed)="changed($event)" />
+  }
+
+  @if (a.rescheduledFrom; as from) {
+    <p class="m-0 mb-4 flex items-center gap-2 text-sm text-on-surface-variant">
+      <mat-icon class="!text-lg">update</mat-icon>
+      Moved from
+      <a class="text-primary underline" [routerLink]="['/clinic/appointments', from.id]">{{
+        from.code
+      }}</a>
+      ({{ from.scheduledDate | date: dateFormat }} {{ from.startTime }})
+    </p>
+  }
+
+  <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.8fr)]">
+    <mat-card appearance="outlined" class="!p-5">
+      <h2 class="m-0 mb-3 text-base font-semibold">Who</h2>
+      @if (a.patient; as p) {
+        <a
+          class="block rounded-lg p-2 -mx-2 hover:bg-surface-container"
+          [routerLink]="['/clinic/patients', p.id]"
+        >
+          <span class="block font-medium">{{ p.fullName }}</span>
+          <span class="block text-sm text-on-surface-variant"
+            >{{ p.code }} · {{ p.gender | enumLabel: 'Gender' }} ·
+            {{ p.dateOfBirth | date: dateFormat }} · {{ p.phone }}</span
+          >
+        </a>
+      }
+      @if (a.provider; as d) {
+        <a
+          class="mt-2 block rounded-lg p-2 -mx-2 hover:bg-surface-container"
+          [routerLink]="['/clinic/doctors', d.id]"
+        >
+          <span class="block font-medium">{{ d.fullName }}</span>
+          <span class="block text-sm text-on-surface-variant">{{ d.jobTitle }}</span>
+        </a>
+      }
+    </mat-card>
+
+    <mat-card appearance="outlined" class="!p-5"><ui-facts [items]="facts()" /></mat-card>
+
+    <mat-card appearance="outlined" class="!p-5">
+      <h2 class="m-0 mb-3 text-base font-semibold">Status trail</h2>
+      <ol class="m-0 list-none p-0">
+        @for (step of trail(); track $index) {
+          <li class="relative border-l-2 border-outline-variant pb-3 pl-4 last:pb-0">
+            <span class="absolute -left-[5px] top-1.5 size-2 rounded-full bg-primary"></span>
+            <span class="block text-sm font-medium">{{
+              step.status | enumLabel: 'AppointmentStatus'
+            }}</span>
+            <span class="block text-xs text-on-surface-variant"
+              >{{ step.at | date: dateTimeFormat }}{{ step.by ? ' · ' + step.by : '' }}</span
+            >
+          </li>
+        } @empty {
+          <li class="text-sm text-on-surface-variant">
+            Booked {{ a.createdAt | date: dateTimeFormat }} — no status changes since.
+          </li>
+        }
+      </ol>
+    </mat-card>
+  </div>
+
+  @if (medicable()) {
+    <app-session-medicines
+      *hasAccess="'prescriptions.read_all | prescriptions.read_own | dispensing.read_all | dispensing.read_own'"
+      class="mt-4"
+      [appointmentId]="a.id"
+      [patient]="a.patient ?? null"
+      [running]="running()"
+    />
+  }
+} @else {
+  <ui-skeleton [rows]="8" />
+}

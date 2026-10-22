@@ -1,0 +1,27 @@
+<ui-resource-list
+  resource="doctors"
+  endpoint="doctors"
+  title="Doctors"
+  subtitle="Clinical profiles of staff who see patients: specialty, licence, fees and weekly schedule."
+  emptyTitle="No doctors found"
+  rowLink="/clinic/doctors/:id"
+>
+  <ui-button actions icon="add" access="doctors.create" [action]="create">New doctor</ui-button>
+  <ng-template uiCell="full_name" let-row
+    ><span class="font-medium">{{ row.displayName }}</span></ng-template
+  >
+  <ng-template uiCell="specialty" let-row>{{ row.specialty?.name }}</ng-template>
+  <ng-template uiCell="license_number" let-row
+    ><span class="font-mono">{{ row.licenseNumber }}</span></ng-template
+  >
+  <ng-template uiCell="license_expiry_date" let-row>
+    <span [class.text-error]="row.licenseExpiryDate < today">{{
+      row.licenseExpiryDate | date: dateFormat
+    }}</span>
+  </ng-template>
+  <ng-template uiCell="is_accepting_patients" let-row>
+    <span [class]="row.isAcceptingPatients ? 'text-primary' : 'text-on-surface-variant'">{{
+      row.isAcceptingPatients ? 'Accepting' : 'Paused'
+    }}</span>
+  </ng-template>
+</ui-resource-list>

@@ -49,6 +49,8 @@ export class GenericForm<T = unknown> implements HasUnsavedChanges {
   /** Full-width submit button without the footer bar (sign-in style forms). */
   readonly block = input(false);
   readonly submitIcon = input<string | null>(null);
+  /** Access expression for the submit button (hidden without it — read-only view). */
+  readonly access = input<string | null>(null);
 
   readonly saved = output<unknown>();
   readonly cancelled = output<void>();

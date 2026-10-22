@@ -9,4 +9,5 @@ export enum TaskType {
   BulkNotification = 'bulk_notification',
   BulkAction = 'bulk_action',
   AttachmentsZip = 'attachments_zip',
+  ListExport = 'list_export',
 }

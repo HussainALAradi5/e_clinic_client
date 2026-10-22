@@ -1,0 +1,68 @@
+<h2 mat-dialog-title>Record consent · {{ data.patient.fullName }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Save consent"
+    [compact]="true"
+    [allowPristine]="true"
+    (cancelled)="ref.close()"
+  >
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <ui-select
+        label="Consent to"
+        enum="ConsentType"
+        [required]="true"
+        [control]="form.controls.type"
+      />
+      @if (!patientWide() && scopes.length > 1) {
+        <ui-select
+          label="Covers"
+          [required]="true"
+          [options]="scopes"
+          [control]="form.controls.scope"
+        />
+      }
+      <ui-text
+        class="sm:col-span-2"
+        label="What was explained"
+        hint="Adapt to this patient: procedure, risks and alternatives"
+        [multiline]="true"
+        [rows]="4"
+        [control]="form.controls.description"
+      />
+      <ui-text label="Signed by" [control]="form.controls.signedByName" />
+      <ui-select
+        label="Signer is"
+        [required]="true"
+        [options]="relationships"
+        [hint]="minor ? 'Under 18 — a parent or guardian signs' : null"
+        [control]="form.controls.signerRelationship"
+      />
+      <ui-select
+        label="Witness (optional)"
+        [options]="witnesses()"
+        [control]="form.controls.witnessId"
+      />
+      <ui-text
+        label="Valid until (optional)"
+        type="date"
+        hint="Empty = until revoked"
+        [control]="form.controls.validUntil"
+      />
+    </div>
+    <p class="m-0 mb-2 flex items-center gap-2 text-sm font-medium">
+      <mat-icon class="!text-lg">draw</mat-icon> Signed form
+    </p>
+    <ui-upload-zone
+      [category]="formCategory"
+      [owner]="owner"
+      [multiple]="false"
+      accept="image/*,.pdf"
+      (uploaded)="scanned($event)"
+    />
+    <p class="m-0 mt-1 text-xs text-on-surface-variant">
+      Scan or photograph the signed paper (or attach the tablet signature). Explained by you.
+    </p>
+  </ui-form>
+</mat-dialog-content>

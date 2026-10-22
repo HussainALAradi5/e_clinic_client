@@ -1,0 +1,32 @@
+<ui-resource-list
+  resource="payroll_runs"
+  endpoint="hr/payroll-runs"
+  title="Payroll"
+  subtitle="One run a month: HR calculates it after the month ends, finance approves it (salary cost posted) and records the bank transfer."
+  emptyTitle="No payroll yet"
+  rowLink="/hr/payroll/:id"
+  [views]="false"
+>
+  <ui-button actions icon="add" access="payroll.create" [action]="create">New payroll</ui-button>
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="period" let-row
+    ><span class="font-medium">{{ monthLabel(row.periodStart) }}</span></ng-template
+  >
+  <ng-template uiCell="employee_count" let-row
+    ><span class="tabular-nums">{{ row.employeeCount }}</span></ng-template
+  >
+  <ng-template uiCell="total_gross" let-row
+    ><span class="tabular-nums">{{ row.totalGross | money }}</span></ng-template
+  >
+  <ng-template uiCell="total_deductions" let-row
+    ><span class="tabular-nums">{{ row.totalDeductions | money }}</span></ng-template
+  >
+  <ng-template uiCell="total_net" let-row
+    ><span class="font-medium tabular-nums">{{ row.totalNet | money }}</span></ng-template
+  >
+  <ng-template uiCell="status" let-row
+    ><ui-status [value]="row.status" enum="PayrollStatus"
+  /></ng-template>
+</ui-resource-list>

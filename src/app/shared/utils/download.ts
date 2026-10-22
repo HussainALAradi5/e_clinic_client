@@ -25,3 +25,13 @@ export function openSignedLink(link: { url: string }, inline = false): void {
   });
   anchor.click();
 }
+
+/** Text of a Blob (FileReader works in every browser and in the test DOM). */
+export function blobText(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result ?? ''));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsText(blob);
+  });
+}

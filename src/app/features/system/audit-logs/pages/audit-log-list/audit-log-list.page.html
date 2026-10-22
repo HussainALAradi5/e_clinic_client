@@ -7,9 +7,6 @@
   [defaults]="defaults"
   (rowClick)="open($event)"
 >
-  <ui-button actions icon="download" variant="tonal" access="audit.export" [action]="export"
-    >Export CSV</ui-button
-  >
   <ng-template uiCell="created_at" let-row>
     <span class="whitespace-nowrap tabular-nums">{{ row.createdAt | date: dateTimeFormat }}</span>
   </ng-template>

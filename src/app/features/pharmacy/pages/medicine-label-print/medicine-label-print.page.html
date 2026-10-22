@@ -1,0 +1,43 @@
+@if (error()) {
+  <ui-error class="block p-6" [error]="error()" />
+} @else if (dispensation(); as d) {
+  <app-print-sheet
+    paper="receipt"
+    entity="dispensation"
+    verifyNote="Keep out of reach of children. Ask the pharmacist if in doubt."
+    title="Medicine label"
+    [recordId]="d.id"
+    [reference]="d.code"
+  >
+    <p class="m-0 mb-2 text-center">
+      <span class="font-semibold">{{ d.patient?.fullName }}</span> · {{ d.patient?.code }}<br />
+      {{ d.dispensedAt | date: dateFormat }}{{ d.prescription ? ' · ' + d.prescription.code : '' }}
+    </p>
+    @for (item of d.items; track item.id) {
+      <section class="mb-2 border-t border-dashed border-black/40 pt-2">
+        <p class="m-0 text-[10pt] font-semibold">{{ item.medication.name }}</p>
+        <p class="m-0">
+          Qty {{ item.quantity | qty }}
+          {{ item.medication.unit | enumLabel: 'DispenseUnit' | lowercase }}
+        </p>
+        @if (item.prescriptionItemId && dosage().get(item.prescriptionItemId); as line) {
+          <p class="m-0 font-semibold">
+            {{ line.dose }}, {{ line.frequency }} — {{ line.durationDays }} days
+          </p>
+          @if (line.instructions) {
+            <p class="m-0">{{ line.instructions }}</p>
+          }
+        } @else if (item.dose) {
+          <p class="m-0">
+            {{ item.dose
+            }}{{ item.route ? ' · ' + (item.route | enumLabel: 'MedicationRoute') : '' }}
+          </p>
+        }
+        <p class="m-0 text-black/60">
+          Lot {{ item.batch?.batchNumber }} · exp. {{ item.batch?.expiryDate | date: dateFormat }}
+        </p>
+      </section>
+    }
+    <p class="m-0 mt-2 text-center text-black/70">Dispensed by {{ d.dispensedBy?.fullName }}</p>
+  </app-print-sheet>
+}

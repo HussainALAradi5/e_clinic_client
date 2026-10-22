@@ -1,0 +1,94 @@
+<ui-page-header
+  title="Fiscal years"
+  subtitle="Close each month once its invoices, payments and expenses are checked — nothing can be posted into a closed month."
+>
+  <ui-button actions icon="add" access="fiscal.create" [action]="create">New year</ui-button>
+</ui-page-header>
+
+@if (error(); as e) {
+  <ui-error [error]="e" (retry)="load()" />
+} @else if (years(); as list) {
+  <div class="flex flex-col gap-4">
+    @for (year of list; track year.id) {
+      <mat-card appearance="outlined" class="!p-5">
+        <div class="mb-4 flex flex-wrap items-center gap-3">
+          <h2 class="m-0 text-lg font-semibold">{{ year.name }}</h2>
+          <ui-status [value]="year.status" enum="FiscalStatus" />
+          <span class="text-sm text-on-surface-variant"
+            >{{ year.startDate }} – {{ year.endDate }}</span
+          >
+          <span class="flex-1"></span>
+          @if (yearClosable(year)) {
+            <ui-button
+              icon="event_available"
+              [variant]="variants.Tonal"
+              access="fiscal.write & fiscal.close"
+              [action]="closeYear.bind(this, year)"
+              >Close year</ui-button
+            >
+          }
+          @if (year.status === states.Closed) {
+            <ui-button
+              icon="lock"
+              [variant]="variants.Outlined"
+              access="fiscal.write & fiscal.reopen"
+              [action]="lockYear.bind(this, year)"
+              >Lock after audit</ui-button
+            >
+          }
+        </div>
+        <ol
+          class="m-0 grid list-none grid-cols-2 gap-2 p-0 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7"
+        >
+          @for (period of year.periods ?? []; track period.id) {
+            <li
+              class="flex flex-col gap-1 rounded-xl border px-3 py-2"
+              [class]="
+                period.status === states.Open
+                  ? 'border-outline-variant'
+                  : 'border-transparent bg-surface-container'
+              "
+            >
+              <span class="flex items-center gap-1 text-sm font-medium">
+                @if (period.status !== states.Open) {
+                  <mat-icon class="!size-4 !text-base text-on-surface-variant">lock</mat-icon>
+                }
+                {{ period.name }}
+              </span>
+              <span class="text-xs text-on-surface-variant">{{
+                period.status === states.Open
+                  ? 'Open'
+                  : period.status === states.Locked
+                    ? 'Locked'
+                    : 'Closed'
+              }}</span>
+              @if (closable(year, period)) {
+                <ui-button
+                  icon="lock"
+                  [variant]="variants.Text"
+                  access="fiscal.write & fiscal.close"
+                  [action]="close.bind(this, period)"
+                  >Close</ui-button
+                >
+              } @else if (period.status === states.Closed && year.status === states.Open) {
+                <ui-button
+                  icon="lock_open"
+                  [variant]="variants.Text"
+                  access="fiscal.write & fiscal.reopen"
+                  [action]="reopen.bind(this, period)"
+                  >Reopen</ui-button
+                >
+              }
+            </li>
+          }
+        </ol>
+      </mat-card>
+    } @empty {
+      <p class="m-0 rounded-xl bg-surface-container px-4 py-6 text-center text-on-surface-variant">
+        No fiscal year yet — create one before issuing invoices.
+      </p>
+    }
+  </div>
+} @else {
+  <ui-skeleton [rows]="6" />
+}

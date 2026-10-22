@@ -1,10 +1,19 @@
-<button
-  matIconButton
-  aria-label="Notifications"
-  matTooltip="Notifications"
-  [matMenuTriggerFor]="inbox"
-  (menuOpened)="load()"
->
+@if (inboxLink(); as link) {
+  <a matIconButton aria-label="Notifications" matTooltip="Notifications" [routerLink]="link">
+    <ng-container [ngTemplateOutlet]="icon" />
+  </a>
+} @else {
+  <button
+    matIconButton
+    aria-label="Notifications"
+    matTooltip="Notifications"
+    [matMenuTriggerFor]="inbox"
+    (menuOpened)="load()"
+  >
+    <ng-container [ngTemplateOutlet]="icon" />
+  </button>
+}
+<ng-template #icon>
   <mat-icon
     [matBadge]="unread() > 99 ? '99+' : unread()"
     [matBadgeHidden]="unread() === 0"
@@ -13,7 +22,7 @@
     aria-hidden="false"
     >notifications</mat-icon
   >
-</button>
+</ng-template>
 <mat-menu #inbox="matMenu" xPosition="before" class="!max-w-sm">
   <div
     class="flex items-center justify-between px-4 py-2"

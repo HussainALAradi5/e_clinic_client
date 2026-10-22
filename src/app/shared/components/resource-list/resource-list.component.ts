@@ -9,24 +9,34 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceListStore } from './resource-list.store';
 import { BulkActionBar } from '@shared/components/bulk-action-bar/bulk-action-bar.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { DataTable } from '@shared/components/data-table/data-table.component';
 import { EmptyState } from '@shared/components/empty-state/empty-state.component';
+import { ExportMenu } from '@shared/components/export-menu/export-menu.component';
+import { ImportDialog } from '@shared/components/import-dialog/import-dialog.component';
 import { ErrorState } from '@shared/components/error-state/error-state.component';
 import { GenericFilter } from '@shared/components/generic-filter/generic-filter.component';
 import { PageHeader } from '@shared/components/page-header/page-header.component';
 import { Paginator } from '@shared/components/paginator/paginator.component';
 import { SavedViews } from '@shared/components/saved-views/saved-views.component';
+import { ExportFormat } from '@shared/enums/list/export-format.enum';
 import { ListQuery } from '@shared/interfaces/list/list-query.interface';
+import { ImportDialogData, ImportResult } from '@shared/interfaces/list/transfer.interface';
+import { TransferService } from '@shared/services/data/transfer.service';
+import { DialogService } from '@shared/services/ui/dialog.service';
+import { NotifyService } from '@shared/services/ui/notify.service';
 import { PageChange, TableColumn } from '@shared/interfaces/ui/table.interface';
 import { SavedView } from '@shared/interfaces/view/saved-view.interface';
 import { defaultQuery, fromViewQuery, queryFromUrl, queryToUrl } from '@shared/utils/list-query';
 
 /**
- * Generic list page for any resource: schema-driven filters, saved views, table, pagination, multi-select bulk bar.
+ * Generic list page for any resource: schema-driven filters, saved views, table, pagination, multi-select bulk bar,
+ * and — when the server offers them to this user — Export (Excel / PDF / CSV) and Excel Import.
  * Feature list pages are configuration + cell templates (`[bulk]` content adds page-specific bulk buttons):
  *
  * <ui-resource-list resource="rooms" endpoint="clinic/rooms" title="Rooms" rowLink="/clinic/rooms/:id">
@@ -47,6 +57,9 @@ import { defaultQuery, fromViewQuery, queryFromUrl, queryToUrl } from '@shared/u
     Paginator,
     EmptyState,
     ErrorState,
+    ExportMenu,
+    MatButtonModule,
+    MatIconModule,
   ],
   host: { class: 'block' },
   templateUrl: './resource-list.component.html',
@@ -73,6 +86,9 @@ export class ResourceListPage implements OnInit {
   /** Multi-select state (pages read it for their own `[bulk]` buttons). */
   readonly selection = this.store.selection();
   private readonly router = inject(Router);
+  private readonly transfer = inject(TransferService);
+  private readonly dialogs = inject(DialogService);
+  private readonly notify = inject(NotifyService);
   private readonly route = inject(ActivatedRoute);
 
   protected readonly cells = contentChildren(CellDef);
@@ -83,9 +99,11 @@ export class ResourceListPage implements OnInit {
   /** The list opened without state in the URL → the user's default view may apply. */
   protected readonly pristineUrl = Object.keys(this.route.snapshot.queryParams).length === 0;
   protected readonly endpointPath = computed(() => this.endpoint() ?? this.resource());
-  protected readonly selectable = computed(
-    () => (this.store.schema()?.bulkActions.length ?? 0) > 0,
-  );
+  /** Row checkboxes when the user can act on rows: a bulk action, or export of the ticked rows. */
+  protected readonly selectable = computed(() => {
+    const schema = this.store.schema();
+    return !!schema && (schema.bulkActions.length > 0 || schema.exportFormats.length > 0);
+  });
   protected readonly tableColumns = computed<TableColumn[]>(() => {
     const schema = this.store.schema();
     if (!schema) {
@@ -144,6 +162,30 @@ export class ResourceListPage implements OnInit {
     const link = this.rowLink();
     if (link) {
       void this.router.navigateByUrl(link.replace(':id', row.id));
+    }
+  }
+
+  /** Exports the ticked rows, or the whole filtered list, in the visible columns (one request). */
+  protected readonly exportAs = (format: ExportFormat): Promise<void> =>
+    this.transfer.export(
+      this.endpointPath(),
+      format,
+      this.store.query(),
+      this.visibleColumns(),
+      this.selectable() ? this.selection : null,
+    );
+
+  protected async openImport(): Promise<void> {
+    const result = await this.dialogs.open<ImportDialog, ImportDialogData, ImportResult>(
+      ImportDialog,
+      { endpoint: this.endpointPath(), title: this.title() },
+      { width: '640px' },
+    );
+    if (result) {
+      this.notify.success(
+        `${result.created.toLocaleString('en-GB')} record${result.created === 1 ? '' : 's'} imported.`,
+      );
+      this.store.reload();
     }
   }
 }

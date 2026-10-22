@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { GenericForm } from '@shared/components/generic-form/generic-form.component';
 import { TextField } from '@shared/components/text-field/text-field.component';
-import { HOME_PATH } from '@shared/constants/app.constants';
 import { LoginPayload } from '@shared/interfaces/auth/auth-payloads.interface';
 import { SessionService } from '@shared/services/auth/session.service';
 
@@ -32,5 +31,5 @@ export class LoginPage {
   });
 
   protected readonly submit = (value: Omit<LoginPayload, 'deviceName'>): Promise<void> =>
-    this.session.login(value, this.returnUrl() ?? HOME_PATH);
+    this.session.login(value, this.returnUrl());
 }

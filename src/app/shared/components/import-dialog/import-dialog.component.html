@@ -1,0 +1,93 @@
+<h2 mat-dialog-title>Import {{ data.title.toLowerCase() }}</h2>
+
+<mat-dialog-content class="!pt-1">
+  <ol class="m-0 list-none space-y-4 p-0">
+    <li class="flex gap-3">
+      <span class="step" aria-hidden="true">1</span>
+      <div class="flex-1">
+        <p class="m-0 font-semibold">Fill in the template</p>
+        <p class="mt-1 mb-2 text-sm text-on-surface-variant">
+          One row per record on the "Data" sheet. The "Example" and "Instructions" sheets show what
+          each column needs; columns marked * are required.
+        </p>
+        <ui-button variant="tonal" size="sm" icon="download" [action]="downloadTemplate"
+          >Download template</ui-button
+        >
+      </div>
+    </li>
+
+    <li class="flex gap-3">
+      <span class="step" aria-hidden="true">2</span>
+      <div class="min-w-0 flex-1">
+        <p class="m-0 mb-2 font-semibold">Upload the filled-in file</p>
+        @if (file(); as chosen) {
+          <div class="file">
+            <mat-icon class="text-primary">table_view</mat-icon>
+            <span class="min-w-0 flex-1">
+              <span class="block truncate font-medium">{{ chosen.name }}</span>
+              <span class="block text-xs text-on-surface-variant">{{ size(chosen.size) }}</span>
+            </span>
+            <button matIconButton type="button" aria-label="Remove file" (click)="setFile(null)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        } @else {
+          <label
+            class="drop"
+            [class.dragging]="dragging()"
+            (dragover)="$event.preventDefault(); dragging.set(true)"
+            (dragleave)="dragging.set(false)"
+            (drop)="drop($event)"
+          >
+            <mat-icon>upload_file</mat-icon>
+            <span class="font-medium">Drop the Excel file here or <u>choose a file</u></span>
+            <span class="text-xs text-on-surface-variant">.xlsx</span>
+            <input type="file" class="sr-only" [accept]="accept" (change)="pick($event)" />
+          </label>
+        }
+      </div>
+    </li>
+  </ol>
+
+  @if (problem(); as message) {
+    <div class="mt-5 rounded-xl bg-error-container p-3 text-on-error-container" role="alert">
+      <p class="m-0 flex items-start gap-2 text-sm font-semibold">
+        <mat-icon class="!size-5 shrink-0 !text-xl">error</mat-icon>{{ message }}
+      </p>
+      @if (rowErrors().length) {
+        <div
+          class="mt-3 max-h-56 overflow-auto rounded-lg bg-surface-container-lowest text-on-surface"
+        >
+          <table class="w-full border-collapse text-sm">
+            <thead class="sticky top-0 bg-surface-container-high text-left">
+              <tr>
+                <th class="px-3 py-1.5 font-semibold">Row</th>
+                <th class="px-3 py-1.5 font-semibold">Column</th>
+                <th class="px-3 py-1.5 font-semibold">Problem</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (e of rowErrors(); track $index) {
+                <tr class="border-t border-outline-variant align-top">
+                  <td class="px-3 py-1.5 tabular-nums">{{ e.row }}</td>
+                  <td class="px-3 py-1.5">{{ e.column ?? '—' }}</td>
+                  <td class="px-3 py-1.5">{{ e.message }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        @if (hiddenErrors()) {
+          <p class="mt-2 mb-0 text-xs">
+            …and {{ hiddenErrors() }} more. Fix these and import again.
+          </p>
+        }
+      }
+    </div>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button matButton type="button" mat-dialog-close>Cancel</button>
+  <ui-button icon="upload" [disabled]="!file()" [action]="import">Import</ui-button>
+</mat-dialog-actions>

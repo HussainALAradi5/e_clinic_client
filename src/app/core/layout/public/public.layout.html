@@ -27,7 +27,9 @@
     </button>
 
     @if (auth.isAuthenticated()) {
-      <a class="btn-on-brand btn-sm ml-1" [routerLink]="workspacePath">Open workspace</a>
+      <a class="btn-on-brand btn-sm ml-1" [routerLink]="auth.homePath()">{{
+        auth.isPatient() ? 'My portal' : 'Open workspace'
+      }}</a>
     } @else {
       <a class="btn-on-brand btn-sm ml-1" [routerLink]="loginPath">Sign in</a>
     }

@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Cancel appointment {{ data.appointment.code }}</h2>
+<mat-dialog-content>
+  <p class="mt-0 text-sm text-on-surface-variant">
+    {{ data.appointment.patient?.fullName }} with {{ data.appointment.provider?.fullName }} on
+    {{ data.appointment.scheduledDate }} at {{ data.appointment.startTime }}. The patient gets a
+    message.
+  </p>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Cancel appointment"
+    cancelLabel="Keep it"
+    [compact]="true"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    <ui-select
+      label="Requested by"
+      [required]="true"
+      [options]="who"
+      [control]="form.controls.cancelledBy"
+    />
+    <ui-text label="Reason" [control]="form.controls.reason" />
+  </ui-form>
+</mat-dialog-content>

@@ -1,0 +1,34 @@
+<ui-resource-list
+  resource="appointments"
+  endpoint="appointments"
+  title="Appointments"
+  subtitle="Every booking, past and upcoming. Filter by date, doctor or status; open one to check in, move or cancel it."
+  emptyTitle="No appointments found"
+  rowLink="/clinic/appointments/:id"
+>
+  <ui-button actions icon="event_available" access="appointments.create" [action]="book"
+    >Book appointment</ui-button
+  >
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="scheduled_date" let-row>{{
+    row.scheduledDate | date: dateFormat
+  }}</ng-template>
+  <ng-template uiCell="start_time" let-row
+    ><span class="tabular-nums">{{ row.startTime }}–{{ row.endTime }}</span></ng-template
+  >
+  <ng-template uiCell="patient" let-row>
+    <span class="font-medium">{{ row.patient?.fullName }}</span>
+    <span class="block text-xs text-on-surface-variant">{{ row.patient?.code }}</span>
+  </ng-template>
+  <ng-template uiCell="provider" let-row>{{ row.provider?.fullName }}</ng-template>
+  <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'AppointmentType' }}</ng-template>
+  <ng-template uiCell="room" let-row>{{ row.room?.code ?? '—' }}</ng-template>
+  <ng-template uiCell="status" let-row
+    ><ui-status [value]="row.status" enum="AppointmentStatus"
+  /></ng-template>
+  <ng-template uiCell="source" let-row>{{
+    row.source | enumLabel: 'AppointmentSource'
+  }}</ng-template>
+</ui-resource-list>

@@ -6,3 +6,4 @@ export * from './filter-draft.interface';
 export * from './action.interface';
 export * from './nav.interface';
 export * from './password-check.interface';
+export * from './fact.interface';

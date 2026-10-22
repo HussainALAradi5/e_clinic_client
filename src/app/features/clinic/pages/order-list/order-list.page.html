@@ -1,0 +1,37 @@
+<ui-resource-list
+  resource="orders"
+  endpoint="clinical-orders"
+  title="Clinical orders"
+  subtitle="Imaging, lab tests, ECGs and referrals. Doctors order them from the visit; results come back here and on the patient file."
+  emptyTitle="No orders found"
+  rowLink="/clinic/clinical-orders/:id"
+>
+  <a actions matButton="filled" routerLink="/clinic/clinical-orders/worklist"
+    ><mat-icon>checklist</mat-icon> Work list</a
+  >
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="patient" let-row>
+    <span class="font-medium">{{ row.patient?.fullName }}</span>
+    <span class="block text-xs text-on-surface-variant">{{ row.patient?.code }}</span>
+  </ng-template>
+  <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'ClinicalOrderType' }}</ng-template>
+  <ng-template uiCell="description" let-row>
+    {{ row.description }}
+    @if (row.isAbnormal) {
+      <span
+        class="ml-2 rounded-full bg-error-container px-2 py-0.5 text-[11px] font-medium text-on-error-container"
+        >Abnormal</span
+      >
+    }
+  </ng-template>
+  <ng-template uiCell="priority" let-row
+    ><ui-status [value]="row.priority" enum="TreatmentPriority"
+  /></ng-template>
+  <ng-template uiCell="status" let-row
+    ><ui-status [value]="row.status" enum="GenericStatus"
+  /></ng-template>
+  <ng-template uiCell="ordered_by" let-row>{{ row.orderingDoctor?.fullName }}</ng-template>
+  <ng-template uiCell="created_at" let-row>{{ row.createdAt | date: dateFormat }}</ng-template>
+</ui-resource-list>

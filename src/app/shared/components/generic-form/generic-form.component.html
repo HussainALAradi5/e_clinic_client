@@ -18,6 +18,7 @@
       [disabled]="form().pristine && !allowPristine()"
       [block]="block()"
       [icon]="submitIcon()"
+      [access]="access()"
       (failed)="onFailed($event)"
     >
       {{ submitLabel() }}

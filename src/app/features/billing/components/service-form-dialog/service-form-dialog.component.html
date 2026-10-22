@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>{{ service ? 'Edit service' : 'New service' }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="service ? 'Save' : 'Create service'"
+    [compact]="true"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-[11rem_1fr]">
+      <ui-text label="Code" hint="e.g. CONS-GP" [control]="form.controls.code" />
+      <ui-text label="Name" [control]="form.controls.name" />
+    </div>
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-3">
+      <ui-select
+        label="Category"
+        enum="ServiceCategory"
+        [required]="true"
+        [control]="form.controls.category"
+      />
+      <ui-money
+        label="Price"
+        [hint]="service ? 'Applies to new charges only' : null"
+        [control]="form.controls.price"
+      />
+      <ui-text
+        label="VAT %"
+        type="number"
+        hint="0 for zero-rated care"
+        [control]="form.controls.taxRate"
+      />
+    </div>
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <ui-entity-select
+        label="Revenue account"
+        endpoint="accounting/accounts"
+        [display]="accountName"
+        [filter]="revenueAccounts"
+        [initial]="$any(service?.revenueAccount ?? null)"
+        [control]="form.controls.revenueAccountId"
+      />
+      <ui-entity-select
+        label="Specialty (optional)"
+        endpoint="doctors/specialties"
+        [display]="specialtyName"
+        [initial]="$any(service?.specialty ?? null)"
+        [control]="form.controls.specialtyId"
+      />
+      <ui-select
+        label="Signed consent needed"
+        enum="ConsentType"
+        [control]="form.controls.consentType"
+      />
+    </div>
+    <mat-checkbox class="-ml-2 block" [formControl]="form.controls.isInsurable"
+      >Can be claimed from insurers</mat-checkbox
+    >
+  </ui-form>
+</mat-dialog-content>

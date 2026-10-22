@@ -1,0 +1,66 @@
+<div
+  class="mx-auto mb-4 flex justify-end gap-2 px-4 print:hidden"
+  [class]="paper() === 'receipt' ? 'max-w-[80mm]' : 'max-w-[210mm]'"
+>
+  <button matButton="filled" type="button" (click)="print()">
+    <mat-icon>print</mat-icon> Print
+  </button>
+</div>
+@if (paper() === 'receipt') {
+  <article
+    class="mx-auto max-w-[80mm] bg-white px-[4mm] py-[5mm] text-[9pt] leading-snug text-black shadow-sm print:max-w-none print:shadow-none"
+  >
+    <header class="mb-3 border-b border-dashed border-black/40 pb-2 text-center">
+      <ui-brand-mark class="inline-block" tone="dark" />
+      <p class="m-0 mt-1 font-semibold">{{ reference() }}</p>
+      <p class="m-0 text-black/70">Printed {{ today }}</p>
+    </header>
+    <h1 class="m-0 mb-3 text-center text-[11pt] font-semibold">{{ title() }}</h1>
+    <ng-container [ngTemplateOutlet]="body" />
+    <footer
+      class="mt-4 border-t border-dashed border-black/40 pt-3 text-center text-[8pt] text-black/70"
+    >
+      @if (entity(); as code) {
+        <ui-code-image
+          class="mx-auto mb-1 size-20"
+          [entity]="code"
+          [recordId]="recordId()"
+          [pixels]="160"
+          label="Verification code"
+        />
+      }
+      <p class="m-0">{{ verifyNote() }}</p>
+    </footer>
+  </article>
+} @else {
+  <article
+    class="mx-auto max-w-[210mm] bg-white px-[18mm] py-[16mm] text-[11pt] leading-relaxed text-black shadow-sm print:max-w-none print:shadow-none"
+  >
+    <header class="mb-8 flex items-start justify-between border-b border-black/20 pb-4">
+      <ui-brand-mark tone="dark" />
+      <div class="text-right text-[9pt] text-black/70">
+        <p class="m-0 font-semibold text-black">{{ reference() }}</p>
+        <p class="m-0">Printed {{ today }}</p>
+      </div>
+    </header>
+    <h1 class="m-0 mb-6 text-[16pt] font-semibold">{{ title() }}</h1>
+    <ng-container [ngTemplateOutlet]="body" />
+    <footer
+      class="mt-10 flex items-end gap-4 border-t border-black/20 pt-4 text-[9pt] text-black/70"
+    >
+      @if (entity(); as code) {
+        <ui-code-image
+          class="size-24 shrink-0"
+          [entity]="code"
+          [recordId]="recordId()"
+          [pixels]="220"
+          label="Verification code"
+        />
+      }
+      <p class="m-0">{{ verifyNote() }}</p>
+    </footer>
+  </article>
+}
+
+<!-- One projection slot, rendered by whichever paper layout is active. -->
+<ng-template #body><ng-content /></ng-template>

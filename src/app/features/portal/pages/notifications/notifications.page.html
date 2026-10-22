@@ -1,0 +1,53 @@
+<header class="mb-4 flex flex-wrap items-end justify-between gap-3">
+  <div>
+    <h1 class="m-0 text-2xl font-bold tracking-tight">Messages</h1>
+    <p class="m-0 text-on-surface-variant">Reminders and updates from the clinic.</p>
+  </div>
+  @if (unread()) {
+    <button matButton (click)="markAllRead()"><mat-icon>done_all</mat-icon> Mark all read</button>
+  }
+</header>
+
+@if (items(); as list) {
+  <ul
+    class="m-0 list-none overflow-hidden rounded-2xl border border-outline-variant bg-surface p-0"
+  >
+    @for (n of list; track n.id) {
+      <li class="border-b border-outline-variant/60 last:border-0">
+        <button
+          type="button"
+          class="flex w-full cursor-pointer items-start gap-3 border-0 bg-transparent px-4 py-3 text-left text-on-surface hover:bg-surface-container-low"
+          (click)="open(n)"
+        >
+          <span
+            class="mt-1.5 size-2 shrink-0 rounded-full"
+            [class.bg-primary]="!n.readAt"
+            [attr.aria-label]="n.readAt ? null : 'Unread'"
+          ></span>
+          <span class="min-w-0 flex-1">
+            @if (n.subject) {
+              <span class="block text-sm" [class.font-semibold]="!n.readAt">{{ n.subject }}</span>
+            }
+            <span class="block text-sm" [class.font-semibold]="!n.readAt && !n.subject">{{
+              n.body
+            }}</span>
+            <span class="block text-xs text-on-surface-variant">{{
+              n.createdAt | relativeTime
+            }}</span>
+          </span>
+        </button>
+      </li>
+    } @empty {
+      <li class="p-2">
+        <ui-empty icon="notifications" title="No messages" message="You are all caught up." />
+      </li>
+    }
+  </ul>
+  @if (more()) {
+    <div class="mt-4 text-center">
+      <button matButton (click)="load(true)">Show more</button>
+    </div>
+  }
+} @else {
+  <ui-skeleton [rows]="5" [height]="44" />
+}

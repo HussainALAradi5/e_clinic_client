@@ -31,8 +31,11 @@ export interface ResourceSchema {
   dateFields: string[];
   columns: ColumnDef[];
   bulkActions: BulkActionDef[];
+  /** Formats the signed-in user may export (empty = no export for them). */
   exportFormats: ExportFormat[];
   defaultSort: string;
   /** GenericEntity resource: the list offers "Show archived". */
   archivable: boolean;
+  /** The signed-in user may import this list from Excel. */
+  importable: boolean;
 }

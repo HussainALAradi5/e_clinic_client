@@ -1,0 +1,92 @@
+<a
+  href="#portal-main"
+  class="sr-only z-50 rounded-md bg-white px-3 py-2 text-pine-900 focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+  >Skip to content</a
+>
+
+<header class="portal-header sticky top-0 z-30 text-white">
+  <div class="mx-auto flex h-16 max-w-5xl items-center gap-1 px-4">
+    <a [routerLink]="home" class="mr-auto no-underline" aria-label="My portal home">
+      <ui-brand-mark tone="light" />
+    </a>
+
+    <nav class="mr-2 hidden items-center gap-1 lg:flex" aria-label="Portal">
+      @for (tab of tabs; track tab.route) {
+        <a
+          class="header-link"
+          [routerLink]="tab.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: tab.exact ?? false }"
+          >{{ tab.label }}</a
+        >
+      }
+    </nav>
+
+    <app-notification-bell class="on-pine" [inboxLink]="inbox" />
+
+    @if (auth.user(); as user) {
+      <button
+        type="button"
+        class="avatar ml-1"
+        [matMenuTriggerFor]="account"
+        [attr.aria-label]="'Account menu of ' + user.fullName"
+      >
+        {{ initials() }}
+      </button>
+      <mat-menu #account="matMenu" xPosition="before">
+        <div class="px-4 py-2">
+          <p class="m-0 text-sm font-semibold">{{ user.fullName }}</p>
+          <p class="m-0 text-xs text-on-surface-variant">{{ user.email }}</p>
+        </div>
+        <mat-divider />
+        @for (item of more; track item.route) {
+          <a mat-menu-item [routerLink]="item.route">
+            <mat-icon>{{ item.icon }}</mat-icon>
+            <span>{{ item.label }}</span>
+          </a>
+        }
+        <mat-divider />
+        <a mat-menu-item [routerLink]="security">
+          <mat-icon>shield_person</mat-icon>
+          <span>Password &amp; security</span>
+        </a>
+        <button mat-menu-item (click)="theme.toggle()">
+          <mat-icon>{{ theme.dark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+          <span>{{ theme.dark() ? 'Light mode' : 'Dark mode' }}</span>
+        </button>
+        <a mat-menu-item routerLink="/">
+          <mat-icon>language</mat-icon>
+          <span>Clinic website</span>
+        </a>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Sign out</span>
+        </button>
+      </mat-menu>
+    }
+  </div>
+</header>
+
+<main
+  id="portal-main"
+  tabindex="-1"
+  class="mx-auto w-full max-w-5xl flex-1 px-4 pt-5 pb-28 outline-none lg:pt-8 lg:pb-12"
+>
+  <router-outlet />
+</main>
+
+<nav class="tab-bar" aria-label="Portal tabs">
+  @for (tab of tabs; track tab.route) {
+    <a
+      class="tab"
+      [routerLink]="tab.route"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: tab.exact ?? false }"
+      #active="routerLinkActive"
+      [attr.aria-current]="active.isActive ? 'page' : null"
+    >
+      <mat-icon class="tab-icon">{{ tab.icon }}</mat-icon>
+      <span>{{ tab.label }}</span>
+    </a>
+  }
+</nav>

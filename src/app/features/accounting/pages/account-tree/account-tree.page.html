@@ -1,0 +1,79 @@
+<ui-page-header
+  title="Account tree"
+  subtitle="The chart of accounts as an outline. Click a group to fold it."
+>
+  <a actions matButton="outlined" routerLink="/accounting/chart-of-accounts"
+    ><mat-icon>list</mat-icon> List</a
+  >
+</ui-page-header>
+
+<mat-button-toggle-group
+  class="mb-4"
+  hideSingleSelectionIndicator
+  [value]="type()"
+  (change)="load($event.value)"
+  aria-label="Account type"
+>
+  <mat-button-toggle [value]="null">All</mat-button-toggle>
+  @for (t of types; track t) {
+    <mat-button-toggle [value]="t">{{ t | enumLabel: 'AccountType' }}</mat-button-toggle>
+  }
+</mat-button-toggle-group>
+
+@if (error(); as e) {
+  <ui-error [error]="e" (retry)="load()" />
+} @else if (tree(); as roots) {
+  <div class="rounded-xl border border-outline-variant bg-surface p-2" role="tree">
+    <ng-container [ngTemplateOutlet]="branch" [ngTemplateOutletContext]="{ $implicit: roots }" />
+  </div>
+} @else {
+  <ui-skeleton [rows]="10" />
+}
+
+<ng-template #branch let-nodes>
+  @for (node of nodes; track node.id) {
+    <div role="treeitem" [attr.aria-expanded]="node.isGroup ? !folded().has(node.id) : null">
+      <div
+        class="flex items-center gap-2 rounded-lg py-1.5 pr-2 hover:bg-surface-container"
+        [style.padding-left.rem]="(node.level - 1) * 1.5 + 0.25"
+      >
+        @if (node.isGroup) {
+          <button
+            matIconButton
+            type="button"
+            class="!h-8 !w-8 !p-1"
+            (click)="toggle(node.id)"
+            [attr.aria-label]="(folded().has(node.id) ? 'Unfold ' : 'Fold ') + node.name"
+          >
+            <mat-icon>{{ folded().has(node.id) ? 'chevron_right' : 'expand_more' }}</mat-icon>
+          </button>
+        } @else {
+          <span class="inline-block w-8"></span>
+        }
+        <a
+          class="flex flex-1 items-baseline gap-3 text-sm"
+          [routerLink]="['/accounting/chart-of-accounts', node.id]"
+        >
+          <span class="w-14 font-mono tabular-nums text-on-surface-variant">{{ node.code }}</span>
+          <span [class.font-semibold]="node.isGroup" [class.opacity-60]="node.isArchived">{{
+            node.name
+          }}</span>
+          @if (node.isSystem) {
+            <span
+              class="rounded bg-surface-container-high px-1.5 text-[11px] text-on-surface-variant"
+              >system</span
+            >
+          }
+        </a>
+      </div>
+      @if (node.isGroup && !folded().has(node.id) && node.children?.length) {
+        <div role="group">
+          <ng-container
+            [ngTemplateOutlet]="branch"
+            [ngTemplateOutletContext]="{ $implicit: node.children }"
+          />
+        </div>
+      }
+    </div>
+  }
+</ng-template>

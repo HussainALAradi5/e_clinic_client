@@ -12,6 +12,8 @@ export interface Session extends EffectiveAccess {
   token?: string;
   tokenType?: 'Bearer';
   expiresAt?: string;
+  /** Only after a 2FA code with rememberDevice. */
+  trustedDeviceToken?: string;
 }
 
 export interface AuthState {

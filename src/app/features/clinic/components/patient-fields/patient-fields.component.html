@@ -1,0 +1,60 @@
+@if (form().controls.allergies.enabled) {
+  <h3 class="m-0 mb-2 text-sm font-semibold text-on-surface-variant">Medical alerts</h3>
+  <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-[10rem_1fr]">
+    <ui-select
+      label="Blood group"
+      enum="BloodGroup"
+      [required]="true"
+      [control]="form().controls.bloodGroup"
+    />
+    <ui-text
+      label="Allergies"
+      hint="Shown as a red banner on every clinical screen"
+      [control]="form().controls.allergies"
+    />
+  </div>
+  <ui-text
+    label="Chronic conditions"
+    [multiline]="true"
+    [rows]="2"
+    [control]="form().controls.chronicConditions"
+  />
+}
+
+<h3 class="m-0 mb-2 text-sm font-semibold text-on-surface-variant">Emergency contact</h3>
+<div class="grid grid-cols-1 gap-x-4 sm:grid-cols-3">
+  <ui-text label="Name" [control]="form().controls.emergencyContactName" />
+  <ui-text label="Mobile" type="tel" [control]="form().controls.emergencyContactPhone" />
+  <ui-text
+    label="Relation"
+    hint="e.g. Spouse"
+    [control]="form().controls.emergencyContactRelation"
+  />
+</div>
+
+<h3 class="m-0 mb-2 text-sm font-semibold text-on-surface-variant">Insurance</h3>
+<div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+  <ui-entity-select
+    label="Insurer"
+    endpoint="reference/companies"
+    [display]="companyName"
+    [filter]="insurers"
+    [initial]="$any(insurer())"
+    [control]="form().controls.insuranceCompanyId"
+  />
+  <ui-text label="Policy / member number" [control]="form().controls.insurancePolicyNumber" />
+  <ui-text label="Valid until" type="date" [control]="form().controls.insuranceExpiryDate" />
+  <ui-text
+    label="Insurer pays (%)"
+    type="number"
+    hint="e.g. 80 — the patient pays the rest"
+    [control]="form().controls.insuranceCoveragePercent"
+  />
+</div>
+<ui-text
+  label="Front-desk notes"
+  hint="Administrative only — no clinical notes"
+  [multiline]="true"
+  [rows]="2"
+  [control]="form().controls.notes"
+/>

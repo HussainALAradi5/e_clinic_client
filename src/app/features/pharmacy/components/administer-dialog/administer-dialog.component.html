@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>Give medicine</h2>
+<mat-dialog-content>
+  @if (data.patient; as p) {
+    <p class="m-0 mb-3 text-sm">
+      <span class="font-medium">{{ p.fullName }}</span>
+      <span class="text-on-surface-variant"> · {{ p.code }}</span>
+    </p>
+  }
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Record"
+    submitIcon="vaccines"
+    [compact]="true"
+    (cancelled)="ref.close()"
+  >
+    <ol class="m-0 list-none p-0" aria-label="Medicines given">
+      @for (group of items.controls; track group; let i = $index) {
+        <li
+          class="mb-3 grid grid-cols-2 gap-x-3 rounded-xl border border-outline-variant/70 px-4 pt-4 sm:grid-cols-[minmax(0,2fr)_6rem_minmax(0,1fr)_minmax(0,1fr)_auto]"
+          [formGroup]="group"
+        >
+          <ui-entity-select
+            class="col-span-2 sm:col-span-1"
+            label="Medicine"
+            endpoint="pharmacy/medications"
+            icon="medication"
+            [display]="medicationName"
+            [detail]="medicationDetail"
+            [control]="group.controls.medicationId"
+            (picked)="pick(i, $any($event))"
+          />
+          <ui-text label="Units" type="number" [control]="group.controls.quantity" />
+          <ui-select
+            label="Route"
+            enum="MedicationRoute"
+            [required]="true"
+            [control]="group.controls.route"
+          />
+          <ui-text label="Dose given" hint="e.g. 1 g" [control]="group.controls.dose" />
+          <div class="flex items-start justify-end pt-1">
+            <button
+              matIconButton
+              type="button"
+              aria-label="Remove medicine"
+              [disabled]="items.length <= 1"
+              (click)="remove(i)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </li>
+      }
+    </ol>
+    <button class="mb-4" matButton type="button" (click)="add()">
+      <mat-icon>add</mat-icon> Medicine
+    </button>
+
+    @if (controlled()) {
+      <ui-select
+        label="Witness"
+        hint="A controlled drug is given in front of a colleague"
+        [options]="witnesses()"
+        [required]="true"
+        [control]="form.controls.witnessId"
+      />
+    }
+    <ui-text label="Notes" hint="Site, reaction, observation" [control]="form.controls.notes" />
+  </ui-form>
+</mat-dialog-content>

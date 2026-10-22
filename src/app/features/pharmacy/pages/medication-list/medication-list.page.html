@@ -1,0 +1,46 @@
+<ui-resource-list
+  resource="medications"
+  endpoint="pharmacy/medications"
+  title="Medications"
+  subtitle="The pharmacy catalogue. Prices live on the price list; stock counts lots that can be dispensed today."
+  emptyTitle="No medications found"
+  rowLink="/pharmacy/medications/:id"
+>
+  <ui-button
+    actions
+    icon="inventory_2"
+    [variant]="variants.Outlined"
+    access="inventory.create & inventory.receive"
+    [action]="receive"
+    >Receive stock</ui-button
+  >
+  <ui-button actions icon="add" access="medications.create" [action]="create"
+    >New medication</ui-button
+  >
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="generic_name" let-row>
+    <span class="font-medium">{{ row.genericName }}</span>
+    @if (row.isControlled) {
+      <span
+        class="ml-2 rounded bg-red-100 px-1.5 py-0.5 text-[11px] font-semibold text-red-800 dark:bg-red-900/50 dark:text-red-200"
+        >CD</span
+      >
+    }
+  </ng-template>
+  <ng-template uiCell="brand_name" let-row>{{ row.brandName ?? '—' }}</ng-template>
+  <ng-template uiCell="form" let-row>{{ row.form | enumLabel: 'MedicationForm' }}</ng-template>
+  <ng-template uiCell="price" let-row
+    ><span class="tabular-nums">{{ row.price | money }}</span></ng-template
+  >
+  <ng-template uiCell="stock_on_hand" let-row>
+    <span class="tabular-nums font-medium" [class.text-error]="row.isLowStock">{{
+      row.stockOnHand | qty
+    }}</span>
+    <span class="text-xs text-on-surface-variant"> {{ row.unit | enumLabel: 'DispenseUnit' }}</span>
+  </ng-template>
+  <ng-template uiCell="reorder_level" let-row
+    ><span class="tabular-nums">{{ row.reorderLevel }}</span></ng-template
+  >
+</ui-resource-list>

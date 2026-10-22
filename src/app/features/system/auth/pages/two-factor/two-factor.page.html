@@ -31,6 +31,13 @@
   } @else {
     <ui-otp-input [control]="form.controls.code" label="6-digit code" />
   }
+  <mat-checkbox
+    class="-ml-2 block"
+    [checked]="rememberDevice()"
+    (change)="rememberDevice.set($event.checked)"
+  >
+    Don't ask again on this device for {{ trustedDays }} days
+  </mat-checkbox>
 </ui-form>
 
 <div class="mt-4 flex items-center justify-between text-sm">

@@ -1,0 +1,34 @@
+<ui-resource-list
+  resource="invoices"
+  endpoint="billing/invoices"
+  title="Invoices"
+  subtitle="Visits, sessions and orders land on the patient's draft by themselves; review it, issue it and take payment."
+  emptyTitle="No invoices found"
+  rowLink="/billing/invoices/:id"
+>
+  <ui-button actions icon="add" access="invoices.create" [action]="create">New invoice</ui-button>
+  <ng-template uiCell="invoice_number" let-row>
+    <span class="font-mono">{{ row.invoiceNumber ?? 'Draft' }}</span>
+  </ng-template>
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono text-on-surface-variant">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="patient" let-row>
+    <span class="font-medium">{{ row.patient?.fullName }}</span>
+    <span class="block text-xs text-on-surface-variant">{{ row.patient?.code }}</span>
+  </ng-template>
+  <ng-template uiCell="issue_date" let-row>{{
+    row.issueDate ? (row.issueDate | date: dateFormat) : '—'
+  }}</ng-template>
+  <ng-template uiCell="total" let-row
+    ><span class="tabular-nums">{{ row.total | money }}</span></ng-template
+  >
+  <ng-template uiCell="balance_due" let-row>
+    <span class="tabular-nums" [class.font-semibold]="row.balanceDue.amount !== '0.000'">{{
+      row.balanceDue | money
+    }}</span>
+  </ng-template>
+  <ng-template uiCell="status" let-row
+    ><ui-status [value]="row.status" enum="InvoiceStatus"
+  /></ng-template>
+</ui-resource-list>

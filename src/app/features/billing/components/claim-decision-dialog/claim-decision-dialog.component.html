@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>
+  Insurer's decision
+  <span class="block text-sm font-normal text-on-surface-variant"
+    >{{ claim.code }} · {{ claim.insurer?.name }} · claimed {{ claim.claimedAmount | money }}</span
+  >
+</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Record decision"
+    [compact]="true"
+    [allowPristine]="true"
+    (cancelled)="ref.close()"
+  >
+    <mat-button-toggle-group
+      class="mb-4"
+      hideSingleSelectionIndicator
+      aria-label="Decision"
+      [formControl]="form.controls.approved"
+    >
+      <mat-button-toggle [value]="true">Approved</mat-button-toggle>
+      <mat-button-toggle [value]="false">Rejected</mat-button-toggle>
+    </mat-button-toggle-group>
+    @if (form.controls.approved.value) {
+      <ui-money
+        label="Approved amount"
+        hint="Less than claimed when the insurer pays only part"
+        [control]="form.controls.approvedAmount"
+      />
+      <ui-text label="Insurer's reference" [control]="form.controls.insurerReference" />
+    } @else {
+      <ui-text
+        label="Why it was rejected"
+        [multiline]="true"
+        [rows]="3"
+        [control]="form.controls.rejectionReason"
+      />
+      <p class="m-0 mb-2 text-sm text-on-surface-variant">
+        The patient keeps the whole balance; correct the claim and prepare a new one if needed.
+      </p>
+    }
+  </ui-form>
+</mat-dialog-content>

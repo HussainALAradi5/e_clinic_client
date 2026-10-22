@@ -1,5 +1,6 @@
-/** List export formats. */
+/** List export formats (mirror of App\Shared\Enums\ExportFormat). */
 export enum ExportFormat {
-  Csv = 'csv',
   Xlsx = 'xlsx',
+  Pdf = 'pdf',
+  Csv = 'csv',
 }

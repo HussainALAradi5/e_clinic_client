@@ -1,0 +1,313 @@
+@if (detail.error(); as error) {
+  <ui-error [error]="error" (retry)="detail.load(id())" />
+} @else if (detail.record(); as inv) {
+  <ui-page-header
+    [title]="inv.invoiceNumber ? 'Invoice ' + inv.invoiceNumber : 'Draft invoice'"
+    [subtitle]="inv.patient?.fullName + ' · ' + inv.patient?.code"
+  >
+    <ng-container status><ui-status [value]="inv.status" enum="InvoiceStatus" /></ng-container>
+    <ng-container actions>
+      @if (isDraft()) {
+        <ui-button
+          icon="edit"
+          [variant]="variants.Outlined"
+          access="invoices.create"
+          [action]="edit"
+          >Edit lines</ui-button
+        >
+        <ui-button icon="task_alt" access="invoices.write & invoices.issue" [action]="issue"
+          >Issue</ui-button
+        >
+      }
+      @if (payable()) {
+        <ui-button icon="point_of_sale" access="payments.create" [action]="pay"
+          >Take payment</ui-button
+        >
+      }
+      @if (claimable()) {
+        <ui-button
+          icon="health_and_safety"
+          [variant]="variants.Outlined"
+          access="claims.create"
+          [action]="claim"
+          >Claim insurance</ui-button
+        >
+      }
+      @for (c of inv.claims ?? []; track c.id) {
+        <a matButton="outlined" [routerLink]="['/billing/insurance-claims', c.id]"
+          ><mat-icon>health_and_safety</mat-icon> {{ c.code }}</a
+        >
+      }
+      @if (inv.invoiceNumber) {
+        <a matButton="outlined" [routerLink]="['/print/invoice', inv.id]" target="_blank"
+          ><mat-icon>print</mat-icon> Print</a
+        >
+      }
+      @if (cancellable()) {
+        <ui-button
+          icon="block"
+          [variant]="variants.Danger"
+          access="invoices.write & invoices.cancel"
+          [action]="cancel"
+          >Cancel</ui-button
+        >
+      }
+    </ng-container>
+  </ui-page-header>
+
+  @if (isDraft()) {
+    <div
+      class="mb-4 flex items-center gap-3 rounded-xl bg-secondary-container px-4 py-3 text-on-secondary-container"
+      role="status"
+    >
+      <mat-icon>edit_document</mat-icon>
+      <span
+        >Draft — completed visits and orders are added here as they happen. Check the lines and
+        discounts, then issue it to take payment.</span
+      >
+    </div>
+  }
+
+  <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
+    <mat-card appearance="outlined" class="self-start overflow-x-auto !p-0">
+      <table class="w-full border-collapse text-sm">
+        <caption class="sr-only">
+          Invoice lines
+        </caption>
+        <thead>
+          <tr class="border-b border-outline-variant text-left text-xs text-on-surface-variant">
+            <th class="px-4 py-3 font-medium">Item</th>
+            <th class="px-2 py-3 text-right font-medium">Qty</th>
+            <th class="px-2 py-3 text-right font-medium">Price</th>
+            <th class="px-2 py-3 text-right font-medium">Discount</th>
+            <th class="px-2 py-3 text-right font-medium">VAT</th>
+            <th class="px-4 py-3 text-right font-medium">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of inv.items ?? []; track item.id) {
+            <tr class="border-b border-outline-variant/60 align-top">
+              <td class="px-4 py-3">
+                <span class="font-medium">{{ item.description }}</span>
+                <span class="block text-xs text-on-surface-variant">
+                  @if (sourceLink(item); as link) {
+                    <a class="text-primary" [routerLink]="link">{{ item.source?.code }}</a>
+                  } @else {
+                    {{ item.billableService?.code ?? 'Free-text line' }}
+                  }
+                  @if (item.doctor) {
+                    · {{ item.doctor.fullName }}
+                  }
+                </span>
+              </td>
+              <td class="px-2 py-3 text-right tabular-nums">{{ +item.quantity }}</td>
+              <td class="px-2 py-3 text-right tabular-nums">{{ item.unitPrice.amount }}</td>
+              <td class="px-2 py-3 text-right tabular-nums">
+                @if (item.discountAmount.amount !== '0.000') {
+                  −{{ item.discountAmount.amount }}
+                  @if (item.discountType === discountTypes.Percentage) {
+                    <span class="block text-xs text-on-surface-variant"
+                      >{{ +item.discountValue }}%</span
+                    >
+                  }
+                } @else {
+                  —
+                }
+              </td>
+              <td class="px-2 py-3 text-right tabular-nums">
+                {{ item.taxAmount.amount !== '0.000' ? item.taxAmount.amount : '—' }}
+              </td>
+              <td class="px-4 py-3 text-right font-medium tabular-nums">
+                {{ item.lineTotal.amount }}
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td class="px-4 py-6 text-center text-on-surface-variant" colspan="6">
+                No lines yet.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      @if (inv.notes) {
+        <p class="m-0 whitespace-pre-line px-4 py-3 text-sm text-on-surface-variant">
+          {{ inv.notes }}
+        </p>
+      }
+    </mat-card>
+
+    <div class="flex flex-col gap-4">
+      <mat-card appearance="outlined" class="!p-5">
+        <dl class="m-0 grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 text-sm tabular-nums">
+          <dt class="text-on-surface-variant">Subtotal</dt>
+          <dd class="m-0 text-right">{{ inv.subtotal | money }}</dd>
+          <dt class="text-on-surface-variant">Discount</dt>
+          <dd class="m-0 text-right">−{{ inv.discountTotal.amount }}</dd>
+          <dt class="text-on-surface-variant">VAT</dt>
+          <dd class="m-0 text-right">{{ inv.taxTotal.amount }}</dd>
+          <dt class="border-t border-outline-variant pt-2 font-semibold">Total</dt>
+          <dd class="m-0 border-t border-outline-variant pt-2 text-right font-semibold">
+            {{ inv.total | money }}
+          </dd>
+          <dt class="text-on-surface-variant">Paid</dt>
+          <dd class="m-0 text-right">{{ inv.paidAmount | money }}</dd>
+          @if (inv.refundedAmount.amount !== '0.000') {
+            <dt class="text-on-surface-variant">Refunded</dt>
+            <dd class="m-0 text-right">{{ inv.refundedAmount | money }}</dd>
+          }
+        </dl>
+        <div
+          class="mt-4 rounded-xl px-4 py-3"
+          [class]="
+            inv.balanceDue.amount === '0.000'
+              ? 'bg-surface-container'
+              : 'bg-primary-container text-on-primary-container'
+          "
+        >
+          <p class="m-0 text-xs">Balance due</p>
+          <p class="m-0 text-2xl font-semibold tabular-nums">{{ inv.balanceDue | money }}</p>
+        </div>
+      </mat-card>
+      <mat-card appearance="outlined" class="!p-5"><ui-facts [items]="facts()" /></mat-card>
+    </div>
+  </div>
+
+  @if (inv.payments?.length) {
+    <h2 class="mb-2 mt-6 text-base font-semibold">Payments</h2>
+    <mat-card appearance="outlined" class="overflow-x-auto !p-0">
+      <table class="w-full border-collapse text-sm">
+        <caption class="sr-only">
+          Payments
+        </caption>
+        <tbody>
+          @for (p of inv.payments; track p.id) {
+            <tr class="border-b border-outline-variant/60 last:border-0">
+              <td class="px-4 py-3">
+                <a
+                  class="font-mono text-primary"
+                  [routerLink]="['/print/receipt', p.id]"
+                  target="_blank"
+                  >{{ p.code }}</a
+                >
+                <span class="block text-xs text-on-surface-variant"
+                  >{{ p.paidAt | date: dateTimeFormat }} · {{ p.receivedBy?.fullName }}</span
+                >
+              </td>
+              <td class="px-2 py-3">
+                {{ p.method | enumLabel: 'PaymentMethod' }}
+                @if (p.cardLast4) {
+                  <span class="text-on-surface-variant">·· {{ p.cardLast4 }}</span>
+                }
+                @if (p.referenceNumber) {
+                  <span class="block text-xs text-on-surface-variant">{{ p.referenceNumber }}</span>
+                }
+              </td>
+              <td class="px-2 py-3 text-right tabular-nums">
+                {{ p.amount | money }}
+                @if (p.refundedAmount.amount !== '0.000') {
+                  <span class="block text-xs text-on-surface-variant"
+                    >refunded {{ p.refundedAmount.amount }}</span
+                  >
+                }
+              </td>
+              <td class="px-2 py-3"><ui-status [value]="p.status" enum="PaymentStatus" /></td>
+              <td class="px-4 py-2 text-right whitespace-nowrap">
+                @if (refundable(p)) {
+                  <ui-button
+                    icon="undo"
+                    [variant]="variants.Text"
+                    access="refunds.create & refunds.request"
+                    [action]="refund.bind(this, p)"
+                    >Refund</ui-button
+                  >
+                }
+                @if (voidable(p)) {
+                  <ui-button
+                    icon="block"
+                    [variant]="variants.Text"
+                    access="payments.write & payments.void"
+                    [action]="voidPayment.bind(this, p)"
+                    >Void</ui-button
+                  >
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </mat-card>
+  }
+
+  @if (inv.refunds?.length) {
+    <h2 class="mb-2 mt-6 text-base font-semibold">Refunds</h2>
+    <mat-card appearance="outlined" class="overflow-x-auto !p-0">
+      <table class="w-full border-collapse text-sm">
+        <caption class="sr-only">
+          Refunds
+        </caption>
+        <tbody>
+          @for (r of inv.refunds; track r.id) {
+            <tr class="border-b border-outline-variant/60 last:border-0">
+              <td class="px-4 py-3">
+                <span class="font-mono">{{ r.code }}</span>
+                <span class="block text-xs text-on-surface-variant">{{ r.reason }}</span>
+              </td>
+              <td class="px-2 py-3">{{ r.method | enumLabel: 'PaymentMethod' }}</td>
+              <td class="px-2 py-3 text-right tabular-nums">{{ r.amount | money }}</td>
+              <td class="px-2 py-3">
+                @if (r.isProcessed) {
+                  <span class="text-sm text-on-surface-variant">Paid out</span>
+                } @else {
+                  <ui-status [value]="r.status" enum="ApprovalStatus" />
+                }
+              </td>
+              <td class="px-4 py-2 text-right whitespace-nowrap">
+                @if (pending(r)) {
+                  <ui-button
+                    icon="check"
+                    [variant]="variants.Text"
+                    access="refunds.write & refunds.approve"
+                    [action]="approve.bind(this, r)"
+                    >Approve</ui-button
+                  >
+                  <ui-button
+                    icon="close"
+                    [variant]="variants.Text"
+                    access="refunds.write & refunds.approve"
+                    [action]="reject.bind(this, r)"
+                    >Reject</ui-button
+                  >
+                }
+                @if (approvedUnpaid(r)) {
+                  <ui-button
+                    icon="payments"
+                    [variant]="variants.Text"
+                    access="refunds.write & refunds.process"
+                    [action]="payOut.bind(this, r)"
+                    >Pay out</ui-button
+                  >
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </mat-card>
+  }
+
+  <mat-tab-group
+    *hasAccess="'audit.read_all | audit.read_own'"
+    class="mt-4"
+    mat-stretch-tabs="false"
+    animationDuration="0ms"
+  >
+    <mat-tab label="History">
+      <ng-template matTabContent
+        ><ui-audit-history class="block pt-4" type="invoice" [id]="inv.id"
+      /></ng-template>
+    </mat-tab>
+  </mat-tab-group>
+} @else {
+  <ui-skeleton [rows]="8" />
+}

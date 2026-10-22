@@ -1,0 +1,76 @@
+<ui-resource-list
+  resource="attendance"
+  endpoint="hr/attendance"
+  title="Attendance"
+  subtitle="Check-ins from the clinic network, lateness after a 10-minute grace, and overtime waiting for approval."
+  emptyTitle="No attendance found"
+>
+  <ui-button actions icon="edit_calendar" access="attendance.create" [action]="record"
+    >Correct a day</ui-button
+  >
+  <ng-template uiCell="date" let-row
+    ><span class="tabular-nums">{{ row.date | date: dateFormat }}</span></ng-template
+  >
+  <ng-template uiCell="employee" let-row>
+    <span class="font-medium">{{ row.employee?.fullName }}</span>
+    <span class="block text-xs text-on-surface-variant">{{ row.employee?.department?.name }}</span>
+  </ng-template>
+  <ng-template uiCell="check_in_at" let-row
+    ><span class="tabular-nums">{{
+      row.checkInAt ? (row.checkInAt | date: timeFormat : zone) : '—'
+    }}</span></ng-template
+  >
+  <ng-template uiCell="check_out_at" let-row>
+    <span class="tabular-nums">{{
+      row.checkOutAt ? (row.checkOutAt | date: timeFormat : zone) : '—'
+    }}</span>
+    @if (row.needsReview) {
+      <mat-icon
+        class="ml-1 !text-base align-middle text-amber-600"
+        matTooltip="No check-out — check with the employee"
+        >warning</mat-icon
+      >
+    }
+  </ng-template>
+  <ng-template uiCell="worked_minutes" let-row
+    ><span class="tabular-nums">{{ duration(row.workedMinutes) }}</span></ng-template
+  >
+  <ng-template uiCell="late_minutes" let-row
+    ><span class="tabular-nums">{{ row.lateMinutes || '—' }}</span></ng-template
+  >
+  <ng-template uiCell="overtime_minutes" let-row>
+    @if (row.overtimeMinutes) {
+      <span class="tabular-nums">{{ duration(row.overtimeMinutes) }}</span>
+      @if (row.overtimeApproved) {
+        <mat-icon class="ml-1 !text-base align-middle text-green-700" matTooltip="Approved"
+          >check_circle</mat-icon
+        >
+      } @else if (row.employeeId !== me && !row.isLocked) {
+        <ui-button
+          class="ml-1"
+          [variant]="variants.Text"
+          size="sm"
+          access="attendance.write & attendance.approve_overtime"
+          [action]="approve.bind(this, row)"
+          >Approve</ui-button
+        >
+      }
+    } @else {
+      —
+    }
+  </ng-template>
+  <ng-template uiCell="status" let-row>
+    <span class="inline-flex items-center gap-1">
+      <ui-status [value]="row.status" enum="AttendanceStatus" />
+      @if (!row.isLocked && row.date <= today) {
+        <ui-button
+          [variant]="variants.Text"
+          size="sm"
+          access="attendance.create"
+          [action]="correct.bind(this, row)"
+          >Correct</ui-button
+        >
+      }
+    </span>
+  </ng-template>
+</ui-resource-list>

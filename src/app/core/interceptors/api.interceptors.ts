@@ -7,8 +7,9 @@ import {
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@env';
-import { catchError, finalize, map, retry, throwError, timer } from 'rxjs';
+import { catchError, finalize, from, map, retry, switchMap, throwError, timer } from 'rxjs';
 import { IDEMPOTENCY_KEY, RAW_URL, SILENT, SKIP_CASE } from './http-context';
+import { blobText } from '@shared/utils/download';
 import {
   ACCOUNT_SECURITY_PATH,
   API_PREFIX,
@@ -112,6 +113,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         return throwError(() => error);
       },
     }),
+    // File requests (responseType blob) get their JSON error envelope as a Blob — read it first.
+    catchError((error: unknown) =>
+      error instanceof HttpErrorResponse && error.error instanceof Blob
+        ? from(withJsonBody(error)).pipe(switchMap((parsed) => throwError(() => parsed)))
+        : throwError(() => error),
+    ),
     catchError((error: unknown) => {
       if (!(error instanceof HttpErrorResponse)) {
         return throwError(() => error);
@@ -127,6 +134,22 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     }),
   );
 };
+
+/** Same error with its Blob body parsed as JSON (left as is when it is not JSON). */
+async function withJsonBody(error: HttpErrorResponse): Promise<HttpErrorResponse> {
+  try {
+    const body: unknown = JSON.parse(await blobText(error.error as Blob));
+    return new HttpErrorResponse({
+      error: body,
+      headers: error.headers,
+      status: error.status,
+      statusText: error.statusText,
+      url: error.url ?? undefined,
+    });
+  } catch {
+    return error;
+  }
+}
 
 export function toApiError(
   error: HttpErrorResponse,

@@ -1,0 +1,36 @@
+<ui-resource-list
+  resource="payments"
+  endpoint="billing/payments"
+  title="Payments"
+  subtitle="Money taken at the desk. Payments are never edited: void one the same day, or refund it."
+  emptyTitle="No payments found"
+>
+  <ng-template uiCell="code" let-row
+    ><a class="font-mono text-primary" [routerLink]="['/print/receipt', row.id]" target="_blank">{{
+      row.code
+    }}</a></ng-template
+  >
+  <ng-template uiCell="paid_at" let-row>{{ row.paidAt | date: dateTimeFormat }}</ng-template>
+  <ng-template uiCell="patient" let-row>
+    <span class="font-medium">{{ row.patient?.fullName }}</span>
+    <span class="block text-xs text-on-surface-variant">{{ row.patient?.code }}</span>
+  </ng-template>
+  <ng-template uiCell="invoice" let-row
+    ><a class="font-mono text-primary" [routerLink]="['/billing/invoices', row.invoiceId]">{{
+      row.invoice?.invoiceNumber ?? row.invoice?.code
+    }}</a></ng-template
+  >
+  <ng-template uiCell="method" let-row>
+    {{ row.method | enumLabel: 'PaymentMethod' }}
+    @if (row.cardLast4) {
+      <span class="text-on-surface-variant">·· {{ row.cardLast4 }}</span>
+    }
+  </ng-template>
+  <ng-template uiCell="amount" let-row
+    ><span class="tabular-nums">{{ row.amount | money }}</span></ng-template
+  >
+  <ng-template uiCell="status" let-row
+    ><ui-status [value]="row.status" enum="PaymentStatus"
+  /></ng-template>
+  <ng-template uiCell="received_by" let-row>{{ row.receivedBy?.fullName }}</ng-template>
+</ui-resource-list>

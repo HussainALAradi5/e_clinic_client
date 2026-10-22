@@ -2,12 +2,8 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, finalize, firstValueFrom, map, Observable, of, tap } from 'rxjs';
 import { AuthStore } from './auth.store';
-import {
-  DEVICE_NAME,
-  HOME_PATH,
-  LOGIN_PATH,
-  TWO_FACTOR_PATH,
-} from '@shared/constants/app.constants';
+import { TrustedDeviceService } from './trusted-device.service';
+import { DEVICE_NAME, LOGIN_PATH, TWO_FACTOR_PATH } from '@shared/constants/app.constants';
 import { ErrorCode } from '@shared/enums/api/error-code.enum';
 import { ToastType } from '@shared/enums/ui/toast-type.enum';
 import { LoginPayload } from '@shared/interfaces/auth/auth-payloads.interface';
@@ -29,14 +25,19 @@ export class SessionService {
   private readonly schemas = inject(ResourceSchemaService);
   private readonly router = inject(Router);
   private readonly notify = inject(NotifyService);
+  private readonly trustedDevices = inject(TrustedDeviceService);
 
   readonly challenge = signal<TwoFactorChallenge | null>(null);
 
-  /** Signs in; navigates to the 2FA page when the account needs a TOTP code. */
-  async login(credentials: Omit<LoginPayload, 'deviceName'>, returnUrl = HOME_PATH): Promise<void> {
+  /** Signs in; navigates to the 2FA page when the account needs a code (a trusted device skips it). */
+  async login(
+    credentials: Pick<LoginPayload, 'email' | 'password'>,
+    returnUrl?: string,
+  ): Promise<void> {
+    const trustedDeviceToken = this.trustedDevices.get(credentials.email);
     try {
       const session = await firstValueFrom(
-        this.api.login({ ...credentials, deviceName: DEVICE_NAME }),
+        this.api.login({ ...credentials, deviceName: DEVICE_NAME, trustedDeviceToken }),
       );
       await this.start(session, returnUrl);
     } catch (error) {
@@ -47,14 +48,21 @@ export class SessionService {
       if (typeof token !== 'string') {
         throw error;
       }
+      if (trustedDeviceToken) {
+        this.trustedDevices.forget(credentials.email); // expired or revoked
+      }
       this.challenge.set({ token, email: credentials.email, returnUrl });
       this.notify.dismiss();
       await this.router.navigateByUrl(TWO_FACTOR_PATH);
     }
   }
 
-  /** Completes a 2FA login with a 6-digit TOTP code or a recovery code. */
-  async verifyTwoFactor(code: string, isRecoveryCode: boolean): Promise<void> {
+  /** Completes a 2FA login with a 6-digit TOTP code or a recovery code; optionally trusts this browser. */
+  async verifyTwoFactor(
+    code: string,
+    isRecoveryCode: boolean,
+    rememberDevice: boolean,
+  ): Promise<void> {
     const challenge = this.challenge();
     if (!challenge) {
       await this.router.navigateByUrl(LOGIN_PATH);
@@ -64,10 +72,14 @@ export class SessionService {
       this.api.twoFactorChallenge({
         challengeToken: challenge.token,
         deviceName: DEVICE_NAME,
+        rememberDevice,
         ...(isRecoveryCode ? { recoveryCode: code.trim() } : { code }),
       }),
     );
     this.challenge.set(null);
+    if (session.trustedDeviceToken) {
+      this.trustedDevices.remember(challenge.email, session.trustedDeviceToken);
+    }
     await this.start(session, challenge.returnUrl);
   }
 
@@ -91,10 +103,11 @@ export class SessionService {
     return this.api.me().pipe(tap((session) => this.store.setSession(session)));
   }
 
-  logout(): Observable<void> {
+  /** Signs out; `farewell` replaces the usual goodbye (e.g. why the session ended). */
+  logout(farewell = 'See you next time.'): Observable<void> {
     return this.api.logout().pipe(
       catchError(() => of(undefined)),
-      finalize(() => this.end()),
+      finalize(() => this.end(farewell)),
     );
   }
 
@@ -106,23 +119,24 @@ export class SessionService {
     );
   }
 
-  private async start(session: Session, returnUrl: string): Promise<void> {
+  /** A requested page (returnUrl), else the user's start page — the staff guard sends patients to their portal. */
+  private async start(session: Session, returnUrl?: string): Promise<void> {
     this.schemas.clear();
     this.store.setSession(session);
-    await this.router.navigateByUrl(returnUrl.startsWith('/') ? returnUrl : HOME_PATH);
+    await this.router.navigateByUrl(returnUrl?.startsWith('/') ? returnUrl : this.store.homePath());
     this.notify.show(ToastType.Success, `Welcome back, ${session.user.firstName}.`, {
       title: 'Signed in',
       duration: 2500,
     });
   }
 
-  private end(): void {
+  private end(farewell = 'See you next time.'): void {
     const signedIn = this.store.isAuthenticated();
     this.store.clear();
     this.schemas.clear();
     void this.router.navigateByUrl(LOGIN_PATH);
     if (signedIn) {
-      this.notify.show(ToastType.Info, 'See you next time.', {
+      this.notify.show(ToastType.Info, farewell, {
         title: 'Signed out',
         duration: 2500,
       });

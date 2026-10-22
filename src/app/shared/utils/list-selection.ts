@@ -1,9 +1,10 @@
 import { computed, signal } from '@angular/core';
-import { toBulkFilter } from './list-query';
+import { toBulkFilter, toExportFilter } from './list-query';
 import { MAX_BULK_IDS } from '@shared/constants/limits.constants';
 import { SelectionMode } from '@shared/enums/list/selection-mode.enum';
 import { BulkActionRequest } from '@shared/interfaces/bulk/bulk.interface';
 import { ListQuery } from '@shared/interfaces/list/list-query.interface';
+import { ExportRequest } from '@shared/interfaces/list/transfer.interface';
 
 /**
  * Multi-select state for tables (mirror of the bulk target set):
@@ -75,6 +76,14 @@ export class ListSelection {
     this._excluded.set(new Set());
     this._query.set(null);
     this._total.set(0);
+  }
+
+  /** What an export of the selection sends: the ticked ids, or the "all matching" query minus unticked rows. */
+  toExportTarget(): Pick<ExportRequest, 'ids' | 'filter'> {
+    const query = this._query();
+    return this._mode() === SelectionMode.Query && query
+      ? { filter: toExportFilter(query, [...this._excluded()]) }
+      : { ids: [...this._ids()] };
   }
 
   toBulkRequest(action: string, extra: Partial<BulkActionRequest> = {}): BulkActionRequest {

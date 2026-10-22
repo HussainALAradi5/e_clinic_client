@@ -1,7 +1,8 @@
 import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { money } from './money';
+import { formatMoney, toMinor, toScaled } from './money';
 import { passwordChecks } from './password';
 import { MONEY_PATTERN } from '@shared/constants/limits.constants';
+import { Currency } from '@shared/enums/shared/currency.enum';
 
 /** Client validators mirroring server rules (the server stays the authority). */
 export const AppValidators = {
@@ -57,6 +58,35 @@ export const AppValidators = {
   money(control: AbstractControl): ValidationErrors | null {
     return !control.value || MONEY_PATTERN.test(String(control.value)) ? null : { money: true };
   },
+
+  /** Stock quantity: up to 2 decimals ('2.5' ml), negative allowed only for corrections. */
+  quantity(control: AbstractControl): ValidationErrors | null {
+    return !control.value || toScaled(String(control.value), 2) !== null
+      ? null
+      : { quantity: true };
+  },
+
+  /** Quantity no larger than `max()` (what is left on a prescription line, what a lot holds), compared exactly. */
+  maxQuantity(max: () => string | null | undefined): ValidatorFn {
+    return (control) => {
+      const value = toScaled(control.value as string | null, 2);
+      const limit = toScaled(max(), 2);
+      return value === null || limit === null || value <= limit
+        ? null
+        : { maxQuantity: { max: max() } };
+    };
+  },
+
+  /** Amount no larger than `max()` (a balance or what is left to refund), compared exactly in fils. */
+  maxAmount(max: () => string | null | undefined): ValidatorFn {
+    return (control) => {
+      const value = toMinor(control.value as string | null);
+      const limit = toMinor(max());
+      return value === null || limit === null || value <= limit
+        ? null
+        : { maxAmount: { max: formatMoney({ amount: max() ?? '0', currency: Currency.BHD }) } };
+    };
+  },
 };
 
 /** Default English messages for control errors (used by the shared field components). */
@@ -82,7 +112,11 @@ export function errorMessage(
     phone: () => 'Enter the number in international format, e.g. +97333123456.',
     positive: () => `${label} must be greater than zero.`,
     money: () => 'Enter an amount with up to 3 decimals.',
+    maxAmount: () => `${label} may not be more than ${(value as { max: string }).max}.`,
+    quantity: () => 'Enter a quantity with up to 2 decimals.',
+    maxQuantity: () => `${label} may not be more than ${(value as { max: string }).max}.`,
     dateAfter: () => `${label} must be on or after the start date.`,
+    afterToday: () => `${label} must be after today.`,
     matchField: () => 'The values do not match.',
     strongPassword: () =>
       'Use at least 10 characters with upper and lower case letters, a number and a symbol.',

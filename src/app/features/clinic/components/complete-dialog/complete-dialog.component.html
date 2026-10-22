@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Complete visit {{ data.appointment.code }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Complete visit"
+    [allowPristine]="true"
+    [compact]="true"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    <ui-entity-select
+      label="Add a service performed"
+      endpoint="billing/services"
+      icon="add_shopping_cart"
+      [display]="serviceName"
+      [detail]="serviceCode"
+      [control]="picker"
+      (picked)="add($event)"
+    />
+    @if (extras().length) {
+      <mat-chip-set class="mb-3 block" aria-label="Extra services">
+        @for (s of extras(); track s.id) {
+          <mat-chip (removed)="removeExtra(s.id)"
+            >{{ s.name
+            }}<button matChipRemove [attr.aria-label]="'Remove ' + s.name">
+              <mat-icon>cancel</mat-icon>
+            </button></mat-chip
+          >
+        }
+      </mat-chip-set>
+    }
+    <ui-select
+      label="Follow-up"
+      hint="Suggests a date to book after closing"
+      [options]="followUps"
+      [control]="form.controls.followUpInDays"
+    />
+  </ui-form>
+</mat-dialog-content>

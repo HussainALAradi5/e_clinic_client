@@ -1,0 +1,54 @@
+<mat-card appearance="outlined" class="!p-5">
+  <div class="mb-3 flex items-start justify-between gap-3">
+    <div>
+      <h2 class="m-0 text-base font-semibold">Today</h2>
+      @if (today(); as t) {
+        <p class="m-0 text-sm text-on-surface-variant">
+          Shift {{ t.shift.start }}–{{ t.shift.end }}
+        </p>
+      }
+    </div>
+    @if (day(); as d) {
+      <ui-status [value]="d.status" enum="AttendanceStatus" />
+    }
+  </div>
+  @if (day(); as d) {
+    <dl class="m-0 mb-4 grid grid-cols-3 gap-2 text-sm">
+      <div>
+        <dt class="text-on-surface-variant">In</dt>
+        <dd class="m-0 text-lg font-semibold tabular-nums">
+          {{ d.checkInAt ? (d.checkInAt | date: timeFormat : zone) : '—' }}
+        </dd>
+      </div>
+      <div>
+        <dt class="text-on-surface-variant">Out</dt>
+        <dd class="m-0 text-lg font-semibold tabular-nums">
+          {{ d.checkOutAt ? (d.checkOutAt | date: timeFormat : zone) : '—' }}
+        </dd>
+      </div>
+      <div>
+        <dt class="text-on-surface-variant">
+          {{ d.overtimeMinutes ? 'Overtime' : 'Late' }}
+        </dt>
+        <dd class="m-0 text-lg font-semibold tabular-nums">
+          {{
+            d.overtimeMinutes || d.lateMinutes ? (d.overtimeMinutes || d.lateMinutes) + ' min' : '—'
+          }}
+        </dd>
+      </div>
+    </dl>
+  } @else {
+    <p class="m-0 mb-4 text-sm text-on-surface-variant">Not checked in yet.</p>
+  }
+  <div class="flex gap-2">
+    @if (canCheckIn()) {
+      <ui-button icon="login" [action]="checkIn">Check in</ui-button>
+    }
+    @if (canCheckOut()) {
+      <ui-button icon="logout" [variant]="variants.Outlined" [action]="checkOut"
+        >Check out</ui-button
+      >
+    }
+  </div>
+  <p class="m-0 mt-3 text-xs text-on-surface-variant">Works from the clinic network only.</p>
+</mat-card>

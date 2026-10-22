@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>{{ department ? 'Edit department' : 'New department' }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="department ? 'Save' : 'Create department'"
+    [compact]="true"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-[10rem_1fr]">
+      <ui-text label="Code" hint="e.g. PHYSIO" [control]="form.controls.code" />
+      <ui-text label="Name" [control]="form.controls.name" />
+    </div>
+    <ui-entity-select
+      label="Part of"
+      endpoint="hr/departments"
+      hint="Empty = top level"
+      [display]="departmentName"
+      [detail]="departmentCode"
+      [filter]="notSelf"
+      [initial]="$any(parent)"
+      [control]="form.controls.parentId"
+    />
+    <ui-entity-select
+      label="Manager"
+      endpoint="hr/employees"
+      [display]="employeeName"
+      [detail]="employeeTitle"
+      [filter]="activeOnly"
+      [initial]="$any(manager)"
+      [control]="form.controls.managerId"
+    />
+    <ui-text
+      label="Cost center"
+      hint="Tags salary postings"
+      [control]="form.controls.costCenterCode"
+    />
+  </ui-form>
+</mat-dialog-content>

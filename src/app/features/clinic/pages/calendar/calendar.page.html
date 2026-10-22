@@ -1,0 +1,170 @@
+<ui-page-header
+  title="Calendar"
+  subtitle="Click a booking to open it, or free space to book there."
+>
+  <ng-container actions>
+    @if (canBook) {
+      <button matButton="filled" type="button" (click)="book()">
+        <mat-icon>event_available</mat-icon> Book
+      </button>
+    }
+  </ng-container>
+</ui-page-header>
+
+<div class="mb-4 flex flex-wrap items-center gap-2">
+  <mat-button-toggle-group
+    hideSingleSelectionIndicator
+    aria-label="View"
+    [value]="view()"
+    (change)="setView($event.value)"
+  >
+    <mat-button-toggle value="day">Day</mat-button-toggle>
+    <mat-button-toggle value="week">Week</mat-button-toggle>
+  </mat-button-toggle-group>
+  <div class="flex items-center">
+    <button matIconButton type="button" aria-label="Previous" (click)="step(-1)">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <button matButton type="button" (click)="goToday()">Today</button>
+    <button matIconButton type="button" aria-label="Next" (click)="step(1)">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+  <input
+    type="date"
+    class="rounded-lg border border-outline-variant bg-surface px-3 py-2 text-sm"
+    aria-label="Date"
+    [value]="date()"
+    (change)="pickDate($any($event.target).value)"
+  />
+  <select
+    class="rounded-lg border border-outline-variant bg-surface px-3 py-2 text-sm"
+    aria-label="Doctor"
+    [value]="doctorId() ?? ''"
+    (change)="pickDoctor($any($event.target).value)"
+  >
+    @if (view() === 'day') {
+      <option value="">All doctors</option>
+    }
+    @for (d of doctors(); track d.id) {
+      <option
+        [value]="d.id"
+        [selected]="d.id === doctor()?.id && (view() === 'week' || doctorId() === d.id)"
+      >
+        {{ d.displayName }}
+      </option>
+    }
+  </select>
+  <h2 class="m-0 ml-auto text-base font-semibold">
+    @if (view() === 'day') {
+      {{ date() | date: 'EEEE ' + dateFormat }}
+    } @else {
+      {{ range().from | date: dateFormat }} – {{ range().to | date: dateFormat }}
+    }
+  </h2>
+</div>
+
+@if (!columns().length) {
+  <p class="text-sm text-on-surface-variant">
+    {{ loading() ? 'Loading…' : 'No doctors to show. Add a doctor profile first.' }}
+  </p>
+} @else {
+  <div
+    class="overflow-x-auto rounded-2xl border border-outline-variant bg-surface"
+    [class.opacity-60]="loading()"
+  >
+    <div
+      class="grid min-w-max"
+      [style.grid-template-columns]="'3.5rem repeat(' + columns().length + ', minmax(11rem, 1fr))'"
+    >
+      <!-- header row -->
+      <div class="sticky left-0 z-20 border-b border-outline-variant bg-surface"></div>
+      @for (c of columns(); track c.key) {
+        <div class="border-b border-l border-outline-variant px-3 py-2">
+          @if (view() === 'week') {
+            <button type="button" class="text-left" (click)="openDay(c.date)">
+              <span
+                class="block text-sm font-semibold"
+                [class.text-primary]="c.date === nowOffset()?.today"
+                >{{ c.date | date: 'EEE d' }}</span
+              >
+              <span class="block text-xs text-on-surface-variant"
+                >{{ c.items.length }} booking(s)</span
+              >
+            </button>
+          } @else {
+            <span class="block truncate text-sm font-semibold">{{ c.title }}</span>
+            <span class="block truncate text-xs text-on-surface-variant"
+              >{{ c.subtitle }} · {{ c.items.length }}</span
+            >
+          }
+        </div>
+      }
+
+      <!-- time axis -->
+      <div class="sticky left-0 z-10 bg-surface" [style.height.px]="height()">
+        @for (h of hours(); track h) {
+          <span
+            class="block pr-2 text-right text-xs tabular-nums text-on-surface-variant"
+            [style.height.px]="60 * pxPerMinute"
+            >{{ h }}:00</span
+          >
+        }
+      </div>
+
+      @for (c of columns(); track c.key) {
+        <div
+          class="relative border-l border-outline-variant"
+          [class.cursor-copy]="canBook"
+          [style.height.px]="height()"
+          [style.background-image]="
+            'repeating-linear-gradient(to bottom, transparent 0, transparent ' +
+            (60 * pxPerMinute - 1) +
+            'px, var(--mat-sys-outline-variant) ' +
+            (60 * pxPerMinute - 1) +
+            'px, var(--mat-sys-outline-variant) ' +
+            60 * pxPerMinute +
+            'px)'
+          "
+          (click)="bookAt(c, $event)"
+        >
+          @if (nowOffset(); as now) {
+            @if (now.today === c.date) {
+              <div
+                class="pointer-events-none absolute inset-x-0 z-10 border-t-2 border-error"
+                [style.top.px]="now.offset"
+              ></div>
+            }
+          }
+          @for (a of c.items; track a.id) {
+            <button
+              type="button"
+              class="absolute inset-x-1 z-[5] overflow-hidden rounded-md px-2 py-0.5 text-left text-xs shadow-sm ring-1 ring-black/5 hover:ring-primary"
+              [class]="tone(a)"
+              [style.top.px]="top(a)"
+              [style.height.px]="blockHeight(a)"
+              [attr.aria-label]="
+                a.startTime +
+                ' ' +
+                a.patient?.fullName +
+                ', ' +
+                (a.status | enumLabel: 'AppointmentStatus')
+              "
+              (click)="open(a, $event)"
+            >
+              <span class="font-semibold tabular-nums">{{ a.startTime }}</span>
+              {{ a.patient?.fullName }}
+              @if (blockHeight(a) >= 34) {
+                <span class="block truncate opacity-80"
+                  >{{ a.type | enumLabel: 'AppointmentType'
+                  }}{{ a.room ? ' · ' + a.room.code : '' }} ·
+                  {{ a.status | enumLabel: 'AppointmentStatus' }}</span
+                >
+              }
+            </button>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

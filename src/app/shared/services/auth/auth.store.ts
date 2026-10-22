@@ -1,6 +1,7 @@
 import { computed } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { STORAGE_KEYS } from '@shared/constants/app.constants';
+import { HOME_PATH, PORTAL_PATH, STORAGE_KEYS } from '@shared/constants/app.constants';
+import { UserType } from '@shared/enums/identity/user-type.enum';
 import { AuthState, EffectiveAccess, Session } from '@shared/interfaces/auth/session.interface';
 import { User } from '@shared/interfaces/identity/user.interface';
 
@@ -36,12 +37,18 @@ export const AuthStore = signalStore(
   }),
   withComputed(({ token, permissions, user }) => ({
     isAuthenticated: computed(() => token() !== null),
+    /** Portal patient: works in `/portal`, never in the staff workspace. */
+    isPatient: computed(() => user()?.userType === UserType.Patient),
     grantedPermissions: computed(() => new Set(permissions())),
     /** A privileged role without confirmed 2FA (server answers 403 AUTH_2FA_REQUIRED on protected endpoints). */
     needsTwoFactorSetup: computed(() => {
       const twoFactor = user()?.twoFactor;
       return twoFactor !== undefined && twoFactor.required && !twoFactor.enabled;
     }),
+  })),
+  withComputed(({ isPatient }) => ({
+    /** Where a signed-in user starts: the portal for patients, the dashboard for staff. */
+    homePath: computed(() => (isPatient() ? PORTAL_PATH : HOME_PATH)),
   })),
   withMethods((store) => ({
     /** Sign-in response (token + user + access) or GET /auth/me (user + access, token unchanged). */

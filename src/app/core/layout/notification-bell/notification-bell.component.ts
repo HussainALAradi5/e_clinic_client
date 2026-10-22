@@ -3,16 +3,19 @@ import {
   Component,
   DestroyRef,
   inject,
+  input,
   OnInit,
   signal,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { filter, switchMap } from 'rxjs';
 import { AppNotification } from '@shared/interfaces/notification/notification.interface';
 import { RelativeTimePipe } from '@shared/pipes/relative-time.pipe';
 import { NotificationApi } from '@shared/services/notification/notification-api.service';
@@ -30,11 +33,16 @@ const RELATED_ROUTES: Record<string, string> = {
   role: '/system/roles-permissions',
 };
 
-/** Toolbar bell: unread badge (polled every minute, paused in hidden tabs), latest messages, mark read. */
+/**
+ * Toolbar bell: unread badge (polled every minute, paused in hidden tabs), latest messages, mark read. With
+ * `inboxLink` (portal) it links to the inbox page instead, and the badge refreshes after each navigation.
+ */
 @Component({
   selector: 'app-notification-bell',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    NgTemplateOutlet,
+    RouterLink,
     MatBadgeModule,
     MatButtonModule,
     MatIconModule,
@@ -45,6 +53,8 @@ const RELATED_ROUTES: Record<string, string> = {
   templateUrl: './notification-bell.component.html',
 })
 export class NotificationBell implements OnInit {
+  readonly inboxLink = input<string | null>(null);
+
   private readonly api = inject(NotificationApi);
   private readonly notify = inject(NotifyService);
   private readonly router = inject(Router);
@@ -58,6 +68,15 @@ export class NotificationBell implements OnInit {
     poll(() => this.api.unreadCount(), { interval: POLL_MS, maxInterval: POLL_MS })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({ next: (count) => this.unread.set(count), error: () => undefined });
+    if (this.inboxLink()) {
+      this.router.events
+        .pipe(
+          filter((e) => e instanceof NavigationEnd),
+          switchMap(() => this.api.unreadCount()),
+          takeUntilDestroyed(this.destroyRef),
+        )
+        .subscribe({ next: (count) => this.unread.set(count), error: () => undefined });
+    }
   }
 
   protected load(): void {

@@ -1,0 +1,41 @@
+<ui-resource-list
+  resource="claims"
+  endpoint="billing/insurance-claims"
+  title="Insurance claims"
+  subtitle="The insurer's share of patients' invoices: prepare from the invoice, send, record the decision and the bank transfer."
+  emptyTitle="No claims found"
+  rowLink="/billing/insurance-claims/:id"
+>
+  <ui-button
+    actions
+    icon="account_balance"
+    access="claims.create & claims.remit"
+    [action]="remittance"
+    >Record remittance</ui-button
+  >
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="patient" let-row>
+    <span class="font-medium">{{ row.patient?.fullName }}</span>
+    <span class="block text-xs text-on-surface-variant">{{ row.policyNumber }}</span>
+  </ng-template>
+  <ng-template uiCell="insurer" let-row>{{ row.insurer?.name }}</ng-template>
+  <ng-template uiCell="invoice" let-row
+    ><span class="font-mono">{{ row.invoice?.invoiceNumber }}</span></ng-template
+  >
+  <ng-template uiCell="claimed_amount" let-row
+    ><span class="tabular-nums">{{ row.claimedAmount | money }}</span></ng-template
+  >
+  <ng-template uiCell="approved_amount" let-row
+    ><span class="tabular-nums">{{
+      row.approvedAmount ? (row.approvedAmount | money) : '—'
+    }}</span></ng-template
+  >
+  <ng-template uiCell="status" let-row
+    ><ui-status [value]="row.status" enum="ApprovalStatus"
+  /></ng-template>
+  <ng-template uiCell="remitted_at" let-row>{{
+    row.remittedAt ? (row.remittedAt | date: dateFormat) : '—'
+  }}</ng-template>
+</ui-resource-list>

@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanMatchFn, Router } from '@angular/router';
 import { catchError, map, of } from 'rxjs';
-import { FORBIDDEN_PATH, LOGIN_PATH } from '@shared/constants/app.constants';
+import { FORBIDDEN_PATH, LOGIN_PATH, PORTAL_PATH } from '@shared/constants/app.constants';
 import { AccessService } from '@shared/services/auth/access.service';
 import { AuthStore } from '@shared/services/auth/auth.store';
 
@@ -13,6 +13,13 @@ export const authGuard: CanMatchFn = (_route, segments) => {
   const returnUrl = '/' + segments.map((s) => s.path).join('/');
   return inject(Router).createUrlTree([LOGIN_PATH], { queryParams: { returnUrl } });
 };
+
+/** Portal pages: patients only. */
+export const patientGuard: CanMatchFn = () => inject(AuthStore).isPatient();
+
+/** Staff workspace: everyone signed in except patients, who are sent to their portal. */
+export const staffGuard: CanMatchFn = () =>
+  !inject(AuthStore).isPatient() || inject(Router).createUrlTree([PORTAL_PATH]);
 
 /**
  * Sign-in layout: matches only for signed-out users, so a signed-in user's URLs fall through to the shell

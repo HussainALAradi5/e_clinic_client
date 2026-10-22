@@ -9,6 +9,7 @@ import {
   FilterValue,
   ListQuery,
 } from '@shared/interfaces/list/list-query.interface';
+import { ExportFilter } from '@shared/interfaces/list/transfer.interface';
 import { SavedViewQuery } from '@shared/interfaces/view/saved-view.interface';
 
 const LOGICAL = new Set(['and', 'or', 'not']);
@@ -190,4 +191,16 @@ export function fromViewQuery(
 ): ListQuery {
   const { sort, ...rest } = query;
   return { ...defaults, ...rest, page: 1, sort: sort ? sort.split(',') : defaults.sort };
+}
+
+/** Body `filter` of an export: the list on screen (no paging), keeping its sort, minus unticked rows. */
+export function toExportFilter(
+  query: ListQuery,
+  excludedIds: readonly string[] = [],
+): ExportFilter {
+  const sort = query.sort
+    ?.map((s) => (s.startsWith('-') ? '-' + toSnake(s.slice(1)) : toSnake(s)))
+    .join(',');
+  const { sort: _paged, ...filter } = toBulkFilter(query, excludedIds);
+  return sort ? { ...filter, sort } : filter;
 }

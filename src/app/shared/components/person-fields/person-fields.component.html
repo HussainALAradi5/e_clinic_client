@@ -1,0 +1,18 @@
+<div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+  <ui-text label="First name" autocomplete="given-name" [control]="form().controls.firstName" />
+  <ui-text label="Last name" autocomplete="family-name" [control]="form().controls.lastName" />
+  <ui-select label="Gender" enum="Gender" [required]="true" [control]="form().controls.gender" />
+  <ui-text label="Date of birth" type="date" [control]="form().controls.dateOfBirth" />
+  <ui-text
+    label="National ID (CPR) / passport"
+    hint="Finds the person if already registered"
+    [control]="form().controls.nationalId"
+  />
+  <ui-text label="Mobile" type="tel" hint="e.g. +973 3600 1234" [control]="form().controls.phone" />
+  <ui-text label="Email" type="email" [control]="form().controls.email" />
+  <ui-country-select
+    label="Nationality"
+    mode="nationality"
+    [control]="form().controls.nationalityCode"
+  />
+</div>

@@ -15,7 +15,7 @@ import { Router, RouterLink } from '@angular/router';
 import { BrandSurface } from '@shared/components/hub/brand-surface.component';
 import { HubSection } from '@shared/components/hub/hub-section.component';
 import { HubTile } from '@shared/components/hub/hub-tile.component';
-import { LOGIN_PATH } from '@shared/constants/app.constants';
+import { PORTAL_PATH } from '@shared/constants/app.constants';
 import {
   CLINIC_INFO,
   CLINIC_SERVICES,
@@ -51,7 +51,7 @@ export class HomePage {
   protected readonly services = CLINIC_SERVICES;
   protected readonly steps = VISIT_STEPS;
   protected readonly weekdays = WEEKDAYS;
-  protected readonly loginPath = LOGIN_PATH;
+  protected readonly portalPath = PORTAL_PATH;
   protected readonly tel = 'tel:' + CLINIC_INFO.phone.replaceAll(' ', '');
   protected readonly whatsapp = CLINIC_INFO.whatsapp
     ? 'https://wa.me/' + CLINIC_INFO.whatsapp.replace(/\D/g, '')

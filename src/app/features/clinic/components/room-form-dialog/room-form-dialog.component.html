@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>{{ room ? 'Edit room' : 'New room' }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="room ? 'Save' : 'Create room'"
+    [compact]="true"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-[9rem_1fr]">
+      <ui-text label="Code" hint="e.g. R-101" [control]="form.controls.code" />
+      <ui-text label="Name" [control]="form.controls.name" />
+    </div>
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-3">
+      <ui-select label="Type" enum="RoomType" [required]="true" [control]="form.controls.type" />
+      <ui-text label="Floor" [control]="form.controls.floor" />
+      <ui-text label="Capacity" type="number" [control]="form.controls.capacity" />
+    </div>
+    <ui-entity-select
+      label="Department"
+      endpoint="hr/departments"
+      [display]="departmentName"
+      [initial]="$any(room?.department ?? null)"
+      [control]="form.controls.departmentId"
+    />
+    <ui-text label="Equipment / notes" [multiline]="true" [control]="form.controls.notes" />
+  </ui-form>
+</mat-dialog-content>

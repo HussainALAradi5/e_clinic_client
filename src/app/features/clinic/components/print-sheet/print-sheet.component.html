@@ -1,0 +1,27 @@
+<div class="mx-auto mb-4 flex max-w-[210mm] justify-end gap-2 px-4 print:hidden">
+  <button matButton="filled" type="button" (click)="print()">
+    <mat-icon>print</mat-icon> Print
+  </button>
+</div>
+<article
+  class="mx-auto max-w-[210mm] bg-white px-[18mm] py-[16mm] text-[11pt] leading-relaxed text-black shadow-sm print:max-w-none print:shadow-none"
+>
+  <header class="mb-8 flex items-start justify-between border-b border-black/20 pb-4">
+    <ui-brand-mark tone="dark" />
+    <div class="text-right text-[9pt] text-black/70">
+      <p class="m-0 font-semibold text-black">{{ reference() }}</p>
+      <p class="m-0">Printed {{ today }}</p>
+    </div>
+  </header>
+  <h1 class="m-0 mb-6 text-[16pt] font-semibold">{{ title() }}</h1>
+  <ng-content />
+  <footer class="mt-10 flex items-end gap-4 border-t border-black/20 pt-4 text-[9pt] text-black/70">
+    @if (qr(); as url) {
+      <img class="size-24" [src]="url" alt="Verification code" />
+    }
+    <p class="m-0">
+      Scan the code to check this document is genuine and still valid. It carries no medical
+      details.
+    </p>
+  </footer>
+</article>

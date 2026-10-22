@@ -1,0 +1,182 @@
+// The booking is a numbered sequence: each step opens once the one before has an answer.
+.steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.step {
+  position: relative;
+  padding: 0 0 1.75rem 2.75rem;
+  counter-increment: step;
+
+  &::before {
+    content: counter(step);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    place-items: center;
+    width: 1.875rem;
+    height: 1.875rem;
+    border-radius: 999px;
+    background: var(--color-pine-900);
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 2.25rem;
+    bottom: 0.5rem;
+    left: 0.9rem;
+    width: 1px;
+    background: var(--mat-sys-outline-variant);
+  }
+}
+
+.step-title {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip,
+.option,
+.day {
+  border: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+
+  &:hover {
+    border-color: var(--mat-sys-outline);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
+
+  &.on {
+    border-color: var(--color-pine-900);
+    background: var(--color-pine-900);
+    color: #fff;
+  }
+}
+
+.chip {
+  height: 2.25rem;
+  padding: 0 0.95rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.option {
+  border-radius: 1rem;
+}
+
+.doctor {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+
+  &.on .text-on-surface-variant {
+    color: rgb(255 255 255 / 0.75);
+  }
+}
+
+.initials {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: var(--color-pine-50);
+  color: var(--color-pine-900);
+  font-weight: 800;
+
+  .on & {
+    background: var(--color-sun);
+    color: var(--color-pine-950);
+  }
+}
+
+// Day strip scrolls sideways on phones; each day is a small calendar leaf.
+.days {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0 -1rem;
+  padding: 0.25rem 1rem 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+}
+
+.day {
+  display: flex;
+  flex: 0 0 3.75rem;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-radius: 1rem;
+  scroll-snap-align: start;
+}
+
+.slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+  gap: 0.5rem;
+}
+
+.slot {
+  height: 2.75rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background: var(--color-pine-50);
+  color: var(--color-pine-950);
+}
+
+:host-context([data-theme='dark']) {
+  .initials {
+    background: rgb(211 239 233 / 0.12);
+    color: var(--color-pine-100);
+  }
+
+  .confirm {
+    background: rgb(211 239 233 / 0.1);
+    color: var(--mat-sys-on-surface);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip,
+  .option,
+  .day {
+    transition: none;
+  }
+}

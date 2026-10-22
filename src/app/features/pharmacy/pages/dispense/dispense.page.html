@@ -1,0 +1,107 @@
+<ui-page-header
+  title="Dispense"
+  subtitle="Scan, check, hand over. Lots are taken first expiry first; every hand-over is charged to the patient."
+>
+  <ng-container actions>
+    <mat-button-toggle-group
+      hideSingleSelectionIndicator
+      aria-label="Counter mode"
+      [value]="mode()"
+      (change)="mode.set($event.value)"
+    >
+      <mat-button-toggle value="prescriptions"
+        ><mat-icon>prescriptions</mat-icon> Prescriptions</mat-button-toggle
+      >
+      <mat-button-toggle value="counter"
+        ><mat-icon>shopping_bag</mat-icon> Over the counter</mat-button-toggle
+      >
+    </mat-button-toggle-group>
+  </ng-container>
+</ui-page-header>
+
+@if (last(); as d) {
+  <div
+    class="mb-4 flex flex-wrap items-center gap-3 rounded-xl bg-green-50 px-4 py-3 text-sm text-green-950 dark:bg-green-950/40 dark:text-green-100"
+    role="status"
+  >
+    <mat-icon>check_circle</mat-icon>
+    <span class="flex-1"
+      ><span class="font-semibold">{{ d.code }}</span> handed over to {{ d.patient?.fullName }} — on
+      their {{ d.invoice?.invoiceNumber ?? 'draft invoice' }}.</span
+    >
+    <a matButton="outlined" target="_blank" [routerLink]="['/print/medicine-label', d.id]"
+      ><mat-icon>label</mat-icon> Print label</a
+    >
+    <a matButton [routerLink]="['/pharmacy/dispensations', d.id]">Open</a>
+  </div>
+}
+
+@if (mode() === 'prescriptions') {
+  <div class="grid gap-4 lg:grid-cols-[22rem_minmax(0,1fr)]">
+    <mat-card appearance="outlined" class="self-start !p-0">
+      <div class="px-4 pt-4">
+        <ui-text
+          label="Scan or search a prescription"
+          icon="qr_code_scanner"
+          hint="QR code, RX number or patient"
+          [autofocus]="!selected()"
+          [control]="search"
+          (keydown.enter)="$event.preventDefault(); find()"
+        />
+      </div>
+      <h2 class="m-0 px-4 pb-2 text-sm font-semibold text-on-surface-variant">
+        Waiting{{ queue()?.length ? ' (' + queue()!.length + ')' : '' }}
+      </h2>
+      <ul class="m-0 max-h-[60vh] list-none overflow-y-auto p-0">
+        @for (rx of queue() ?? []; track rx.id) {
+          <li>
+            <button
+              type="button"
+              class="block w-full border-t border-outline-variant/60 px-4 py-3 text-left hover:bg-surface-container focus-visible:bg-surface-container"
+              [class.bg-secondary-container]="selected() === rx.id"
+              [attr.aria-current]="selected() === rx.id"
+              (click)="select(rx)"
+            >
+              <span class="flex items-center gap-2">
+                <span class="min-w-0 flex-1 truncate font-medium">{{ rx.patient?.fullName }}</span>
+                <ui-status [value]="rx.status" enum="GenericStatus" />
+              </span>
+              <span class="block truncate text-xs text-on-surface-variant">
+                <span class="font-mono">{{ rx.code }}</span> · Dr {{ rx.doctor?.fullName }} ·
+                {{ rx.createdAt | date: dateFormat }}
+              </span>
+              <span class="block truncate text-sm">
+                @for (item of rx.items; track item.id; let lastItem = $last) {
+                  {{ item.medication.name }}{{ lastItem ? '' : ', ' }}
+                }
+              </span>
+            </button>
+          </li>
+        } @empty {
+          <li
+            class="border-t border-outline-variant/60 px-4 py-6 text-center text-sm text-on-surface-variant"
+          >
+            {{ queue() ? 'No prescriptions waiting.' : 'Loading…' }}
+          </li>
+        }
+      </ul>
+    </mat-card>
+
+    @if (selected(); as id) {
+      <app-rx-dispense-panel [prescriptionId]="id" (dispensed)="done($event)" />
+    } @else {
+      <mat-card
+        appearance="outlined"
+        class="flex min-h-64 items-center justify-center !p-8 text-center"
+      >
+        <div>
+          <mat-icon class="!size-12 !text-5xl text-on-surface-variant">qr_code_scanner</mat-icon>
+          <p class="m-0 mt-2 font-medium">Scan the patient's prescription</p>
+          <p class="m-0 text-sm text-on-surface-variant">or pick one from the queue.</p>
+        </div>
+      </mat-card>
+    }
+  </div>
+} @else {
+  <app-otc-sale (dispensed)="done($event)" />
+}

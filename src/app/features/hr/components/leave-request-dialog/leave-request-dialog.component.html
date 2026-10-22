@@ -1,0 +1,75 @@
+<h2 mat-dialog-title>
+  @if (draft()) {
+    Attach the certificate
+  } @else {
+    {{ data.employee ? 'Record leave' : 'Request leave' }}
+  }
+  @if (data.employee) {
+    <span class="block text-sm font-normal text-on-surface-variant">{{
+      data.employee.fullName
+    }}</span>
+  }
+</h2>
+<mat-dialog-content>
+  @if (draft(); as d) {
+    <p class="m-0 mb-3 text-sm text-on-surface-variant">
+      {{ d.leaveType?.name }} needs a supporting document (e.g. a medical certificate) before
+      {{ d.code }} can go for approval. It is saved as a draft until then.
+    </p>
+    <ui-upload-zone
+      [category]="certificate"
+      [owner]="owner()"
+      [multiple]="false"
+      accept="application/pdf,image/jpeg,image/png"
+      (uploaded)="attached.set(true)"
+    />
+    <div class="mt-4 flex justify-end gap-2">
+      <button matButton type="button" (click)="ref.close(d)">Later</button>
+      <ui-button icon="send" [disabled]="!attached()" [action]="send">Send for approval</ui-button>
+    </div>
+  } @else {
+    <ui-form
+      [form]="form"
+      [submit]="submit"
+      [submitLabel]="data.employee ? 'Record' : 'Send request'"
+      [compact]="true"
+      [allowPristine]="true"
+      (cancelled)="ref.close()"
+    >
+      <ui-select
+        label="Type of leave"
+        [options]="typeOptions()"
+        [required]="true"
+        [control]="form.controls.leaveTypeId"
+      />
+      @if (type(); as t) {
+        <p class="-mt-2 mb-3 text-xs text-on-surface-variant">
+          @if (t.isLimited) {
+            {{ t.annualQuotaDays | qty }} days a year.
+          } @else if (!t.isPaid) {
+            Not paid — deducted from the salary.
+          }
+          @if (t.minNoticeDays > 0 && !data.employee) {
+            Ask at least {{ t.minNoticeDays }} day(s) ahead.
+          }
+          @if (t.requiresAttachment) {
+            A certificate is needed.
+          }
+        </p>
+      }
+      <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+        <ui-text label="From" type="date" [control]="form.controls.startDate" />
+        <ui-text label="To (inclusive)" type="date" [control]="form.controls.endDate" />
+      </div>
+      @if (singleDay()) {
+        <mat-checkbox class="-ml-2 mb-2 block" [formControl]="form.controls.isHalfDay"
+          >Half day</mat-checkbox
+        >
+      }
+      <ui-text label="Reason (optional)" [control]="form.controls.reason" />
+      <p class="m-0 text-xs text-on-surface-variant">
+        Weekly days off and clinic holidays are not counted.
+      </p>
+    </ui-form>
+  }
+</mat-dialog-content>

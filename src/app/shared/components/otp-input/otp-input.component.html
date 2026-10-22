@@ -19,7 +19,7 @@
       [class.filled]="i < value().length"
       [class.active]="focused() && i === value().length"
       aria-hidden="true"
-      >{{ value()[i] ?? '' }}</span
+      >{{ value().charAt(i) }}</span
     >
   }
 </div>

@@ -1,0 +1,8 @@
+<dl class="m-0 grid grid-cols-[minmax(7rem,max-content)_1fr] gap-x-6 gap-y-2 text-sm">
+  @for (item of items(); track item.label) {
+    <dt class="text-on-surface-variant">{{ item.label }}</dt>
+    <dd class="m-0 break-words" [class.font-mono]="item.mono" [class.tabular-nums]="item.mono">
+      {{ item.value === null || item.value === undefined || item.value === '' ? '—' : item.value }}
+    </dd>
+  }
+</dl>

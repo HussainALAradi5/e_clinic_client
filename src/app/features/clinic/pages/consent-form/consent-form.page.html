@@ -1,0 +1,53 @@
+@if (error()) {
+  <ui-error class="block p-6" [error]="error()" />
+} @else if (consent(); as c) {
+  <app-print-sheet
+    [title]="'Consent — ' + (c.type | enumLabel: 'ConsentType')"
+    entity="patient_consent"
+    [recordId]="c.id"
+    [reference]="c.code"
+  >
+    <dl class="m-0 mb-6 grid grid-cols-[9rem_1fr] gap-y-1">
+      <dt class="text-black/60">Patient</dt>
+      <dd class="m-0">
+        {{ patient()?.fullName }} · {{ patient()?.code }} · born
+        {{ patient()?.dateOfBirth | date: dateFormat }}
+      </dd>
+      <dt class="text-black/60">Covers</dt>
+      <dd class="m-0">{{ c.scope ? c.scope.code : 'The whole patient file' }}</dd>
+      <dt class="text-black/60">Valid</dt>
+      <dd class="m-0">
+        {{
+          c.revokedAt
+            ? 'Revoked ' + (c.revokedAt | date: dateFormat)
+            : c.validUntil
+              ? 'Until ' + (c.validUntil | date: dateFormat)
+              : 'Until revoked'
+        }}
+      </dd>
+    </dl>
+    <p class="m-0 mb-6 whitespace-pre-line rounded border border-black/15 px-4 py-3">
+      {{ c.description }}
+    </p>
+    <p class="m-0 mb-8">
+      I confirm that this was explained to me, that I could ask questions, and that I may withdraw
+      this consent at any time.
+    </p>
+    <div class="grid grid-cols-2 gap-8">
+      <div>
+        <p class="m-0 font-semibold">{{ c.signedByName }}</p>
+        <p class="m-0 text-black/60">
+          {{ relationship(c.signerRelationship) }} · {{ c.signedAt | date: dateTimeFormat }}
+        </p>
+        <p class="m-0 mt-8 border-t border-black/40 pt-1 text-black/60">Signature</p>
+      </div>
+      <div>
+        <p class="m-0 font-semibold">{{ c.explainedBy?.fullName }}</p>
+        <p class="m-0 text-black/60">
+          Explained by{{ c.witness ? ' · witness ' + c.witness.fullName : '' }}
+        </p>
+        <p class="m-0 mt-8 border-t border-black/40 pt-1 text-black/60">Signature</p>
+      </div>
+    </div>
+  </app-print-sheet>
+}

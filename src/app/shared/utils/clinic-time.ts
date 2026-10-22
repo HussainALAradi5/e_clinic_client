@@ -6,7 +6,8 @@ export function clinicIsoDate(instant: Date = new Date()): string {
   return new Intl.DateTimeFormat('en-CA', { timeZone: CLINIC_TIME_ZONE }).format(instant);
 }
 
-function addDays(iso: string, days: number): string {
+/** ISO date `days` after (or before) another. */
+export function addDays(iso: string, days: number): string {
   const d = new Date(`${iso}T00:00:00Z`);
   d.setUTCDate(d.getUTCDate() + days);
   return d.toISOString().slice(0, 10);
@@ -66,4 +67,21 @@ export function ageInYears(birthDate: string, today: string = clinicIsoDate()): 
   const b = parts(birthDate);
   const t = parts(today);
   return t.y - b.y - (t.m < b.m || (t.m === b.m && t.d < b.d) ? 1 : 0);
+}
+
+/** Clinic wall-clock time (HH:mm, 24 h) of an instant. */
+export function clinicTime(instant: Date = new Date()): string {
+  return new Intl.DateTimeFormat('en-GB', {
+    timeZone: CLINIC_TIME_ZONE,
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  }).format(instant);
+}
+
+/** '2026-11-01 08:15' — date and time of an ISO instant in the clinic time zone (for facts and prints). */
+export function clinicDateTime(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const instant = new Date(iso);
+  return `${clinicIsoDate(instant)} ${clinicTime(instant)}`;
 }

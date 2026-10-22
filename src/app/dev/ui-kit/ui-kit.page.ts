@@ -81,6 +81,7 @@ const SCHEMA: ResourceSchema = {
   exportFormats: [],
   defaultSort: '-updated_at',
   archivable: true,
+  importable: false,
 };
 
 /**

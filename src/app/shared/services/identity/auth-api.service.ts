@@ -5,6 +5,8 @@ import {
   ForgotPasswordPayload,
   LoginPayload,
   ResetPasswordPayload,
+  ResetToken,
+  VerifyResetCodePayload,
   TwoFactorChallengePayload,
   TwoFactorSetup,
 } from '@shared/interfaces/auth/auth-payloads.interface';
@@ -42,6 +44,11 @@ export class AuthApi {
 
   forgotPassword(body: ForgotPasswordPayload): Observable<void> {
     return this.api.post<void>('auth/forgot-password', body);
+  }
+
+  /** Emailed 6-digit code → one-time reset token. */
+  verifyResetCode(body: VerifyResetCodePayload): Observable<ResetToken> {
+    return this.api.post<ResetToken>('auth/verify-reset-code', body);
   }
 
   resetPassword(body: ResetPasswordPayload): Observable<void> {

@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>
+  {{ roomType ? 'Start ' + data.order.code : 'Letter sent · ' + data.order.code }}
+</h2>
+<mat-dialog-content>
+  <p class="mt-0 text-sm text-on-surface-variant">
+    {{ data.order.description }} for <strong>{{ data.order.patient?.fullName }}</strong> ({{
+      data.order.patient?.code
+    }}).
+    @if (roomType) {
+      Check the patient's card or wristband against the order barcode before you start.
+    } @else {
+      Mark the referral as sent once the letter has gone to the hospital; record their reply when it
+      comes back.
+    }
+  </p>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="roomType ? 'Start' : 'Mark as sent'"
+    [compact]="true"
+    [allowPristine]="!roomType"
+    (cancelled)="ref.close()"
+  >
+    @if (roomType) {
+      <ui-entity-select
+        label="Room"
+        endpoint="rooms"
+        icon="meeting_room"
+        [display]="roomName"
+        [filter]="rooms"
+        [control]="form.controls.roomId"
+      />
+    }
+  </ui-form>
+</mat-dialog-content>

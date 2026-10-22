@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>
+  Count and close
+  <span class="block text-sm font-normal text-on-surface-variant">{{ session.code }}</span>
+</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Close drawer"
+    submitIcon="lock"
+    [compact]="true"
+    [allowPristine]="true"
+    (cancelled)="ref.close()"
+  >
+    <mat-slide-toggle class="mb-3 block" [formControl]="form.controls.byNote"
+      >Count note by note</mat-slide-toggle
+    >
+    @if (form.controls.byNote.value) {
+      <div
+        class="mb-3 grid grid-cols-2 gap-x-3 sm:grid-cols-5"
+        role="group"
+        aria-label="Notes and coins"
+      >
+        @for (note of notes; track note.value; let i = $index) {
+          <label class="mb-2 flex flex-col gap-1 text-xs text-on-surface-variant">
+            {{ note.label }}
+            <input
+              class="h-10 rounded-lg border border-outline-variant bg-surface px-2 text-right text-base tabular-nums text-on-surface focus:outline-2 focus:outline-primary"
+              type="number"
+              min="0"
+              inputmode="numeric"
+              [formControl]="counts.at(i)"
+            />
+          </label>
+        }
+      </div>
+    } @else {
+      <ui-money label="Counted cash" [control]="form.controls.countedClosing" />
+    }
+
+    <dl
+      class="m-0 mb-4 grid grid-cols-3 gap-2 rounded-xl bg-surface-container px-4 py-3 text-center tabular-nums"
+    >
+      <div>
+        <dt class="text-xs text-on-surface-variant">Expected</dt>
+        <dd class="m-0 font-semibold">{{ expected | money }}</dd>
+      </div>
+      <div>
+        <dt class="text-xs text-on-surface-variant">Counted</dt>
+        <dd class="m-0 font-semibold">{{ counted() ? (counted() | money) : '—' }}</dd>
+      </div>
+      <div>
+        <dt class="text-xs text-on-surface-variant">Difference</dt>
+        <dd
+          class="m-0 font-semibold"
+          [class.text-error]="difference() !== null && difference() !== '0.000'"
+        >
+          {{ difference() !== null ? (difference() | money) : '—' }}
+        </dd>
+      </div>
+    </dl>
+    <ui-text
+      label="Notes"
+      hint="Explain any difference for the supervisor"
+      [multiline]="true"
+      [rows]="2"
+      [control]="form.controls.notes"
+    />
+  </ui-form>
+</mat-dialog-content>

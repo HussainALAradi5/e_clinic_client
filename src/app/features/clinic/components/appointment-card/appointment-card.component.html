@@ -1,0 +1,29 @@
+@let a = appointment();
+<article
+  class="rounded-xl border bg-surface p-3 shadow-sm"
+  [class]="late() ? 'border-error' : 'border-outline-variant'"
+>
+  <a class="block" [routerLink]="['/clinic/appointments', a.id]">
+    <div class="flex items-baseline gap-2">
+      <span class="text-lg font-semibold tabular-nums">{{ a.startTime }}</span>
+      @if (late()) {
+        <span class="flex items-center gap-1 text-xs font-medium text-error"
+          ><mat-icon class="!size-4 !text-base">schedule</mat-icon> Late</span
+        >
+      }
+      <ui-status class="ml-auto" [value]="a.status" enum="AppointmentStatus" />
+    </div>
+    <p class="m-0 mt-1 truncate font-medium">{{ a.patient?.fullName }}</p>
+    <p class="m-0 truncate text-xs text-on-surface-variant">
+      {{ a.patient?.code }} · {{ a.provider?.fullName }} · {{ a.type | enumLabel: 'AppointmentType'
+      }}{{ a.room ? ' · ' + a.room.code : '' }}
+    </p>
+  </a>
+  <app-appointment-actions
+    class="mt-2"
+    [appointment]="a"
+    [compact]="true"
+    [only]="actions()"
+    (changed)="changed.emit($event)"
+  />
+</article>

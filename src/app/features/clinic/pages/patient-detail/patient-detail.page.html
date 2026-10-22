@@ -1,0 +1,169 @@
+@if (error(); as e) {
+  <ui-error [error]="e" (retry)="load()" />
+} @else if (patient(); as patient) {
+  <ui-page-header
+    [title]="patient.fullName"
+    [subtitle]="patient.code + ' · ' + patient.age + ' y · ' + patient.phone"
+  >
+    <ng-container actions>
+      <ui-button icon="event_available" access="appointments.create" [action]="book"
+        >Book appointment</ui-button
+      >
+      <ui-button
+        icon="edit_note"
+        [variant]="variants.Tonal"
+        access="patients.write"
+        [action]="editFile"
+        >Edit file</ui-button
+      >
+      <ui-button
+        icon="badge"
+        [variant]="variants.Outlined"
+        access="people.write"
+        [action]="editPerson"
+        >Personal data</ui-button
+      >
+      @if (patient.hasPortalAccount === false && patient.email) {
+        <ui-button
+          icon="phonelink_lock"
+          [variant]="variants.Outlined"
+          access="patients.create"
+          [confirm]="portalConfirm"
+          [action]="createPortal"
+          >Portal account</ui-button
+        >
+      }
+    </ng-container>
+  </ui-page-header>
+
+  @if (patient.allergies) {
+    <div
+      class="mb-4 flex items-center gap-3 rounded-xl bg-error-container px-4 py-3 text-on-error-container"
+      role="alert"
+    >
+      <mat-icon>warning</mat-icon>
+      <span><strong>Allergies:</strong> {{ patient.allergies }}</span>
+    </div>
+  }
+
+  <mat-tab-group
+    mat-stretch-tabs="false"
+    animationDuration="0ms"
+    (selectedTabChange)="$event.tab.textLabel === 'Timeline' && loadTimeline()"
+  >
+    <mat-tab label="Overview">
+      <div class="grid gap-4 pt-4 xl:grid-cols-2">
+        <mat-card appearance="outlined" class="!p-5">
+          <h2 class="m-0 mb-3 text-base font-semibold">Personal data</h2>
+          <ui-facts [items]="personal()" />
+        </mat-card>
+        <div class="flex flex-col gap-4">
+          <mat-card appearance="outlined" class="!p-5">
+            <h2 class="m-0 mb-3 text-base font-semibold">Patient file</h2>
+            <ui-facts [items]="file()" />
+          </mat-card>
+          <mat-card appearance="outlined" class="!p-5">
+            <h2 class="m-0 mb-2 text-base font-semibold">Upcoming</h2>
+            <app-appointment-rows
+              show="provider"
+              empty="Nothing booked."
+              [appointments]="upcoming()"
+            />
+          </mat-card>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab [label]="'Visits (' + past().length + ')'">
+      <app-appointment-rows
+        class="pt-4"
+        show="provider"
+        empty="No past visits."
+        [appointments]="past()"
+      />
+    </mat-tab>
+    <mat-tab
+      label="Care"
+      *hasAccess="'treatments.read_all | treatments.read_own | orders.read_all | orders.read_own'"
+    >
+      <ng-template matTabContent><app-patient-care class="pt-4" [patient]="patient" /></ng-template>
+    </mat-tab>
+    <mat-tab label="Consents" *hasAccess="'consents.read_all | consents.read_own'">
+      <ng-template matTabContent
+        ><app-consents-panel class="pt-4" [context]="{ patient }"
+      /></ng-template>
+    </mat-tab>
+    <mat-tab label="Billing" *hasAccess="'invoices.read_all | invoices.read_own'">
+      <ng-template matTabContent
+        ><app-patient-billing
+          class="pt-4"
+          [patient]="{
+            id: patient.id,
+            code: patient.code,
+            fullName: patient.fullName,
+            phone: patient.phone,
+          }"
+      /></ng-template>
+    </mat-tab>
+    <mat-tab label="Medicines" *hasAccess="'prescriptions.read_all | prescriptions.read_own'">
+      <ng-template matTabContent
+        ><app-patient-medicines
+          class="pt-4"
+          [patient]="{
+            id: patient.id,
+            code: patient.code,
+            fullName: patient.fullName,
+            phone: patient.phone,
+          }"
+      /></ng-template>
+    </mat-tab>
+    <mat-tab label="Timeline">
+      <div class="pt-4">
+        @if (timeline(); as entries) {
+          <ol class="m-0 list-none border-l border-outline-variant p-0 pl-5">
+            @for (entry of entries; track entry.id) {
+              <li class="relative mb-4">
+                <span
+                  class="absolute -left-[1.6rem] top-1.5 h-2.5 w-2.5 rounded-full bg-primary"
+                ></span>
+                <p class="m-0 text-xs text-on-surface-variant">
+                  {{ entry.at | date: dateTimeFormat }}
+                </p>
+                <a
+                  class="m-0 flex items-center gap-2 text-sm font-medium hover:underline"
+                  [routerLink]="timelineLink(entry)"
+                >
+                  {{ entry.title }}
+                  @if (entry.status) {
+                    <ui-status
+                      [value]="entry.status"
+                      [enum]="
+                        entry.kind === 'appointment' || entry.kind === 'session'
+                          ? 'AppointmentStatus'
+                          : 'GenericStatus'
+                      "
+                    />
+                  }
+                </a>
+              </li>
+            } @empty {
+              <p class="m-0 text-sm text-on-surface-variant">Nothing on the timeline yet.</p>
+            }
+          </ol>
+        } @else {
+          <ui-skeleton [rows]="4" />
+        }
+      </div>
+    </mat-tab>
+    <mat-tab label="History" *hasAccess="'audit.read_all | audit.read_own'">
+      <ng-template matTabContent>
+        <div class="pt-4">
+          <ui-audit-history type="patient" [id]="patient.id" />
+          <h3 class="mb-2 mt-6 text-sm font-semibold text-on-surface-variant">Personal data</h3>
+          <ui-audit-history type="person" [id]="patient.id" />
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+} @else {
+  <ui-skeleton [rows]="8" />
+}

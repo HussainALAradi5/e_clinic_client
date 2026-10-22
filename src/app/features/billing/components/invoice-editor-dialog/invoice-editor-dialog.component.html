@@ -1,0 +1,143 @@
+<h2 mat-dialog-title>
+  {{ invoice ? 'Edit draft · ' + invoice.code : 'New invoice' }}
+  @if (patient(); as p) {
+    <span class="block text-sm font-normal text-on-surface-variant"
+      >{{ p.fullName }} · {{ p.code }}</span
+    >
+  }
+</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="invoice ? 'Save draft' : 'Add to draft'"
+    [compact]="true"
+    [allowPristine]="!invoice"
+    (cancelled)="ref.close()"
+  >
+    @if (!invoice && !data.patient) {
+      <ui-entity-select
+        label="Patient"
+        endpoint="patients"
+        icon="person_search"
+        hint="Lines go on the patient's open draft (a new one when there is none)."
+        [autofocus]="true"
+        [display]="patientName"
+        [detail]="patientDetail"
+        [control]="form.controls.patientId"
+        (picked)="pickPatient($event)"
+      />
+    }
+
+    <ol class="m-0 mb-2 list-none p-0" aria-label="Invoice lines">
+      @for (group of lines.controls; track group; let i = $index) {
+        <li
+          class="grid grid-cols-2 gap-x-3 border-b border-outline-variant/60 pt-3 sm:grid-cols-[minmax(0,1fr)_5.5rem_9rem_9rem_6.5rem_auto]"
+          [formGroup]="group"
+        >
+          <div class="col-span-2 min-w-0 sm:col-span-1">
+            @if (isService(group)) {
+              @if (group.controls.billableServiceId.enabled) {
+                <ui-entity-select
+                  label="Service"
+                  endpoint="billing/services"
+                  icon="sell"
+                  [display]="serviceName"
+                  [detail]="serviceDetail"
+                  [control]="group.controls.billableServiceId"
+                  (picked)="pickService(group, $event)"
+                />
+              } @else {
+                <p class="m-0 pt-3 font-medium">{{ group.controls.label.value }}</p>
+                <p class="m-0 text-xs text-on-surface-variant">
+                  {{
+                    group.controls.source.value
+                      ? 'From ' + group.controls.source.value
+                      : 'Price list'
+                  }}
+                </p>
+              }
+            } @else {
+              <ui-text
+                label="Description"
+                [control]="group.controls.description"
+                [maxLength]="255"
+              />
+            }
+          </div>
+          <ui-text label="Qty" [control]="group.controls.quantity" />
+          @if (isService(group)) {
+            <p class="m-0 self-center pb-5 text-right text-sm tabular-nums text-on-surface-variant">
+              {{ group.controls.unitPrice.value ? (group.controls.unitPrice.value | money) : '—' }}
+            </p>
+          } @else {
+            <ui-money label="Price" [control]="group.controls.unitPrice" />
+          }
+          <mat-form-field>
+            <mat-label>Discount</mat-label>
+            <mat-select [formControl]="group.controls.discountType">
+              <mat-option [value]="null">None</mat-option>
+              <mat-option [value]="discountTypes.Percentage">Percent</mat-option>
+              <mat-option [value]="discountTypes.Fixed">Amount</mat-option>
+            </mat-select>
+          </mat-form-field>
+          @if (group.controls.discountType.value) {
+            <ui-text
+              [label]="group.controls.discountType.value === discountTypes.Percentage ? '%' : 'BHD'"
+              [control]="group.controls.discountValue"
+            />
+          } @else {
+            <span></span>
+          }
+          <div class="col-span-2 flex items-center justify-end gap-2 pb-5 sm:col-span-1">
+            <span class="text-sm font-medium tabular-nums">{{ lineTotals()[i] }}</span>
+            <button
+              matIconButton
+              type="button"
+              aria-label="Remove line"
+              [disabled]="lines.length === 1"
+              (click)="remove(i)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </li>
+      }
+    </ol>
+
+    <div class="mb-4 flex flex-wrap gap-2">
+      <button matButton type="button" (click)="addService()">
+        <mat-icon>add</mat-icon> Price-list item
+      </button>
+      <button matButton type="button" (click)="addCustom()">
+        <mat-icon>edit_note</mat-icon> Free-text line
+      </button>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-[minmax(0,1fr)_16rem]">
+      <ui-text
+        label="Notes on the invoice"
+        [multiline]="true"
+        [rows]="3"
+        [control]="form.controls.notes"
+      />
+      <dl
+        class="m-0 grid grid-cols-[1fr_auto] gap-x-4 gap-y-1 self-start rounded-xl bg-surface-container px-4 py-3 text-sm tabular-nums"
+      >
+        <dt class="text-on-surface-variant">Subtotal</dt>
+        <dd class="m-0 text-right">{{ totals().subtotal }}</dd>
+        <dt class="text-on-surface-variant">Discount</dt>
+        <dd class="m-0 text-right">−{{ totals().discount }}</dd>
+        <dt class="text-on-surface-variant">VAT</dt>
+        <dd class="m-0 text-right">{{ totals().tax }}</dd>
+        <dt class="border-t border-outline-variant pt-1 font-semibold">Total (BHD)</dt>
+        <dd class="m-0 border-t border-outline-variant pt-1 text-right font-semibold">
+          {{ totals().total }}
+        </dd>
+        <dd class="col-span-2 m-0 pt-1 text-xs text-on-surface-variant">
+          Preview — the clinic's prices and VAT apply when you save.
+        </dd>
+      </dl>
+    </div>
+  </ui-form>
+</mat-dialog-content>

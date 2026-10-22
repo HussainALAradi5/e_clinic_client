@@ -1,0 +1,124 @@
+@if (detail.error(); as error) {
+  <ui-error [error]="error" (retry)="detail.load(id())" />
+} @else if (detail.record(); as o) {
+  <ui-page-header
+    [title]="o.description"
+    [subtitle]="o.code + ' · ' + o.patient?.fullName + ' (' + o.patient?.code + ')'"
+  >
+    <ng-container status>
+      <ui-status [value]="o.status" enum="GenericStatus" />
+      <ui-status [value]="o.priority" enum="TreatmentPriority" />
+    </ng-container>
+    <ng-container actions>
+      @if (nextStep(); as step) {
+        <ui-button [icon]="step.icon" [access]="step.access" [action]="next">{{
+          step.label
+        }}</ui-button>
+      }
+      @if (o.invoice; as inv) {
+        <a
+          *hasAccess="'invoices.read_all | invoices.read_own'"
+          matButton="outlined"
+          [routerLink]="['/billing/invoices', inv.id]"
+          ><mat-icon>receipt_long</mat-icon> {{ inv.invoiceNumber ?? 'Draft invoice' }}</a
+        >
+      } @else if (billable()) {
+        <ui-button
+          icon="request_quote"
+          [variant]="variants.Outlined"
+          access="invoices.create"
+          [action]="bill"
+          >Bill order</ui-button
+        >
+      }
+      @if (referral()) {
+        <a matButton="outlined" [routerLink]="['/print/referral', o.id]" target="_blank"
+          ><mat-icon>print</mat-icon> Letter</a
+        >
+      }
+      @if (cancellable()) {
+        <ui-button icon="block" [variant]="variants.Danger" access="orders.write" [action]="cancel"
+          >Cancel</ui-button
+        >
+      }
+      <ui-entity-actions
+        resource="orders"
+        noun="order"
+        [record]="o"
+        [archive]="o.allowedTransitions.length ? null : archive"
+        [unarchive]="unarchive"
+        [remove]="o.status === 'pending' ? remove : null"
+        [restore]="restore"
+      />
+    </ng-container>
+  </ui-page-header>
+
+  @if (o.isAbnormal) {
+    <div
+      class="mb-4 flex items-center gap-3 rounded-xl bg-error-container px-4 py-3 text-on-error-container"
+      role="alert"
+    >
+      <mat-icon>priority_high</mat-icon
+      ><span>Abnormal result — the ordering doctor was alerted.</span>
+    </div>
+  }
+
+  <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+    <mat-card appearance="outlined" class="!p-5"><ui-facts [items]="facts()" /></mat-card>
+    <div class="flex flex-col gap-4" *hasAccess="'patients.view_medical'">
+      <mat-card appearance="outlined" class="!p-5">
+        <h2 class="m-0 mb-2 text-base font-semibold">
+          {{ referral() ? 'Reason for referral' : 'Clinical question' }}
+        </h2>
+        <p class="m-0 whitespace-pre-line text-sm">{{ o.clinicalNotes || '—' }}</p>
+      </mat-card>
+      <mat-card appearance="outlined" class="!p-5">
+        <div class="mb-2 flex items-baseline gap-2">
+          <h2 class="m-0 flex-1 text-base font-semibold">{{ referral() ? 'Reply' : 'Result' }}</h2>
+          @if (o.completedAt) {
+            <span class="text-xs text-on-surface-variant">{{
+              o.completedAt | date: dateTimeFormat
+            }}</span>
+          }
+        </div>
+        <p class="m-0 whitespace-pre-line text-sm">{{ o.report || 'Not reported yet.' }}</p>
+        @if (o.attachments?.length) {
+          <ul class="m-0 mt-3 list-none p-0">
+            @for (f of o.attachments; track f.id) {
+              <li class="flex items-center gap-2 border-t border-outline-variant/60 py-2 text-sm">
+                <mat-icon class="!text-lg text-on-surface-variant">{{
+                  f.mimeType.startsWith('image/') ? 'image' : 'description'
+                }}</mat-icon>
+                <span class="flex-1 truncate">{{ f.originalName }}</span>
+                <span class="text-xs text-on-surface-variant"
+                  >{{ f.sizeBytes / 1024 | number: '1.0-0' }} KB</span
+                >
+                <ui-button
+                  icon="open_in_new"
+                  [variant]="variants.Text"
+                  [action]="open.bind(this, f)"
+                  >View</ui-button
+                >
+              </li>
+            }
+          </ul>
+        }
+      </mat-card>
+    </div>
+  </div>
+
+  <mat-tab-group
+    *hasAccess="'audit.read_all | audit.read_own'"
+    class="mt-2"
+    mat-stretch-tabs="false"
+    animationDuration="0ms"
+  >
+    <mat-tab label="History">
+      <ng-template matTabContent
+        ><ui-audit-history class="block pt-4" type="clinical_order" [id]="o.id"
+      /></ng-template>
+    </mat-tab>
+  </mat-tab-group>
+} @else {
+  <ui-skeleton [rows]="8" />
+}

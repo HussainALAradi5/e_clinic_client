@@ -1,0 +1,43 @@
+@if (prescriptions(); as list) {
+  <div class="mb-3 flex items-center">
+    <p class="m-0 flex-1 text-sm text-on-surface-variant">
+      {{ list.length ? list.length + ' prescription(s)' : 'No prescriptions yet.' }}
+    </p>
+    <ui-button
+      icon="prescriptions"
+      [variant]="variants.Outlined"
+      access="prescriptions.create"
+      [action]="prescribe"
+      >Prescribe</ui-button
+    >
+  </div>
+  @if (list.length) {
+    <ul class="m-0 list-none rounded-xl border border-outline-variant p-0">
+      @for (rx of list; track rx.id) {
+        <li
+          class="flex flex-wrap items-center gap-3 border-b border-outline-variant/60 px-4 py-3 last:border-0"
+        >
+          <div class="min-w-0 flex-1">
+            <a
+              class="font-mono font-medium hover:underline"
+              [routerLink]="['/pharmacy/prescriptions', rx.id]"
+              >{{ rx.code }}</a
+            >
+            <p class="m-0 truncate text-sm">
+              @for (item of rx.items; track item.id; let last = $last) {
+                {{ item.medication.name }}{{ last ? '' : ', ' }}
+              }
+            </p>
+            <p class="m-0 text-xs text-on-surface-variant">
+              {{ rx.createdAt | date: dateFormat }} · {{ rx.doctor?.fullName }} · valid until
+              {{ rx.validUntil | date: dateFormat }}
+            </p>
+          </div>
+          <ui-status [value]="rx.status" enum="GenericStatus" />
+        </li>
+      }
+    </ul>
+  }
+} @else {
+  <p class="m-0 text-sm text-on-surface-variant">Loading…</p>
+}

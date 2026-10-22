@@ -1,0 +1,50 @@
+@if (record().isArchived && !record().isDeleted) {
+  <span class="rounded-full bg-surface-container-high px-2.5 py-0.5 text-xs font-medium"
+    >Archived</span
+  >
+}
+@if (record().isDeleted) {
+  <span
+    class="rounded-full bg-error-container px-2.5 py-0.5 text-xs font-medium text-on-error-container"
+    >Deleted</span
+  >
+  @if (restore(); as run) {
+    <ui-button icon="restore_from_trash" [access]="resource() + '.delete'" [action]="run"
+      >Restore</ui-button
+    >
+  }
+} @else {
+  @if (edit(); as run) {
+    <ui-button icon="edit" [access]="resource() + '.write'" [action]="run">Edit</ui-button>
+  }
+  @if (record().isArchived) {
+    @if (unarchive(); as run) {
+      <ui-button
+        icon="unarchive"
+        [variant]="variants.Outlined"
+        [access]="resource() + '.write'"
+        [action]="run"
+        >Unarchive</ui-button
+      >
+    }
+  } @else if (archive(); as run) {
+    <ui-button
+      icon="archive"
+      [variant]="variants.Outlined"
+      [access]="resource() + '.write'"
+      [action]="run"
+      >Archive</ui-button
+    >
+  }
+  @if (remove(); as run) {
+    <ui-button
+      icon="delete"
+      [variant]="variants.Danger"
+      [access]="resource() + '.delete'"
+      [disabled]="deleteBlocked()"
+      [confirm]="deleteConfirm()"
+      [action]="run"
+      >Delete</ui-button
+    >
+  }
+}

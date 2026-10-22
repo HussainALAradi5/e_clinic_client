@@ -1,0 +1,36 @@
+<ui-resource-list
+  resource="expenses"
+  endpoint="finance/expenses"
+  title="Expenses"
+  subtitle="Rent, supplies, services: entered with the vendor's invoice, approved by someone else, then paid."
+  emptyTitle="No expenses found"
+  rowLink="/accounting/expenses/:id"
+>
+  <ui-button actions icon="add" access="expenses.create" [action]="create">New expense</ui-button>
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="expense_date" let-row>{{ row.expenseDate | date: dateFormat }}</ng-template>
+  <ng-template uiCell="payee" let-row
+    ><span class="font-medium">{{ row.payeeName }}</span></ng-template
+  >
+  <ng-template uiCell="description" let-row
+    ><span class="line-clamp-2 max-w-md">{{ row.description }}</span></ng-template
+  >
+  <ng-template uiCell="category" let-row>{{
+    row.category | enumLabel: 'ExpenseCategory'
+  }}</ng-template>
+  <ng-template uiCell="amount" let-row
+    ><span class="tabular-nums">{{ row.amount | money }}</span></ng-template
+  >
+  <ng-template uiCell="status" let-row>
+    @if (row.isPaid) {
+      <ui-status value="paid" enum="InvoiceStatus" />
+    } @else {
+      <ui-status [value]="row.status" enum="ApprovalStatus" />
+    }
+  </ng-template>
+  <ng-template uiCell="paid_at" let-row>{{
+    row.paidAt ? (row.paidAt | date: dateFormat) : '—'
+  }}</ng-template>
+</ui-resource-list>

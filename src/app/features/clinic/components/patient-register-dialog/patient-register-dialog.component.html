@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>Register patient</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Register"
+    [compact]="true"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    <mat-button-toggle-group
+      class="mb-3"
+      hideSingleSelectionIndicator
+      [value]="mode()"
+      (change)="setMode($event.value)"
+      aria-label="Person"
+    >
+      <mat-button-toggle value="new">New person</mat-button-toggle>
+      <mat-button-toggle value="existing">Already on file</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    @if (mode() === 'new') {
+      <ui-person-fields [form]="person" />
+      @if (candidates().length) {
+        <div
+          class="mb-4 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm dark:border-amber-700 dark:bg-amber-950/40"
+          role="alert"
+        >
+          <p class="m-0 mb-2 font-medium">This might be someone already on file:</p>
+          @for (c of candidates(); track c.id) {
+            <div class="flex items-center gap-3 py-1">
+              <span class="flex-1"
+                >{{ c.fullName }} · {{ c.code }} · {{ c.phone }} · born {{ c.dateOfBirth }}</span
+              >
+              <button matButton type="button" (click)="useCandidate(c)">
+                <mat-icon>how_to_reg</mat-icon> Use this person
+              </button>
+            </div>
+          }
+        </div>
+      }
+    } @else {
+      <ui-entity-select
+        label="Person"
+        endpoint="people"
+        icon="person_search"
+        hint="Search by name, file number or mobile"
+        [display]="personName"
+        [detail]="personDetail"
+        [initial]="$any(chosen())"
+        [control]="existing"
+      />
+    }
+
+    <app-patient-fields [form]="patient" />
+  </ui-form>
+</mat-dialog-content>

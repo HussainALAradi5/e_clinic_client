@@ -1,0 +1,32 @@
+<ui-resource-list
+  resource="stock_movements"
+  endpoint="pharmacy/inventory/movements"
+  title="Stock movements"
+  subtitle="Receipts, hand-overs, returns, count corrections and expiry write-offs. A lot's stock is the sum of its rows."
+  emptyTitle="No movements found"
+>
+  <ng-template uiCell="created_at" let-row
+    ><span class="tabular-nums">{{ row.createdAt | date: dateTimeFormat }}</span></ng-template
+  >
+  <ng-template uiCell="medication" let-row
+    ><span class="font-medium">{{ row.medication?.name }}</span></ng-template
+  >
+  <ng-template uiCell="batch" let-row
+    ><span class="font-mono">{{ row.batch?.batchNumber }}</span></ng-template
+  >
+  <ng-template uiCell="type" let-row
+    ><ui-status [value]="row.type" enum="StockMovementType"
+  /></ng-template>
+  <ng-template uiCell="quantity" let-row>
+    <span class="tabular-nums font-semibold" [class.text-error]="row.quantity.startsWith('-')"
+      >{{ row.quantity.startsWith('-') ? '' : '+' }}{{ row.quantity | qty }}</span
+    >
+  </ng-template>
+  <ng-template uiCell="reason" let-row>
+    <span class="text-sm">{{ row.reason ?? '' }}</span>
+    <span class="block text-xs text-on-surface-variant"
+      >{{ row.createdBy?.fullName
+      }}{{ row.approvedBy ? ' · approved by ' + row.approvedBy.fullName : '' }}</span
+    >
+  </ng-template>
+</ui-resource-list>

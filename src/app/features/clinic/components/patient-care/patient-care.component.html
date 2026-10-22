@@ -1,0 +1,73 @@
+<div class="grid gap-4 xl:grid-cols-2">
+  <mat-card
+    appearance="outlined"
+    class="!p-5"
+    *hasAccess="'treatments.read_all | treatments.read_own'"
+  >
+    <div class="mb-2 flex items-center">
+      <h2 class="m-0 flex-1 text-base font-semibold">Treatment plans</h2>
+      <ui-button
+        icon="add"
+        [variant]="variants.Tonal"
+        access="treatments.create"
+        [action]="prescribe"
+        >Prescribe</ui-button
+      >
+    </div>
+    @for (t of treatments() ?? []; track t.id) {
+      <a
+        class="block border-b border-outline-variant/60 px-1 py-2.5 text-sm hover:bg-surface-container"
+        [routerLink]="['/clinic/treatments', t.id]"
+      >
+        <span class="flex items-center gap-2">
+          <span class="flex-1 font-medium">{{ t.title }}</span>
+          <ui-status [value]="t.status" enum="GenericStatus" />
+        </span>
+        <span class="block text-xs text-on-surface-variant"
+          >{{ t.code }} · {{ t.doctor?.fullName }} · {{ t.createdAt | date: dateFormat }}</span
+        >
+        @if (t.progress; as p) {
+          <app-progress-meter class="mt-2" [progress]="p" [compact]="true" />
+        }
+      </a>
+    } @empty {
+      <p class="m-0 text-sm text-on-surface-variant">
+        {{ treatments() === null ? 'Loading…' : 'No treatment plan.' }}
+      </p>
+    }
+  </mat-card>
+
+  <mat-card appearance="outlined" class="!p-5" *hasAccess="'orders.read_all | orders.read_own'">
+    <div class="mb-2 flex items-center">
+      <h2 class="m-0 flex-1 text-base font-semibold">Orders and results</h2>
+      <ui-button icon="add" [variant]="variants.Tonal" access="orders.create" [action]="order"
+        >New order</ui-button
+      >
+    </div>
+    @for (o of orders() ?? []; track o.id) {
+      <a
+        class="flex items-center gap-2 border-b border-outline-variant/60 px-1 py-2.5 text-sm hover:bg-surface-container"
+        [routerLink]="['/clinic/clinical-orders', o.id]"
+      >
+        <span class="flex-1">
+          <span class="block font-medium">{{ o.description }}</span>
+          <span class="block text-xs text-on-surface-variant"
+            >{{ o.code }} · {{ o.orderingDoctor?.fullName }} ·
+            {{ o.createdAt | date: dateFormat }}</span
+          >
+        </span>
+        @if (o.isAbnormal) {
+          <span
+            class="rounded-full bg-error-container px-2 py-0.5 text-[11px] font-medium text-on-error-container"
+            >Abnormal</span
+          >
+        }
+        <ui-status [value]="o.status" enum="GenericStatus" />
+      </a>
+    } @empty {
+      <p class="m-0 text-sm text-on-surface-variant">
+        {{ orders() === null ? 'Loading…' : 'Nothing ordered yet.' }}
+      </p>
+    }
+  </mat-card>
+</div>
