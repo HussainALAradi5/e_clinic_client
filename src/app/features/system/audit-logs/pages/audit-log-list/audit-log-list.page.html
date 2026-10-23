@@ -13,7 +13,7 @@
   <ng-template uiCell="user" let-row>{{ row.user?.fullName ?? 'System' }}</ng-template>
   <ng-template uiCell="action" let-row>{{ row.action | enumLabel: 'AuditAction' }}</ng-template>
   <ng-template uiCell="auditable" let-row>
-    {{ row.auditableType ?? '—' }}
+    {{ row.auditableType ? humanise(row.auditableType) : '—' }}
     @if (row.auditableId) {
       <span class="font-mono text-xs text-on-surface-variant">{{
         row.auditableId.slice(0, 8)

@@ -57,7 +57,11 @@
     }
   </ui-page-header>
 
-  <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
+  <mat-tab-group
+    mat-stretch-tabs="false"
+    animationDuration="0ms"
+    [selectedIndex]="tab() === 'members' ? 1 : 0"
+  >
     <mat-tab label="Overview">
       <div class="grid grid-cols-1 gap-4 pt-4 lg:grid-cols-3">
         <mat-card appearance="outlined" class="!p-5 lg:col-span-2">
@@ -69,7 +73,14 @@
         <mat-card appearance="outlined" class="!p-5">
           <dl class="m-0 grid grid-cols-[1fr_auto] gap-y-2 text-sm">
             <dt class="text-on-surface-variant">Users</dt>
-            <dd class="m-0 text-right font-semibold tabular-nums">{{ role.usersCount ?? 0 }}</dd>
+            <dd class="m-0 text-right font-semibold tabular-nums">
+              <a
+                class="text-primary underline-offset-2 hover:underline"
+                [routerLink]="[]"
+                [queryParams]="{ tab: 'members' }"
+                >{{ role.usersCount ?? 0 }}</a
+              >
+            </dd>
             <dt class="text-on-surface-variant">Permissions</dt>
             <dd class="m-0 text-right font-semibold tabular-nums">
               {{ role.permissionsCount ?? 0 }}
@@ -77,6 +88,49 @@
           </dl>
         </mat-card>
       </div>
+    </mat-tab>
+
+    <mat-tab *hasAccess="'users.read_all | users.read_own'">
+      <ng-template mat-tab-label>
+        Members
+        <span
+          class="ms-2 rounded-full bg-secondary-container px-2 text-xs font-semibold text-on-secondary-container tabular-nums"
+          >{{ role.usersCount ?? 0 }}</span
+        >
+      </ng-template>
+      <ng-template matTabContent>
+        <!-- The users who hold this role: same table as Users (search, filters, sorting, pages), limited to it. -->
+        <ui-resource-list
+          class="block pt-4"
+          resource="users"
+          title="Members"
+          embedded
+          rowLink="/system/users/:id"
+          emptyTitle="Nobody has this role yet"
+          [params]="{ role: role.name }"
+          [columns]="memberColumns"
+        >
+          <ng-template uiCell="full_name" let-row>
+            <span class="inline-flex items-center gap-2">
+              <span
+                class="grid size-8 shrink-0 place-items-center rounded-full bg-primary-container text-xs font-semibold text-on-primary-container"
+                aria-hidden="true"
+                >{{ initials(row.fullName) }}</span
+              >
+              <span class="font-medium">{{ row.fullName }}</span>
+            </span>
+          </ng-template>
+          <ng-template uiCell="user_type" let-row>{{
+            row.userType | enumLabel: 'UserType'
+          }}</ng-template>
+          <ng-template uiCell="status" let-row
+            ><ui-status [value]="row.status" enum="UserStatus"
+          /></ng-template>
+          <ng-template uiCell="last_login_at" let-row>
+            {{ row.lastLoginAt ? (row.lastLoginAt | relativeTime) : 'Never' }}
+          </ng-template>
+        </ui-resource-list>
+      </ng-template>
     </mat-tab>
 
     <mat-tab label="Access">

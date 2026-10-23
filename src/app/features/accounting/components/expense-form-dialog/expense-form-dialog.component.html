@@ -11,7 +11,7 @@
       <p class="m-0 mb-2 text-sm text-on-surface-variant">Paid to</p>
       <mat-button-toggle-group
         hideSingleSelectionIndicator
-        aria-label="Payee"
+        aria-label="Paid to"
         [value]="payeeKind()"
         (change)="setPayeeKind($event.value)"
       >
@@ -31,7 +31,7 @@
           [control]="form.controls.payeeCompanyId"
         />
       } @else {
-        <ui-text class="sm:col-span-2" label="Payee name" [control]="form.controls.payee" />
+        <ui-text class="sm:col-span-2" label="Paid to (name)" [control]="form.controls.payee" />
       }
       <ui-text
         class="sm:col-span-2"

@@ -35,7 +35,7 @@
     <ui-status enum="FileScanStatus" [value]="row.scanStatus" />
   </ng-template>
   <ng-template uiCell="attachable_type" let-row>
-    {{ row.attachableType }}
+    {{ humanise(row.attachableType) }}
     <span class="font-mono text-xs text-on-surface-variant">{{ row.attachableId.slice(-8) }}</span>
   </ng-template>
   <ng-template uiCell="created_at" let-row>

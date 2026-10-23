@@ -1,3 +1,4 @@
+import { initials } from '@shared/utils/text';
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -51,10 +52,7 @@ export class PortalLayout {
   protected readonly home = PORTAL_PATH;
   protected readonly inbox = `${PORTAL_PATH}/notifications`;
   protected readonly security = `${PORTAL_PATH}/security`;
-  protected readonly initials = computed(() => {
-    const user = this.auth.user();
-    return user ? `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase() : '';
-  });
+  protected readonly initials = computed(() => initials(this.auth.user()?.fullName));
 
   private idleTimer: ReturnType<typeof setTimeout> | null = null;
 

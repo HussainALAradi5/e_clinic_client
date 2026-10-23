@@ -1,38 +1,41 @@
-<ui-page-header [title]="title()" [subtitle]="subtitle()">
-  @if (views() && store.schema()) {
-    <ui-saved-views
-      actions
-      [resource]="resource()"
-      [query]="store.query()"
-      [columns]="visibleColumns()"
-      [applyDefault]="pristineUrl"
-      (apply)="applyView($event)"
-    />
-  }
-  @if (store.schema(); as schema) {
-    <ng-container actions>
-      @if (schema.importable) {
-        <button matButton="outlined" type="button" (click)="openImport()">
-          <mat-icon>upload_file</mat-icon> Import
-        </button>
-      }
-      @if (schema.exportFormats.length) {
-        <ui-export-menu
-          [formats]="schema.exportFormats"
-          [selectedCount]="selection.count()"
-          [run]="exportAs"
-        />
-      }
-    </ng-container>
-  }
-  <ng-content select="[actions]" />
-</ui-page-header>
+@if (!embedded()) {
+  <ui-page-header [title]="title()" [subtitle]="subtitle()">
+    @if (views() && store.schema()) {
+      <ui-saved-views
+        actions
+        [resource]="resource()"
+        [query]="store.query()"
+        [columns]="visibleColumns()"
+        [applyDefault]="pristineUrl"
+        (apply)="applyView($event)"
+      />
+    }
+    @if (store.schema(); as schema) {
+      <ng-container actions>
+        @if (schema.importable) {
+          <button matButton="outlined" type="button" (click)="openImport()">
+            <mat-icon>upload_file</mat-icon> Import
+          </button>
+        }
+        @if (schema.exportFormats.length) {
+          <ui-export-menu
+            [formats]="schema.exportFormats"
+            [selectedCount]="selection.count()"
+            [run]="exportAs"
+          />
+        }
+      </ng-container>
+    }
+    <ng-content select="[actions]" />
+  </ui-page-header>
+}
 
 @if (store.schema(); as schema) {
   <ui-generic-filter
     class="mb-3"
     [schema]="schema"
     [query]="store.query()"
+    [count]="count"
     (queryChange)="setQuery($event)"
   />
   @if (selectable()) {

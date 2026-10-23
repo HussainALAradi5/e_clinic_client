@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { RoleFormDialog } from '../../components/role-form-dialog/role-form-dialog.component';
 import { RoleFormDialogData } from '../../interfaces/role-form-dialog-data.interface';
@@ -16,7 +16,7 @@ import { DialogService } from '@shared/services/ui/dialog.service';
 @Component({
   selector: 'app-role-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, AppButton, MatIconModule],
+  imports: [ResourceListPage, CellDef, AppButton, MatIconModule, RouterLink],
   templateUrl: './role-list.page.html',
 })
 export class RoleListPage {

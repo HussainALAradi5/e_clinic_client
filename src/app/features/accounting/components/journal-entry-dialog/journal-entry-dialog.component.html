@@ -10,7 +10,12 @@
   >
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-[11rem_10rem_minmax(0,1fr)]">
       <ui-text label="Date" type="date" [control]="form.controls.entryDate" />
-      <ui-select label="Kind" [options]="types" [required]="true" [control]="form.controls.type" />
+      <ui-select
+        label="Entry type"
+        [options]="types"
+        [required]="true"
+        [control]="form.controls.type"
+      />
       <ui-text label="Description" [maxLength]="500" [control]="form.controls.description" />
     </div>
 

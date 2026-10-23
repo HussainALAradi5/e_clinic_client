@@ -15,7 +15,7 @@ import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { AttachmentApi } from '@shared/services/attachment/attachment-api.service';
 import { TaskTracker } from '@shared/services/task/task-tracker.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
-import { formatBytes } from '@shared/utils/text';
+import { formatBytes, humanise } from '@shared/utils/text';
 
 /** `/system/attachments` — every file in the system: download (signed link), ZIP of a selection, bulk archive / delete. */
 @Component({
@@ -35,6 +35,8 @@ import { formatBytes } from '@shared/utils/text';
   templateUrl: './attachment-list.page.html',
 })
 export class AttachmentListPage {
+  /** Record types arrive as aliases (`clinical_order`); shown as words. */
+  protected readonly humanise = humanise;
   private readonly api = inject(AttachmentApi);
   private readonly tracker = inject(TaskTracker);
   private readonly notify = inject(NotifyService);

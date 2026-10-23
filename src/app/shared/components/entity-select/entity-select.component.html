@@ -1,4 +1,4 @@
-<mat-form-field class="w-full">
+<mat-form-field class="w-full" [subscriptSizing]="subscript()">
   <mat-label>{{ label() }}</mat-label>
   @if (icon()) {
     <mat-icon matPrefix class="mr-1">{{ icon() }}</mat-icon>

@@ -6,6 +6,8 @@ import { Page } from '@shared/interfaces/api/page.interface';
 /** State of the component-scoped ResourceListStore. */
 export interface ResourceListState {
   endpoint: string;
+  /** Fixed endpoint parameters every request carries, e.g. `{ role: 'doctor' }` for a role's members. */
+  params: Record<string, string>;
   schema: ResourceSchema | null;
   query: ListQuery;
   page: Page<{ id: string }>;

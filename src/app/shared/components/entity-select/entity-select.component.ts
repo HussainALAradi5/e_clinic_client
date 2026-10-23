@@ -55,6 +55,8 @@ export class EntitySelect<T extends { id: string }> implements OnInit {
   readonly hint = input<string | null>(null);
   readonly icon = input<string | null>(null);
   readonly autofocus = input(false);
+  /** 'dynamic' for toolbars and filter sheets, where no hint / error line is reserved. */
+  readonly subscript = input<'fixed' | 'dynamic'>('fixed');
 
   /** The picked record (null when cleared). */
   readonly picked = output<T | null>();

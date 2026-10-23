@@ -1,3 +1,5 @@
+import { LookupRow } from '@shared/interfaces/ui/lookup-row.interface';
+
 /** 'in_progress' / 'dateOfBirth' → 'In progress' / 'Date of birth'. */
 export function humanise(value: string): string {
   const text = value
@@ -19,4 +21,17 @@ export function formatBytes(bytes: number): string {
     unit++;
   }
   return `${unit === 0 ? value : value.toFixed(1)} ${BYTE_UNITS[unit]}`;
+}
+
+/** Human name of any record row: a person's full name, else its name, else its code. */
+export function recordName(row: LookupRow): string {
+  return row.fullName ?? row.name ?? row.code ?? row.id;
+}
+
+/** Two-letter avatar initials of a name: 'Rana Saleh' → 'RS', 'Grace Dela Cruz' → 'GC'. */
+export function initials(name: string | null | undefined): string {
+  const parts = (name ?? '').trim().split(/\s+/).filter(Boolean);
+  return (
+    (parts[0]?.charAt(0) ?? '') + (parts.length > 1 ? parts[parts.length - 1].charAt(0) : '')
+  ).toUpperCase();
 }

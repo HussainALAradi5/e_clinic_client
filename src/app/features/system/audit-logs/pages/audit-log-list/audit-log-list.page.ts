@@ -1,3 +1,4 @@
+import { humanise } from '@shared/utils/text';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AuditEntryDialog } from '../../components/audit-entry-dialog/audit-entry-dialog.component';
@@ -18,6 +19,8 @@ import { defaultQuery } from '@shared/utils/list-query';
   templateUrl: './audit-log-list.page.html',
 })
 export class AuditLogListPage {
+  /** Record types arrive as aliases (`clinical_order`); shown as words. */
+  protected readonly humanise = humanise;
   private readonly dialogs = inject(DialogService);
 
   protected readonly defaults = defaultQuery({ dateRange: DateRangePreset.Last7Days });

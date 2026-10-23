@@ -39,3 +39,4 @@ export * from './print-sheet/print-sheet.component';
 export * from './code-image/code-image.component';
 export * from './date-range-filter/date-range-filter.component';
 export * from './flag/flag.component';
+export * from './filter-panel/filter-panel.component';

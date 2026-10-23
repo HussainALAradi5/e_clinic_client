@@ -1,4 +1,4 @@
-import { formatBytes, humanise } from './text';
+import { formatBytes, humanise, initials } from './text';
 
 describe('humanise', () => {
   it('handles snake, kebab and camel case', () => {
@@ -13,5 +13,14 @@ describe('formatBytes', () => {
     expect(formatBytes(512)).toBe('512 B');
     expect(formatBytes(1536)).toBe('1.5 KB');
     expect(formatBytes(5 * 1024 * 1024)).toBe('5.0 MB');
+  });
+});
+
+describe('initials', () => {
+  it('takes the first and last name', () => {
+    expect(initials('Rana Saleh')).toBe('RS');
+    expect(initials('Grace Dela Cruz')).toBe('GC');
+    expect(initials('  maryam ')).toBe('M');
+    expect(initials(null)).toBe('');
   });
 });

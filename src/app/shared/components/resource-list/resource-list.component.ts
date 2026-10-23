@@ -1,4 +1,5 @@
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -79,6 +80,13 @@ export class ResourceListPage implements OnInit {
   readonly emptyTitle = input('No records found');
   /** Offer the saved-views menu. */
   readonly views = input(true);
+  /** Fixed endpoint parameters, e.g. `{ role: 'doctor' }` (the users of one role). */
+  readonly params = input<Record<string, string>>({});
+  /**
+   * Inside another page (a tab of a detail page): no page header, saved views or import / export, and the filters
+   * stay out of the address bar.
+   */
+  readonly embedded = input(false, { transform: booleanAttribute });
 
   readonly rowClick = output<{ id: string }>();
 
@@ -98,6 +106,7 @@ export class ResourceListPage implements OnInit {
   private readonly viewColumns = signal<string[] | null>(null);
   /** The list opened without state in the URL → the user's default view may apply. */
   protected readonly pristineUrl = Object.keys(this.route.snapshot.queryParams).length === 0;
+  protected readonly count = (query: ListQuery) => this.store.count(query);
   protected readonly endpointPath = computed(() => this.endpoint() ?? this.resource());
   /** Row checkboxes when the user can act on rows: a bulk action, or export of the ticked rows. */
   protected readonly selectable = computed(() => {
@@ -123,7 +132,10 @@ export class ResourceListPage implements OnInit {
     this.store.init(
       this.resource(),
       this.endpointPath(),
-      queryFromUrl(this.route.snapshot.queryParams, this.defaults()),
+      this.embedded()
+        ? this.defaults()
+        : queryFromUrl(this.route.snapshot.queryParams, this.defaults()),
+      this.params(),
     );
   }
 
@@ -134,6 +146,9 @@ export class ResourceListPage implements OnInit {
 
   protected setQuery(query: ListQuery): void {
     this.store.setQuery(query);
+    if (this.embedded()) {
+      return;
+    }
     void this.router.navigate([], {
       relativeTo: this.route,
       queryParams: queryToUrl(query, this.defaults()),

@@ -16,4 +16,19 @@
       >
     }
   </ng-template>
+  <ng-template uiCell="users_count" let-row>
+    <!-- Opens the role on its Members tab: who holds it, with search and pages. -->
+    <a
+      class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-primary hover:bg-primary-container"
+      [routerLink]="['/system/roles-permissions', row.id]"
+      [queryParams]="{ tab: 'members' }"
+      (click)="$event.stopPropagation()"
+      [attr.aria-label]="
+        'See the ' + row.usersCount + ' users with the ' + row.displayName + ' role'
+      "
+    >
+      <mat-icon class="!size-4 !text-base">group</mat-icon>
+      <span class="tabular-nums">{{ row.usersCount ?? 0 }}</span>
+    </a>
+  </ng-template>
 </ui-resource-list>

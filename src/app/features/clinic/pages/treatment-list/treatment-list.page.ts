@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { ClinicalActions } from '../../services/clinical-actions.service';
 import { AppButton } from '@shared/components/app-button/app-button.component';
@@ -24,6 +25,7 @@ import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
     DatePipe,
     MatButtonModule,
     MatIconModule,
+    MatTooltipModule,
     RouterLink,
   ],
   templateUrl: './treatment-list.page.html',

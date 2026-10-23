@@ -1,3 +1,4 @@
+import { initials } from '@shared/utils/text';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -60,10 +61,7 @@ export class ShellLayout {
 
   protected readonly menu = inject(NavigationService).menu;
 
-  protected readonly initials = computed(() => {
-    const user = this.auth.user();
-    return user ? `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase() : '';
-  });
+  protected readonly initials = computed(() => initials(this.auth.user()?.fullName));
 
   constructor() {
     // Labels and options of every enum, loaded once per session.

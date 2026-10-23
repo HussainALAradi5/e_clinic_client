@@ -1,4 +1,3 @@
-import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,52 +10,45 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Observable } from 'rxjs';
 import { DateRangeFilter } from '@shared/components/date-range-filter/date-range-filter.component';
+import { FilterPanel } from '@shared/components/filter-panel/filter-panel.component';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { hasTones } from '@shared/constants/status-tones.constants';
 import { FilterFieldType } from '@shared/enums/list/filter-field-type.enum';
 import { FilterOperator } from '@shared/enums/shared/filter-operator.enum';
-import { Money } from '@shared/interfaces/common/money.interface';
 import { DateRangeValue } from '@shared/interfaces/list/date-range-filter.interface';
 import { FilterValue, ListQuery } from '@shared/interfaces/list/list-query.interface';
 import { FilterDef, ResourceSchema } from '@shared/interfaces/list/resource-schema.interface';
-import { FilterDraft } from '@shared/interfaces/ui/filter-draft.interface';
+import { FilterPanelData, FilterPanelResult } from '@shared/interfaces/ui/filter-panel.interface';
 import { EnumService } from '@shared/services/data/enum.service';
+import { DialogService } from '@shared/services/ui/dialog.service';
+import { describe, fieldLabel } from '@shared/utils/filter-conditions';
 import { rootConditions, setRootCondition } from '@shared/utils/list-query';
-import { humanise } from '@shared/utils/text';
-
-const EMPTY_DRAFT: FilterDraft = { values: [], text: '', min: '', max: '' };
 
 /**
- * Search, one date-range calendar, colour-badge pickers for statuses / priorities and filter chips, all built from
- * the resource schema; emits a ListQuery in the server grammar
- * (root-level AND of field conditions). Debounced search; every change resets to page 1.
+ * List toolbar built from the resource schema: search, one date-range calendar, colour-badge pickers for statuses /
+ * priorities, and a "Filters" side sheet with every other field. Active sheet filters show as removable chips.
+ * Emits a ListQuery in the server grammar (root-level AND of field conditions); every change resets to page 1.
  */
 @Component({
   selector: 'ui-generic-filter',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgTemplateOutlet,
-    FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
     MatButtonModule,
-    MatMenuModule,
     MatChipsModule,
-    MatCheckboxModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
     MatSelectModule,
     MatSlideToggleModule,
     DateRangeFilter,
@@ -68,29 +60,29 @@ const EMPTY_DRAFT: FilterDraft = { values: [], text: '', min: '', max: '' };
 export class GenericFilter implements OnInit {
   readonly schema = input.required<ResourceSchema>();
   readonly query = input.required<ListQuery>();
+  /** Rows a query would return (the sheet's "Show N results"); optional. */
+  readonly count = input<((query: ListQuery) => Observable<number>) | null>(null);
   readonly queryChange = output<ListQuery>();
 
   private readonly enums = inject(EnumService);
-  protected readonly hasTones = hasTones;
-  protected readonly types = FilterFieldType;
-  protected readonly operators = FilterOperator;
+  private readonly dialogs = inject(DialogService);
   protected readonly search = new FormControl('', { nonNullable: true });
-  protected readonly editing = signal<FilterDef | null>(null);
-  protected readonly draft = signal<FilterDraft>(EMPTY_DRAFT);
+  /** Names of records picked in relation filters, so chips read "Doctor: Omar Khalil". */
+  private readonly names = signal<Record<string, string>>({});
 
   protected readonly conditions = computed(() => rootConditions(this.query().filter));
-  /** Coloured enums (status, priority) sit in the toolbar as badge pickers; the rest live under Filter. */
+  /** Coloured enums (status, priority) sit in the toolbar as badge pickers; the rest live in the sheet. */
   protected readonly quickFilters = computed(() =>
     this.schema().filters.filter((f) => f.type === FilterFieldType.Enum && hasTones(f.enum)),
   );
-  private readonly menuFilters = computed(() =>
-    this.schema().filters.filter((f) => !this.quickFilters().includes(f)),
+  private readonly sheetFilters = computed(() =>
+    this.schema().filters.filter((f) => !f.hidden && !this.quickFilters().includes(f)),
   );
+  /** Chips for every applied filter outside the toolbar — hidden ones too (set by a link), so the list never narrows silently. */
   protected readonly activeFilters = computed(() =>
-    this.menuFilters().filter((f) => f.field in this.conditions()),
-  );
-  protected readonly availableFilters = computed(() =>
-    this.menuFilters().filter((f) => !(f.field in this.conditions())),
+    this.schema().filters.filter(
+      (f) => !this.quickFilters().includes(f) && f.field in this.conditions(),
+    ),
   );
   protected readonly dateFields = computed(() =>
     this.schema().dateFields.map((field) => ({ value: field, label: this.label(field) })),
@@ -99,14 +91,13 @@ export class GenericFilter implements OnInit {
     const q = this.query();
     return { field: q.dateField, preset: q.dateRange, from: q.dateFrom, to: q.dateTo };
   });
-  protected readonly hasActive = computed(
-    () =>
+  protected readonly hasActive = computed(() => {
+    const q = this.query();
+    return (
       Object.keys(this.conditions()).length > 0 ||
-      !!this.query().search ||
-      !!this.query().dateRange ||
-      !!this.query().dateFrom ||
-      !!this.query().dateTo,
-  );
+      !!(q.search || q.dateRange || q.dateFrom || q.dateTo)
+    );
+  });
 
   constructor() {
     this.enums.load().subscribe({ error: () => undefined });
@@ -120,67 +111,21 @@ export class GenericFilter implements OnInit {
   }
 
   protected label(field: string): string {
-    return (
-      this.schema().columns.find((c) => c.field === field)?.label ??
-      humanise(field.replace(/_id$/, ''))
-    );
+    return fieldLabel(this.schema(), field);
   }
 
   protected enumOptions(def: FilterDef) {
     return def.enum ? this.enums.options(def.enum) : [];
   }
 
-  protected value(event: Event): string {
-    return (event.target as HTMLInputElement).value;
-  }
-
-  protected setDraft(changes: Partial<FilterDraft>): void {
-    this.draft.update((d) => ({ ...d, ...changes }));
-  }
-
-  protected toggleValue(value: string | number): void {
-    this.draft.update((d) => ({
-      ...d,
-      values: d.values.includes(value) ? d.values.filter((v) => v !== value) : [...d.values, value],
-    }));
-  }
-
-  /** Loads the field's current conditions into the editor draft. */
-  protected edit(def: FilterDef): void {
-    const ops = this.conditions()[def.field] ?? {};
-    const list = (v: FilterValue | undefined) =>
-      Array.isArray(v) ? v : v === undefined || v === null ? [] : [v as string];
-    const [betweenMin, betweenMax] = list(ops[FilterOperator.Between]);
-    this.editing.set(def);
-    this.draft.set({
-      values: list(ops[FilterOperator.In] ?? ops[FilterOperator.Eq]),
-      text: String(
-        ops[FilterOperator.Like] ?? ops[FilterOperator.Starts] ?? ops[FilterOperator.Eq] ?? '',
-      ),
-      min: String(ops[FilterOperator.Gte] ?? betweenMin ?? ''),
-      max: String(ops[FilterOperator.Lte] ?? betweenMax ?? ''),
-    });
-  }
-
-  protected apply(def: FilterDef): void {
-    this.patch({
-      filter: setRootCondition(this.query().filter, def.field, this.compile(def, this.draft())),
-    });
-    this.editing.set(null);
-  }
-
-  protected remove(def: FilterDef): void {
-    this.patch({ filter: setRootCondition(this.query().filter, def.field, null) });
-    this.editing.set(null);
-  }
-
-  protected setDate(value: DateRangeValue): void {
-    this.patch({
-      dateField: value.field,
-      dateRange: value.preset,
-      dateFrom: value.from,
-      dateTo: value.to,
-    });
+  protected summary(def: FilterDef): string {
+    return describe(this.conditions()[def.field] ?? {}, (v) =>
+      def.enum
+        ? this.enums.label(def.enum, v)
+        : def.type === FilterFieldType.Relation
+          ? (this.names()[String(v)] ?? 'selected')
+          : String(v),
+    );
   }
 
   protected selectedValues(def: FilterDef): (string | number)[] {
@@ -202,6 +147,45 @@ export class GenericFilter implements OnInit {
     this.patch({ filter: setRootCondition(this.query().filter, def.field, condition) });
   }
 
+  protected setDate(value: DateRangeValue): void {
+    this.patch({
+      dateField: value.field,
+      dateRange: value.preset,
+      dateFrom: value.from,
+      dateTo: value.to,
+    });
+  }
+
+  /** Opens the side sheet with every non-toolbar filter; applies its answer in one go. */
+  protected async openSheet(): Promise<void> {
+    const result = await this.dialogs.open<FilterPanel, FilterPanelData, FilterPanelResult>(
+      FilterPanel,
+      {
+        schema: this.schema(),
+        query: this.query(),
+        fields: this.sheetFilters().map((f) => f.field),
+        names: this.names(),
+        count: this.count() ?? undefined,
+      },
+      {
+        width: '420px',
+        maxWidth: '100vw',
+        height: '100dvh',
+        position: { right: '0', top: '0' },
+        panelClass: 'ui-filter-sheet',
+        autoFocus: false,
+      },
+    );
+    if (result) {
+      this.names.update((n) => ({ ...n, ...result.names }));
+      this.patch({ filter: result.filter });
+    }
+  }
+
+  protected remove(def: FilterDef): void {
+    this.patch({ filter: setRootCondition(this.query().filter, def.field, null) });
+  }
+
   protected clearAll(): void {
     this.search.setValue('', { emitEvent: false });
     this.queryChange.emit({
@@ -215,80 +199,7 @@ export class GenericFilter implements OnInit {
     });
   }
 
-  protected summary(def: FilterDef): string {
-    const ops = this.conditions()[def.field] ?? {};
-    const symbols: Partial<Record<FilterOperator, string>> = {
-      gte: '≥',
-      lte: '≤',
-      gt: '>',
-      lt: '<',
-      ne: '≠',
-      like: 'contains',
-      starts: 'starts with',
-    };
-    return Object.entries(ops)
-      .map(([op, value]) => {
-        const values = (Array.isArray(value) ? value : [value]).map((v) =>
-          def.enum ? this.enums.label(def.enum, v as string) : String(v),
-        );
-        if (op === FilterOperator.Between) {
-          return `${values[0]} – ${values[1]}`;
-        }
-        if (op === FilterOperator.Nin) {
-          return `not ${values.join(', ')}`;
-        }
-        return `${symbols[op as FilterOperator] ? symbols[op as FilterOperator] + ' ' : ''}${values.join(', ')}`;
-      })
-      .join(' · ');
-  }
-
   protected patch(changes: Partial<ListQuery>): void {
     this.queryChange.emit({ ...this.query(), ...changes, page: 1, cursor: undefined });
-  }
-
-  /** Draft → operators allowed by the schema for this field (null = remove). */
-  private compile(def: FilterDef, draft: FilterDraft): Record<string, FilterValue> | null {
-    const allows = (op: FilterOperator) => def.operators.includes(op);
-    switch (def.type) {
-      case FilterFieldType.Enum:
-      case FilterFieldType.Relation:
-        if (draft.values.length === 0 && !draft.text) {
-          return null;
-        }
-        if (def.type === FilterFieldType.Relation && draft.text) {
-          return { eq: draft.text.trim() };
-        }
-        return allows(FilterOperator.In) ? { in: draft.values } : { eq: draft.values[0] };
-      case FilterFieldType.Boolean:
-        return draft.text ? { eq: draft.text === 'true' } : null;
-      case FilterFieldType.Number:
-      case FilterFieldType.Money:
-      case FilterFieldType.Date:
-      case FilterFieldType.Datetime: {
-        const { min, max } = draft;
-        if (!min && !max) {
-          return null;
-        }
-        if (
-          min &&
-          max &&
-          !(allows(FilterOperator.Gte) && allows(FilterOperator.Lte)) &&
-          allows(FilterOperator.Between)
-        ) {
-          return { between: [min, max] };
-        }
-        return { ...(min ? { gte: min } : {}), ...(max ? { lte: max } : {}) };
-      }
-      default: {
-        const text = draft.text.trim();
-        return text
-          ? allows(FilterOperator.Like)
-            ? { like: text }
-            : allows(FilterOperator.Starts)
-              ? { starts: text }
-              : { eq: text }
-          : null;
-      }
-    }
   }
 }

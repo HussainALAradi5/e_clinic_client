@@ -1,7 +1,7 @@
 import { computed, inject } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { catchError, EMPTY, pipe, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, map, Observable, pipe, switchMap, tap } from 'rxjs';
 import { ApiError } from '@shared/interfaces/api/api-error.interface';
 import { ListQuery } from '@shared/interfaces/list/list-query.interface';
 import { ResourceListState } from '@shared/interfaces/list/resource-list-state.interface';
@@ -17,6 +17,7 @@ import { emptyPage } from '@shared/utils/page';
 export const ResourceListStore = signalStore(
   withState<ResourceListState>({
     endpoint: '',
+    params: {},
     schema: null,
     query: {},
     page: emptyPage<{ id: string }>(),
@@ -35,7 +36,7 @@ export const ResourceListStore = signalStore(
       pipe(
         tap(() => patchState(store, { loading: true, error: null })),
         switchMap(() =>
-          api.list<{ id: string }>(store.endpoint(), store.query()).pipe(
+          api.list<{ id: string }>(store.endpoint(), store.query(), store.params()).pipe(
             tap((page) => patchState(store, { page, loading: false })),
             catchError((error: ApiError) => {
               patchState(store, { loading: false, error });
@@ -48,8 +49,13 @@ export const ResourceListStore = signalStore(
 
     return {
       selection: () => selection,
-      init(resource: string, endpoint: string, query: ListQuery): void {
-        patchState(store, { endpoint, query });
+      init(
+        resource: string,
+        endpoint: string,
+        query: ListQuery,
+        params: Record<string, string> = {},
+      ): void {
+        patchState(store, { endpoint, query, params });
         schemas.schema(resource).subscribe({
           next: (schema) => {
             const sort = store.query().sort ?? [schema.defaultSort];
@@ -71,6 +77,21 @@ export const ResourceListStore = signalStore(
       },
       reload(): void {
         fetch();
+      },
+      /** Rows a query would return, without touching the list (cheap: one row per page). */
+      count(query: ListQuery): Observable<number> {
+        return api
+          .list<{ id: string }>(
+            store.endpoint(),
+            {
+              ...query,
+              page: 1,
+              perPage: 1,
+              cursor: undefined,
+            },
+            store.params(),
+          )
+          .pipe(map((page) => page.meta.total ?? page.data.length));
       },
     };
   }),

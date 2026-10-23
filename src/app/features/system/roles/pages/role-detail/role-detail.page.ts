@@ -3,13 +3,18 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { RoleFormDialog } from '../../components/role-form-dialog/role-form-dialog.component';
 import { RoleFormDialogData } from '../../interfaces/role-form-dialog-data.interface';
 import { RoleStore } from '../../services/role.store';
 import { HasAccessDirective } from '@core/directives/has-access.directive';
 import { AppButton } from '@shared/components/app-button/app-button.component';
 import { AuditHistory } from '@shared/components/audit-history/audit-history.component';
+import { CellDef } from '@shared/components/data-table/cell.directive';
+import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
+import { StatusChip } from '@shared/components/status-chip/status-chip.component';
+import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
+import { RelativeTimePipe } from '@shared/pipes/relative-time.pipe';
 import { ErrorState } from '@shared/components/error-state/error-state.component';
 import { PageHeader } from '@shared/components/page-header/page-header.component';
 import { Skeleton } from '@shared/components/skeleton/skeleton.component';
@@ -18,7 +23,7 @@ import { AccessRow, Role } from '@shared/interfaces/identity/role.interface';
 import { ConfirmConfig } from '@shared/interfaces/ui/confirm-config.interface';
 import { DialogService } from '@shared/services/ui/dialog.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
-import { humanise } from '@shared/utils/text';
+import { humanise, initials } from '@shared/utils/text';
 
 /** `/system/roles-permissions/:id` — role facts, granted rights (read-only), lifecycle actions and history. */
 @Component({
@@ -36,11 +41,19 @@ import { humanise } from '@shared/utils/text';
     MatTabsModule,
     MatChipsModule,
     MatIconModule,
+    RouterLink,
+    ResourceListPage,
+    CellDef,
+    StatusChip,
+    EnumLabelPipe,
+    RelativeTimePipe,
   ],
   templateUrl: './role-detail.page.html',
 })
 export class RoleDetailPage implements OnInit {
   readonly id = input.required<string>();
+  /** `?tab=members` opens the Members tab (the users count on the roles list links here). */
+  readonly tab = input<string | undefined>();
 
   protected readonly store = inject(RoleStore);
   private readonly dialogs = inject(DialogService);
@@ -49,6 +62,8 @@ export class RoleDetailPage implements OnInit {
 
   protected readonly variants = ButtonVariant;
   protected readonly humanise = humanise;
+  protected readonly initials = initials;
+  protected readonly memberColumns = ['full_name', 'email', 'user_type', 'status', 'last_login_at'];
   /** Resources with at least one right, for the read-only Access tab. */
   protected readonly granted = computed(() =>
     this.store
