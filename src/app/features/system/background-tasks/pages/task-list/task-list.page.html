@@ -10,13 +10,10 @@
     <span class="whitespace-nowrap tabular-nums">{{ row.createdAt | date: dateTimeFormat }}</span>
   </ng-template>
   <ng-template uiCell="type" let-row>
-    <span class="font-medium">{{ row.type | enumLabel: 'TaskType' }}</span>
+    <ui-status [value]="row.type" enum="TaskType" />
     @if (row.requestedBy) {
       <span class="block text-xs text-on-surface-variant">{{ row.requestedBy.fullName }}</span>
     }
-  </ng-template>
-  <ng-template uiCell="status" let-row>
-    <ui-status enum="GenericStatus" [value]="row.status" />
   </ng-template>
   <ng-template uiCell="progress" let-row>
     <div class="flex min-w-28 items-center gap-2">

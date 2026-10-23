@@ -22,10 +22,6 @@
       row.name
     }}</span>
   </ng-template>
-  <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'AccountType' }}</ng-template>
-  <ng-template uiCell="normal_balance" let-row>{{
-    row.normalBalance | enumLabel: 'BalanceSide'
-  }}</ng-template>
   <ng-template uiCell="parent" let-row>{{
     row.parent ? row.parent.code + ' ' + row.parent.name : '—'
   }}</ng-template>

@@ -12,9 +12,6 @@
       <span class="block text-xs text-on-surface-variant">{{ row.person.fullName }}</span>
     }
   </ng-template>
-  <ng-template uiCell="channel" let-row>{{
-    row.channel | enumLabel: 'NotificationChannel'
-  }}</ng-template>
   <ng-template uiCell="template" let-row>
     <span class="font-mono text-xs">{{ row.template }}</span>
     @if (row.subject) {

@@ -8,7 +8,6 @@ import { HasAccessDirective } from '@core/directives/has-access.directive';
 import { AppButton } from '@shared/components/app-button/app-button.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
-import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { QtyPipe } from '@shared/pipes/qty.pipe';
 import { DATE_FORMAT } from '@shared/constants/app.constants';
 
@@ -20,7 +19,6 @@ import { DATE_FORMAT } from '@shared/constants/app.constants';
     ResourceListPage,
     CellDef,
     AppButton,
-    StatusChip,
     HasAccessDirective,
     DatePipe,
     QtyPipe,

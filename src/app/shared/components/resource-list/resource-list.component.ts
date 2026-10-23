@@ -121,11 +121,15 @@ export class ResourceListPage implements OnInit {
     const known = new Set(schema.columns.map((c) => c.field));
     const fromView = this.viewColumns()?.filter((field) => known.has(field));
     const pick = (fromView?.length ? fromView : null) ?? this.columns() ?? [...known];
-    return pick.map((field) => ({
-      field,
-      label: schema.columns.find((c) => c.field === field)?.label ?? field,
-      sortable: schema.sortable.includes(field),
-    }));
+    return pick.map((field) => {
+      const column = schema.columns.find((c) => c.field === field);
+      return {
+        field,
+        label: column?.label ?? field,
+        enum: column?.enum,
+        sortable: schema.sortable.includes(field),
+      };
+    });
   });
 
   ngOnInit(): void {

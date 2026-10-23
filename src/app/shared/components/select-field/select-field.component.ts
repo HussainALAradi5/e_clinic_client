@@ -3,7 +3,6 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
-import { hasTones } from '@shared/constants/status-tones.constants';
 import { EnumOption } from '@shared/interfaces/common/enum-meta.interface';
 import { EnumService } from '@shared/services/data/enum.service';
 import { errorMessage } from '@shared/utils/validators';
@@ -33,7 +32,8 @@ export class SelectField {
     () => this.options() ?? (this.enum() ? this.enums.options(this.enum()!) : []),
   );
 
-  protected readonly badges = computed(() => hasTones(this.enum()));
+  /** Enum values show as their coloured badges, the same as in lists. */
+  protected readonly badges = computed(() => !!this.enum());
   /** Selected values, for the badge trigger. */
   protected selected(): string[] {
     const value = this.control().value as string | string[] | null;

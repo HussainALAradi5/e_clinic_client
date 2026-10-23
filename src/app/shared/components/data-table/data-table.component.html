@@ -69,6 +69,8 @@
                 context: { $implicit: row, value: read(row, column.field) }
               "
             />
+          } @else if (column.enum) {
+            <ui-status [value]="$any(read(row, column.field))" [enum]="column.enum" />
           } @else {
             {{ read(row, column.field) ?? '—' }}
           }

@@ -23,12 +23,5 @@
     <span class="block text-xs text-on-surface-variant">{{ row.patient?.code }}</span>
   </ng-template>
   <ng-template uiCell="provider" let-row>{{ row.provider?.fullName }}</ng-template>
-  <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'AppointmentType' }}</ng-template>
   <ng-template uiCell="room" let-row>{{ row.room?.code ?? '—' }}</ng-template>
-  <ng-template uiCell="status" let-row
-    ><ui-status [value]="row.status" enum="AppointmentStatus"
-  /></ng-template>
-  <ng-template uiCell="source" let-row>{{
-    row.source | enumLabel: 'AppointmentSource'
-  }}</ng-template>
 </ui-resource-list>

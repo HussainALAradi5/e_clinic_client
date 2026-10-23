@@ -9,7 +9,6 @@ import {
   signal,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterLink } from '@angular/router';
@@ -34,7 +33,6 @@ import { ButtonVariant } from '@shared/enums/ui/button.enum';
 import { ApiError } from '@shared/interfaces/api/api-error.interface';
 import { Employee, SalaryComponent } from '@shared/interfaces/hr/employee.interface';
 import { Fact } from '@shared/interfaces/ui/fact.interface';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { MoneyPipe } from '@shared/pipes/money.pipe';
 import { AccessService } from '@shared/services/auth/access.service';
 import { EnumService } from '@shared/services/data/enum.service';
@@ -57,13 +55,11 @@ import { formatMoney } from '@shared/utils/money';
     AuditHistory,
     LeaveBalances,
     MatCardModule,
-    MatChipsModule,
     MatIconModule,
     MatTabsModule,
     RouterLink,
     HasAccessDirective,
     DatePipe,
-    EnumLabelPipe,
     MoneyPipe,
   ],
   templateUrl: './employee-detail.page.html',

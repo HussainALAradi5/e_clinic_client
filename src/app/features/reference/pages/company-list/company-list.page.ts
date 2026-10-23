@@ -7,7 +7,6 @@ import { AppButton } from '@shared/components/app-button/app-button.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
 import { Company } from '@shared/interfaces/reference/company.interface';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { CompanyApi } from '@shared/services/reference/company-api.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
 import { DialogService } from '@shared/services/ui/dialog.service';
@@ -17,7 +16,7 @@ import { Flag } from '@shared/components/flag/flag.component';
 @Component({
   selector: 'app-company-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Flag, ResourceListPage, CellDef, AppButton, EnumLabelPipe],
+  imports: [Flag, ResourceListPage, CellDef, AppButton],
   templateUrl: './company-list.page.html',
 })
 export class CompanyListPage {

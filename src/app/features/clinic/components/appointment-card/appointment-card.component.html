@@ -15,9 +15,9 @@
     </div>
     <p class="m-0 mt-1 truncate font-medium">{{ a.patient?.fullName }}</p>
     <p class="m-0 truncate text-xs text-on-surface-variant">
-      {{ a.patient?.code }} · {{ a.provider?.fullName }} · {{ a.type | enumLabel: 'AppointmentType'
-      }}{{ a.room ? ' · ' + a.room.code : '' }}
+      {{ a.patient?.code }} · {{ a.provider?.fullName }}{{ a.room ? ' · ' + a.room.code : '' }}
     </p>
+    <ui-status class="mt-1.5" [value]="a.type" enum="AppointmentType" />
   </a>
   <app-appointment-actions
     class="mt-2"

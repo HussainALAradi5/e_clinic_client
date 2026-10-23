@@ -15,6 +15,7 @@
           <div class="min-w-0 flex-1">
             <div class="flex flex-wrap items-center gap-2">
               <ui-status [value]="t.priority" enum="TreatmentPriority" />
+              <ui-status [value]="t.type" enum="TreatmentType" />
               @if ((t.progress?.consecutiveAbsences ?? 0) >= 2) {
                 <span class="flex items-center gap-1 text-xs font-medium text-error"
                   ><mat-icon class="!size-4 !text-base">warning</mat-icon>
@@ -31,8 +32,7 @@
               >{{ t.title }}</a
             >
             <p class="m-0 truncate text-sm text-on-surface-variant">
-              {{ t.patient?.fullName }} · {{ t.patient?.phone }} ·
-              {{ t.type | enumLabel: 'TreatmentType' }} · {{ t.doctor?.fullName }}
+              {{ t.patient?.fullName }} · {{ t.patient?.phone }} · {{ t.doctor?.fullName }}
             </p>
           </div>
           <ui-button
@@ -43,9 +43,8 @@
           >
         </div>
         @if (t.progress; as p) {
-          <app-progress-meter class="mt-3" [progress]="p" [compact]="true" />
+          <ui-progress-meter class="mt-3" [progress]="p" [status]="t.status" [compact]="true" />
           <p class="m-0 mt-1 text-xs text-on-surface-variant">
-            {{ p.attendedSessions }} of {{ p.plannedSessions }} done ·
             {{ t.sessionDurationMinutes }} min sessions
           </p>
         }

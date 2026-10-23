@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } fro
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { ProgressMeter } from '../progress-meter/progress-meter.component';
+import { ProgressMeter } from '@shared/components/progress-meter/progress-meter.component';
 import { ClinicalActions } from '../../services/clinical-actions.service';
 import { HasAccessDirective } from '@core/directives/has-access.directive';
 import { AppButton } from '@shared/components/app-button/app-button.component';

@@ -14,7 +14,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { ProgressMeter } from '../../components/progress-meter/progress-meter.component';
+import { ProgressMeter } from '@shared/components/progress-meter/progress-meter.component';
 import { ClinicalActions } from '../../services/clinical-actions.service';
 import { HasAccessDirective } from '@core/directives/has-access.directive';
 import { AppButton } from '@shared/components/app-button/app-button.component';

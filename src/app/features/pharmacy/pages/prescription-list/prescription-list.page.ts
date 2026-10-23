@@ -5,14 +5,13 @@ import { PharmacyActions } from '../../services/pharmacy-actions.service';
 import { AppButton } from '@shared/components/app-button/app-button.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
-import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { DATE_FORMAT } from '@shared/constants/app.constants';
 
 /** `/pharmacy/prescriptions` — every prescription; patients see their own here. */
 @Component({
   selector: 'app-prescription-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, AppButton, StatusChip, DatePipe],
+  imports: [ResourceListPage, CellDef, AppButton, DatePipe],
   templateUrl: './prescription-list.page.html',
 })
 export class PrescriptionListPage {

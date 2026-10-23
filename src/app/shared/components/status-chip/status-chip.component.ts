@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { statusTone, TONE_CLASSES } from '@shared/constants/status-tones.constants';
+import { TONE_CLASSES } from '@shared/constants/status-tones.constants';
 import { EnumService } from '@shared/services/data/enum.service';
 
-/** `<ui-status enum="GenericStatus" [value]="row.status" />` — coloured chip, text always shown (WCAG). */
+/** `<ui-status enum="GenericStatus" [value]="row.status" />` — coloured chip for any enum value, text always shown (WCAG). */
 @Component({
   selector: 'ui-status',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,6 +16,6 @@ export class StatusChip {
   private readonly enums = inject(EnumService);
   protected readonly label = computed(() => this.enums.label(this.enum(), this.value()));
   protected readonly classes = computed(
-    () => TONE_CLASSES[statusTone(this.enum(), this.value()?.toString())],
+    () => TONE_CLASSES[this.enums.tone(this.enum(), this.value())],
   );
 }

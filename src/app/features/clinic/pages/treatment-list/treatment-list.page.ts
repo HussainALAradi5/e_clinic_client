@@ -2,15 +2,13 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { ProgressMeter } from '@shared/components/progress-meter/progress-meter.component';
 import { RouterLink } from '@angular/router';
 import { ClinicalActions } from '../../services/clinical-actions.service';
 import { AppButton } from '@shared/components/app-button/app-button.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
-import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { DATE_FORMAT } from '@shared/constants/app.constants';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 
 /** `/clinic/treatments` — every plan with its progress; prescribe from here or from a visit. */
 @Component({
@@ -20,12 +18,10 @@ import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
     ResourceListPage,
     CellDef,
     AppButton,
-    StatusChip,
-    EnumLabelPipe,
     DatePipe,
     MatButtonModule,
     MatIconModule,
-    MatTooltipModule,
+    ProgressMeter,
     RouterLink,
   ],
   templateUrl: './treatment-list.page.html',

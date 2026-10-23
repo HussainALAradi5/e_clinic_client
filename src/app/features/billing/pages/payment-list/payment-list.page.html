@@ -21,7 +21,7 @@
     }}</a></ng-template
   >
   <ng-template uiCell="method" let-row>
-    {{ row.method | enumLabel: 'PaymentMethod' }}
+    <ui-status [value]="row.method" enum="PaymentMethod" />
     @if (row.cardLast4) {
       <span class="text-on-surface-variant">·· {{ row.cardLast4 }}</span>
     }
@@ -29,8 +29,5 @@
   <ng-template uiCell="amount" let-row
     ><span class="tabular-nums">{{ row.amount | money }}</span></ng-template
   >
-  <ng-template uiCell="status" let-row
-    ><ui-status [value]="row.status" enum="PaymentStatus"
-  /></ng-template>
   <ng-template uiCell="received_by" let-row>{{ row.receivedBy?.fullName }}</ng-template>
 </ui-resource-list>

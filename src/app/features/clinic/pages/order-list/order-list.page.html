@@ -16,7 +16,6 @@
     <span class="font-medium">{{ row.patient?.fullName }}</span>
     <span class="block text-xs text-on-surface-variant">{{ row.patient?.code }}</span>
   </ng-template>
-  <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'ClinicalOrderType' }}</ng-template>
   <ng-template uiCell="description" let-row>
     {{ row.description }}
     @if (row.isAbnormal) {
@@ -26,12 +25,6 @@
       >
     }
   </ng-template>
-  <ng-template uiCell="priority" let-row
-    ><ui-status [value]="row.priority" enum="TreatmentPriority"
-  /></ng-template>
-  <ng-template uiCell="status" let-row
-    ><ui-status [value]="row.status" enum="GenericStatus"
-  /></ng-template>
   <ng-template uiCell="ordered_by" let-row>{{ row.orderingDoctor?.fullName }}</ng-template>
   <ng-template uiCell="created_at" let-row>{{ row.createdAt | date: dateFormat }}</ng-template>
 </ui-resource-list>

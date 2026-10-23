@@ -14,9 +14,6 @@
   <ng-template uiCell="closed_at" let-row>{{
     row.closedAt ? (row.closedAt | date: dateTimeFormat) : '—'
   }}</ng-template>
-  <ng-template uiCell="status" let-row
-    ><ui-status [value]="row.status" enum="CashSessionStatus"
-  /></ng-template>
   <ng-template uiCell="difference" let-row>
     <span
       class="tabular-nums"

@@ -5,14 +5,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { ProgressMeter } from '../../components/progress-meter/progress-meter.component';
+import { ProgressMeter } from '@shared/components/progress-meter/progress-meter.component';
 import { ClinicalActions } from '../../services/clinical-actions.service';
 import { AppButton } from '@shared/components/app-button/app-button.component';
 import { PageHeader } from '@shared/components/page-header/page-header.component';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { DATE_FORMAT } from '@shared/constants/app.constants';
 import { Treatment } from '@shared/interfaces/clinic/treatment.interface';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { TreatmentApi } from '@shared/services/clinic/treatment-api.service';
 
 /** `/clinic/treatments/queue` — open plans with no next session booked, urgent first: reception's work list. */
@@ -24,7 +23,6 @@ import { TreatmentApi } from '@shared/services/clinic/treatment-api.service';
     AppButton,
     StatusChip,
     ProgressMeter,
-    EnumLabelPipe,
     DatePipe,
     MatButtonModule,
     MatCardModule,

@@ -13,11 +13,5 @@
     ><span class="font-medium">{{ row.fullName }}</span></ng-template
   >
   <ng-template uiCell="department" let-row>{{ row.department?.name ?? '—' }}</ng-template>
-  <ng-template uiCell="employment_type" let-row>{{
-    row.employmentType | enumLabel: 'EmploymentType'
-  }}</ng-template>
   <ng-template uiCell="hire_date" let-row>{{ row.hireDate | date: dateFormat }}</ng-template>
-  <ng-template uiCell="status" let-row
-    ><ui-status [value]="row.status" enum="EmployeeStatus"
-  /></ng-template>
 </ui-resource-list>

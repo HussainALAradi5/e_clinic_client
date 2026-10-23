@@ -13,7 +13,7 @@ import { TextField } from '@shared/components/text-field/text-field.component';
 import { DATE_FORMAT } from '@shared/constants/app.constants';
 import { DuplicateCheckPayload, Person } from '@shared/interfaces/identity/person.interface';
 import { AgePipe } from '@shared/pipes/age.pipe';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
+import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { AccessService } from '@shared/services/auth/access.service';
 import { UserApi } from '@shared/services/identity/user-api.service';
 import { DialogService } from '@shared/services/ui/dialog.service';
@@ -35,7 +35,7 @@ import { NotifyService } from '@shared/services/ui/notify.service';
     MatIconModule,
     DatePipe,
     AgePipe,
-    EnumLabelPipe,
+    StatusChip,
   ],
   templateUrl: './people-search.page.html',
 })

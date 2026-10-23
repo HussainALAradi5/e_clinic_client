@@ -7,10 +7,11 @@
     <span class="font-medium tabular-nums">{{ a.startTime }}</span>
     <span class="min-w-0 truncate">
       {{ show() === 'patient' ? a.patient?.fullName : a.provider?.fullName }}
-      <span class="text-on-surface-variant"
-        >· {{ a.type | enumLabel: 'AppointmentType' }}{{ a.room ? ' · ' + a.room.code : '' }}</span
-      >
+      @if (a.room) {
+        <span class="text-on-surface-variant">· {{ a.room.code }}</span>
+      }
     </span>
+    <ui-status [value]="a.type" enum="AppointmentType" />
     <ui-status [value]="a.status" enum="AppointmentStatus" />
   </a>
 } @empty {

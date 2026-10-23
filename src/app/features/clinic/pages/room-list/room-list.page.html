@@ -13,7 +13,6 @@
   <ng-template uiCell="name" let-row
     ><span class="font-medium">{{ row.name }}</span></ng-template
   >
-  <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'RoomType' }}</ng-template>
   <ng-template uiCell="department" let-row>{{ row.department?.name ?? '—' }}</ng-template>
   <ng-template uiCell="is_in_service" let-row>
     @if (row.isInService) {

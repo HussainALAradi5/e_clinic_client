@@ -12,6 +12,7 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { CellDef } from './cell.directive';
 import { Skeleton } from '@shared/components/skeleton/skeleton.component';
+import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { Page } from '@shared/interfaces/api/page.interface';
 import { TableColumn } from '@shared/interfaces/ui/table.interface';
 import { ListSelection } from '@shared/utils/list-selection';
@@ -26,7 +27,14 @@ const SELECT = '__select';
 @Component({
   selector: 'ui-data-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatTableModule, MatSortModule, MatCheckboxModule, NgTemplateOutlet, Skeleton],
+  imports: [
+    MatTableModule,
+    MatSortModule,
+    MatCheckboxModule,
+    NgTemplateOutlet,
+    Skeleton,
+    StatusChip,
+  ],
   host: { class: 'block' },
   templateUrl: './data-table.component.html',
 })

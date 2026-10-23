@@ -25,14 +25,8 @@
       <span class="block text-xs text-on-surface-variant">{{ row.description }}</span>
     }
   </ng-template>
-  <ng-template uiCell="category" let-row>{{
-    row.category | enumLabel: 'AttachmentCategory'
-  }}</ng-template>
   <ng-template uiCell="size_bytes" let-row>
     <span class="whitespace-nowrap tabular-nums">{{ size(row.sizeBytes) }}</span>
-  </ng-template>
-  <ng-template uiCell="scan_status" let-row>
-    <ui-status enum="FileScanStatus" [value]="row.scanStatus" />
   </ng-template>
   <ng-template uiCell="attachable_type" let-row>
     {{ humanise(row.attachableType) }}

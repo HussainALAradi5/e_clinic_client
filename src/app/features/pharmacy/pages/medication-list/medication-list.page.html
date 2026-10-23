@@ -30,7 +30,6 @@
     }
   </ng-template>
   <ng-template uiCell="brand_name" let-row>{{ row.brandName ?? '—' }}</ng-template>
-  <ng-template uiCell="form" let-row>{{ row.form | enumLabel: 'MedicationForm' }}</ng-template>
   <ng-template uiCell="price" let-row
     ><span class="tabular-nums">{{ row.price | money }}</span></ng-template
   >

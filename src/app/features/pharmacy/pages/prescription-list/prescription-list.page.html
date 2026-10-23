@@ -24,9 +24,6 @@
       }
     </span>
   </ng-template>
-  <ng-template uiCell="status" let-row
-    ><ui-status [value]="row.status" enum="GenericStatus"
-  /></ng-template>
   <ng-template uiCell="valid_until" let-row
     ><span class="tabular-nums">{{ row.validUntil | date: dateFormat }}</span></ng-template
   >

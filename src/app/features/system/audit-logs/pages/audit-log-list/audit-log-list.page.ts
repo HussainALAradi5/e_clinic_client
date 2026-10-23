@@ -7,7 +7,6 @@ import { ResourceListPage } from '@shared/components/resource-list/resource-list
 import { DATE_FORMAT, TIME_FORMAT } from '@shared/constants/app.constants';
 import { DateRangePreset } from '@shared/enums/shared/date-range-preset.enum';
 import { AuditLog } from '@shared/interfaces/identity/audit-log.interface';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { DialogService } from '@shared/services/ui/dialog.service';
 import { defaultQuery } from '@shared/utils/list-query';
 
@@ -15,7 +14,7 @@ import { defaultQuery } from '@shared/utils/list-query';
 @Component({
   selector: 'app-audit-log-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, DatePipe, EnumLabelPipe],
+  imports: [ResourceListPage, CellDef, DatePipe],
   templateUrl: './audit-log-list.page.html',
 })
 export class AuditLogListPage {

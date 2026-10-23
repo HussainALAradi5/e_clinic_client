@@ -4,7 +4,6 @@ import { BillingActions } from '../../services/billing-actions.service';
 import { AppButton } from '@shared/components/app-button/app-button.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
-import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { DATE_FORMAT } from '@shared/constants/app.constants';
 import { MoneyPipe } from '@shared/pipes/money.pipe';
 
@@ -12,7 +11,7 @@ import { MoneyPipe } from '@shared/pipes/money.pipe';
 @Component({
   selector: 'app-claim-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, AppButton, StatusChip, MoneyPipe, DatePipe],
+  imports: [ResourceListPage, CellDef, AppButton, MoneyPipe, DatePipe],
   templateUrl: './claim-list.page.html',
 })
 export class ClaimListPage {

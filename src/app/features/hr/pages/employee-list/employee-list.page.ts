@@ -4,9 +4,7 @@ import { HireDialog } from '../../components/hire-dialog/hire-dialog.component';
 import { AppButton } from '@shared/components/app-button/app-button.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
-import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { Employee } from '@shared/interfaces/hr/employee.interface';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { DialogService } from '@shared/services/ui/dialog.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
 import { DatePipe } from '@angular/common';
@@ -16,7 +14,7 @@ import { DATE_FORMAT } from '@shared/constants/app.constants';
 @Component({
   selector: 'app-employee-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, AppButton, StatusChip, EnumLabelPipe, DatePipe],
+  imports: [ResourceListPage, CellDef, AppButton, DatePipe],
   templateUrl: './employee-list.page.html',
 })
 export class EmployeeListPage {

@@ -7,7 +7,6 @@ import { AppButton } from '@shared/components/app-button/app-button.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
 import { BillableService } from '@shared/interfaces/billing/billable-service.interface';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { MoneyPipe } from '@shared/pipes/money.pipe';
 import { BillableServiceApi } from '@shared/services/billing/billable-service-api.service';
 import { DialogService } from '@shared/services/ui/dialog.service';
@@ -17,7 +16,7 @@ import { NotifyService } from '@shared/services/ui/notify.service';
 @Component({
   selector: 'app-service-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, AppButton, EnumLabelPipe, MoneyPipe],
+  imports: [ResourceListPage, CellDef, AppButton, MoneyPipe],
   templateUrl: './service-list.page.html',
 })
 export class ServiceListPage {

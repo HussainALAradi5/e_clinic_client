@@ -25,7 +25,6 @@ import { InvoiceItem } from '@shared/interfaces/billing/invoice.interface';
 import { Payment } from '@shared/interfaces/billing/payment.interface';
 import { Refund } from '@shared/interfaces/billing/refund.interface';
 import { Fact } from '@shared/interfaces/ui/fact.interface';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { MoneyPipe } from '@shared/pipes/money.pipe';
 import { InvoiceApi } from '@shared/services/billing/invoice-api.service';
 import { EntityDetail } from '@shared/services/data/entity-detail';
@@ -54,7 +53,6 @@ const SOURCE_ROUTES: Record<string, string> = {
     StatusChip,
     AuditHistory,
     HasAccessDirective,
-    EnumLabelPipe,
     MoneyPipe,
     DatePipe,
     MatButtonModule,

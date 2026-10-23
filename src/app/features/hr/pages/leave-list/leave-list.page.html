@@ -31,7 +31,4 @@
       row.isHalfDay ? '½' : (row.totalDays | qty)
     }}</span></ng-template
   >
-  <ng-template uiCell="status" let-row
-    ><ui-status [value]="row.status" enum="ApprovalStatus"
-  /></ng-template>
 </ui-resource-list>

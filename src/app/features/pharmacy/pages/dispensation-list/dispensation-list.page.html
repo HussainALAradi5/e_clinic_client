@@ -17,7 +17,7 @@
     <span class="block text-xs text-on-surface-variant">{{ row.patient?.code }}</span>
   </ng-template>
   <ng-template uiCell="kind" let-row>
-    {{ row.kind | enumLabel: 'DispensationKind' }}
+    <ui-status [value]="row.kind" enum="DispensationKind" />
     @if (row.prescription) {
       <span class="block font-mono text-xs text-on-surface-variant">{{
         row.prescription.code
@@ -32,7 +32,4 @@
     </span>
   </ng-template>
   <ng-template uiCell="dispensed_by" let-row>{{ row.dispensedBy?.fullName }}</ng-template>
-  <ng-template uiCell="status" let-row
-    ><ui-status [value]="row.status" enum="GenericStatus"
-  /></ng-template>
 </ui-resource-list>

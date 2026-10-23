@@ -9,7 +9,6 @@ import { AppButton } from '@shared/components/app-button/app-button.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
 import { Account } from '@shared/interfaces/accounting/account.interface';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { AccountApi } from '@shared/services/accounting/account-api.service';
 import { DialogService } from '@shared/services/ui/dialog.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
@@ -18,15 +17,7 @@ import { NotifyService } from '@shared/services/ui/notify.service';
 @Component({
   selector: 'app-account-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    ResourceListPage,
-    CellDef,
-    AppButton,
-    EnumLabelPipe,
-    MatButtonModule,
-    MatIconModule,
-    RouterLink,
-  ],
+  imports: [ResourceListPage, CellDef, AppButton, MatButtonModule, MatIconModule, RouterLink],
   templateUrl: './account-list.page.html',
 })
 export class AccountListPage {

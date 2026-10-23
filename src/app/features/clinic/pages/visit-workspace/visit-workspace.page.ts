@@ -22,7 +22,7 @@ import { debounceTime, firstValueFrom, merge } from 'rxjs';
 import { AppointmentActionsBar } from '../../components/appointment-actions/appointment-actions.component';
 import { ConsentsPanel } from '../../components/consents-panel/consents-panel.component';
 import { Icd10Picker } from '../../components/icd10-picker/icd10-picker.component';
-import { ProgressMeter } from '../../components/progress-meter/progress-meter.component';
+import { ProgressMeter } from '@shared/components/progress-meter/progress-meter.component';
 import { ConsentDialogData } from '../../interfaces/dialog-data.interface';
 import { AppointmentActions } from '../../services/appointment-actions.service';
 import { ClinicalActions } from '../../services/clinical-actions.service';

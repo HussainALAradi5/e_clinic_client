@@ -195,7 +195,7 @@
                 >
               </td>
               <td class="px-2 py-3">
-                {{ p.method | enumLabel: 'PaymentMethod' }}
+                <ui-status [value]="p.method" enum="PaymentMethod" />
                 @if (p.cardLast4) {
                   <span class="text-on-surface-variant">·· {{ p.cardLast4 }}</span>
                 }
@@ -253,7 +253,7 @@
                 <span class="font-mono">{{ r.code }}</span>
                 <span class="block text-xs text-on-surface-variant">{{ r.reason }}</span>
               </td>
-              <td class="px-2 py-3">{{ r.method | enumLabel: 'PaymentMethod' }}</td>
+              <td class="px-2 py-3"><ui-status [value]="r.method" enum="PaymentMethod" /></td>
               <td class="px-2 py-3 text-right tabular-nums">{{ r.amount | money }}</td>
               <td class="px-2 py-3">
                 @if (r.isProcessed) {

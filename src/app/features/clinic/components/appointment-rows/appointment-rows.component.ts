@@ -4,13 +4,12 @@ import { RouterLink } from '@angular/router';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { DATE_FORMAT } from '@shared/constants/app.constants';
 import { Appointment } from '@shared/interfaces/clinic/appointment.interface';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 
 /** Compact booking rows (date, time, who, status) linking to the booking — patient, doctor and room pages. */
 @Component({
   selector: 'app-appointment-rows',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, StatusChip, EnumLabelPipe, DatePipe],
+  imports: [RouterLink, StatusChip, DatePipe],
   host: { class: 'block' },
   templateUrl: './appointment-rows.component.html',
 })

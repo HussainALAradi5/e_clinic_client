@@ -17,10 +17,6 @@
   <ng-template uiCell="description" let-row
     ><span class="line-clamp-2 max-w-md">{{ row.description }}</span></ng-template
   >
-  <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'JournalEntryType' }}</ng-template>
-  <ng-template uiCell="status" let-row
-    ><ui-status [value]="row.status" enum="JournalEntryStatus"
-  /></ng-template>
   <ng-template uiCell="total_debit" let-row
     ><span class="tabular-nums">{{ row.totalDebit | money }}</span></ng-template
   >

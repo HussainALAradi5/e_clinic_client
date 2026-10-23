@@ -11,7 +11,6 @@
     <span class="whitespace-nowrap tabular-nums">{{ row.createdAt | date: dateTimeFormat }}</span>
   </ng-template>
   <ng-template uiCell="user" let-row>{{ row.user?.fullName ?? 'System' }}</ng-template>
-  <ng-template uiCell="action" let-row>{{ row.action | enumLabel: 'AuditAction' }}</ng-template>
   <ng-template uiCell="auditable" let-row>
     {{ row.auditableType ? humanise(row.auditableType) : '—' }}
     @if (row.auditableId) {

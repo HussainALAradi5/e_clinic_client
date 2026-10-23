@@ -4,6 +4,8 @@ import { map, Observable, of, shareReplay, tap } from 'rxjs';
 import { SKIP_CASE } from '@core/interceptors/http-context';
 import { ApiEnvelope } from '@shared/interfaces/api/api-envelope.interface';
 import { EnumCatalog, EnumOption } from '@shared/interfaces/common/enum-meta.interface';
+import { CATEGORY_TONES, STATUS_TONES } from '@shared/constants/status-tones.constants';
+import { StatusTone } from '@shared/enums/ui/status-tone.enum';
 import { humanise } from '@shared/utils/text';
 
 /** Labels, options and transitions of every enum from GET /meta/enums (loaded once; keys kept as sent). */
@@ -41,6 +43,19 @@ export class EnumService {
       return '';
     }
     return this.options(enumName).find((o) => o.value === value)?.label ?? humanise(String(value));
+  }
+
+  /** Badge colour of a value: the hand-picked one, else a stable colour from the value's place in the enum. */
+  tone(enumName: string, value: string | number | null | undefined): StatusTone {
+    if (value === null || value === undefined || value === '') {
+      return StatusTone.Grey;
+    }
+    const fixed = STATUS_TONES[enumName];
+    if (fixed) {
+      return fixed[String(value)] ?? StatusTone.Grey;
+    }
+    const index = this.options(enumName).findIndex((o) => String(o.value) === String(value));
+    return index < 0 ? StatusTone.Grey : CATEGORY_TONES[index % CATEGORY_TONES.length];
   }
 
   canTransition(enumName: string, from: string, to: string): boolean {

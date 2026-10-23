@@ -26,7 +26,4 @@
   <ng-template uiCell="total_net" let-row
     ><span class="font-medium tabular-nums">{{ row.totalNet | money }}</span></ng-template
   >
-  <ng-template uiCell="status" let-row
-    ><ui-status [value]="row.status" enum="PayrollStatus"
-  /></ng-template>
 </ui-resource-list>

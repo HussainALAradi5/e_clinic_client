@@ -32,9 +32,6 @@
       row.approvedAmount ? (row.approvedAmount | money) : '—'
     }}</span></ng-template
   >
-  <ng-template uiCell="status" let-row
-    ><ui-status [value]="row.status" enum="ApprovalStatus"
-  /></ng-template>
   <ng-template uiCell="remitted_at" let-row>{{
     row.remittedAt ? (row.remittedAt | date: dateFormat) : '—'
   }}</ng-template>

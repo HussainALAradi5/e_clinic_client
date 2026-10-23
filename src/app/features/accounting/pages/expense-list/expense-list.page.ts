@@ -7,14 +7,13 @@ import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { DATE_FORMAT } from '@shared/constants/app.constants';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { MoneyPipe } from '@shared/pipes/money.pipe';
 
 /** `/accounting/expenses` — what the clinic spends: drafts, approvals waiting, approved to pay, paid. */
 @Component({
   selector: 'app-expense-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, AppButton, StatusChip, EnumLabelPipe, MoneyPipe, DatePipe],
+  imports: [ResourceListPage, CellDef, AppButton, StatusChip, MoneyPipe, DatePipe],
   templateUrl: './expense-list.page.html',
 })
 export class ExpenseListPage {

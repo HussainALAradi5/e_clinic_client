@@ -7,7 +7,6 @@ import { AppButton } from '@shared/components/app-button/app-button.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
 import { Room } from '@shared/interfaces/clinic/room.interface';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { RoomApi } from '@shared/services/clinic/room-api.service';
 import { DialogService } from '@shared/services/ui/dialog.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
@@ -16,7 +15,7 @@ import { NotifyService } from '@shared/services/ui/notify.service';
 @Component({
   selector: 'app-room-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, AppButton, EnumLabelPipe],
+  imports: [ResourceListPage, CellDef, AppButton],
   templateUrl: './room-list.page.html',
 })
 export class RoomListPage {

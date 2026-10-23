@@ -7,11 +7,9 @@ import { firstValueFrom } from 'rxjs';
 import { AppButton } from '@shared/components/app-button/app-button.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
-import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { DATE_FORMAT } from '@shared/constants/app.constants';
 import { FileScanStatus } from '@shared/enums/attachment/file-scan-status.enum';
 import { Attachment } from '@shared/interfaces/attachment/attachment.interface';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { AttachmentApi } from '@shared/services/attachment/attachment-api.service';
 import { TaskTracker } from '@shared/services/task/task-tracker.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
@@ -24,13 +22,11 @@ import { formatBytes, humanise } from '@shared/utils/text';
   imports: [
     ResourceListPage,
     CellDef,
-    StatusChip,
     AppButton,
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
     DatePipe,
-    EnumLabelPipe,
   ],
   templateUrl: './attachment-list.page.html',
 })

@@ -5,13 +5,12 @@ import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { DATE_FORMAT, TIME_FORMAT } from '@shared/constants/app.constants';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 
 /** `/system/background-tasks` — own exports, ZIPs and bulk actions (administrators see everyone's). */
 @Component({
   selector: 'app-task-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, StatusChip, MatProgressBarModule, DatePipe, EnumLabelPipe],
+  imports: [ResourceListPage, CellDef, StatusChip, MatProgressBarModule, DatePipe],
   templateUrl: './task-list.page.html',
 })
 export class TaskListPage {

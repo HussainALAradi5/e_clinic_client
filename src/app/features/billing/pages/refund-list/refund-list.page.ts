@@ -11,7 +11,6 @@ import { ApprovalStatus } from '@shared/enums/shared/approval-status.enum';
 import { ButtonVariant } from '@shared/enums/ui/button.enum';
 import { Refund } from '@shared/interfaces/billing/refund.interface';
 import { ListQuery } from '@shared/interfaces/list/list-query.interface';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { MoneyPipe } from '@shared/pipes/money.pipe';
 import { defaultQuery } from '@shared/utils/list-query';
 
@@ -22,16 +21,7 @@ import { defaultQuery } from '@shared/utils/list-query';
 @Component({
   selector: 'app-refund-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    ResourceListPage,
-    CellDef,
-    AppButton,
-    StatusChip,
-    EnumLabelPipe,
-    MoneyPipe,
-    DatePipe,
-    RouterLink,
-  ],
+  imports: [ResourceListPage, CellDef, AppButton, StatusChip, MoneyPipe, DatePipe, RouterLink],
   templateUrl: './refund-list.page.html',
 })
 export class RefundListPage {

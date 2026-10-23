@@ -120,12 +120,6 @@
               <span class="font-medium">{{ row.fullName }}</span>
             </span>
           </ng-template>
-          <ng-template uiCell="user_type" let-row>{{
-            row.userType | enumLabel: 'UserType'
-          }}</ng-template>
-          <ng-template uiCell="status" let-row
-            ><ui-status [value]="row.status" enum="UserStatus"
-          /></ng-template>
           <ng-template uiCell="last_login_at" let-row>
             {{ row.lastLoginAt ? (row.lastLoginAt | relativeTime) : 'Never' }}
           </ng-template>

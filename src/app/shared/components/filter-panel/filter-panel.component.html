@@ -22,8 +22,8 @@
                 [attr.aria-pressed]="draft.values.includes(option.value)"
                 (click)="toggle(def.field, option.value)"
               >
-                @if (hasTones(def.enum)) {
-                  <ui-status [value]="option.value" [enum]="def.enum!" />
+                @if (def.enum; as name) {
+                  <ui-status [value]="option.value" [enum]="name" />
                 } @else {
                   {{ option.label }}
                 }

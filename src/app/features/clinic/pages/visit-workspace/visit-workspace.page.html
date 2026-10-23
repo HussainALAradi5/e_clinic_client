@@ -270,7 +270,12 @@
                   <ui-status [value]="t.status" enum="GenericStatus" />
                 </span>
                 @if (t.progress; as pr) {
-                  <app-progress-meter class="mt-2" [progress]="pr" [compact]="true" />
+                  <ui-progress-meter
+                    class="mt-2"
+                    [progress]="pr"
+                    [status]="t.status"
+                    [compact]="true"
+                  />
                 }
               </a>
             } @empty {

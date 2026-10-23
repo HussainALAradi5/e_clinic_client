@@ -13,7 +13,6 @@ import { catchError, debounceTime, map, of, startWith, switchMap } from 'rxjs';
 import { EntitySelect } from '@shared/components/entity-select/entity-select.component';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { RELATION_ENDPOINTS } from '@shared/constants/relation-lookups.constants';
-import { hasTones } from '@shared/constants/status-tones.constants';
 import { FilterFieldType } from '@shared/enums/list/filter-field-type.enum';
 import { FilterGroup } from '@shared/interfaces/list/list-query.interface';
 import { FilterDef } from '@shared/interfaces/list/resource-schema.interface';
@@ -64,7 +63,6 @@ export class FilterPanel {
   private readonly enums = inject(EnumService);
 
   protected readonly types = FilterFieldType;
-  protected readonly hasTones = hasTones;
   protected readonly textHint = textHint;
   protected readonly name = recordName;
   protected readonly code = (row: LookupRow): string | null => row.code ?? null;

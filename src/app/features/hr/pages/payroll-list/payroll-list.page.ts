@@ -4,14 +4,13 @@ import { HrActions } from '../../services/hr-actions.service';
 import { AppButton } from '@shared/components/app-button/app-button.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
-import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { MoneyPipe } from '@shared/pipes/money.pipe';
 
 /** `/hr/payroll` — monthly payroll runs: calculated by HR, approved and paid by finance. */
 @Component({
   selector: 'app-payroll-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, AppButton, StatusChip, MoneyPipe],
+  imports: [ResourceListPage, CellDef, AppButton, MoneyPipe],
   templateUrl: './payroll-list.page.html',
 })
 export class PayrollListPage {

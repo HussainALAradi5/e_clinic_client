@@ -13,9 +13,6 @@
   <ng-template uiCell="name" let-row
     ><span class="font-medium">{{ row.name }}</span></ng-template
   >
-  <ng-template uiCell="category" let-row>{{
-    row.category | enumLabel: 'ServiceCategory'
-  }}</ng-template>
   <ng-template uiCell="price" let-row
     ><span class="tabular-nums">{{ row.price | money }}</span></ng-template
   >

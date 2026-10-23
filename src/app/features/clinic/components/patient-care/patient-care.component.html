@@ -27,7 +27,7 @@
           >{{ t.code }} · {{ t.doctor?.fullName }} · {{ t.createdAt | date: dateFormat }}</span
         >
         @if (t.progress; as p) {
-          <app-progress-meter class="mt-2" [progress]="p" [compact]="true" />
+          <ui-progress-meter class="mt-2" [progress]="p" [status]="t.status" [compact]="true" />
         }
       </a>
     } @empty {

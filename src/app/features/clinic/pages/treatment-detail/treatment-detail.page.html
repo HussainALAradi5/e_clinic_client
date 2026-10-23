@@ -86,7 +86,7 @@
         }
       </div>
       @if (t.progress; as p) {
-        <app-progress-meter [progress]="p" />
+        <ui-progress-meter [progress]="p" [status]="t.status" />
       }
     </mat-card>
     <mat-card appearance="outlined" class="!p-5"><ui-facts [items]="facts()" /></mat-card>

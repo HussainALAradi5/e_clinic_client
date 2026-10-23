@@ -9,7 +9,6 @@ import { AppButton } from '@shared/components/app-button/app-button.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
 import { DATE_FORMAT } from '@shared/constants/app.constants';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { DialogService } from '@shared/services/ui/dialog.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
 
@@ -17,7 +16,7 @@ import { NotifyService } from '@shared/services/ui/notify.service';
 @Component({
   selector: 'app-patient-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, AppButton, EnumLabelPipe, DatePipe],
+  imports: [ResourceListPage, CellDef, AppButton, DatePipe],
   templateUrl: './patient-list.page.html',
 })
 export class PatientListPage {

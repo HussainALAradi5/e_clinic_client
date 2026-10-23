@@ -21,7 +21,6 @@
       >
     }
   </ng-template>
-  <ng-template uiCell="gender" let-row>{{ row.gender | enumLabel: 'Gender' }}</ng-template>
   <ng-template uiCell="date_of_birth" let-row
     >{{ row.dateOfBirth | date: dateFormat }}
     <span class="text-on-surface-variant">({{ row.age }})</span></ng-template

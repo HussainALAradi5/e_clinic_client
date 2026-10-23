@@ -13,7 +13,6 @@
   <ng-template uiCell="name" let-row>
     <span class="font-medium">{{ row.name }}</span>
   </ng-template>
-  <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'CompanyType' }}</ng-template>
   <ng-template uiCell="country_code" let-row>
     <ui-flag [code]="row.countryCode" />
     {{ row.country?.name ?? row.countryCode }}

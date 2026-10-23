@@ -12,48 +12,18 @@
     >
     <ui-button icon="add" access="treatments.create" [action]="prescribe">Prescribe</ui-button>
   </ng-container>
-  <ng-template uiCell="code" let-row
-    ><span class="font-mono">{{ row.code }}</span></ng-template
-  >
+  <ng-template uiCell="title" let-row>
+    <span class="block max-w-52 truncate font-medium" [title]="row.title">{{ row.title }}</span>
+    <span class="block font-mono text-xs text-on-surface-variant">{{ row.code }}</span>
+  </ng-template>
   <ng-template uiCell="patient" let-row>
     <span class="font-medium">{{ row.patient?.fullName }}</span>
     <span class="block text-xs text-on-surface-variant">{{ row.patient?.code }}</span>
   </ng-template>
-  <ng-template uiCell="type" let-row>{{ row.type | enumLabel: 'TreatmentType' }}</ng-template>
-  <ng-template uiCell="priority" let-row
-    ><ui-status [value]="row.priority" enum="TreatmentPriority"
-  /></ng-template>
-  <ng-template uiCell="status" let-row
-    ><ui-status [value]="row.status" enum="GenericStatus"
-  /></ng-template>
   <ng-template uiCell="doctor" let-row>{{ row.doctor?.fullName }}</ng-template>
   <ng-template uiCell="progress" let-row>
     @if (row.progress; as p) {
-      <div class="flex min-w-24 flex-col gap-1">
-        <span class="text-sm tabular-nums">{{ p.attendedSessions }} / {{ p.plannedSessions }}</span>
-        <div
-          class="h-1.5 w-full overflow-hidden rounded-full bg-primary-container"
-          role="progressbar"
-          [attr.aria-valuenow]="p.attendedSessions"
-          aria-valuemin="0"
-          [attr.aria-valuemax]="p.plannedSessions"
-          [attr.aria-label]="'Sessions attended'"
-        >
-          <div
-            class="h-full rounded-full bg-primary"
-            [style.width.%]="p.plannedSessions ? (100 * p.attendedSessions) / p.plannedSessions : 0"
-          ></div>
-        </div>
-        @if (p.consecutiveAbsences >= 2) {
-          <span
-            class="inline-flex w-fit items-center gap-1 whitespace-nowrap rounded-full bg-error-container px-2 py-0.5 text-[11px] font-medium text-on-error-container"
-            [matTooltip]="p.consecutiveAbsences + ' sessions missed in a row'"
-          >
-            <mat-icon class="!size-3.5 !text-[14px]">warning</mat-icon
-            >{{ p.consecutiveAbsences }} missed
-          </span>
-        }
-      </div>
+      <ui-progress-meter class="w-36" [progress]="p" [status]="row.status" [compact]="true" />
     }
   </ng-template>
   <ng-template uiCell="created_at" let-row>{{ row.createdAt | date: dateFormat }}</ng-template>

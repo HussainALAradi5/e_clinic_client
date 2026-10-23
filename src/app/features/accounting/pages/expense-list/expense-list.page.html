@@ -17,9 +17,6 @@
   <ng-template uiCell="description" let-row
     ><span class="line-clamp-2 max-w-md">{{ row.description }}</span></ng-template
   >
-  <ng-template uiCell="category" let-row>{{
-    row.category | enumLabel: 'ExpenseCategory'
-  }}</ng-template>
   <ng-template uiCell="amount" let-row
     ><span class="tabular-nums">{{ row.amount | money }}</span></ng-template
   >

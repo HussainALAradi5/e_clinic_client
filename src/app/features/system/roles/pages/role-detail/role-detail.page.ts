@@ -12,8 +12,6 @@ import { AppButton } from '@shared/components/app-button/app-button.component';
 import { AuditHistory } from '@shared/components/audit-history/audit-history.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
-import { StatusChip } from '@shared/components/status-chip/status-chip.component';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { RelativeTimePipe } from '@shared/pipes/relative-time.pipe';
 import { ErrorState } from '@shared/components/error-state/error-state.component';
 import { PageHeader } from '@shared/components/page-header/page-header.component';
@@ -44,8 +42,6 @@ import { humanise, initials } from '@shared/utils/text';
     RouterLink,
     ResourceListPage,
     CellDef,
-    StatusChip,
-    EnumLabelPipe,
     RelativeTimePipe,
   ],
   templateUrl: './role-detail.page.html',

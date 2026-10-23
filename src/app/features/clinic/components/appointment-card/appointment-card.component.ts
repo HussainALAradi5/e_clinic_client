@@ -5,7 +5,6 @@ import { AppointmentActionsBar } from '../appointment-actions/appointment-action
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { AppointmentStatus } from '@shared/enums/clinic/appointment-status.enum';
 import { Appointment } from '@shared/interfaces/clinic/appointment.interface';
-import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 
 /** Minutes past the start after which a not-yet-arrived patient is shown as late. */
 const LATE_AFTER_MINUTES = 10;
@@ -14,7 +13,7 @@ const LATE_AFTER_MINUTES = 10;
 @Component({
   selector: 'app-appointment-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, MatIconModule, StatusChip, EnumLabelPipe, AppointmentActionsBar],
+  imports: [RouterLink, MatIconModule, StatusChip, AppointmentActionsBar],
   host: { class: 'block' },
   templateUrl: './appointment-card.component.html',
 })

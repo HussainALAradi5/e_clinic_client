@@ -14,9 +14,6 @@
   <ng-template uiCell="batch" let-row
     ><span class="font-mono">{{ row.batch?.batchNumber }}</span></ng-template
   >
-  <ng-template uiCell="type" let-row
-    ><ui-status [value]="row.type" enum="StockMovementType"
-  /></ng-template>
   <ng-template uiCell="quantity" let-row>
     <span class="tabular-nums font-semibold" [class.text-error]="row.quantity.startsWith('-')"
       >{{ row.quantity.startsWith('-') ? '' : '+' }}{{ row.quantity | qty }}</span
