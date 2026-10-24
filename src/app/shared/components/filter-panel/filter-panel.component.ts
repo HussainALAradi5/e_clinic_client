@@ -9,6 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { catchError, debounceTime, map, of, startWith, switchMap } from 'rxjs';
 import { EntitySelect } from '@shared/components/entity-select/entity-select.component';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
@@ -32,6 +33,8 @@ import { recordName } from '@shared/utils/text';
 
 /** Wait for the user to stop typing before counting the matching rows. */
 const COUNT_DEBOUNCE_MS = 350;
+/** Longer choice lists (currencies …) become a dropdown instead of a wall of pills. */
+const MAX_PILLS = 12;
 
 /**
  * All of a list's filters on one side sheet, each with the control that fits it: choices as pills, people and
@@ -51,6 +54,7 @@ const COUNT_DEBOUNCE_MS = 350;
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatSelectModule,
     EntitySelect,
     StatusChip,
   ],
@@ -63,6 +67,7 @@ export class FilterPanel {
   private readonly enums = inject(EnumService);
 
   protected readonly types = FilterFieldType;
+  protected readonly maxPills = MAX_PILLS;
   protected readonly textHint = textHint;
   protected readonly name = recordName;
   protected readonly code = (row: LookupRow): string | null => row.code ?? null;
@@ -118,7 +123,7 @@ export class FilterPanel {
   }
 
   protected options(def: FilterDef) {
-    return def.enum ? this.enums.options(def.enum) : [];
+    return def.options ?? (def.enum ? this.enums.options(def.enum) : []);
   }
 
   protected endpoint(def: FilterDef): string | null {

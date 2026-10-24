@@ -10,4 +10,6 @@ export enum FilterFieldType {
   Boolean = 'boolean',
   Enum = 'enum',
   Relation = 'relation',
+  /** A fixed list of named values sent with the schema (country, language, file type …). */
+  Choice = 'choice',
 }

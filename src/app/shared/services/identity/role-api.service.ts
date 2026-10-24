@@ -42,4 +42,14 @@ export class RoleApi extends EntityApi<Role, RolePayload> {
   syncUserRoles(userId: string, roles: string[]): Observable<User> {
     return this.api.put<User>(`roles/users/${userId}`, { roles });
   }
+
+  /** Gives the role to these people (their other roles stay); returns how many were added. */
+  addMembers(id: string, userIds: string[]): Observable<{ added: number }> {
+    return this.api.post<{ added: number }>(`roles/${id}/members`, { userIds });
+  }
+
+  /** Takes the role away from one person; they keep their other roles. */
+  removeMember(id: string, userId: string): Observable<void> {
+    return this.api.delete(`roles/${id}/members/${userId}`);
+  }
 }

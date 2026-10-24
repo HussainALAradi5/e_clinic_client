@@ -30,6 +30,7 @@ export function conditionFrom(def: FilterDef, draft: FilterDraft): Ops | null {
   const allows = (op: FilterOperator): boolean => def.operators.includes(op);
   switch (def.type) {
     case FilterFieldType.Enum:
+    case FilterFieldType.Choice:
     case FilterFieldType.Relation:
       if (!draft.values.length) return null;
       return allows(FilterOperator.In) && draft.values.length > 1

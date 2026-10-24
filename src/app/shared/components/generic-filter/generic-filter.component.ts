@@ -18,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { debounceTime, distinctUntilChanged, Observable } from 'rxjs';
 import { DateRangeFilter } from '@shared/components/date-range-filter/date-range-filter.component';
 import { FilterPanel } from '@shared/components/filter-panel/filter-panel.component';
@@ -33,6 +34,9 @@ import { EnumService } from '@shared/services/data/enum.service';
 import { DialogService } from '@shared/services/ui/dialog.service';
 import { describe, fieldLabel } from '@shared/utils/filter-conditions';
 import { rootConditions, setRootCondition } from '@shared/utils/list-query';
+
+/** Labels named in the search placeholder before it ends in "…". */
+const SEARCH_HINT_WORDS = 2;
 
 /**
  * List toolbar built from the resource schema: search, one date-range calendar, colour-badge pickers for statuses /
@@ -51,6 +55,7 @@ import { rootConditions, setRootCondition } from '@shared/utils/list-query';
     MatInputModule,
     MatSelectModule,
     MatSlideToggleModule,
+    MatTooltipModule,
     DateRangeFilter,
     StatusChip,
   ],
@@ -75,8 +80,14 @@ export class GenericFilter implements OnInit {
   protected readonly quickFilters = computed(() =>
     this.schema().filters.filter((f) => f.type === FilterFieldType.Enum && hasTones(f.enum)),
   );
+  /** Everything else goes in the sheet — except a choice with nothing to choose yet (no values in use). */
   private readonly sheetFilters = computed(() =>
-    this.schema().filters.filter((f) => !f.hidden && !this.quickFilters().includes(f)),
+    this.schema().filters.filter(
+      (f) =>
+        !f.hidden &&
+        !this.quickFilters().includes(f) &&
+        !(f.type === FilterFieldType.Choice && !f.options?.length),
+    ),
   );
   /** Chips for every applied filter outside the toolbar — hidden ones too (set by a link), so the list never narrows silently. */
   protected readonly activeFilters = computed(() =>
@@ -90,6 +101,20 @@ export class GenericFilter implements OnInit {
   protected readonly dateValue = computed<DateRangeValue>(() => {
     const q = this.query();
     return { field: q.dateField, preset: q.dateRange, from: q.dateFrom, to: q.dateTo };
+  });
+  /** "Search code, patient, treatment…" — what the box finds, from the server (every text column of the table). */
+  protected readonly searchPlaceholder = computed(() => {
+    const words = (this.schema().searchHint ?? []).map((label) => label.toLowerCase());
+    return words.length
+      ? `Search ${words.slice(0, SEARCH_HINT_WORDS).join(', ')}${words.length > SEARCH_HINT_WORDS ? '…' : ''}`
+      : 'Search';
+  });
+  /** The whole list when the placeholder had to stop short. */
+  protected readonly searchTip = computed(() => {
+    const words = (this.schema().searchHint ?? []).map((label) => label.toLowerCase());
+    return words.length > SEARCH_HINT_WORDS
+      ? `Finds ${words.slice(0, -1).join(', ')} and ${words[words.length - 1]}`
+      : '';
   });
   protected readonly hasActive = computed(() => {
     const q = this.query();
@@ -122,9 +147,11 @@ export class GenericFilter implements OnInit {
     return describe(this.conditions()[def.field] ?? {}, (v) =>
       def.enum
         ? this.enums.label(def.enum, v)
-        : def.type === FilterFieldType.Relation
-          ? (this.names()[String(v)] ?? 'selected')
-          : String(v),
+        : def.options
+          ? (def.options.find((o) => o.value === String(v))?.label ?? String(v))
+          : def.type === FilterFieldType.Relation
+            ? (this.names()[String(v)] ?? 'selected')
+            : String(v),
     );
   }
 

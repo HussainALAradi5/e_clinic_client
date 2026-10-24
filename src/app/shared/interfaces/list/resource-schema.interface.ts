@@ -1,6 +1,7 @@
 import { ExportFormat } from '@shared/enums/list/export-format.enum';
 import { FilterFieldType } from '@shared/enums/list/filter-field-type.enum';
 import { FilterOperator } from '@shared/enums/shared/filter-operator.enum';
+import { EnumOption } from '@shared/interfaces/common/enum-meta.interface';
 
 /** Mirror of FilterField in the resource schema. */
 export interface FilterDef {
@@ -9,6 +10,8 @@ export interface FilterDef {
   operators: FilterOperator[];
   enum?: string;
   resource?: string;
+  /** Named values of a Choice filter (`BH` → Bahraini). */
+  options?: EnumOption[];
   /** What the filter is called on screen (set by the server). */
   label?: string;
   /** Accepted in links (e.g. the orders of one visit) but not offered in the filter panel. */
@@ -34,6 +37,8 @@ export interface ResourceSchema {
   filters: FilterDef[];
   sortable: string[];
   search: boolean;
+  /** What the search box finds, as column labels ("Code", "Patient", "Doctor") — set by the server. */
+  searchHint?: string[];
   dateFields: string[];
   columns: ColumnDef[];
   bulkActions: BulkActionDef[];

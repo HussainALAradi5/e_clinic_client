@@ -12,24 +12,26 @@
       <h3 class="group-title">{{ label(def.field) }}</h3>
 
       @switch (def.type) {
-        @case (types.Enum) {
-          <div class="pills" role="group" [attr.aria-label]="label(def.field)">
-            @for (option of options(def); track option.value) {
-              <button
-                type="button"
-                class="pill"
-                [class.on]="draft.values.includes(option.value)"
-                [attr.aria-pressed]="draft.values.includes(option.value)"
-                (click)="toggle(def.field, option.value)"
+        @case (types.Choice) {
+          @if (options(def).length > maxPills) {
+            <mat-form-field class="w-full" subscriptSizing="dynamic">
+              <mat-label>Any {{ label(def.field).toLowerCase() }}</mat-label>
+              <mat-select
+                multiple
+                [value]="draft.values"
+                (selectionChange)="set(def.field, { values: $event.value })"
               >
-                @if (def.enum; as name) {
-                  <ui-status [value]="option.value" [enum]="name" />
-                } @else {
-                  {{ option.label }}
+                @for (option of options(def); track option.value) {
+                  <mat-option [value]="option.value">{{ option.label }}</mat-option>
                 }
-              </button>
-            }
-          </div>
+              </mat-select>
+            </mat-form-field>
+          } @else {
+            <ng-container *ngTemplateOutlet="pills; context: { $implicit: def }" />
+          }
+        }
+        @case (types.Enum) {
+          <ng-container *ngTemplateOutlet="pills; context: { $implicit: def }" />
         }
         @case (types.Relation) {
           @if (endpoint(def); as url) {
@@ -157,5 +159,26 @@
         (input)="set(def.field, { max: value($event) })"
       />
     </mat-form-field>
+  </div>
+</ng-template>
+
+<ng-template #pills let-def>
+  @let draft = drafts()[def.field];
+  <div class="pills" role="group" [attr.aria-label]="label(def.field)">
+    @for (option of options(def); track option.value) {
+      <button
+        type="button"
+        class="pill"
+        [class.on]="draft.values.includes(option.value)"
+        [attr.aria-pressed]="draft.values.includes(option.value)"
+        (click)="toggle(def.field, option.value)"
+      >
+        @if (def.enum; as name) {
+          <ui-status [value]="option.value" [enum]="name" />
+        } @else {
+          {{ option.label }}
+        }
+      </button>
+    }
   </div>
 </ng-template>

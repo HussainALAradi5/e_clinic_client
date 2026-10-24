@@ -57,6 +57,16 @@ export const RoleStore = signalStore(
       remove(): Promise<void> {
         return firstValueFrom(api.remove(id()));
       },
+      /** Adds people, then refreshes the role (its member count). */
+      async addMembers(userIds: string[]): Promise<number> {
+        const { added } = await firstValueFrom(api.addMembers(id(), userIds));
+        keep(await firstValueFrom(api.get(id())));
+        return added;
+      },
+      async removeMember(userId: string): Promise<void> {
+        await firstValueFrom(api.removeMember(id(), userId));
+        keep(await firstValueFrom(api.get(id())));
+      },
     };
   }),
 );

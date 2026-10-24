@@ -100,7 +100,15 @@
       </ng-template>
       <ng-template matTabContent>
         <!-- The users who hold this role: same table as Users (search, filters, sorting, pages), limited to it. -->
+        @if (!role.isArchived) {
+          <div class="flex justify-end pt-4">
+            <ui-button icon="group_add" access="roles.write&roles.assign" [action]="addMembers"
+              >Add people</ui-button
+            >
+          </div>
+        }
         <ui-resource-list
+          #members
           class="block pt-4"
           resource="users"
           title="Members"
@@ -122,6 +130,16 @@
           </ng-template>
           <ng-template uiCell="last_login_at" let-row>
             {{ row.lastLoginAt ? (row.lastLoginAt | relativeTime) : 'Never' }}
+          </ng-template>
+          <ng-template uiCell="row_actions" let-row>
+            <ui-button
+              access="roles.write&roles.assign"
+              icon="person_remove"
+              [variant]="variants.Text"
+              [confirm]="removeConfirm(row)"
+              [action]="removeMember(row)"
+              >Remove</ui-button
+            >
           </ng-template>
         </ui-resource-list>
       </ng-template>

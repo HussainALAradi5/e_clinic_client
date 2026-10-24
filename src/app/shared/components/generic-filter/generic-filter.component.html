@@ -1,8 +1,14 @@
 <div class="flex flex-wrap items-center gap-2">
   @if (schema().search) {
-    <mat-form-field subscriptSizing="dynamic" class="w-full sm:w-72">
+    <mat-form-field subscriptSizing="dynamic" class="w-full sm:w-80">
       <mat-icon matPrefix>search</mat-icon>
-      <input matInput [formControl]="search" placeholder="Search" aria-label="Search" />
+      <input
+        matInput
+        [formControl]="search"
+        [placeholder]="searchPlaceholder()"
+        [attr.aria-label]="searchPlaceholder()"
+        [matTooltip]="searchTip()"
+      />
       @if (search.value) {
         <button matIconSuffix matIconButton aria-label="Clear search" (click)="search.setValue('')">
           <mat-icon>close</mat-icon>

@@ -10,7 +10,7 @@ import {
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { CellDef } from './cell.directive';
+import { CellDef, ROW_ACTIONS } from './cell.directive';
 import { Skeleton } from '@shared/components/skeleton/skeleton.component';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { Page } from '@shared/interfaces/api/page.interface';
@@ -56,14 +56,11 @@ export class DataTable<T extends { id: string }> {
   private lastChecked: number | null = null;
 
   protected readonly selectColumn = SELECT;
+  protected readonly actionsColumn = ROW_ACTIONS;
   protected readonly read = readPath;
   protected readonly rows = computed(() => this.page()?.data ?? []);
   protected readonly total = computed(() => this.page()?.meta.total ?? 0);
   protected readonly pageIds = computed(() => this.rows().map((r) => r.id));
-  protected readonly displayed = computed(() => [
-    ...(this.selection() ? [SELECT] : []),
-    ...this.columns().map((c) => c.field),
-  ]);
   protected readonly cellTemplates = computed(
     () =>
       new Map(
@@ -72,6 +69,12 @@ export class DataTable<T extends { id: string }> {
         ),
       ),
   );
+  protected readonly rowActions = computed(() => this.cellTemplates().get(ROW_ACTIONS) ?? null);
+  protected readonly displayed = computed(() => [
+    ...(this.selection() ? [SELECT] : []),
+    ...this.columns().map((c) => c.field),
+    ...(this.rowActions() ? [ROW_ACTIONS] : []),
+  ]);
   protected readonly allOnPageSelected = computed(
     () => this.selection()?.allSelected(this.pageIds()) ?? false,
   );

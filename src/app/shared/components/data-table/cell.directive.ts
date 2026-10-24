@@ -1,6 +1,9 @@
 import { Directive, inject, input, TemplateRef } from '@angular/core';
 import { CellContext } from '@shared/interfaces/ui/table.interface';
 
+/** `uiCell="row_actions"` adds a last column of buttons for each row (clicks there never open the row). */
+export const ROW_ACTIONS = 'row_actions';
+
 /**
  * Custom cell: <ng-template uiCell="status" let-row><ui-status … /></ng-template>
  * Rows are API data shaped per resource, so the row type defaults to `any` inside cell templates.

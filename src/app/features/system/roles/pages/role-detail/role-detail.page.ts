@@ -1,10 +1,20 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  viewChild,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Router, RouterLink } from '@angular/router';
+import { AddMembersDialog } from '../../components/add-members-dialog/add-members-dialog.component';
 import { RoleFormDialog } from '../../components/role-form-dialog/role-form-dialog.component';
+import { AddMembersDialogData } from '../../interfaces/add-members-dialog-data.interface';
 import { RoleFormDialogData } from '../../interfaces/role-form-dialog-data.interface';
 import { RoleStore } from '../../services/role.store';
 import { HasAccessDirective } from '@core/directives/has-access.directive';
@@ -18,6 +28,7 @@ import { PageHeader } from '@shared/components/page-header/page-header.component
 import { Skeleton } from '@shared/components/skeleton/skeleton.component';
 import { ButtonVariant } from '@shared/enums/ui/button.enum';
 import { AccessRow, Role } from '@shared/interfaces/identity/role.interface';
+import { User } from '@shared/interfaces/identity/user.interface';
 import { ConfirmConfig } from '@shared/interfaces/ui/confirm-config.interface';
 import { DialogService } from '@shared/services/ui/dialog.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
@@ -52,6 +63,7 @@ export class RoleDetailPage implements OnInit {
   readonly tab = input<string | undefined>();
 
   protected readonly store = inject(RoleStore);
+  private readonly members = viewChild<ResourceListPage>('members');
   private readonly dialogs = inject(DialogService);
   private readonly notify = inject(NotifyService);
   private readonly router = inject(Router);
@@ -112,6 +124,41 @@ export class RoleDetailPage implements OnInit {
     this.notify.success('Role deleted.');
     await this.router.navigateByUrl('/system/roles-permissions');
   };
+
+  protected readonly addMembers = async (): Promise<void> => {
+    const role = this.store.role();
+    if (!role) return;
+    const added = await this.dialogs.open<AddMembersDialog, AddMembersDialogData, number>(
+      AddMembersDialog,
+      { role, add: (userIds) => this.store.addMembers(userIds) },
+      { width: '560px' },
+    );
+    if (added !== undefined) {
+      this.notify.success(
+        added === 1
+          ? `1 person now has the ${role.displayName} role.`
+          : `${added} people now have the ${role.displayName} role.`,
+      );
+      this.members()?.reload();
+    }
+  };
+
+  protected removeConfirm(user: User): ConfirmConfig {
+    return {
+      title: `Remove ${user.fullName} from ${this.store.role()?.displayName}?`,
+      message: 'They keep their other roles and are signed out, so the change applies right away.',
+      confirmLabel: 'Remove',
+      danger: true,
+    };
+  }
+
+  protected removeMember(user: User): () => Promise<void> {
+    return async () => {
+      await this.store.removeMember(user.id);
+      this.notify.success(`${user.fullName} no longer has this role.`);
+      this.members()?.reload();
+    };
+  }
 
   protected flags(row: AccessRow): string {
     return [
