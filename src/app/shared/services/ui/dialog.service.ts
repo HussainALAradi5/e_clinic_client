@@ -4,11 +4,16 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { ConfirmDialog } from '@shared/components/confirm-dialog/confirm-dialog.component';
 import { ConfirmConfig } from '@shared/interfaces/ui/confirm-config.interface';
+import { NotifyService } from './notify.service';
 
-/** Typed dialogs: confirm() → boolean, reason() → string | null, open() → the dialog's result. */
+/**
+ * Typed dialogs: confirm() → boolean, reason() → string | null, open() → the dialog's result,
+ * openAction() → the result with a success message.
+ */
 @Injectable({ providedIn: 'root' })
 export class DialogService {
   private readonly dialog = inject(MatDialog);
+  private readonly notify = inject(NotifyService);
 
   async confirm(config: ConfirmConfig): Promise<boolean> {
     return (
@@ -49,5 +54,17 @@ export class DialogService {
       data,
     });
     return firstValueFrom(ref.afterClosed());
+  }
+
+  /** A form dialog that saves something: opens it and, when it closes with a result, says what was done. */
+  async openAction<C, D, R>(
+    component: ComponentType<C>,
+    data: D,
+    success: (result: R) => string,
+    width = '520px',
+  ): Promise<R | undefined> {
+    const result = await this.open<C, D, R>(component, data, { width });
+    if (result) this.notify.success(success(result));
+    return result;
   }
 }

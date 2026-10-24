@@ -7,14 +7,12 @@ import { PortalActions } from '../../services/portal-actions.service';
 import { EmptyState } from '@shared/components/empty-state/empty-state.component';
 import { Skeleton } from '@shared/components/skeleton/skeleton.component';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
-import { GenericStatus } from '@shared/enums/shared/generic-status.enum';
+import { isOpenGenericStatus } from '@shared/enums/shared/generic-status.enum';
 import { Prescription } from '@shared/interfaces/pharmacy/prescription.interface';
 import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
 import { QtyPipe } from '@shared/pipes/qty.pipe';
 import { PrescriptionApi } from '@shared/services/pharmacy/prescription-api.service';
 import { clinicIsoDate } from '@shared/utils/clinic-time';
-
-const OPEN = [GenericStatus.Pending, GenericStatus.InProgress];
 
 /** `/portal/prescriptions` — medicines with how to take them; open ones carry the code for the pharmacy. */
 @Component({
@@ -48,7 +46,7 @@ export class MyPrescriptionsPage {
 
   /** Still to collect (not fully dispensed, cancelled or expired). */
   protected collectable(rx: Prescription): boolean {
-    return OPEN.includes(rx.status) && rx.validUntil >= this.today;
+    return isOpenGenericStatus(rx.status) && rx.validUntil >= this.today;
   }
 
   protected code(rx: Prescription): void {

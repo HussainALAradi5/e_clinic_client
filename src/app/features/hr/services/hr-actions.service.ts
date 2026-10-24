@@ -1,4 +1,3 @@
-import { ComponentType } from '@angular/cdk/portal';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { LeaveRequestDialog } from '../components/leave-request-dialog/leave-request-dialog.component';
@@ -59,7 +58,7 @@ export class HrActions {
   }
 
   recordAttendance(data: ManualAttendanceDialogData): Promise<Attendance | undefined> {
-    return this.open<ManualAttendanceDialog, ManualAttendanceDialogData, Attendance>(
+    return this.dialogs.openAction<ManualAttendanceDialog, ManualAttendanceDialogData, Attendance>(
       ManualAttendanceDialog,
       data,
       () => 'Attendance saved.',
@@ -83,7 +82,7 @@ export class HrActions {
   requestLeave(
     employee: LeaveRequestDialogData['employee'] = null,
   ): Promise<LeaveRequest | undefined> {
-    return this.open<LeaveRequestDialog, LeaveRequestDialogData, LeaveRequest>(
+    return this.dialogs.openAction<LeaveRequestDialog, LeaveRequestDialogData, LeaveRequest>(
       LeaveRequestDialog,
       { employee },
       (r) =>
@@ -158,7 +157,7 @@ export class HrActions {
   }
 
   editLeaveType(type: LeaveType | null): Promise<LeaveType | undefined> {
-    return this.open<LeaveTypeDialog, LeaveTypeDialogData, LeaveType>(
+    return this.dialogs.openAction<LeaveTypeDialog, LeaveTypeDialogData, LeaveType>(
       LeaveTypeDialog,
       { type },
       (t) => `${t.name} saved.`,
@@ -169,7 +168,7 @@ export class HrActions {
   // Payroll
 
   createPayroll(): Promise<PayrollRun | undefined> {
-    return this.open<PayrollRunDialog, null, PayrollRun>(
+    return this.dialogs.openAction<PayrollRunDialog, null, PayrollRun>(
       PayrollRunDialog,
       null,
       (r) => `Payroll ${r.code} created.`,
@@ -198,7 +197,7 @@ export class HrActions {
   }
 
   payPayroll(run: PayrollRun): Promise<PayrollRun | undefined> {
-    return this.open<PayPayrollDialog, PayPayrollDialogData, PayrollRun>(
+    return this.dialogs.openAction<PayPayrollDialog, PayPayrollDialogData, PayrollRun>(
       PayPayrollDialog,
       { run },
       (r) => `${r.code} paid.`,
@@ -223,16 +222,5 @@ export class HrActions {
   private approved(request: LeaveRequest): LeaveRequest {
     this.notify.success(`${request.code} approved.`);
     return request;
-  }
-
-  private async open<C, D, R>(
-    dialog: ComponentType<C>,
-    data: D,
-    message: (result: R) => string,
-    width = '520px',
-  ): Promise<R | undefined> {
-    const result = await this.dialogs.open<C, D, R>(dialog, data, { width });
-    if (result) this.notify.success(message(result));
-    return result;
   }
 }

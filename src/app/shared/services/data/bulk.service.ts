@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
-import { TYPE_TO_CONFIRM_THRESHOLD } from '@shared/constants/limits.constants';
+import { BULK_SYNC_LIMIT, TYPE_TO_CONFIRM_THRESHOLD } from '@shared/constants/limits.constants';
 import { BulkActionRequest, BulkResult } from '@shared/interfaces/bulk/bulk.interface';
 import { BulkActionDef } from '@shared/interfaces/list/resource-schema.interface';
 import { ApiClient } from '@shared/services/api/api-client.service';
@@ -43,11 +43,18 @@ export class BulkService {
       return null;
     }
 
+    const notes = [
+      preview.failed.length
+        ? `${preview.failed.length} will be skipped: ${preview.failed[0].message}`
+        : null,
+      // The server runs large batches as a background task (same limit as BulkActionService).
+      willChange > BULK_SYNC_LIMIT
+        ? 'This runs in the background — you can keep working and get a message when it is done.'
+        : null,
+    ].filter((note): note is string => note !== null);
     const answer = await this.dialogs.ask({
       title: `${label} ${willChange} record${willChange === 1 ? '' : 's'}?`,
-      message: preview.failed.length
-        ? `${preview.failed.length} will be skipped: ${preview.failed[0].message}`
-        : undefined,
+      message: notes.length ? notes.join(' ') : undefined,
       confirmLabel: label,
       danger: ['delete', 'cancel', 'reject', 'void'].includes(action.name),
       reason: action.needsReason,

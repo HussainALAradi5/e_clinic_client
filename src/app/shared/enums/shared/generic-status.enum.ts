@@ -14,3 +14,12 @@ export const GENERIC_STATUS_TRANSITIONS: Readonly<Record<GenericStatus, readonly
     [GenericStatus.Completed]: [],
     [GenericStatus.Cancelled]: [],
   };
+
+/** Still running (pending, in progress): the statuses that can still move on. */
+export const OPEN_GENERIC_STATUSES: readonly GenericStatus[] = Object.values(GenericStatus).filter(
+  (status) => GENERIC_STATUS_TRANSITIONS[status].length > 0,
+);
+
+export function isOpenGenericStatus(status: GenericStatus | null | undefined): boolean {
+  return status != null && OPEN_GENERIC_STATUSES.includes(status);
+}

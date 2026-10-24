@@ -1,4 +1,3 @@
-import { ComponentType } from '@angular/cdk/portal';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { ExpenseFormDialog } from '../components/expense-form-dialog/expense-form-dialog.component';
@@ -37,7 +36,7 @@ export class AccountingActions {
   // Journal
 
   editEntry(entry: JournalEntry | null): Promise<JournalEntry | undefined> {
-    return this.open<JournalEntryDialog, JournalEntryDialogData, JournalEntry>(
+    return this.dialogs.openAction<JournalEntryDialog, JournalEntryDialogData, JournalEntry>(
       JournalEntryDialog,
       { entry },
       (e) =>
@@ -76,7 +75,7 @@ export class AccountingActions {
   // Expenses
 
   editExpense(expense: Expense | null): Promise<Expense | undefined> {
-    return this.open<ExpenseFormDialog, ExpenseFormDialogData, Expense>(
+    return this.dialogs.openAction<ExpenseFormDialog, ExpenseFormDialogData, Expense>(
       ExpenseFormDialog,
       { expense },
       (e) => `Expense ${e.code} saved.`,
@@ -121,7 +120,7 @@ export class AccountingActions {
   }
 
   payExpense(expense: Expense): Promise<Expense | undefined> {
-    return this.open<PayExpenseDialog, PayExpenseDialogData, Expense>(
+    return this.dialogs.openAction<PayExpenseDialog, PayExpenseDialogData, Expense>(
       PayExpenseDialog,
       { expense },
       (e) => `Expense ${e.code} paid.`,
@@ -144,7 +143,7 @@ export class AccountingActions {
   // Fiscal years
 
   createYear(): Promise<FiscalYear | undefined> {
-    return this.open<FiscalYearDialog, null, FiscalYear>(
+    return this.dialogs.openAction<FiscalYearDialog, null, FiscalYear>(
       FiscalYearDialog,
       null,
       (y) => `${y.name} created with ${y.periods?.length ?? 12} periods.`,
@@ -201,16 +200,5 @@ export class AccountingActions {
     const locked = await firstValueFrom(this.fiscal.lockYear(year.id));
     this.notify.success(`${locked.name} locked.`);
     return locked;
-  }
-
-  private async open<C, D, R>(
-    dialog: ComponentType<C>,
-    data: D,
-    message: (result: R) => string,
-    width = '520px',
-  ): Promise<R | undefined> {
-    const result = await this.dialogs.open<C, D, R>(dialog, data, { width });
-    if (result) this.notify.success(message(result));
-    return result;
   }
 }

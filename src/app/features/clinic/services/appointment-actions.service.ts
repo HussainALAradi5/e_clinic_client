@@ -190,18 +190,17 @@ export class AppointmentActions {
     return ok ? this.simple(this.api.noShow(appointment.id), 'Marked as no-show.') : undefined;
   }
 
-  private async open<C>(
+  private open<C>(
     dialog: ComponentType<C>,
     appointment: Appointment,
     message: string,
     width = '520px',
   ): Promise<Appointment | undefined> {
-    const result = await this.dialogs.open<C, AppointmentDialogData, Appointment>(
+    return this.dialogs.openAction<C, AppointmentDialogData, Appointment>(
       dialog,
       { appointment },
-      { width },
+      () => message,
+      width,
     );
-    if (result) this.notify.success(message);
-    return result;
   }
 }

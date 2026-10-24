@@ -24,7 +24,7 @@ import { PageHeader } from '@shared/components/page-header/page-header.component
 import { Skeleton } from '@shared/components/skeleton/skeleton.component';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { DATE_FORMAT, DATE_TIME_FORMAT } from '@shared/constants/app.constants';
-import { GenericStatus } from '@shared/enums/shared/generic-status.enum';
+import { GenericStatus, isOpenGenericStatus } from '@shared/enums/shared/generic-status.enum';
 import { ButtonVariant } from '@shared/enums/ui/button.enum';
 import { Prescription } from '@shared/interfaces/pharmacy/prescription.interface';
 import { Fact } from '@shared/interfaces/ui/fact.interface';
@@ -73,11 +73,7 @@ export class PrescriptionDetailPage implements OnInit {
   protected readonly dateTimeFormat = DATE_TIME_FORMAT;
   protected readonly cancelled = GenericStatus.Cancelled;
 
-  private readonly open = computed(() =>
-    [GenericStatus.Pending, GenericStatus.InProgress].includes(
-      this.prescription()?.status as GenericStatus,
-    ),
-  );
+  private readonly open = computed(() => isOpenGenericStatus(this.prescription()?.status));
   protected readonly expired = computed(
     () => (this.prescription()?.validUntil ?? '9999') < clinicIsoDate(),
   );

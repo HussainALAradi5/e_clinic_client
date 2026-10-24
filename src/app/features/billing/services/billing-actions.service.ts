@@ -1,4 +1,3 @@
-import { ComponentType } from '@angular/cdk/portal';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -54,7 +53,7 @@ export class BillingActions {
   private readonly claims = inject(InsuranceClaimApi);
 
   editInvoice(data: InvoiceEditorDialogData): Promise<Invoice | undefined> {
-    return this.open<InvoiceEditorDialog, InvoiceEditorDialogData, Invoice>(
+    return this.dialogs.openAction<InvoiceEditorDialog, InvoiceEditorDialogData, Invoice>(
       InvoiceEditorDialog,
       data,
       (i) => `Draft ${i.code} saved — ${formatMoney(i.total)}.`,
@@ -107,7 +106,7 @@ export class BillingActions {
   }
 
   takePayment(invoice: Invoice): Promise<Payment[] | undefined> {
-    return this.open<PaymentDialog, PaymentDialogData, Payment[]>(
+    return this.dialogs.openAction<PaymentDialog, PaymentDialogData, Payment[]>(
       PaymentDialog,
       { invoice },
       (paid) =>
@@ -132,7 +131,7 @@ export class BillingActions {
   }
 
   requestRefund(data: RefundDialogData): Promise<Refund | undefined> {
-    return this.open<RefundDialog, RefundDialogData, Refund>(
+    return this.dialogs.openAction<RefundDialog, RefundDialogData, Refund>(
       RefundDialog,
       data,
       (r) => `Refund ${r.code} sent for approval.`,
@@ -183,7 +182,7 @@ export class BillingActions {
   }
 
   openDrawer(): Promise<CashSession | undefined> {
-    return this.open<OpenDrawerDialog, null, CashSession>(
+    return this.dialogs.openAction<OpenDrawerDialog, null, CashSession>(
       OpenDrawerDialog,
       null,
       (s) => `Drawer ${s.code} open with ${formatMoney(s.openingFloat)}.`,
@@ -191,7 +190,7 @@ export class BillingActions {
   }
 
   closeDrawer(session: CashSession): Promise<CashSession | undefined> {
-    return this.open<CloseDrawerDialog, CloseDrawerDialogData, CashSession>(
+    return this.dialogs.openAction<CloseDrawerDialog, CloseDrawerDialogData, CashSession>(
       CloseDrawerDialog,
       { session },
       (s) =>
@@ -216,7 +215,7 @@ export class BillingActions {
   }
 
   deposit(session: CashSession): Promise<CashSession | undefined> {
-    return this.open<DepositDialog, DepositDialogData, CashSession>(
+    return this.dialogs.openAction<DepositDialog, DepositDialogData, CashSession>(
       DepositDialog,
       { session },
       (s) => `Deposit of ${formatMoney(s.depositAmount)} recorded.`,
@@ -255,7 +254,7 @@ export class BillingActions {
   }
 
   decideClaim(claim: InsuranceClaim): Promise<InsuranceClaim | undefined> {
-    return this.open<ClaimDecisionDialog, ClaimDecisionDialogData, InsuranceClaim>(
+    return this.dialogs.openAction<ClaimDecisionDialog, ClaimDecisionDialogData, InsuranceClaim>(
       ClaimDecisionDialog,
       { claim },
       (c) =>
@@ -278,22 +277,11 @@ export class BillingActions {
   }
 
   recordRemittance(): Promise<InsuranceClaim[] | undefined> {
-    return this.open<RemittanceDialog, null, InsuranceClaim[]>(
+    return this.dialogs.openAction<RemittanceDialog, null, InsuranceClaim[]>(
       RemittanceDialog,
       null,
       (claims) => `Remittance recorded for ${claims.length} claim(s).`,
       '640px',
     );
-  }
-
-  private async open<C, D, R>(
-    dialog: ComponentType<C>,
-    data: D,
-    message: (result: R) => string,
-    width = '520px',
-  ): Promise<R | undefined> {
-    const result = await this.dialogs.open<C, D, R>(dialog, data, { width });
-    if (result) this.notify.success(message(result));
-    return result;
   }
 }

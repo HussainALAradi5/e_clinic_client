@@ -1,4 +1,3 @@
-import { ComponentType } from '@angular/cdk/portal';
 import { inject, Injectable } from '@angular/core';
 import { ConsentDialog } from '../components/consent-dialog/consent-dialog.component';
 import { OrderFormDialog } from '../components/order-form-dialog/order-form-dialog.component';
@@ -20,7 +19,6 @@ import { ClinicalOrder } from '@shared/interfaces/clinic/clinical-order.interfac
 import { PatientConsent } from '@shared/interfaces/clinic/consent.interface';
 import { Treatment } from '@shared/interfaces/clinic/treatment.interface';
 import { DialogService } from '@shared/services/ui/dialog.service';
-import { NotifyService } from '@shared/services/ui/notify.service';
 
 /**
  * The clinical dialogs (prescribe, book a session, order, record a result, consent …) with their confirmation
@@ -29,10 +27,9 @@ import { NotifyService } from '@shared/services/ui/notify.service';
 @Injectable({ providedIn: 'root' })
 export class ClinicalActions {
   private readonly dialogs = inject(DialogService);
-  private readonly notify = inject(NotifyService);
 
   prescribe(data: Omit<TreatmentFormDialogData, 'treatment'>): Promise<Treatment | undefined> {
-    return this.open(
+    return this.dialogs.openAction(
       TreatmentFormDialog,
       { treatment: null, ...data },
       (t: Treatment) => `${t.title} prescribed (${t.code}). Book the sessions next.`,
@@ -41,11 +38,16 @@ export class ClinicalActions {
   }
 
   editTreatment(treatment: Treatment): Promise<Treatment | undefined> {
-    return this.open(TreatmentFormDialog, { treatment }, () => 'Treatment saved.', '720px');
+    return this.dialogs.openAction(
+      TreatmentFormDialog,
+      { treatment },
+      () => 'Treatment saved.',
+      '720px',
+    );
   }
 
   bookSession(treatment: Treatment): Promise<Appointment | undefined> {
-    return this.open<SessionBookingDialog, TreatmentDialogData, Appointment>(
+    return this.dialogs.openAction<SessionBookingDialog, TreatmentDialogData, Appointment>(
       SessionBookingDialog,
       { treatment },
       (a) => `Session ${a.sessionNumber} booked on ${a.scheduledDate} at ${a.startTime}.`,
@@ -54,7 +56,7 @@ export class ClinicalActions {
   }
 
   changePriority(treatment: Treatment): Promise<Treatment | undefined> {
-    return this.open(
+    return this.dialogs.openAction(
       PriorityDialog,
       { treatment },
       (t: Treatment) => `Priority is now ${t.priority}.`,
@@ -62,7 +64,7 @@ export class ClinicalActions {
   }
 
   order(data: OrderFormDialogData): Promise<ClinicalOrder | undefined> {
-    return this.open(
+    return this.dialogs.openAction(
       OrderFormDialog,
       data,
       (o: ClinicalOrder) => `${o.description} ordered (${o.code}).`,
@@ -71,7 +73,7 @@ export class ClinicalActions {
   }
 
   startOrder(order: ClinicalOrder): Promise<ClinicalOrder | undefined> {
-    return this.open<OrderStartDialog, OrderDialogData, ClinicalOrder>(
+    return this.dialogs.openAction<OrderStartDialog, OrderDialogData, ClinicalOrder>(
       OrderStartDialog,
       { order },
       (o) => (o.roomId ? `${o.code} started in ${o.room?.code}.` : `${o.code} marked as sent.`),
@@ -79,7 +81,7 @@ export class ClinicalActions {
   }
 
   recordResult(order: ClinicalOrder): Promise<ClinicalOrder | undefined> {
-    return this.open<OrderResultDialog, OrderDialogData, ClinicalOrder>(
+    return this.dialogs.openAction<OrderResultDialog, OrderDialogData, ClinicalOrder>(
       OrderResultDialog,
       { order },
       (o) =>
@@ -91,7 +93,7 @@ export class ClinicalActions {
   }
 
   linkReferral(order: ClinicalOrder): Promise<ClinicalOrder | undefined> {
-    return this.open<ReferralLinkDialog, OrderDialogData, ClinicalOrder>(
+    return this.dialogs.openAction<ReferralLinkDialog, OrderDialogData, ClinicalOrder>(
       ReferralLinkDialog,
       { order },
       (o) => `Referral linked to ${o.referralAppointment?.code}.`,
@@ -100,22 +102,11 @@ export class ClinicalActions {
   }
 
   recordConsent(data: ConsentDialogData): Promise<PatientConsent | undefined> {
-    return this.open(
+    return this.dialogs.openAction(
       ConsentDialog,
       data,
       (c: PatientConsent) => `Consent saved (${c.code}).`,
       '720px',
     );
-  }
-
-  private async open<C, D, R>(
-    dialog: ComponentType<C>,
-    data: D,
-    message: (result: R) => string,
-    width = '520px',
-  ): Promise<R | undefined> {
-    const result = await this.dialogs.open<C, D, R>(dialog, data, { width });
-    if (result) this.notify.success(message(result));
-    return result;
   }
 }

@@ -3,6 +3,7 @@ import { Params } from '@angular/router';
 import { toSnake } from './case';
 import { DEFAULT_PER_PAGE, MAX_PER_PAGE } from '@shared/constants/limits.constants';
 import { DateRangePreset } from '@shared/enums/shared/date-range-preset.enum';
+import { LogicalOperator } from '@shared/enums/shared/logical-operator.enum';
 import {
   FilterGroup,
   FilterNode,
@@ -12,7 +13,7 @@ import {
 import { ExportFilter } from '@shared/interfaces/list/transfer.interface';
 import { SavedViewQuery } from '@shared/interfaces/view/saved-view.interface';
 
-const LOGICAL = new Set(['and', 'or', 'not']);
+const LOGICAL = new Set<string>(Object.values(LogicalOperator));
 
 export function defaultQuery(overrides: ListQuery = {}): ListQuery {
   return { page: 1, perPage: DEFAULT_PER_PAGE, ...overrides };
@@ -27,7 +28,7 @@ function appendFilter(params: HttpParams, node: FilterNode, prefix: string): Htt
   for (const [key, value] of Object.entries(node)) {
     if (LOGICAL.has(key)) {
       const children = (value ?? []) as FilterNode[];
-      if (key === 'not') {
+      if (key === LogicalOperator.Not) {
         children.forEach((child) => (params = appendFilter(params, child, `${prefix}[not]`)));
       } else {
         children.forEach(

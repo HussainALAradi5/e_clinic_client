@@ -1,4 +1,3 @@
-import { ComponentType } from '@angular/cdk/portal';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { AdjustStockDialog } from '../components/adjust-stock-dialog/adjust-stock-dialog.component';
@@ -41,7 +40,7 @@ export class PharmacyActions {
   // Catalogue
 
   editMedication(medication: Medication | null): Promise<Medication | undefined> {
-    return this.open<MedicationFormDialog, MedicationFormDialogData, Medication>(
+    return this.dialogs.openAction<MedicationFormDialog, MedicationFormDialogData, Medication>(
       MedicationFormDialog,
       { medication },
       (m) => `${m.name} saved.`,
@@ -70,7 +69,7 @@ export class PharmacyActions {
   // Stock
 
   receive(medication: Medication | null = null): Promise<MedicationBatch | undefined> {
-    return this.open<ReceiveStockDialog, ReceiveStockDialogData, MedicationBatch>(
+    return this.dialogs.openAction<ReceiveStockDialog, ReceiveStockDialogData, MedicationBatch>(
       ReceiveStockDialog,
       { medication },
       (b) => `Lot ${b.batchNumber} received — ${formatQty(b.qtyOnHand)} on hand.`,
@@ -79,7 +78,7 @@ export class PharmacyActions {
   }
 
   adjust(batch: MedicationBatch): Promise<StockMovement | undefined> {
-    return this.open<AdjustStockDialog, AdjustStockDialogData, StockMovement>(
+    return this.dialogs.openAction<AdjustStockDialog, AdjustStockDialogData, StockMovement>(
       AdjustStockDialog,
       { batch },
       (m) => `Count corrected by ${formatQty(m.quantity)}.`,
@@ -109,7 +108,11 @@ export class PharmacyActions {
   // Prescriptions & dispensing
 
   prescribe(data: PrescriptionFormDialogData): Promise<Prescription | undefined> {
-    return this.open<PrescriptionFormDialog, PrescriptionFormDialogData, Prescription>(
+    return this.dialogs.openAction<
+      PrescriptionFormDialog,
+      PrescriptionFormDialogData,
+      Prescription
+    >(
       PrescriptionFormDialog,
       data,
       (p) =>
@@ -135,7 +138,7 @@ export class PharmacyActions {
   }
 
   administer(data: AdministerDialogData): Promise<Dispensation | undefined> {
-    return this.open<AdministerDialog, AdministerDialogData, Dispensation>(
+    return this.dialogs.openAction<AdministerDialog, AdministerDialogData, Dispensation>(
       AdministerDialog,
       data,
       (d) => `Recorded on the session (${d.code}) and added to the patient's invoice.`,
@@ -155,16 +158,5 @@ export class PharmacyActions {
     const returned = await firstValueFrom(this.dispensations.cancel(dispensation.id, reason));
     this.notify.success(`${returned.code} returned to stock.`);
     return returned;
-  }
-
-  private async open<C, D, R>(
-    dialog: ComponentType<C>,
-    data: D,
-    message: (result: R) => string,
-    width = '520px',
-  ): Promise<R | undefined> {
-    const result = await this.dialogs.open<C, D, R>(dialog, data, { width });
-    if (result) this.notify.success(message(result));
-    return result;
   }
 }

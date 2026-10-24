@@ -26,7 +26,7 @@ import { PageHeader } from '@shared/components/page-header/page-header.component
 import { Skeleton } from '@shared/components/skeleton/skeleton.component';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { DATE_FORMAT } from '@shared/constants/app.constants';
-import { GenericStatus } from '@shared/enums/shared/generic-status.enum';
+import { isOpenGenericStatus } from '@shared/enums/shared/generic-status.enum';
 import { ButtonVariant } from '@shared/enums/ui/button.enum';
 import { TreatmentSession } from '@shared/interfaces/clinic/treatment.interface';
 import { Fact } from '@shared/interfaces/ui/fact.interface';
@@ -75,10 +75,7 @@ export class TreatmentDetailPage implements OnInit {
   protected readonly sessions = signal<TreatmentSession[]>([]);
   protected readonly variants = ButtonVariant;
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly open = computed(() => {
-    const status = this.detail.record()?.status;
-    return status === GenericStatus.Pending || status === GenericStatus.InProgress;
-  });
+  protected readonly open = computed(() => isOpenGenericStatus(this.detail.record()?.status));
   protected readonly facts = computed<Fact[]>(() => {
     const t = this.detail.record();
     if (!t) return [];

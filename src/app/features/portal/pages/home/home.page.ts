@@ -11,7 +11,7 @@ import { PORTAL_PATH } from '@shared/constants/app.constants';
 import { PORTAL_MORE, PORTAL_TABS } from '@shared/constants/portal.constants';
 import { InvoiceStatus } from '@shared/enums/billing/invoice-status.enum';
 import { AppointmentStatus } from '@shared/enums/clinic/appointment-status.enum';
-import { GenericStatus } from '@shared/enums/shared/generic-status.enum';
+import { GenericStatus, OPEN_GENERIC_STATUSES } from '@shared/enums/shared/generic-status.enum';
 import { Appointment } from '@shared/interfaces/clinic/appointment.interface';
 import { ClinicalOrder } from '@shared/interfaces/clinic/clinical-order.interface';
 import { Treatment } from '@shared/interfaces/clinic/treatment.interface';
@@ -31,7 +31,6 @@ const UPCOMING = [
   AppointmentStatus.Confirmed,
   AppointmentStatus.CheckedIn,
 ];
-const OPEN = [GenericStatus.Pending, GenericStatus.InProgress];
 
 const [TREATMENTS, PRESCRIPTIONS] = PORTAL_MORE;
 const [, , RESULTS, INVOICES] = PORTAL_TABS;
@@ -101,10 +100,16 @@ export class PortalHomePage {
   private async loadGlances(): Promise<void> {
     const [treatments, prescriptions, results, invoices] = await Promise.all([
       firstValueFrom(
-        this.treatments.list({ perPage: 1, filter: { and: [{ status: { in: OPEN } }] } }),
+        this.treatments.list({
+          perPage: 1,
+          filter: { and: [{ status: { in: [...OPEN_GENERIC_STATUSES] } }] },
+        }),
       ).catch(() => null),
       firstValueFrom(
-        this.prescriptions.list({ perPage: 20, filter: { and: [{ status: { in: OPEN } }] } }),
+        this.prescriptions.list({
+          perPage: 20,
+          filter: { and: [{ status: { in: [...OPEN_GENERIC_STATUSES] } }] },
+        }),
       ).catch(() => null),
       firstValueFrom(
         this.orders.list({
