@@ -25,12 +25,41 @@ import { poll } from '@shared/utils/poll';
 const POLL_MS = 60_000;
 const INBOX_SIZE = 10;
 
-/** Where an in-app notification leads, by its related record alias. */
+/**
+ * Where an in-app notification leads, by its related record alias (the server's morph map): the record's page
+ * (`:id`) or, for records shown only in a list, that list.
+ */
 const RELATED_ROUTES: Record<string, string> = {
-  background_task: '/system/background-tasks',
+  background_task: '/system/background-tasks/:id',
   attachment: '/system/attachments',
-  user: '/system/users',
-  role: '/system/roles-permissions',
+  user: '/system/users/:id',
+  role: '/system/roles-permissions/:id',
+  person: '/system/people',
+  company: '/reference/companies/:id',
+  account: '/accounting/chart-of-accounts/:id',
+  expense: '/accounting/expenses/:id',
+  department: '/hr/departments/:id',
+  employee: '/hr/employees/:id',
+  attendance: '/hr/attendance',
+  leave_request: '/hr/leaves/:id',
+  payroll_run: '/hr/payroll/:id',
+  payslip: '/hr/me',
+  patient: '/clinic/patients/:id',
+  doctor: '/clinic/doctors/:id',
+  room: '/clinic/rooms/:id',
+  appointment: '/clinic/appointments/:id',
+  treatment: '/clinic/treatments/:id',
+  clinical_order: '/clinic/clinical-orders/:id',
+  billable_service: '/billing/service-catalog/:id',
+  invoice: '/billing/invoices/:id',
+  payment: '/billing/payments',
+  refund: '/billing/refunds',
+  insurance_claim: '/billing/insurance-claims/:id',
+  cash_session: '/billing/cash-drawers/:id',
+  medication: '/pharmacy/medications/:id',
+  medication_batch: '/pharmacy/stock',
+  prescription: '/pharmacy/prescriptions/:id',
+  dispensation: '/pharmacy/dispensations/:id',
 };
 
 /**
@@ -100,9 +129,9 @@ export class NotificationBell implements OnInit {
         );
       });
     }
-    const base = item.relatedType ? RELATED_ROUTES[item.relatedType] : undefined;
-    if (base && item.relatedId) {
-      void this.router.navigate([base, item.relatedId]);
+    const route = item.relatedType ? RELATED_ROUTES[item.relatedType] : undefined;
+    if (route && !(route.includes(':id') && !item.relatedId)) {
+      void this.router.navigateByUrl(route.replace(':id', item.relatedId ?? ''));
     }
   }
 

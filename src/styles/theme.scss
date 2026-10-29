@@ -161,6 +161,42 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+// Scrollbars: a slim rounded thumb in the theme colours on a clear track (pages, tables, dialogs, menus).
+// Chromium / Safari use the ::-webkit-scrollbar rules (hover colour); Firefox the standard properties. The standard
+// ones stay out of Chromium, where they would switch the ::-webkit-scrollbar styling off.
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--mat-sys-on-surface-variant) 35%, transparent) transparent;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--mat-sys-on-surface-variant) 35%, transparent) padding-box;
+  transition: background-color 150ms ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  border-width: 2px;
+  background-color: color-mix(in srgb, var(--mat-sys-primary) 70%, transparent);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--mat-sys-primary);
+}
+
 // Table header row: tinted band; rows highlight on hover.
 .mat-mdc-header-row {
   background: var(--mat-sys-surface-container-low);
