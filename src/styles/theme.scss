@@ -167,7 +167,8 @@ body {
 @supports not selector(::-webkit-scrollbar) {
   * {
     scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--mat-sys-on-surface-variant) 35%, transparent) transparent;
+    scrollbar-color: color-mix(in srgb, var(--mat-sys-on-surface-variant) 35%, transparent)
+      transparent;
   }
 }
 
