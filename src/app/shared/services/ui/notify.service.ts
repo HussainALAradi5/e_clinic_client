@@ -8,8 +8,6 @@ import { ApiError } from '@shared/interfaces/api/api-error.interface';
 import { ToastData, ToastOptions } from '@shared/interfaces/ui/toast.interface';
 import { isApiError } from '@shared/utils/guards';
 
-const REFERENCE_LENGTH = 8;
-
 /** Snack bar + toast component, downloaded on the first toast so they stay out of the start-up bundle. */
 interface ToastKit {
   snackBar: MatSnackBar;
@@ -45,8 +43,8 @@ export class NotifyService {
         : isApiError(error)
           ? error.message
           : 'Something went wrong.';
-    const reference = isApiError(error) ? error.requestId?.slice(0, REFERENCE_LENGTH) : undefined;
-    this.show(ToastType.Error, message, options, reference);
+    // The request id stays in the server log; users only see what went wrong.
+    this.show(ToastType.Error, message, options);
   }
 
   /** Closes the toast on screen (e.g. an old error once the user has moved on). */
@@ -55,12 +53,7 @@ export class NotifyService {
   }
 
   /** Any toast type; opens at once and emits when its action is clicked. */
-  show(
-    type: ToastType,
-    message: string,
-    options: ToastOptions = {},
-    reference?: string,
-  ): Observable<void> {
+  show(type: ToastType, message: string, options: ToastOptions = {}): Observable<void> {
     const style = TOAST_STYLES[type];
     const duration = options.duration ?? style.duration;
     const data: ToastData = {
@@ -68,7 +61,6 @@ export class NotifyService {
       title: options.title ?? style.title,
       message,
       action: options.action,
-      reference,
       duration,
     };
 

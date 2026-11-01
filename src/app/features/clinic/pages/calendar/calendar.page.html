@@ -44,24 +44,22 @@
     />
     <mat-datepicker #datePicker />
   </span>
-  <select
-    class="rounded-lg border border-outline-variant bg-surface px-3 py-2 text-sm"
-    aria-label="Doctor"
-    [value]="doctorId() ?? ''"
-    (change)="pickDoctor($any($event.target).value)"
-  >
-    @if (view() === 'day') {
-      <option value="">All doctors</option>
+  <!-- Recreated per view: the week always shows one doctor, the day may show every doctor (empty). -->
+  @if (doctors().length) {
+    @for (key of [view()]; track key) {
+      <ui-entity-select
+        class="w-full sm:w-72"
+        [label]="view() === 'day' ? 'Doctor (empty = all)' : 'Doctor'"
+        icon="search"
+        subscript="dynamic"
+        endpoint="doctors"
+        [display]="doctorName"
+        [initial]="view() === 'week' ? doctor() : doctorId() ? doctor() : null"
+        [control]="doctorControl"
+        (picked)="pickDoctor($event)"
+      />
     }
-    @for (d of doctors(); track d.id) {
-      <option
-        [value]="d.id"
-        [selected]="d.id === doctor()?.id && (view() === 'week' || doctorId() === d.id)"
-      >
-        {{ d.displayName }}
-      </option>
-    }
-  </select>
+  }
   <h2 class="m-0 ml-auto text-base font-semibold">
     @if (view() === 'day') {
       {{ date() | date: 'EEEE ' + dateFormat }}

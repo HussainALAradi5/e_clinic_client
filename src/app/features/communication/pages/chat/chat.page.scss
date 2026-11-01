@@ -402,10 +402,8 @@
   overscroll-behavior: contain;
 }
 
+// Day separators stay between the messages (not sticky), so they never cover a photo or a message.
 .day {
-  position: sticky;
-  top: 0.25rem;
-  z-index: 1;
   display: flex;
   justify-content: center;
   margin: 0.9rem 0 0.2rem;
@@ -510,4 +508,35 @@
   50% {
     opacity: 0.5;
   }
+}
+
+// The right-click menu opens from this invisible point under the pointer.
+.row-menu-anchor {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.row.deleted {
+  opacity: 0.72;
+
+  .title {
+    text-decoration: line-through;
+  }
+}
+
+.chip.deleted.on {
+  border-color: var(--mat-sys-error);
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+}
+
+.deleted-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.9rem;
 }

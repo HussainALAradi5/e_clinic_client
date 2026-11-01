@@ -24,10 +24,18 @@
       [attr.aria-label]="'Message from ' + message().sender.fullName + ' at ' + time()"
       (contextmenu)="openPicker($event)"
       (keydown.shift.f10)="openPicker($event)"
+      [style.transform]="swipe() ? 'translateX(' + swipe() + 'px)' : null"
       (pointerdown)="pressStart($event)"
+      (pointermove)="pressMove($event)"
       (pointerup)="pressEnd()"
+      (pointercancel)="pressEnd()"
       (pointerleave)="pressEnd()"
     >
+      @if (swipe()) {
+        <mat-icon class="swipe-hint" [class.ready]="swipeReady()" aria-hidden="true"
+          >reply</mat-icon
+        >
+      }
       @if (group() && !mine() && first()) {
         <p class="sender">
           <span [style.color]="leader() ? '#fff' : null">{{ message().sender.fullName }}</span>
@@ -35,6 +43,30 @@
             <span class="badge leader"><mat-icon>star</mat-icon>Leader</span>
           }
         </p>
+      }
+
+      @if (message().replyTo; as q) {
+        <button
+          type="button"
+          class="quote"
+          [attr.aria-label]="'Show the message from ' + q.senderName"
+          (click)="jump.emit(q.id)"
+        >
+          <span class="quote-name">{{ q.senderId === meId() ? 'You' : q.senderName }}</span>
+          <span class="quote-text">
+            @switch (q.kind) {
+              @case (kinds.Voice) {
+                <mat-icon>mic</mat-icon> Voice note
+              }
+              @case (kinds.Media) {
+                <mat-icon>attach_file</mat-icon> {{ q.excerpt || q.fileName || 'File' }}
+              }
+              @default {
+                {{ q.excerpt }}
+              }
+            }
+          </span>
+        </button>
       }
 
       @if (images().length) {
@@ -104,16 +136,70 @@
       </span>
 
       @if (picking()) {
-        <div class="picker glass" role="menu" aria-label="React">
-          @for (emoji of settings().reactions; track emoji) {
+        <div class="picker glass" [class.below]="below()" role="menu" aria-label="React">
+          <div class="quick">
             <button
               type="button"
               role="menuitem"
-              (click)="pick(emoji)"
-              [attr.aria-label]="'React ' + emoji"
+              class="tool"
+              aria-label="Reply"
+              (click)="answer()"
             >
-              {{ emoji }}
+              <mat-icon>reply</mat-icon>
             </button>
+            @for (emoji of settings().reactions; track emoji) {
+              <button
+                type="button"
+                role="menuitem"
+                [class.chosen]="emoji === myReaction()"
+                [attr.aria-pressed]="emoji === myReaction()"
+                (click)="pick(emoji)"
+                [attr.aria-label]="(emoji === myReaction() ? 'Remove reaction ' : 'React ') + emoji"
+              >
+                {{ emoji }}
+              </button>
+            }
+            @if (extra().length) {
+              <button
+                type="button"
+                role="menuitem"
+                class="tool"
+                [attr.aria-expanded]="more()"
+                [attr.aria-label]="more() ? 'Fewer emojis' : 'More emojis'"
+                (click)="more.set(!more())"
+              >
+                <mat-icon>{{ more() ? 'expand_less' : 'add' }}</mat-icon>
+              </button>
+            }
+            @if (message().body) {
+              <button
+                type="button"
+                role="menuitem"
+                class="tool"
+                aria-label="Copy text"
+                (click)="copy()"
+              >
+                <mat-icon>content_copy</mat-icon>
+              </button>
+            }
+          </div>
+          @if (more()) {
+            <div class="grid">
+              @for (emoji of extra(); track emoji) {
+                <button
+                  type="button"
+                  role="menuitem"
+                  [class.chosen]="emoji === myReaction()"
+                  [attr.aria-pressed]="emoji === myReaction()"
+                  (click)="pick(emoji)"
+                  [attr.aria-label]="
+                    (emoji === myReaction() ? 'Remove reaction ' : 'React ') + emoji
+                  "
+                >
+                  {{ emoji }}
+                </button>
+              }
+            </div>
           }
         </div>
       }

@@ -27,7 +27,11 @@
   }
 
   @for (def of quickFilters(); track def.field) {
-    <mat-form-field subscriptSizing="dynamic" class="w-44">
+    <!-- Long labels ("Requester answer") get a wider field so the arrow never sits on the text. -->
+    <mat-form-field
+      subscriptSizing="dynamic"
+      [class]="label(def.field).length > 13 ? 'w-56' : 'w-44'"
+    >
       <mat-label>{{ label(def.field) }}</mat-label>
       <mat-select
         multiple
@@ -54,28 +58,104 @@
     </mat-form-field>
   }
 
-  @if (schema().filters.length > quickFilters().length) {
-    <button matButton="outlined" type="button" (click)="openSheet()">
-      <mat-icon>tune</mat-icon> Filters
-      @if (activeFilters().length) {
-        <span
-          class="ms-1 inline-grid size-5 place-items-center rounded-full bg-primary text-xs font-semibold text-on-primary"
-          >{{ activeFilters().length }}</span
-        >
-      }
-    </button>
+  @for (def of relationFilters(); track def.field) {
+    @if (relationControls()[def.field]; as control) {
+      <ui-entity-select
+        class="w-full sm:w-64"
+        [label]="label(def.field)"
+        icon="search"
+        subscript="dynamic"
+        [endpoint]="endpoint(def)!"
+        [display]="lookupName"
+        [detail]="lookupCode"
+        [initial]="initialRow(def)"
+        [control]="control"
+        (picked)="pick(def, $event)"
+      />
+    }
   }
 
-  <mat-chip-set aria-label="Active filters">
-    @for (def of activeFilters(); track def.field) {
-      <mat-chip (click)="openSheet()" (removed)="remove(def)">
-        <span class="font-medium">{{ label(def.field) }}:</span> {{ summary(def) }}
-        <button matChipRemove [attr.aria-label]="'Remove ' + label(def.field) + ' filter'">
-          <mat-icon>cancel</mat-icon>
-        </button>
-      </mat-chip>
+  @for (def of otherFilters(); track def.field) {
+    @switch (def.type) {
+      @case (types.Choice) {
+        <mat-form-field subscriptSizing="dynamic" class="w-44">
+          <mat-label>{{ label(def.field) }}</mat-label>
+          <mat-select
+            multiple
+            [value]="selectedValues(def)"
+            (selectionChange)="setValues(def, $event.value)"
+          >
+            @for (option of def.options; track option.value) {
+              <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+      @case (types.Enum) {
+        <mat-form-field subscriptSizing="dynamic" class="w-44">
+          <mat-label>{{ label(def.field) }}</mat-label>
+          <mat-select
+            multiple
+            [value]="selectedValues(def)"
+            (selectionChange)="setValues(def, $event.value)"
+          >
+            @for (option of enumOptions(def); track option.value) {
+              <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+      @case (types.Boolean) {
+        <mat-form-field subscriptSizing="dynamic" class="w-40">
+          <mat-label>{{ label(def.field) }}</mat-label>
+          <mat-select
+            [value]="draft(def).text"
+            (selectionChange)="setDraft(def, { text: $event.value })"
+          >
+            <mat-option value="">Any</mat-option>
+            <mat-option value="true">Yes</mat-option>
+            <mat-option value="false">No</mat-option>
+          </mat-select>
+        </mat-form-field>
+      }
+      @case (types.Number) {
+        <ng-container *ngTemplateOutlet="range; context: { $implicit: def }" />
+      }
+      @case (types.Money) {
+        <ng-container *ngTemplateOutlet="range; context: { $implicit: def }" />
+      }
+      @case (types.Date) {
+        <ng-container *ngTemplateOutlet="dates; context: { $implicit: def }" />
+      }
+      @case (types.Datetime) {
+        <ng-container *ngTemplateOutlet="dates; context: { $implicit: def }" />
+      }
+      @default {
+        <mat-form-field subscriptSizing="dynamic" class="w-52">
+          <mat-label>{{ label(def.field) }}</mat-label>
+          <input
+            matInput
+            [placeholder]="textHint(def)"
+            [value]="draft(def).text"
+            (change)="setDraft(def, { text: inputValue($event) })"
+          />
+        </mat-form-field>
+      }
     }
-  </mat-chip-set>
+  }
+
+  @if (hiddenActive().length) {
+    <mat-chip-set aria-label="Filters from a link">
+      @for (def of hiddenActive(); track def.field) {
+        <mat-chip (removed)="remove(def)">
+          <span class="font-medium">{{ label(def.field) }}:</span> {{ summary(def) }}
+          <button matChipRemove [attr.aria-label]="'Remove ' + label(def.field) + ' filter'">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip>
+      }
+    </mat-chip-set>
+  }
 
   @if (hasActive()) {
     <button matButton type="button" (click)="clearAll()">Clear all</button>
@@ -90,3 +170,52 @@
     </mat-slide-toggle>
   }
 </div>
+
+<ng-template #range let-def>
+  @let d = draft(def);
+  <div class="inline-flex gap-1">
+    <mat-form-field subscriptSizing="dynamic" class="w-32">
+      <mat-label>{{ label(def.field) }} from</mat-label>
+      <input
+        matInput
+        type="number"
+        inputmode="decimal"
+        [value]="d.min"
+        (change)="setDraft(def, { min: inputValue($event) })"
+      />
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic" class="w-32">
+      <mat-label>to</mat-label>
+      <input
+        matInput
+        type="number"
+        inputmode="decimal"
+        [value]="d.max"
+        (change)="setDraft(def, { max: inputValue($event) })"
+      />
+    </mat-form-field>
+  </div>
+</ng-template>
+
+<ng-template #dates let-def>
+  @let d = draft(def);
+  <mat-form-field subscriptSizing="dynamic" class="w-64">
+    <mat-label>{{ label(def.field) }}</mat-label>
+    <mat-date-range-input [rangePicker]="picker" separator="–">
+      <input
+        matStartDate
+        placeholder="From"
+        [value]="d.min || null"
+        (dateChange)="setDraft(def, { min: day($event.value) })"
+      />
+      <input
+        matEndDate
+        placeholder="To"
+        [value]="d.max || null"
+        (dateChange)="setDraft(def, { max: day($event.value) })"
+      />
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker" />
+    <mat-date-range-picker #picker />
+  </mat-form-field>
+</ng-template>

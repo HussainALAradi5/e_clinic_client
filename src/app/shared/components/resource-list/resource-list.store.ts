@@ -78,21 +78,6 @@ export const ResourceListStore = signalStore(
       reload(): void {
         fetch();
       },
-      /** Rows a query would return, without touching the list (cheap: one row per page). */
-      count(query: ListQuery): Observable<number> {
-        return api
-          .list<{ id: string }>(
-            store.endpoint(),
-            {
-              ...query,
-              page: 1,
-              perPage: 1,
-              cursor: undefined,
-            },
-            store.params(),
-          )
-          .pipe(map((page) => page.meta.total ?? page.data.length));
-      },
     };
   }),
 );

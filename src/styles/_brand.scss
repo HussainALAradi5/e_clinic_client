@@ -291,14 +291,6 @@
     line-height: 1.45;
   }
 
-  .toast-reference {
-    margin-top: 0.375rem !important;
-    color: var(--mat-sys-on-surface-variant);
-    font-size: 0.75rem;
-    font-variant-numeric: tabular-nums;
-    user-select: all;
-  }
-
   .toast-action {
     margin: 0.375rem 0 0 -0.75rem;
     --mat-button-text-label-text-color: var(--toast-accent);
@@ -529,5 +521,14 @@
 
   [data-theme='dark'] & {
     background: color-mix(in srgb, #3b82f6 18%, var(--mat-sys-surface-container-lowest)) !important;
+  }
+}
+
+// A destructive item in any menu (Delete chat …).
+.mat-mdc-menu-item.danger {
+  color: var(--mat-sys-error);
+
+  .mat-icon {
+    color: inherit;
   }
 }

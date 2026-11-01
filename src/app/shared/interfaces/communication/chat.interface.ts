@@ -42,6 +42,16 @@ export interface ChatReaction {
   names: string[];
 }
 
+/** The message a reply quotes (null when the quoted message was deleted). */
+export interface ChatReplyQuote {
+  id: string;
+  senderId: string;
+  senderName: string;
+  kind: MessageKind;
+  excerpt: string;
+  fileName: string | null;
+}
+
 export interface ChatMessage {
   id: string;
   conversationId: string;
@@ -49,6 +59,7 @@ export interface ChatMessage {
   body: string | null;
   mentions: string[];
   sender: { id: string; fullName: string; avatarUrl: string | null; role: ParticipantRole | null };
+  replyTo: ChatReplyQuote | null;
   attachments: ChatAttachment[];
   reactions: ChatReaction[];
   createdAt: string;
@@ -67,6 +78,9 @@ export interface Conversation {
   messagesCount?: number;
   lastMessageAt: string | null;
   createdAt: string | null;
+  /** Soft-deleted (admins see these with the Deleted switch); never removed. */
+  deletedAt: string | null;
+  deletedBy: string | null;
 }
 
 /** GET /chat/conversations filters (all applied on the server). */
@@ -76,6 +90,8 @@ export interface ConversationQuery {
   read?: 'unread' | 'read';
   from?: string;
   to?: string;
+  /** Admins: every deleted chat instead of mine. */
+  deleted?: 1;
   page?: number;
   perPage?: number;
 }
@@ -93,6 +109,8 @@ export interface SendMessagePayload {
   files?: File[];
   voice?: boolean;
   mentions?: string[];
+  /** The message this one answers. */
+  replyToId?: string;
 }
 
 export interface ChatSettings {
@@ -103,8 +121,10 @@ export interface ChatSettings {
   notifyMessages: boolean;
   /** Unread chat messages count in the chat badge. */
   countInBadge: boolean;
-  /** The reaction emojis offered (read-only). */
+  /** The quick reaction row (read-only). */
   reactions: string[];
+  /** Everything behind "+" (read-only). */
+  allReactions: string[];
 }
 
 /** Socket `conversation.read`. */

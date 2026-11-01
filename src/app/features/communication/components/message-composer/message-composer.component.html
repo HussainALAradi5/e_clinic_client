@@ -15,6 +15,23 @@
     </ul>
   }
 
+  @if (replyTo(); as r) {
+    <div class="replying glass">
+      <mat-icon aria-hidden="true">reply</mat-icon>
+      <div class="min-w-0 flex-1">
+        <p class="m-0 text-xs font-semibold">
+          Replying to {{ r.sender.id === meId() ? 'yourself' : r.sender.fullName }}
+        </p>
+        <p class="m-0 truncate text-sm opacity-80">
+          {{ r.body || (r.attachments[0]?.name ?? 'File') }}
+        </p>
+      </div>
+      <button type="button" aria-label="Cancel reply" (click)="cancelReply.emit()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  }
+
   @if (files().length) {
     <div class="files">
       @for (file of files(); track file) {

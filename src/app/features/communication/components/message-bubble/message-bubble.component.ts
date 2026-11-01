@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  ElementRef,
   HostListener,
   inject,
   input,
@@ -23,6 +22,10 @@ import { ChatAvatar } from '../chat-avatar/chat-avatar.component';
 import { BUBBLE_COLORS, fileSize, LEADER_BUBBLE, tintFor } from '../../utils/chat-style';
 
 const LONG_PRESS_MS = 450;
+/** Space the bar with its "+" grid needs above a bubble; less and it opens below. */
+const PICKER_ROOM_PX = 300;
+/** A touch swipe this far right replies (as on WhatsApp). */
+const SWIPE_REPLY_PX = 64;
 
 interface Segment {
   text: string;
@@ -50,14 +53,34 @@ export class MessageBubble {
   readonly first = input(true);
 
   readonly react = output<string>();
+  /** Answer this message (Reply in the bar, or a swipe right on touch). */
+  readonly reply = output<void>();
+  /** The quote was clicked: show the quoted message. */
+  readonly jump = output<string>();
   /** A photo finished loading (the chat keeps itself scrolled to the end). */
   readonly loaded = output<void>();
 
-  private readonly host = inject(ElementRef<HTMLElement>);
   private pressTimer: ReturnType<typeof setTimeout> | null = null;
 
   protected readonly kinds = MessageKind;
   protected readonly picking = signal(false);
+  /** How far a touch swipe has pulled the bubble right (a reply at SWIPE_REPLY_PX). */
+  protected readonly swipe = signal(0);
+  protected readonly swipeReady = computed(() => this.swipe() >= SWIPE_REPLY_PX);
+  private swipeFrom: { x: number; y: number } | null = null;
+  /** The full emoji grid behind "+". */
+  protected readonly more = signal(false);
+  /** My current reaction, ringed in the bar (picking it again takes it back). */
+  protected readonly myReaction = computed(
+    () => this.message().reactions.find((r) => r.userIds.includes(this.meId()))?.emoji ?? null,
+  );
+  /** Open the bar under the bubble when it sits near the top (no room above for the "+" grid). */
+  protected readonly below = signal(false);
+  /** Emojis behind "+" that are not already in the quick row. */
+  protected readonly extra = computed(() => {
+    const quick = new Set(this.settings().reactions);
+    return (this.settings().allReactions ?? []).filter((e) => !quick.has(e));
+  });
   protected readonly mine = computed(() => this.message().sender.id === this.meId());
   protected readonly leader = computed(
     () => this.group() && this.message().sender.role === ParticipantRole.Admin,
@@ -126,20 +149,74 @@ export class MessageBubble {
 
   protected openPicker(event: Event): void {
     event.preventDefault();
+    this.placePicker(event.currentTarget);
+    this.more.set(false);
     this.picking.set(true);
   }
 
-  protected pick(emoji: string): void {
+  /** Room above the bubble inside the message list (the chat header sits over the rest). */
+  private placePicker(bubble: EventTarget | null): void {
+    if (!(bubble instanceof Element)) return;
+    const listTop = bubble.closest('.messages')?.getBoundingClientRect().top ?? 0;
+    this.below.set(bubble.getBoundingClientRect().top - listTop < PICKER_ROOM_PX);
+  }
+
+  protected close(): void {
     this.picking.set(false);
+    this.more.set(false);
+  }
+
+  protected answer(): void {
+    this.close();
+    this.reply.emit();
+  }
+
+  protected pick(emoji: string): void {
+    this.close();
     this.react.emit(emoji);
+  }
+
+  /** A long-press selects nothing on phones (the bar opens instead), so the bar offers Copy. */
+  protected async copy(): Promise<void> {
+    this.close();
+    await navigator.clipboard?.writeText(this.message().body ?? '').catch(() => undefined);
   }
 
   protected pressStart(event: PointerEvent): void {
     if (event.pointerType !== 'touch') return;
-    this.pressTimer = setTimeout(() => this.picking.set(true), LONG_PRESS_MS);
+    this.swipeFrom = { x: event.clientX, y: event.clientY };
+    const bubble = event.currentTarget;
+    this.pressTimer = setTimeout(() => {
+      this.placePicker(bubble);
+      this.more.set(false);
+      this.picking.set(true);
+      navigator.vibrate?.(12);
+    }, LONG_PRESS_MS);
+  }
+
+  /** A touch moving sideways is a swipe (no long-press); vertical moves are scrolling. */
+  protected pressMove(event: PointerEvent): void {
+    if (!this.swipeFrom || event.pointerType !== 'touch') return;
+    const dx = event.clientX - this.swipeFrom.x;
+    const dy = Math.abs(event.clientY - this.swipeFrom.y);
+    if (Math.abs(dx) > 8 || dy > 8) this.cancelPress();
+    if (dy > 24 && this.swipe() === 0) {
+      this.swipeFrom = null;
+      return;
+    }
+    const pulled = Math.max(0, Math.min(dx, SWIPE_REPLY_PX + 16));
+    if (pulled >= SWIPE_REPLY_PX && !this.swipeReady()) navigator.vibrate?.(8);
+    this.swipe.set(pulled);
   }
 
   protected pressEnd(): void {
+    this.cancelPress();
+    if (this.swipeReady()) this.reply.emit();
+    this.swipe.set(0);
+    this.swipeFrom = null;
+  }
+
+  private cancelPress(): void {
     if (this.pressTimer) clearTimeout(this.pressTimer);
     this.pressTimer = null;
   }
@@ -148,15 +225,17 @@ export class MessageBubble {
     return a.mimeType.startsWith('image/');
   }
 
+  /** Any press outside the bar closes it: beside the bubble, on it, or a right-click elsewhere (which may reopen). */
   @HostListener('document:pointerdown', ['$event'])
   protected closeOutside(event: Event): void {
-    if (this.picking() && !this.host.nativeElement.contains(event.target as Node)) {
-      this.picking.set(false);
+    if (this.picking() && !(event.target as Element | null)?.closest?.('.picker')) {
+      this.close();
     }
   }
 
   @HostListener('document:keydown.escape')
-  protected closeOnEscape(): void {
-    this.picking.set(false);
+  @HostListener('document:wheel')
+  protected closeQuietly(): void {
+    if (this.picking()) this.close();
   }
 }

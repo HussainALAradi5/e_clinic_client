@@ -5,9 +5,6 @@
 <div class="toast-body">
   <p class="toast-title">{{ data.title }}</p>
   <p class="toast-message">{{ data.message }}</p>
-  @if (data.reference) {
-    <p class="toast-reference">Reference {{ data.reference }}</p>
-  }
   @if (data.action) {
     <button matButton class="toast-action" type="button" (click)="ref.dismissWithAction()">
       {{ data.action }}

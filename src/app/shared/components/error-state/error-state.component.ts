@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ApiError } from '@shared/interfaces/api/api-error.interface';
 import { isApiError } from '@shared/utils/guards';
 
-/** Error with retry; shows the request id for support. */
+/** Error with retry: what went wrong, in words (the request id stays in the server log). */
 @Component({
   selector: 'ui-error',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,9 +17,5 @@ export class ErrorState {
   protected readonly message = computed(() => {
     const e = this.error();
     return isApiError(e) ? e.message : 'Something went wrong.';
-  });
-  protected readonly requestId = computed(() => {
-    const e = this.error();
-    return isApiError(e) ? e.requestId : null;
   });
 }

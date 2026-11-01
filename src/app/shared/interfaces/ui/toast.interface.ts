@@ -7,8 +7,6 @@ export interface ToastData {
   message: string;
   /** Optional action button, e.g. Undo. */
   action?: string;
-  /** Request id for support (errors). */
-  reference?: string;
   /** Auto-close after this many ms (drives the countdown line). */
   duration: number;
 }

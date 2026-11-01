@@ -55,6 +55,19 @@
             {{ chip.label }}
           </button>
         }
+        @if (canSeeDeleted) {
+          <button
+            type="button"
+            class="chip deleted"
+            role="switch"
+            [class.on]="showDeleted()"
+            [attr.aria-checked]="showDeleted()"
+            matTooltip="Admins: show deleted chats (read-only, restorable)"
+            (click)="showDeleted.set(!showDeleted())"
+          >
+            <mat-icon class="!size-4 !text-base">delete_sweep</mat-icon> Deleted
+          </button>
+        }
         <button
           type="button"
           class="chip"
@@ -89,6 +102,37 @@
 
     <p class="count">{{ total() }} {{ total() === 1 ? 'chat' : 'chats' }}</p>
 
+    <!-- One menu for every row, opened at the pointer by a right-click (long-press on touch). -->
+    <span
+      class="row-menu-anchor"
+      #rowAnchor
+      #rowMenuTrigger="matMenuTrigger"
+      [matMenuTriggerFor]="rowMenu"
+      [style.left.px]="menuAt().x"
+      [style.top.px]="menuAt().y"
+      aria-hidden="true"
+    ></span>
+    <mat-menu #rowMenu="matMenu">
+      @if (menuChat(); as m) {
+        <button mat-menu-item (click)="select(m)"><mat-icon>chat</mat-icon>Open</button>
+        @if (!m.deletedAt && m.unreadCount > 0) {
+          <button mat-menu-item (click)="readRow(m)">
+            <mat-icon>done_all</mat-icon>Mark as read
+          </button>
+        }
+        @if (canDelete(m)) {
+          <button mat-menu-item class="danger" (click)="deleteChat(m)">
+            <mat-icon>delete</mat-icon>Delete chat
+          </button>
+        }
+        @if (m.deletedAt && canSeeDeleted) {
+          <button mat-menu-item (click)="restoreChat(m)">
+            <mat-icon>restore</mat-icon>Restore chat
+          </button>
+        }
+      }
+    </mat-menu>
+
     <ul class="rows" aria-label="Chat list">
       @for (c of chats(); track c.id) {
         <li>
@@ -96,7 +140,9 @@
             type="button"
             class="row"
             [class.active]="c.id === selectedId()"
+            [class.deleted]="!!c.deletedAt"
             (click)="select(c)"
+            (contextmenu)="openRowMenu($event, c)"
           >
             <app-chat-avatar
               [name]="c.title"
@@ -120,7 +166,11 @@
                 @if (lastMine(c)) {
                   <mat-icon class="tick">done_all</mat-icon>
                 }
-                <span class="preview truncate">{{ preview(c) }}</span>
+                <span class="preview truncate">{{
+                  c.deletedAt
+                    ? 'Deleted by ' + (c.deletedBy ?? 'someone') + ' · ' + stamp(c.deletedAt)
+                    : preview(c)
+                }}</span>
                 <span class="flex-1"></span>
                 @if (c.messagesCount) {
                   <span class="total" [matTooltip]="c.messagesCount + ' messages'">{{
@@ -184,7 +234,7 @@
           <span class="min-w-0 text-left">
             <span class="flex items-center gap-2">
               <span class="truncate text-base font-semibold">{{ c.title }}</span>
-              @if (isGroup()) {
+              @if (isGroup() && c.myRole) {
                 <span class="pill" [class.leader]="c.myRole === roles.Admin">
                   @if (c.myRole === roles.Admin) {
                     <mat-icon>star</mat-icon>
@@ -224,6 +274,7 @@
             </div>
           }
           <app-message-bubble
+            [attr.id]="'msg-' + row.message.id"
             [message]="row.message"
             [meId]="me()"
             [members]="c.members"
@@ -231,6 +282,8 @@
             [group]="isGroup()"
             [first]="row.first"
             (react)="react(row.message, $event)"
+            (reply)="replyTo.set(row.message)"
+            (jump)="jumpTo($event)"
             (loaded)="scrollToEnd(true)"
           />
         } @empty {
@@ -244,12 +297,29 @@
         }
       </div>
 
-      <app-message-composer
-        [members]="c.members"
-        [busy]="sending()"
-        (send)="send($event)"
-        (rejected)="rejected($event)"
-      />
+      @if (c.deletedAt) {
+        <div class="deleted-bar glass" role="status">
+          <mat-icon>delete_sweep</mat-icon>
+          <span class="flex-1"
+            >Deleted by {{ c.deletedBy ?? 'someone' }} · {{ stamp(c.deletedAt) }} — read-only.</span
+          >
+          @if (canSeeDeleted) {
+            <button matButton="tonal" (click)="restoreChat(c)">
+              <mat-icon>restore</mat-icon>Restore
+            </button>
+          }
+        </div>
+      } @else {
+        <app-message-composer
+          [members]="c.members"
+          [busy]="sending()"
+          [replyTo]="replyTo()"
+          [meId]="me()"
+          (cancelReply)="replyTo.set(null)"
+          (send)="send($event)"
+          (rejected)="rejected($event)"
+        />
+      }
 
       @if (dragging()) {
         <div class="drop glass" aria-hidden="true">

@@ -106,7 +106,6 @@ export class ResourceListPage implements OnInit {
   private readonly viewColumns = signal<string[] | null>(null);
   /** The list opened without state in the URL → the user's default view may apply. */
   protected readonly pristineUrl = Object.keys(this.route.snapshot.queryParams).length === 0;
-  protected readonly count = (query: ListQuery) => this.store.count(query);
   protected readonly endpointPath = computed(() => this.endpoint() ?? this.resource());
   /** Row checkboxes when the user can act on rows: a bulk action, or export of the ticked rows. */
   protected readonly selectable = computed(() => {

@@ -11,6 +11,7 @@ const DEFAULTS: ChatSettings = {
   notifyMessages: true,
   countInBadge: true,
   reactions: ['👍', '❤️', '😂', '😮', '😢', '🙏'],
+  allReactions: ['👍', '❤️', '😂', '😮', '😢', '🙏'],
 };
 
 /** My chat settings, loaded once per session and shared by the chat page and the toolbar badge. */

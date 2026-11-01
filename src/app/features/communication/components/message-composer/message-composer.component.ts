@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   ElementRef,
+  effect,
   input,
   OnDestroy,
   output,
@@ -13,7 +14,11 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ChatMember, SendMessagePayload } from '@shared/interfaces/communication/chat.interface';
+import {
+  ChatMember,
+  ChatMessage,
+  SendMessagePayload,
+} from '@shared/interfaces/communication/chat.interface';
 import { ChatAvatar } from '../chat-avatar/chat-avatar.component';
 import { fileSize } from '../../utils/chat-style';
 
@@ -39,6 +44,10 @@ export const CHAT_ACCEPT =
 export class MessageComposer implements OnDestroy {
   readonly members = input<ChatMember[]>([]);
   readonly busy = input(false);
+  /** The message being answered (shown above the box until sent or cancelled). */
+  readonly replyTo = input<ChatMessage | null>(null);
+  readonly meId = input('');
+  readonly cancelReply = output<void>();
   readonly send = output<SendMessagePayload>();
   readonly rejected = output<string>();
 
@@ -55,6 +64,13 @@ export class MessageComposer implements OnDestroy {
   private recorder: MediaRecorder | null = null;
   private chunks: Blob[] = [];
   private timer: ReturnType<typeof setInterval> | null = null;
+
+  constructor() {
+    // Choosing Reply puts the cursor in the box, ready to type.
+    effect(() => {
+      if (this.replyTo()) this.box()?.nativeElement.focus();
+    });
+  }
 
   protected readonly suggestions = computed(() => {
     const query = this.mentionQuery();

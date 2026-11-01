@@ -5,7 +5,7 @@ import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar'
 import { TOAST_STYLES } from '@shared/constants/toast.constants';
 import { ToastData } from '@shared/interfaces/ui/toast.interface';
 
-/** Toast body opened by NotifyService: coloured icon, title, message, optional action / reference, countdown. */
+/** Toast body opened by NotifyService: coloured icon, title, message, optional action, countdown. */
 @Component({
   selector: 'ui-toast',
   changeDetection: ChangeDetectionStrategy.OnPush,

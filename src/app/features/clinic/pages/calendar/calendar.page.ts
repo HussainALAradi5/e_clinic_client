@@ -9,6 +9,7 @@ import {
   signal,
   untracked,
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -16,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AppointmentActions } from '../../services/appointment-actions.service';
+import { EntitySelect } from '@shared/components/entity-select/entity-select.component';
 import { PageHeader } from '@shared/components/page-header/page-header.component';
 import { DATE_FORMAT } from '@shared/constants/app.constants';
 import { statusTone, TONE_CLASSES } from '@shared/constants/status-tones.constants';
@@ -64,6 +66,7 @@ function hhmm(total: number): string {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     PageHeader,
+    EntitySelect,
     MatButtonModule,
     MatDatepickerModule,
     MatButtonToggleModule,
@@ -84,6 +87,9 @@ export class CalendarPage {
   protected readonly date = signal(clinicIsoDate());
   protected readonly doctors = signal<Doctor[]>([]);
   protected readonly doctorId = signal<string | null>(null);
+  /** The doctor picker: searched on the server by name or code. */
+  protected readonly doctorControl = new FormControl<string | null>(null);
+  protected readonly doctorName = (d: Doctor): string => d.displayName;
   protected readonly appointments = signal<Appointment[]>([]);
   protected readonly loading = signal(false);
   protected readonly now = signal(Date.now());
@@ -180,8 +186,14 @@ export class CalendarPage {
     if (value) this.date.set(value);
   }
 
-  protected pickDoctor(id: string): void {
-    this.doctorId.set(id || null);
+  /** A picked doctor (found by search, maybe beyond the first page of doctors); cleared = every doctor (day view). */
+  protected pickDoctor(row: Doctor | null): void {
+    if (row && !this.doctors().some((d) => d.id === row.id)) {
+      this.doctors.update((list) =>
+        [...list, row].sort((a, b) => a.fullName.localeCompare(b.fullName)),
+      );
+    }
+    this.doctorId.set(row?.id ?? null);
   }
 
   protected openDay(date: string): void {

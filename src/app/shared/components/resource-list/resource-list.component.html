@@ -35,7 +35,6 @@
     class="mb-3"
     [schema]="schema"
     [query]="store.query()"
-    [count]="count"
     (queryChange)="setQuery($event)"
   />
   @if (selectable()) {

@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, EMPTY, interval, merge, Subject, switchMap } from 'rxjs';
@@ -39,6 +39,7 @@ import { ChatSettingsStore } from '@shared/services/communication/chat-settings.
 import { RealtimeService } from '@shared/services/communication/realtime.service';
 import { EnumService } from '@shared/services/data/enum.service';
 import { DialogService } from '@shared/services/ui/dialog.service';
+import { AccessService } from '@shared/services/auth/access.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
 import { ChatAvatar } from '../../components/chat-avatar/chat-avatar.component';
 import { ChatSettingsDialog } from '../../components/chat-settings-dialog/chat-settings-dialog.component';
@@ -95,6 +96,14 @@ export class ChatPage implements OnInit {
   private readonly enums = inject(EnumService);
 
   private readonly scroller = viewChild<ElementRef<HTMLElement>>('scroller');
+  private readonly rowMenu = viewChild<MatMenuTrigger>('rowMenuTrigger');
+  private readonly rowAnchor = viewChild<ElementRef<HTMLElement>>('rowAnchor');
+  /** Admins (chat.read_all) may switch the list to deleted chats, read them and restore them. */
+  protected readonly canSeeDeleted = inject(AccessService).can('chat.read_all');
+  protected readonly showDeleted = signal(false);
+  /** The chat a right-click opened the menu for, and where. */
+  protected readonly menuChat = signal<Conversation | null>(null);
+  protected readonly menuAt = signal({ x: 0, y: 0 });
   private readonly composer = viewChild(MessageComposer);
 
   private readonly auth = inject(AuthStore);
@@ -131,6 +140,8 @@ export class ChatPage implements OnInit {
   protected readonly hasMore = signal(false);
   protected readonly loadingMessages = signal(false);
   protected readonly sending = signal(false);
+  /** The message being answered in the composer. */
+  protected readonly replyTo = signal<ChatMessage | null>(null);
   protected readonly dragging = signal(false);
 
   protected readonly dateActive = computed(() => !!this.from() || !!this.to());
@@ -178,6 +189,7 @@ export class ChatPage implements OnInit {
       this.search();
       this.from();
       this.to();
+      this.showDeleted();
       untracked(() => this.reload$.next());
     });
     this.reload$.pipe(debounceTime(250), takeUntilDestroyed()).subscribe(() => this.loadChats(1));
@@ -277,6 +289,7 @@ export class ChatPage implements OnInit {
       read: f === ChatFilter.Unread ? 'unread' : f === ChatFilter.Read ? 'read' : undefined,
       from: this.from() || undefined,
       to: this.to() || undefined,
+      deleted: this.showDeleted() ? 1 : undefined,
     };
   }
 
@@ -295,6 +308,7 @@ export class ChatPage implements OnInit {
 
   private open(id: string | null): void {
     this.selectedId.set(id);
+    this.replyTo.set(null);
     this.messages.set([]);
     this.hasMore.set(false);
     this.chat.set(id ? (this.chats().find((c) => c.id === id) ?? null) : null);
@@ -355,9 +369,11 @@ export class ChatPage implements OnInit {
     const id = this.selectedId();
     if (!id) return;
     this.sending.set(true);
-    this.api.send(id, payload).subscribe({
+    const replyToId = this.replyTo()?.id;
+    this.api.send(id, { ...payload, replyToId }).subscribe({
       next: (message) => {
         this.sending.set(false);
+        this.replyTo.set(null);
         this.upsert(message);
         this.bump(message, false);
         this.scrollToEnd();
@@ -367,6 +383,19 @@ export class ChatPage implements OnInit {
         this.notify.error(e);
       },
     });
+  }
+
+  /** A quote was clicked: scroll its original into view and flash it (when it is loaded). */
+  protected jumpTo(messageId: string): void {
+    const el = document.getElementById(`msg-${messageId}`);
+    if (!el) {
+      this.notify.info('That message is further back — scroll up to load it.');
+      return;
+    }
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.remove('flash');
+    void el.offsetWidth;
+    el.classList.add('flash');
   }
 
   protected react(message: ChatMessage, emoji: string): void {
@@ -385,6 +414,64 @@ export class ChatPage implements OnInit {
     if (!chat) return;
     this.chats.update((list) => [chat, ...list.filter((c) => c.id !== chat.id)]);
     this.select(chat);
+  }
+
+  // ---- right-click menu on a chat ---------------------------------------------------------------------------
+
+  /** Right-click (long-press on touch) a chat: its menu opens where the pointer is. */
+  protected openRowMenu(event: MouseEvent, chat: Conversation): void {
+    event.preventDefault();
+    this.menuChat.set(chat);
+    // The anchor is placed inside its panel (the glass panel is the containing block, not the window).
+    const panel = this.rowAnchor()?.nativeElement.offsetParent?.getBoundingClientRect();
+    this.menuAt.set({ x: event.clientX - (panel?.left ?? 0), y: event.clientY - (panel?.top ?? 0) });
+    this.rowMenu()?.openMenu();
+  }
+
+  /** Either person deletes a one-to-one chat; a group only its leader. */
+  protected canDelete(chat: Conversation): boolean {
+    return (
+      !chat.deletedAt &&
+      (chat.type === ConversationType.Direct || chat.myRole === ParticipantRole.Admin)
+    );
+  }
+
+  protected readRow(chat: Conversation): void {
+    this.markRead(chat.id);
+  }
+
+  protected async deleteChat(chat: Conversation): Promise<void> {
+    const ok = await this.dialogs.confirm({
+      title: `Delete "${chat.title}"?`,
+      message:
+        chat.type === ConversationType.Group
+          ? 'The group disappears for every member. Nothing is erased — an admin can restore it.'
+          : 'The chat disappears for both of you. Nothing is erased — an admin can restore it.',
+      confirmLabel: 'Delete chat',
+      danger: true,
+    });
+    if (!ok) return;
+    this.api.remove(chat.id).subscribe({
+      next: () => {
+        this.chats.update((list) => list.filter((c) => c.id !== chat.id));
+        this.total.update((n) => Math.max(0, n - 1));
+        if (this.selectedId() === chat.id) this.back();
+        this.notify.success('Chat deleted.');
+      },
+      error: (e: unknown) => this.notify.error(e),
+    });
+  }
+
+  protected restoreChat(chat: Conversation): void {
+    this.api.restore(chat.id).subscribe({
+      next: () => {
+        this.chats.update((list) => list.filter((c) => c.id !== chat.id));
+        this.total.update((n) => Math.max(0, n - 1));
+        if (this.selectedId() === chat.id) this.back();
+        this.notify.success(`"${chat.title}" is back for its members.`);
+      },
+      error: (e: unknown) => this.notify.error(e),
+    });
   }
 
   protected async info(): Promise<void> {
@@ -545,6 +632,8 @@ export class ChatPage implements OnInit {
   }
 
   private markRead(id: string): void {
+    // A deleted chat (an admin reading it) is read-only.
+    if (this.chat()?.id === id && this.chat()?.deletedAt) return;
     this.setUnread(id, 0);
     this.api.markRead(id).subscribe({ error: () => undefined });
   }

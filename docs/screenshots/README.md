@@ -10,6 +10,7 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 |---|---|---|
 | Landing | ![](public/landing-light.png) | ![](public/landing-dark.png) |
 | Sign in | ![](public/sign-in-light.png) | ![](public/sign-in-dark.png) |
+| Sign in wrong password | ![](public/sign-in-wrong-password-light.png) | ![](public/sign-in-wrong-password-dark.png) |
 
 ## Patient
 
@@ -25,6 +26,7 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 | Screen | Light | Dark |
 |---|---|---|
 | Calendar | ![](receptionist/calendar-light.png) | ![](receptionist/calendar-dark.png) |
+| Calendar doctor search | ![](receptionist/calendar-doctor-search-light.png) | ![](receptionist/calendar-doctor-search-dark.png) |
 | Dashboard | ![](receptionist/dashboard-light.png) | ![](receptionist/dashboard-dark.png) |
 | Front desk | ![](receptionist/front-desk-light.png) | ![](receptionist/front-desk-dark.png) |
 | Patient file | ![](receptionist/patient-file-light.png) | ![](receptionist/patient-file-dark.png) |
@@ -92,6 +94,8 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 
 | Screen | Light | Dark |
 |---|---|---|
+| Admin deleted chats | ![](chat/admin-deleted-chats-light.png) | ![](chat/admin-deleted-chats-dark.png) |
+| Doctor chat menu | ![](chat/doctor-chat-menu-light.png) | ![](chat/doctor-chat-menu-dark.png) |
 | Doctor chat settings | ![](chat/doctor-chat-settings-light.png) | ![](chat/doctor-chat-settings-dark.png) |
 | Doctor direct chat | ![](chat/doctor-direct-chat-light.png) | ![](chat/doctor-direct-chat-dark.png) |
 | Doctor filter groups | ![](chat/doctor-filter-groups-light.png) | ![](chat/doctor-filter-groups-dark.png) |
@@ -101,6 +105,9 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 | Doctor mention | ![](chat/doctor-mention-light.png) | ![](chat/doctor-mention-dark.png) |
 | Doctor pharmacy group | ![](chat/doctor-pharmacy-group-light.png) | ![](chat/doctor-pharmacy-group-dark.png) |
 | Doctor react menu | ![](chat/doctor-react-menu-light.png) | ![](chat/doctor-react-menu-dark.png) |
+| Doctor react more | ![](chat/doctor-react-more-light.png) | ![](chat/doctor-react-more-dark.png) |
+| Doctor reply compose | ![](chat/doctor-reply-compose-light.png) | ![](chat/doctor-reply-compose-dark.png) |
+| Doctor reply sent | ![](chat/doctor-reply-sent-light.png) | ![](chat/doctor-reply-sent-dark.png) |
 | Doctor ward group | ![](chat/doctor-ward-group-light.png) | ![](chat/doctor-ward-group-dark.png) |
 | Doctor2 member view | ![](chat/doctor2-member-view-light.png) | ![](chat/doctor2-member-view-dark.png) |
 | Mobile chat | <img src="chat/mobile-chat-light.png" width="200"> | <img src="chat/mobile-chat-dark.png" width="200"> |
@@ -114,6 +121,8 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 | Screen | Light | Dark |
 |---|---|---|
 | Admin filter open urgent | ![](tickets/admin-filter-open-urgent-light.png) | ![](tickets/admin-filter-open-urgent-dark.png) |
+| Admin filter opened by | ![](tickets/admin-filter-opened-by-light.png) | ![](tickets/admin-filter-opened-by-dark.png) |
+| Admin filter priority options | ![](tickets/admin-filter-priority-options-light.png) | ![](tickets/admin-filter-priority-options-dark.png) |
 | Admin filter solved | ![](tickets/admin-filter-solved-light.png) | ![](tickets/admin-filter-solved-dark.png) |
 | Admin list | ![](tickets/admin-list-light.png) | ![](tickets/admin-list-dark.png) |
 | Admin list page 2 | ![](tickets/admin-list-page-2-light.png) | ![](tickets/admin-list-page-2-dark.png) |
@@ -132,6 +141,7 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 | Nurse my tickets | ![](tickets/nurse-my-tickets-light.png) | ![](tickets/nurse-my-tickets-dark.png) |
 | Nurse new ticket | ![](tickets/nurse-new-ticket-light.png) | ![](tickets/nurse-new-ticket-dark.png) |
 | Nurse other ticket | ![](tickets/nurse-other-ticket-light.png) | ![](tickets/nurse-other-ticket-dark.png) |
+| Support desk | ![](tickets/support-desk-light.png) | ![](tickets/support-desk-dark.png) |
 
 ## Notifications
 

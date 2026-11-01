@@ -51,13 +51,14 @@ export class ChatApi {
       );
   }
 
-  /** Multipart: text, files (or one voice note) and mentions. */
+  /** Multipart: text, files (or one voice note), mentions and the message it answers. */
   send(id: string, payload: SendMessagePayload): Observable<ChatMessage> {
     const form = new FormData();
     if (payload.body) form.append('body', payload.body);
     payload.files?.forEach((file) => form.append('files[]', file, file.name));
     if (payload.voice) form.append('voice', '1');
     payload.mentions?.forEach((userId) => form.append('mentions[]', userId));
+    if (payload.replyToId) form.append('reply_to_id', payload.replyToId);
     return this.api.post<ChatMessage>(`${this.path}/conversations/${id}/messages`, form, {
       context: silent(),
     });
@@ -103,6 +104,16 @@ export class ChatApi {
     return this.api.patch<Conversation>(`${this.path}/conversations/${id}/members/${userId}`, {
       role,
     });
+  }
+
+  /** Soft delete: the chat leaves its members' lists (either person in a one-to-one chat, a leader in a group). */
+  remove(id: string): Observable<void> {
+    return this.api.delete(`${this.path}/conversations/${id}`);
+  }
+
+  /** Admins bring a deleted chat back to its members. */
+  restore(id: string): Observable<Conversation> {
+    return this.api.patch<Conversation>(`${this.path}/conversations/${id}/restore`, {});
   }
 
   /** An admin removes a member, or I leave (my own id). */
