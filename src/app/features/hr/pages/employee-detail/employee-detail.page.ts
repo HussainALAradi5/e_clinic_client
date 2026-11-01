@@ -110,7 +110,7 @@ export class EmployeeDetailPage implements OnInit {
     if (!p) return [];
     return [
       { label: 'File number', value: p.code, mono: true },
-      { label: 'Gender', value: this.enums.label('Gender', p.gender) },
+      { label: 'Gender', value: p.gender, enum: 'Gender' },
       { label: 'Date of birth', value: p.dateOfBirth },
       { label: 'National ID', value: p.nationalId, mono: true },
       { label: 'Mobile', value: p.phone },

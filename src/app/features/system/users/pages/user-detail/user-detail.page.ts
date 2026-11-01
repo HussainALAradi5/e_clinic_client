@@ -20,6 +20,7 @@ import { AuditHistory } from '@shared/components/audit-history/audit-history.com
 import { ErrorState } from '@shared/components/error-state/error-state.component';
 import { PageHeader } from '@shared/components/page-header/page-header.component';
 import { Skeleton } from '@shared/components/skeleton/skeleton.component';
+import { Flag } from '@shared/components/flag/flag.component';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { DATE_FORMAT, TIME_FORMAT } from '@shared/constants/app.constants';
 import { ButtonVariant } from '@shared/enums/ui/button.enum';
@@ -34,6 +35,7 @@ import { NotifyService } from '@shared/services/ui/notify.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UserStore],
   imports: [
+    Flag,
     PageHeader,
     StatusChip,
     AppButton,

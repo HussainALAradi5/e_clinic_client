@@ -12,7 +12,6 @@ import { CLINIC_INFO } from '@shared/constants/clinic-info.constants';
 import { CLINIC_LOCALE, DATE_FORMAT, PORTAL_PATH } from '@shared/constants/app.constants';
 import { Patient } from '@shared/interfaces/clinic/patient.interface';
 import { Fact } from '@shared/interfaces/ui/fact.interface';
-import { EnumService } from '@shared/services/data/enum.service';
 import { PortalApi } from '@shared/services/portal/portal-api.service';
 
 const day = (iso: string): string => formatDate(`${iso}T00:00:00`, DATE_FORMAT, CLINIC_LOCALE);
@@ -30,7 +29,6 @@ const day = (iso: string): string => formatDate(`${iso}T00:00:00`, DATE_FORMAT, 
 export class MyProfilePage {
   private readonly api = inject(PortalApi);
   private readonly actions = inject(PortalActions);
-  private readonly enums = inject(EnumService);
 
   protected readonly securityPath = `${PORTAL_PATH}/security`;
   protected readonly clinicPhone = CLINIC_INFO.phone;
@@ -43,8 +41,12 @@ export class MyProfilePage {
       { label: 'Patient number', value: p.code, mono: true },
       { label: 'Name', value: p.fullName },
       { label: 'Date of birth', value: day(p.dateOfBirth) },
-      { label: 'Gender', value: this.enums.label('Gender', p.gender) },
-      { label: 'Nationality', value: p.person.nationality?.nationality },
+      { label: 'Gender', value: p.gender, enum: 'Gender' },
+      {
+        label: 'Nationality',
+        value: p.person.nationality?.nationality,
+        flag: p.person.nationalityCode,
+      },
       { label: 'ID number', value: p.person.nationalId, mono: true },
     ];
   });

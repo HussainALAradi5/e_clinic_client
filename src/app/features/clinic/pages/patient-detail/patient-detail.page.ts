@@ -101,10 +101,14 @@ export class PatientDetailPage implements OnInit {
     if (!p) return [];
     return [
       { label: 'File number', value: p.code, mono: true },
-      { label: 'Gender', value: this.enums.label('Gender', p.gender) },
+      { label: 'Gender', value: p.gender, enum: 'Gender' },
       { label: 'Date of birth', value: `${p.dateOfBirth} (${p.age} y)` },
       { label: 'National ID', value: p.person.nationalId, mono: true },
-      { label: 'Nationality', value: p.person.nationality?.nationality },
+      {
+        label: 'Nationality',
+        value: p.person.nationality?.nationality,
+        flag: p.person.nationalityCode,
+      },
       { label: 'Mobile', value: p.phone },
       { label: 'Email', value: p.email },
       { label: 'Address', value: p.person.address?.formatted },

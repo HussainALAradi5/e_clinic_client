@@ -2,7 +2,19 @@
   @for (item of items(); track item.label) {
     <dt class="text-on-surface-variant">{{ item.label }}</dt>
     <dd class="m-0 break-words" [class.font-mono]="item.mono" [class.tabular-nums]="item.mono">
-      {{ item.value === null || item.value === undefined || item.value === '' ? '—' : item.value }}
+      @if (item.value === null || item.value === undefined || item.value === '') {
+        —
+      } @else if (item.enum) {
+        <ui-status [enum]="item.enum" [value]="item.value" />
+      } @else if (item.flag) {
+        <span
+          class="inline-flex items-center gap-1.5 rounded-full border border-outline-variant px-2.5 py-0.5 text-xs font-medium"
+        >
+          <ui-flag [code]="item.flag" />{{ item.value }}
+        </span>
+      } @else {
+        {{ item.value }}
+      }
     </dd>
   }
 </dl>

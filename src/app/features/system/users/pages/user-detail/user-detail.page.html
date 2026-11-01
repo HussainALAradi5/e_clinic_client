@@ -54,13 +54,22 @@
           @if (user.person; as person) {
             <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm">
               <dt class="text-on-surface-variant">Gender</dt>
-              <dd class="m-0">{{ person.gender | enumLabel: 'Gender' }}</dd>
+              <dd class="m-0"><ui-status enum="Gender" [value]="person.gender" /></dd>
               <dt class="text-on-surface-variant">Date of birth</dt>
               <dd class="m-0">{{ person.dateOfBirth | date: dateFormat }}</dd>
               <dt class="text-on-surface-variant">National ID</dt>
               <dd class="m-0 font-mono">{{ person.nationalId ?? '—' }}</dd>
               <dt class="text-on-surface-variant">Nationality</dt>
-              <dd class="m-0">{{ person.nationality?.nationality ?? '—' }}</dd>
+              <dd class="m-0">
+                @if (person.nationality; as n) {
+                  <span
+                    class="inline-flex items-center gap-1.5 rounded-full border border-outline-variant px-2.5 py-0.5 text-xs font-medium"
+                    ><ui-flag [code]="n.code" />{{ n.nationality }}</span
+                  >
+                } @else {
+                  —
+                }
+              </dd>
               <dt class="text-on-surface-variant">Mobile</dt>
               <dd class="m-0">{{ person.phone }}</dd>
               <dt class="text-on-surface-variant">Email</dt>
