@@ -21,6 +21,8 @@ export interface User {
   firstName: string;
   lastName: string;
   fullName: string;
+  /** Signed, short-lived link to the profile photo (null without one). */
+  avatarUrl?: string | null;
   email: string | null;
   phone: string;
   userType: UserType;

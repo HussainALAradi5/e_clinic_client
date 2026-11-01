@@ -10,6 +10,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { map } from 'rxjs';
+import { ChatLauncher } from '../chat-launcher/chat-launcher.component';
 import { NotificationBell } from '../notification-bell/notification-bell.component';
 import { BrandMark } from '@shared/components/brand-mark/brand-mark.component';
 import { EnumLabelPipe } from '@shared/pipes/enum-label.pipe';
@@ -17,6 +18,7 @@ import { ACCOUNT_SECURITY_PATH } from '@shared/constants/app.constants';
 import { AuthStore } from '@shared/services/auth/auth.store';
 import { SessionService } from '@shared/services/auth/session.service';
 import { EnumService } from '@shared/services/data/enum.service';
+import { AccessService } from '@shared/services/auth/access.service';
 import { NavigationService } from '@shared/services/ui/navigation.service';
 import { ThemeService } from '@shared/services/ui/theme.service';
 
@@ -38,6 +40,7 @@ import { ThemeService } from '@shared/services/ui/theme.service';
     MatDividerModule,
     MatTooltipModule,
     NotificationBell,
+    ChatLauncher,
     BrandMark,
     EnumLabelPipe,
   ],
@@ -60,6 +63,8 @@ export class ShellLayout {
   protected readonly opened = computed(() => !this.handset() && this.menuOpen());
 
   protected readonly menu = inject(NavigationService).menu;
+  private readonly access = inject(AccessService);
+  protected readonly canChat = computed(() => this.access.can('chat.read_own | chat.read_all'));
 
   protected readonly initials = computed(() => initials(this.auth.user()?.fullName));
 

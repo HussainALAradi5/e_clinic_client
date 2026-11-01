@@ -68,6 +68,9 @@
       </button>
       <span class="flex-1"></span>
 
+      @if (canChat()) {
+        <app-chat-launcher />
+      }
       <app-notification-bell />
       <button
         matIconButton
@@ -85,10 +88,14 @@
           [matMenuTriggerFor]="userMenu"
           aria-label="Account menu"
         >
-          <span
-            class="grid size-9 place-items-center rounded-lg bg-primary text-xs font-bold text-on-primary"
-            >{{ initials() }}</span
-          >
+          @if (user.avatarUrl) {
+            <img [src]="user.avatarUrl" alt="" class="size-9 rounded-lg object-cover" />
+          } @else {
+            <span
+              class="grid size-9 place-items-center rounded-lg bg-primary text-xs font-bold text-on-primary"
+              >{{ initials() }}</span
+            >
+          }
           <span class="hidden text-left leading-tight sm:block">
             <span class="block text-sm font-semibold text-on-surface">{{ user.fullName }}</span>
             <span class="block text-xs text-on-surface-variant">{{

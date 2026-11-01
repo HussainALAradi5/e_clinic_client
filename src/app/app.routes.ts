@@ -96,6 +96,11 @@ export const routes: Routes = [
           import('./features/accounting/accounting.routes').then((m) => m.ACCOUNTING_ROUTES),
       },
       {
+        path: 'chat',
+        loadChildren: () =>
+          import('./features/communication/communication.routes').then((m) => m.CHAT_ROUTES),
+      },
+      {
         path: 'reference',
         loadChildren: () =>
           import('./features/reference/reference.routes').then((m) => m.REFERENCE_ROUTES),

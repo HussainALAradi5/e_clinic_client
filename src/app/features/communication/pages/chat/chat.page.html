@@ -1,0 +1,278 @@
+<div class="chat-shell" [class.has-chat]="!!selectedId()">
+  <!-- Chat list -->
+  <aside class="list glass" aria-label="Chats">
+    <header class="list-head">
+      <h1 class="m-0 text-xl font-semibold">Chats</h1>
+      <span class="flex-1"></span>
+      <span
+        class="live"
+        [class.on]="live()"
+        [matTooltip]="live() ? 'Live' : 'Refreshing every few seconds'"
+      >
+        <span class="dot"></span>{{ live() ? 'Live' : 'Offline' }}
+      </span>
+      <button
+        matIconButton
+        matTooltip="Chat settings"
+        aria-label="Chat settings"
+        (click)="openSettings()"
+      >
+        <mat-icon>tune</mat-icon>
+      </button>
+      <button
+        matIconButton
+        class="new"
+        matTooltip="New chat"
+        aria-label="New chat"
+        (click)="newChat()"
+      >
+        <mat-icon>edit_square</mat-icon>
+      </button>
+    </header>
+
+    <div class="px-3">
+      <label class="search">
+        <mat-icon>search</mat-icon>
+        <input
+          type="search"
+          placeholder="Search chats or people"
+          aria-label="Search chats"
+          [ngModel]="search()"
+          (ngModelChange)="search.set($event)"
+        />
+      </label>
+
+      <div class="chips" role="tablist" aria-label="Show">
+        @for (chip of chips; track chip.value) {
+          <button
+            type="button"
+            role="tab"
+            class="chip"
+            [class.on]="filter() === chip.value"
+            [attr.aria-selected]="filter() === chip.value"
+            (click)="filter.set(chip.value)"
+          >
+            {{ chip.label }}
+          </button>
+        }
+        <button
+          type="button"
+          class="chip"
+          [class.on]="dateActive()"
+          [matMenuTriggerFor]="dates"
+          aria-label="Filter by date"
+        >
+          <mat-icon class="!size-4 !text-base">event</mat-icon>
+          {{ dateActive() ? (from() || '…') + ' → ' + (to() || '…') : 'Date' }}
+        </button>
+        <mat-menu #dates="matMenu" class="!rounded-2xl">
+          <div
+            class="flex flex-col gap-2 p-3"
+            (click)="$event.stopPropagation()"
+            (keydown)="$event.stopPropagation()"
+          >
+            <span class="text-xs font-semibold uppercase text-on-surface-variant"
+              >Last activity</span
+            >
+            <label class="date"
+              >From <input type="date" [ngModel]="from()" (ngModelChange)="from.set($event)"
+            /></label>
+            <label class="date"
+              >To
+              <input type="date" [ngModel]="to()" [min]="from()" (ngModelChange)="to.set($event)"
+            /></label>
+            <button matButton (click)="clearDates()" [disabled]="!dateActive()">Clear dates</button>
+          </div>
+        </mat-menu>
+      </div>
+    </div>
+
+    <p class="count">{{ total() }} {{ total() === 1 ? 'chat' : 'chats' }}</p>
+
+    <ul class="rows" aria-label="Chat list">
+      @for (c of chats(); track c.id) {
+        <li>
+          <button
+            type="button"
+            class="row"
+            [class.active]="c.id === selectedId()"
+            (click)="select(c)"
+          >
+            <app-chat-avatar
+              [name]="c.title"
+              [id]="c.partnerId ?? c.id"
+              [url]="c.avatarUrl"
+              [group]="c.type === types.Group"
+              [size]="46"
+            />
+            <span class="min-w-0 flex-1">
+              <span class="flex items-center gap-1.5">
+                <span class="title truncate">{{ c.title }}</span>
+                @if (c.type === types.Group && c.myRole === roles.Admin) {
+                  <mat-icon class="lead" matTooltip="You lead this group">star</mat-icon>
+                }
+                <span class="flex-1"></span>
+                <span class="time" [class.unread]="c.unreadCount > 0">{{
+                  stamp(c.lastMessageAt ?? c.createdAt)
+                }}</span>
+              </span>
+              <span class="flex items-center gap-1.5">
+                @if (lastMine(c)) {
+                  <mat-icon class="tick">done_all</mat-icon>
+                }
+                <span class="preview truncate">{{ preview(c) }}</span>
+                <span class="flex-1"></span>
+                @if (c.messagesCount) {
+                  <span class="total" [matTooltip]="c.messagesCount + ' messages'">{{
+                    c.messagesCount
+                  }}</span>
+                }
+                @if (c.unreadCount > 0) {
+                  <span class="badge" [attr.aria-label]="c.unreadCount + ' unread'">{{
+                    c.unreadCount > 99 ? '99+' : c.unreadCount
+                  }}</span>
+                }
+              </span>
+            </span>
+          </button>
+        </li>
+      } @empty {
+        @if (!listLoading()) {
+          <li class="empty">
+            <mat-icon>forum</mat-icon>
+            <p class="m-0 font-medium">No chats here</p>
+            <p class="m-0 text-sm">Try another filter, or start a new chat.</p>
+          </li>
+        }
+      }
+      @if (listLoading()) {
+        @for (i of [1, 2, 3, 4, 5]; track i) {
+          <li class="skeleton">
+            <span class="s-avatar"></span><span class="s-lines"><span></span><span></span></span>
+          </li>
+        }
+      }
+      @if (page() < lastPage() && !listLoading()) {
+        <li class="p-3">
+          <button matButton class="w-full" (click)="more()">Load more chats</button>
+        </li>
+      }
+    </ul>
+  </aside>
+
+  <!-- Open chat -->
+  <section
+    class="pane"
+    aria-label="Conversation"
+    (dragover)="dragOver($event)"
+    (dragleave)="dragLeave($event)"
+    (drop)="drop($event)"
+  >
+    @if (chat(); as c) {
+      <header class="chat-head glass">
+        <button matIconButton class="back" aria-label="Back to chats" (click)="back()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <button type="button" class="who" (click)="info()" [attr.aria-label]="'About ' + c.title">
+          <app-chat-avatar
+            [name]="c.title"
+            [id]="c.partnerId ?? c.id"
+            [url]="c.avatarUrl"
+            [group]="isGroup()"
+            [size]="42"
+          />
+          <span class="min-w-0 text-left">
+            <span class="flex items-center gap-2">
+              <span class="truncate text-base font-semibold">{{ c.title }}</span>
+              @if (isGroup()) {
+                <span class="pill" [class.leader]="c.myRole === roles.Admin">
+                  @if (c.myRole === roles.Admin) {
+                    <mat-icon>star</mat-icon>
+                  }
+                  {{ c.myRole === roles.Admin ? 'Leader' : 'Member' }}
+                </span>
+              }
+            </span>
+            <span class="block truncate text-xs text-on-surface-variant">
+              {{ isGroup() ? c.members.length + ' members · ' : '' }}{{ subtitle() }}
+            </span>
+          </span>
+        </button>
+        <span class="flex-1"></span>
+        <button
+          matIconButton
+          [matTooltip]="isGroup() ? 'Group info' : 'Chat info'"
+          aria-label="Chat info"
+          (click)="info()"
+        >
+          <mat-icon>info</mat-icon>
+        </button>
+      </header>
+
+      <div #scroller class="messages" (scroll)="scrolled(scroller)">
+        @if (hasMore()) {
+          <div class="py-2 text-center">
+            <button matButton (click)="older()" [disabled]="loadingMessages()">
+              Load older messages
+            </button>
+          </div>
+        }
+        @for (row of rows(); track row.message.id) {
+          @if (row.day) {
+            <div class="day">
+              <span>{{ row.day }}</span>
+            </div>
+          }
+          <app-message-bubble
+            [message]="row.message"
+            [meId]="me()"
+            [members]="c.members"
+            [settings]="settings()"
+            [group]="isGroup()"
+            [first]="row.first"
+            (react)="react(row.message, $event)"
+            (loaded)="scrollToEnd(true)"
+          />
+        } @empty {
+          @if (!loadingMessages()) {
+            <div class="hello glass">
+              <mat-icon>waving_hand</mat-icon>
+              <p class="m-0 font-medium">No messages yet</p>
+              <p class="m-0 text-sm">Say hello — right-click a message later to react.</p>
+            </div>
+          }
+        }
+      </div>
+
+      <app-message-composer
+        [members]="c.members"
+        [busy]="sending()"
+        (send)="send($event)"
+        (rejected)="rejected($event)"
+      />
+
+      @if (dragging()) {
+        <div class="drop glass" aria-hidden="true">
+          <mat-icon>upload_file</mat-icon>
+          <p class="m-0 text-lg font-semibold">Drop files to send to {{ c.title }}</p>
+          <p class="m-0 text-sm opacity-80">
+            Photos, videos, PDF, Word or Excel — up to 20 MB each
+          </p>
+        </div>
+      }
+    } @else {
+      <div class="welcome">
+        <div class="glass card">
+          <mat-icon>forum</mat-icon>
+          <h2 class="m-0 text-xl font-semibold">e-Clinic chat</h2>
+          <p class="m-0 text-sm text-on-surface-variant">
+            Message a colleague or a team. Messages are only seen by the people in the chat.
+          </p>
+          <button matButton="filled" (click)="newChat()">
+            <mat-icon>edit_square</mat-icon> New chat
+          </button>
+        </div>
+      </div>
+    }
+  </section>
+</div>

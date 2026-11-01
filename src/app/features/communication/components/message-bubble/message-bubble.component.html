@@ -1,0 +1,138 @@
+<div class="row" [class.mine]="mine()" [class.first]="first()">
+  @if (group() && !mine()) {
+    <div class="avatar-slot">
+      @if (first()) {
+        <app-chat-avatar
+          [name]="message().sender.fullName"
+          [id]="message().sender.id"
+          [url]="message().sender.avatarUrl"
+          [size]="32"
+        />
+      }
+    </div>
+  }
+
+  <div class="stack">
+    <div
+      class="bubble"
+      [class]="'bubble shape-' + shape()"
+      [class.tail]="first()"
+      [class.mention-me]="mentionsMe()"
+      [style.--bubble-bg]="colors().bg"
+      [style.--bubble-fg]="colors().fg"
+      tabindex="0"
+      [attr.aria-label]="'Message from ' + message().sender.fullName + ' at ' + time()"
+      (contextmenu)="openPicker($event)"
+      (keydown.shift.f10)="openPicker($event)"
+      (pointerdown)="pressStart($event)"
+      (pointerup)="pressEnd()"
+      (pointerleave)="pressEnd()"
+    >
+      @if (group() && !mine() && first()) {
+        <p class="sender">
+          <span [style.color]="leader() ? '#fff' : null">{{ message().sender.fullName }}</span>
+          @if (leader()) {
+            <span class="badge leader"><mat-icon>star</mat-icon>Leader</span>
+          }
+        </p>
+      }
+
+      @if (images().length) {
+        <div class="images" [class.grid]="images().length > 1">
+          @for (img of images(); track img.id) {
+            @if (img.url) {
+              <a [href]="img.url" target="_blank" rel="noopener">
+                <img [src]="img.url" [alt]="img.name" (load)="loaded.emit()" />
+              </a>
+            } @else {
+              <div class="pending"><mat-icon>hourglass_top</mat-icon>Checking file…</div>
+            }
+          }
+        </div>
+      }
+
+      @for (video of videos(); track video.id) {
+        @if (video.url) {
+          <video class="video" [src]="video.url" controls preload="metadata"></video>
+        }
+      }
+
+      @for (clip of audio(); track clip.id) {
+        <div class="voice">
+          <mat-icon>{{ message().kind === kinds.Voice ? 'mic' : 'audio_file' }}</mat-icon>
+          @if (clip.url) {
+            <audio [src]="clip.url" controls preload="metadata"></audio>
+          } @else {
+            <span class="text-xs opacity-80">Checking file…</span>
+          }
+        </div>
+      }
+
+      @for (doc of documents(); track doc.id) {
+        <a class="doc" [attr.href]="doc.url" target="_blank" rel="noopener">
+          <mat-icon>description</mat-icon>
+          <span class="min-w-0">
+            <span class="block truncate font-medium">{{ doc.name }}</span>
+            <span class="block text-xs opacity-80">{{ size(doc.sizeBytes) }}</span>
+          </span>
+          <mat-icon class="ml-auto">download</mat-icon>
+        </a>
+      }
+
+      @if (message().body) {
+        <p class="body">
+          @for (part of segments(); track $index) {
+            @if (part.mention) {
+              <span class="mention">{{ part.text }}</span>
+            } @else {
+              {{ part.text }}
+            }
+          }
+        </p>
+      }
+
+      <span class="meta">
+        {{ time() }}
+        @if (mine()) {
+          <mat-icon
+            class="ticks"
+            [class.read]="readByAll()"
+            [matTooltip]="readByAll() ? 'Read' : 'Sent'"
+            >done_all</mat-icon
+          >
+        }
+      </span>
+
+      @if (picking()) {
+        <div class="picker glass" role="menu" aria-label="React">
+          @for (emoji of settings().reactions; track emoji) {
+            <button
+              type="button"
+              role="menuitem"
+              (click)="pick(emoji)"
+              [attr.aria-label]="'React ' + emoji"
+            >
+              {{ emoji }}
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    @if (message().reactions.length) {
+      <div class="reactions">
+        @for (r of message().reactions; track r.emoji) {
+          <button
+            type="button"
+            class="reaction"
+            [class.me]="reactedByMe(r.userIds)"
+            [matTooltip]="r.names.join(', ')"
+            (click)="pick(r.emoji)"
+          >
+            {{ r.emoji }} <span>{{ r.count }}</span>
+          </button>
+        }
+      </div>
+    }
+  </div>
+</div>

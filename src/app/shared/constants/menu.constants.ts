@@ -16,6 +16,13 @@ export const MENU: NavGroup[] = [
         access: AUTHENTICATED,
         exact: true,
       },
+      {
+        label: 'Chat',
+        description: 'Message colleagues one-to-one or in groups.',
+        icon: 'forum',
+        route: '/chat',
+        access: 'chat.read_own | chat.read_all',
+      },
     ],
   },
   {
