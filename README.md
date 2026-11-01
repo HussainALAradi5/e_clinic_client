@@ -1,3 +1,18 @@
+# e-Clinic — Web client (Angular)
+
+## Live demo
+
+| | Address |
+|---|---|
+| Web app (staff and patient portal) | https://e-clinic-web.onrender.com |
+| API | https://e-clinic-api.onrender.com/api/v1 |
+
+Free Render instances sleep when idle: the first visit can take about a minute to wake the API. Demo accounts are
+listed in [DEMO_USERS.md](https://github.com/HussainALAradi5/e_clinic_documentation/blob/main/DEMO_USERS.md)
+(the repositories are private).
+
+---
+
 # EClinicClient
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
