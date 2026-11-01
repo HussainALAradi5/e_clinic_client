@@ -1,7 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { silent } from '@core/interceptors/http-context';
+import { AttachmentCategory } from '@shared/enums/attachment/attachment-category.enum';
 import { GenericStatus } from '@shared/enums/shared/generic-status.enum';
+import { UploadResult } from '@shared/interfaces/attachment/attachment.interface';
 import {
   SupportTicket,
   TicketComment,
@@ -30,16 +32,37 @@ export class TicketApi {
     return this.api.post<TicketComment>(`${this.path}/${id}/comments`, { body });
   }
 
-  /** Admins only; `resolution` is required to mark it solved (completed). */
+  /** Admins only; marking it solved needs the solution in words, and optionally the steps that fixed it. */
   setStatus(
     ticket: SupportTicket,
     status: GenericStatus,
-    resolution?: string,
+    solution?: { resolution: string; steps: string[] },
   ): Observable<SupportTicket> {
     return this.api.patch<SupportTicket>(`${this.path}/${ticket.id}/status`, {
       status,
-      resolution,
+      resolution: solution?.resolution,
+      steps: solution?.steps,
       version: ticket.version,
     });
+  }
+
+  /** The requester: the fix works. */
+  confirm(id: string): Observable<SupportTicket> {
+    return this.api.post<SupportTicket>(`${this.path}/${id}/confirm`);
+  }
+
+  /** The requester: still broken, and why — back to in progress. */
+  decline(id: string, reason: string): Observable<SupportTicket> {
+    return this.api.post<SupportTicket>(`${this.path}/${id}/decline`, { reason });
+  }
+
+  /** Screenshots, photos or PDFs on a ticket (attachments module, category `ticket_attachment`). */
+  attach(id: string, files: File[]): Observable<UploadResult> {
+    const form = new FormData();
+    files.forEach((file) => form.append('files[]', file, file.name));
+    form.append('category', AttachmentCategory.TicketAttachment);
+    form.append('attachable_type', 'support_ticket');
+    form.append('attachable_id', id);
+    return this.api.post<UploadResult>('attachments', form);
   }
 }

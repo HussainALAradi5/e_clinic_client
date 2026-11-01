@@ -100,3 +100,65 @@
     }
   }
 }
+
+.steps {
+  margin: 0.25rem 0 0;
+  padding-left: 1.4rem;
+  // Tailwind's reset removes list markers: the steps are numbered.
+  list-style: decimal;
+  font-size: 0.875rem;
+
+  li + li {
+    margin-top: 0.15rem;
+  }
+}
+
+.ask {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #f59e0b;
+  border-radius: 0.9rem;
+  background: #fffbeb;
+  color: #78350f;
+
+  mat-icon {
+    color: #d97706;
+  }
+}
+
+:host-context([data-theme='dark']) .ask {
+  background: #422006;
+  color: #fde68a;
+}
+
+.files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.thumb img {
+  display: block;
+  width: 7rem;
+  height: 5rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 0.6rem;
+  object-fit: cover;
+}
+
+.file {
+  display: inline-flex;
+  max-width: 16rem;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 0.6rem;
+  color: var(--mat-sys-on-surface);
+  font-size: 0.85rem;
+  text-decoration: none;
+}

@@ -11,4 +11,7 @@ export enum AttachmentCategory {
   InvoiceScan = 'invoice_scan',
   Payslip = 'payslip',
   Other = 'other',
+  ChatMedia = 'chat_media',
+  VoiceNote = 'voice_note',
+  TicketAttachment = 'ticket_attachment',
 }

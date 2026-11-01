@@ -1,5 +1,5 @@
 import { TreatmentPriority } from '@shared/enums/clinic/treatment-priority.enum';
-import { TicketCategory } from '@shared/enums/communication/ticket.enum';
+import { TicketCategory, TicketConfirmation } from '@shared/enums/communication/ticket.enum';
 import { GenericStatus } from '@shared/enums/shared/generic-status.enum';
 
 export interface TicketPerson {
@@ -31,11 +31,28 @@ export interface SupportTicket {
   resolver: TicketPerson | null;
   resolvedAt: string | null;
   resolution: string | null;
+  /** The steps that solved it, in order. */
+  resolutionSteps: string[];
+  /** The requester's answer once solved: awaiting, confirmed or declined (null before). */
+  confirmation: TicketConfirmation | null;
+  confirmedAt: string | null;
+  /** Screenshots, photos and PDFs on the ticket. */
+  attachments?: TicketFile[];
   commentsCount?: number;
   comments?: TicketComment[];
   version: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface TicketFile {
+  id: string;
+  originalName: string;
+  mimeType: string;
+  sizeBytes: number;
+  scanStatus: string;
+  /** Short-lived link; null until the file passed the scan. */
+  url: string | null;
 }
 
 export interface TicketPayload {

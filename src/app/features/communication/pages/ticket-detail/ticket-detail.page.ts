@@ -21,6 +21,8 @@ import { PageHeader } from '@shared/components/page-header/page-header.component
 import { Skeleton } from '@shared/components/skeleton/skeleton.component';
 import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { DATE_TIME_FORMAT } from '@shared/constants/app.constants';
+import { AttachmentCategory } from '@shared/enums/attachment/attachment-category.enum';
+import { TicketConfirmation } from '@shared/enums/communication/ticket.enum';
 import { GenericStatus } from '@shared/enums/shared/generic-status.enum';
 import { ButtonVariant } from '@shared/enums/ui/button.enum';
 import { ApiError } from '@shared/interfaces/api/api-error.interface';
@@ -34,6 +36,12 @@ import { DialogService } from '@shared/services/ui/dialog.service';
 import { NotifyService } from '@shared/services/ui/notify.service';
 import { clinicDateTime } from '@shared/utils/clinic-time';
 import { initials } from '../../utils/chat-style';
+import {
+  SolveTicketData,
+  SolveTicketDialog,
+  TicketSolution,
+} from '../../components/solve-ticket-dialog/solve-ticket-dialog.component';
+import { UploadZone } from '@shared/components/upload-zone/upload-zone.component';
 
 interface StatusAction {
   to: GenericStatus;
@@ -63,6 +71,7 @@ interface StatusAction {
     MatButtonModule,
     MatCardModule,
     MatIconModule,
+    UploadZone,
   ],
   templateUrl: './ticket-detail.page.html',
   styleUrl: './ticket-detail.page.scss',
@@ -82,6 +91,28 @@ export class TicketDetailPage implements OnInit {
   protected readonly initials = initials;
 
   protected readonly desk = computed(() => this.access.can('tickets.resolve'));
+  private readonly me = inject(AuthStore).user;
+  protected readonly ticketFile = AttachmentCategory.TicketAttachment;
+  protected readonly owner = computed(() => ({ type: 'support_ticket', id: this.id() }));
+  /** I opened it, it is solved, and it waits for my answer. */
+  protected readonly askMe = computed(() => {
+    const t = this.ticket();
+    return (
+      !!t &&
+      t.requester?.id === this.me()?.id &&
+      t.status === GenericStatus.Completed &&
+      t.confirmation === TicketConfirmation.Awaiting
+    );
+  });
+  /** The requester and the desk add files while the ticket is open. */
+  protected readonly canAttach = computed(() => {
+    const t = this.ticket();
+    return (
+      !!t &&
+      t.status !== GenericStatus.Cancelled &&
+      (this.desk() || t.requester?.id === this.me()?.id)
+    );
+  });
   protected readonly closed = computed(() => this.ticket()?.status === GenericStatus.Cancelled);
 
   /** The admins' buttons, in the order of the flow, for the moves the server allows from here. */
@@ -132,6 +163,7 @@ export class TicketDetailPage implements OnInit {
       { label: 'Taken by', value: t.assignee?.fullName ?? 'Not taken yet' },
       { label: 'Solved by', value: t.resolver?.fullName },
       { label: 'Solved', value: clinicDateTime(t.resolvedAt) },
+      { label: 'Requester answer', value: t.confirmation, enum: 'TicketConfirmation' },
     ].filter((f) => f.value !== null && f.value !== undefined);
   });
 
@@ -183,20 +215,40 @@ export class TicketDetailPage implements OnInit {
     await this.load(true);
   };
 
+  protected readonly confirmFixed = async (): Promise<void> => {
+    this.ticket.set(await firstValueFrom(this.api.confirm(this.id())));
+    this.notify.success('Thanks — the support team is told it works.');
+  };
+
+  protected readonly declineFix = async (): Promise<void> => {
+    const reason = await this.dialogs.reason({
+      title: 'Still not fixed?',
+      message: 'Say what still happens; the ticket goes back to the support team.',
+      reasonLabel: 'What still happens',
+      confirmLabel: 'Not fixed',
+      danger: true,
+    });
+    if (!reason) return;
+    this.ticket.set(await firstValueFrom(this.api.decline(this.id(), reason)));
+    this.notify.success('Sent back to the support team.');
+  };
+
+  protected isImage(mime: string): boolean {
+    return mime.startsWith('image/');
+  }
+
   protected move(action: StatusAction): () => Promise<void> {
     return async () => {
       const t = this.ticket();
       if (!t) return;
-      let resolution: string | undefined;
+      let solution: TicketSolution | undefined;
       if (action.to === GenericStatus.Completed) {
-        const answer = await this.dialogs.reason({
-          title: 'Mark this ticket solved?',
-          message: `${t.requester?.fullName ?? 'The requester'} is told, with what you write here.`,
-          reasonLabel: 'What was done',
-          confirmLabel: 'Mark solved',
-        });
-        if (!answer) return;
-        resolution = answer;
+        solution = await this.dialogs.open<SolveTicketDialog, SolveTicketData, TicketSolution>(
+          SolveTicketDialog,
+          { code: t.code, requester: t.requester?.fullName ?? 'The requester' },
+          { width: '600px' },
+        );
+        if (!solution) return;
       } else if (action.to === GenericStatus.Cancelled) {
         const ok = await this.dialogs.confirm({
           title: 'Cancel this ticket?',
@@ -206,7 +258,7 @@ export class TicketDetailPage implements OnInit {
         });
         if (!ok) return;
       }
-      this.ticket.set(await firstValueFrom(this.api.setStatus(t, action.to, resolution)));
+      this.ticket.set(await firstValueFrom(this.api.setStatus(t, action.to, solution)));
       this.notify.success(`${t.code}: ${action.label.toLowerCase()} — done.`);
     };
   }

@@ -11,6 +11,9 @@ Free Render instances sleep when idle: the first visit can take about a minute t
 listed in [DEMO_USERS.md](https://github.com/HussainALAradi5/e_clinic_documentation/blob/main/DEMO_USERS.md)
 (the repositories are private).
 
+**Screenshots:** every role and feature in light and dark — [docs/screenshots](docs/screenshots/README.md)
+(staff chat, support tickets, notifications, front desk, clinic, billing, pharmacy, HR, accounting, admin).
+
 ---
 
 # EClinicClient

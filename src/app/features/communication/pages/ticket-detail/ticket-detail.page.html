@@ -9,6 +9,9 @@
       <ui-status [value]="t.status" enum="GenericStatus" />
       <ui-status [value]="t.priority" enum="TreatmentPriority" />
       <ui-status [value]="t.category" enum="TicketCategory" />
+      @if (t.confirmation) {
+        <ui-status [value]="t.confirmation" enum="TicketConfirmation" />
+      }
     </ng-container>
     <ng-container actions>
       @for (a of actions(); track a.to) {
@@ -23,18 +26,42 @@
     </ng-container>
   </ui-page-header>
 
-  @if (t.resolution) {
+  @if (t.status === 'completed' && t.resolution) {
     <div class="solved mb-4" role="status">
       <mat-icon>task_alt</mat-icon>
-      <div>
+      <div class="flex-1">
         <p class="m-0 font-semibold">
           Solved{{ t.resolver ? ' by ' + t.resolver.fullName : '' }}
           @if (t.resolvedAt) {
             <span class="font-normal opacity-80"> · {{ t.resolvedAt | date: dateTimeFormat }}</span>
           }
         </p>
-        <p class="m-0 whitespace-pre-line text-sm">{{ t.resolution }}</p>
+        <p class="m-0 mt-1 whitespace-pre-line text-sm">{{ t.resolution }}</p>
+        @if (t.resolutionSteps.length) {
+          <p class="m-0 mt-2 text-sm font-medium">Steps taken</p>
+          <ol class="steps">
+            @for (step of t.resolutionSteps; track $index) {
+              <li>{{ step }}</li>
+            }
+          </ol>
+        }
       </div>
+    </div>
+  }
+
+  @if (askMe()) {
+    <div class="ask mb-4" role="region" aria-label="Confirm the fix">
+      <mat-icon>help</mat-icon>
+      <div class="flex-1">
+        <p class="m-0 font-semibold">Did this fix it?</p>
+        <p class="m-0 text-sm">
+          Try it, then tell the support team. If it still happens, say what you see.
+        </p>
+      </div>
+      <ui-button icon="thumb_down" [variant]="'outlined'" [action]="declineFix"
+        >Not fixed</ui-button
+      >
+      <ui-button icon="thumb_up" [action]="confirmFixed">Yes, it works</ui-button>
     </div>
   }
 
@@ -45,6 +72,41 @@
       <div class="p-5">
         <h2 class="m-0 mb-2 text-base font-semibold">What happened</h2>
         <p class="m-0 whitespace-pre-line text-sm">{{ t.description }}</p>
+
+        @if (t.attachments?.length) {
+          <div class="files">
+            @for (f of t.attachments; track f.id) {
+              @if (f.url && isImage(f.mimeType)) {
+                <a
+                  class="thumb"
+                  [href]="f.url"
+                  target="_blank"
+                  rel="noopener"
+                  [attr.aria-label]="'Open ' + f.originalName"
+                >
+                  <img [src]="f.url" [alt]="f.originalName" />
+                </a>
+              } @else {
+                <a class="file" [attr.href]="f.url" target="_blank" rel="noopener">
+                  <mat-icon>{{ isImage(f.mimeType) ? 'image' : 'picture_as_pdf' }}</mat-icon>
+                  <span class="truncate">{{
+                    f.url ? f.originalName : f.originalName + ' (checking…)'
+                  }}</span>
+                </a>
+              }
+            }
+          </div>
+        }
+        @if (canAttach()) {
+          <ui-upload-zone
+            class="mt-3"
+            [category]="ticketFile"
+            [owner]="owner()"
+            accept="image/jpeg,image/png,image/webp,application/pdf"
+            [maxFileMb]="10"
+            (uploaded)="load(true)"
+          />
+        }
       </div>
 
       <div class="thread">
@@ -96,11 +158,6 @@
               >Send</ui-button
             >
           </div>
-          @if (!desk() && t.status === 'completed') {
-            <p class="m-0 mt-2 text-xs text-on-surface-variant">
-              Still not working? Reply here and the ticket opens again.
-            </p>
-          }
         }
       </div>
     </mat-card>
