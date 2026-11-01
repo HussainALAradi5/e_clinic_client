@@ -112,8 +112,6 @@ export const STATUS_TONES: Record<string, Record<string, StatusTone>> = {
     expiry_writeoff: Red,
   },
   UserStatus: { active: Green, locked: Red },
-  TicketStatus: { open: Blue, in_progress: Amber, resolved: Green, closed: Grey },
-  TicketPriority: { low: Grey, normal: Blue, high: Amber, urgent: Red },
   TicketCategory: { technical: Indigo, access: Purple, equipment: Orange, data: Cyan, other: Grey },
   ConversationType: { direct: Blue, group: Purple },
   ParticipantRole: { admin: Teal, member: Grey },

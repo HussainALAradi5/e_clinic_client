@@ -35,8 +35,13 @@
     }
   </div>
   @for (item of items(); track item.id) {
-    <button mat-menu-item class="!h-auto !py-2" (click)="open(item)">
-      <div class="flex flex-col whitespace-normal" [class.opacity-70]="item.readAt">
+    <button
+      mat-menu-item
+      class="!h-auto !py-2"
+      [class.notice-unread]="!item.readAt"
+      (click)="open(item)"
+    >
+      <div class="flex flex-col whitespace-normal">
         <span class="flex items-center gap-2 text-sm" [class.font-semibold]="!item.readAt">
           @if (!item.readAt) {
             <span
@@ -57,4 +62,10 @@
       {{ loading() ? 'Loading…' : 'You are all caught up.' }}
     </p>
   }
+  <a
+    mat-menu-item
+    routerLink="/notifications"
+    class="!justify-center !text-sm !font-medium !text-primary"
+    >See all notifications</a
+  >
 </mat-menu>

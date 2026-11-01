@@ -13,18 +13,27 @@ import { ApiClient } from '@shared/services/api/api-client.service';
 export class NotificationApi {
   private readonly api = inject(ApiClient);
 
-  /** Inbox page; `meta.unreadCount` drives the bell badge. */
-  inbox(query: ListQuery, unreadOnly = false, quiet = false): Observable<Page<AppNotification>> {
+  /**
+   * My in-app notifications, unread first; filters, search, dates and paging on the server. `read` narrows to
+   * unread or read ones; `meta.unreadCount` drives the bell badge.
+   */
+  inbox(
+    query: ListQuery,
+    read: 'unread' | 'read' | null = null,
+    quiet = false,
+  ): Observable<Page<AppNotification>> {
     return this.api.list<AppNotification>(
       'notifications/mine',
       query,
-      { unread: unreadOnly ? 1 : undefined },
+      { read },
       quiet ? silent() : undefined,
     );
   }
 
   unreadCount(): Observable<number> {
-    return this.inbox({ perPage: 1 }, true, true).pipe(map((page) => page.meta.unreadCount ?? 0));
+    return this.inbox({ perPage: 1 }, 'unread', true).pipe(
+      map((page) => page.meta.unreadCount ?? 0),
+    );
   }
 
   markRead(id: string): Observable<AppNotification> {

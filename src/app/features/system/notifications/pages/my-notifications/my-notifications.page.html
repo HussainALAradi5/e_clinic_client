@@ -1,0 +1,134 @@
+<ui-page-header
+  title="Notifications"
+  [subtitle]="
+    unread() ? unread() + ' unread — unread ones are shown in blue.' : 'You are all caught up.'
+  "
+>
+  <ng-container actions>
+    <button matButton="tonal" [disabled]="!unread()" (click)="markAllRead()">
+      <mat-icon>done_all</mat-icon> Mark all read
+    </button>
+  </ng-container>
+</ui-page-header>
+
+<div class="filters">
+  <div class="chips" role="tablist" aria-label="Show">
+    @for (c of chips; track c.value) {
+      <button
+        type="button"
+        role="tab"
+        class="chip"
+        [class.on]="read() === c.value"
+        [attr.aria-selected]="read() === c.value"
+        (click)="read.set(c.value)"
+      >
+        {{ c.label }}
+        @if (c.value === 'unread' && unread()) {
+          <span class="count">{{ unread() }}</span>
+        }
+      </button>
+    }
+  </div>
+
+  <mat-form-field subscriptSizing="dynamic" class="w-56">
+    <mat-label>About</mat-label>
+    <mat-select [ngModel]="topic()" (ngModelChange)="topic.set($event)">
+      <mat-option value="">Everything</mat-option>
+      @for (t of topics; track t.value) {
+        <mat-option [value]="t.value"
+          ><mat-icon>{{ t.icon }}</mat-icon
+          >{{ t.label }}</mat-option
+        >
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field subscriptSizing="dynamic" class="min-w-56 flex-1">
+    <mat-label>Search</mat-label>
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput [ngModel]="search()" (ngModelChange)="search.set($event)" />
+  </mat-form-field>
+
+  <ui-date-range-filter
+    class="w-64"
+    [fields]="dateFields"
+    [value]="dates()"
+    (valueChange)="dates.set($event)"
+  />
+
+  @if (filtered()) {
+    <button matButton (click)="clear()">Clear all</button>
+  }
+</div>
+
+<div class="list" role="list">
+  @if (loading() && !items().length) {
+    <ui-skeleton [rows]="6" />
+  }
+  @for (n of items(); track n.id) {
+    <div
+      role="listitem"
+      class="row"
+      [class.notice-unread]="!n.readAt"
+      [class.clickable]="!!link(n)"
+      [attr.tabindex]="link(n) ? 0 : null"
+      (click)="open(n)"
+      (keydown.enter)="open(n)"
+    >
+      <span class="icon" [class.unread]="!n.readAt"
+        ><mat-icon>{{ icon(n.relatedType) }}</mat-icon></span
+      >
+      <div class="min-w-0 flex-1">
+        <p class="m-0 flex items-center gap-2 text-sm" [class.font-semibold]="!n.readAt">
+          @if (!n.readAt) {
+            <span class="dot" aria-label="Unread"></span>
+          }
+          <span class="truncate">{{ n.subject ?? n.body }}</span>
+        </p>
+        @if (n.subject) {
+          <p class="m-0 mt-0.5 text-sm text-on-surface-variant">{{ n.body }}</p>
+        }
+        <p
+          class="m-0 mt-1 text-xs text-on-surface-variant"
+          [matTooltip]="(n.createdAt | date: dateTimeFormat) ?? ''"
+        >
+          {{ n.createdAt | relativeTime }}
+        </p>
+      </div>
+      @if (!n.readAt) {
+        <button
+          matIconButton
+          matTooltip="Mark read"
+          aria-label="Mark read"
+          (click)="markRead(n, $event)"
+        >
+          <mat-icon>mark_email_read</mat-icon>
+        </button>
+      }
+      @if (link(n)) {
+        <span class="open">Open <mat-icon>chevron_right</mat-icon></span>
+      }
+    </div>
+  } @empty {
+    @if (!loading()) {
+      <ui-empty
+        icon="notifications_off"
+        [title]="filtered() ? 'Nothing matches these filters' : 'No notifications yet'"
+        [message]="
+          filtered()
+            ? 'Try another filter or clear them.'
+            : 'Ticket updates, mentions and other news land here.'
+        "
+      />
+    }
+  }
+</div>
+
+@if (meta().total) {
+  <ui-paginator
+    class="mt-2 block"
+    [meta]="meta()"
+    [pageSizes]="[10, 20, 50]"
+    (pageChange)="onPage($event)"
+  />
+}

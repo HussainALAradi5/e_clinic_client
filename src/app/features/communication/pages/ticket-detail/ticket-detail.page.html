@@ -1,0 +1,110 @@
+@if (error(); as e) {
+  <ui-error [error]="e" (retry)="load()" />
+} @else if (ticket(); as t) {
+  <ui-page-header
+    [title]="t.subject"
+    [subtitle]="t.code + ' · opened by ' + (t.requester?.fullName ?? '—')"
+  >
+    <ng-container status>
+      <ui-status [value]="t.status" enum="GenericStatus" />
+      <ui-status [value]="t.priority" enum="TreatmentPriority" />
+      <ui-status [value]="t.category" enum="TicketCategory" />
+    </ng-container>
+    <ng-container actions>
+      @for (a of actions(); track a.to) {
+        <ui-button
+          [icon]="a.icon"
+          [variant]="a.variant"
+          access="tickets.resolve"
+          [action]="a.run!"
+          >{{ a.label }}</ui-button
+        >
+      }
+    </ng-container>
+  </ui-page-header>
+
+  @if (t.resolution) {
+    <div class="solved mb-4" role="status">
+      <mat-icon>task_alt</mat-icon>
+      <div>
+        <p class="m-0 font-semibold">
+          Solved{{ t.resolver ? ' by ' + t.resolver.fullName : '' }}
+          @if (t.resolvedAt) {
+            <span class="font-normal opacity-80"> · {{ t.resolvedAt | date: dateTimeFormat }}</span>
+          }
+        </p>
+        <p class="m-0 whitespace-pre-line text-sm">{{ t.resolution }}</p>
+      </div>
+    </div>
+  }
+
+  <div class="grid gap-4 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)]">
+    <mat-card appearance="outlined" class="!p-5"><ui-facts [items]="facts()" /></mat-card>
+
+    <mat-card appearance="outlined" class="!p-0">
+      <div class="p-5">
+        <h2 class="m-0 mb-2 text-base font-semibold">What happened</h2>
+        <p class="m-0 whitespace-pre-line text-sm">{{ t.description }}</p>
+      </div>
+
+      <div class="thread">
+        <h2 class="m-0 mb-3 text-base font-semibold">
+          Conversation
+          <span class="text-sm font-normal text-on-surface-variant"
+            >({{ t.comments?.length ?? 0 }})</span
+          >
+        </h2>
+        @for (c of t.comments; track c.id) {
+          <div class="comment" [class.mine]="c.isMe">
+            <span class="avatar" [class.support]="c.author.isSupport">{{
+              initials(c.author.fullName)
+            }}</span>
+            <div class="bubble">
+              <p class="m-0 flex items-center gap-2 text-xs font-semibold">
+                {{ c.isMe ? 'You' : c.author.fullName }}
+                @if (c.author.isSupport) {
+                  <span class="tag">Support</span>
+                }
+                <span class="font-normal opacity-70">{{ c.createdAt | date: dateTimeFormat }}</span>
+              </p>
+              <p class="m-0 mt-1 whitespace-pre-line text-sm">{{ c.body }}</p>
+            </div>
+          </div>
+        } @empty {
+          <p class="m-0 text-sm text-on-surface-variant">No replies yet.</p>
+        }
+
+        @if (closed()) {
+          <p class="m-0 mt-4 flex items-center gap-2 text-sm text-on-surface-variant">
+            <mat-icon class="!text-lg">lock</mat-icon> This ticket is cancelled — no more replies.
+          </p>
+        } @else {
+          <div class="reply">
+            <textarea
+              rows="2"
+              placeholder="Write a reply…"
+              aria-label="Reply"
+              maxlength="5000"
+              [ngModel]="reply()"
+              (ngModelChange)="reply.set($event)"
+            ></textarea>
+            <ui-button
+              icon="send"
+              access="tickets.write"
+              [disabled]="!reply().trim()"
+              [action]="send"
+              >Send</ui-button
+            >
+          </div>
+          @if (!desk() && t.status === 'completed') {
+            <p class="m-0 mt-2 text-xs text-on-surface-variant">
+              Still not working? Reply here and the ticket opens again.
+            </p>
+          }
+        }
+      </div>
+    </mat-card>
+  </div>
+} @else {
+  <ui-skeleton [rows]="8" />
+}

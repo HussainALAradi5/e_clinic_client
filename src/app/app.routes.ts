@@ -101,6 +101,19 @@ export const routes: Routes = [
           import('./features/communication/communication.routes').then((m) => m.CHAT_ROUTES),
       },
       {
+        path: 'notifications',
+        title: 'Notifications · e-Clinic',
+        loadComponent: () =>
+          import('./features/system/notifications/pages/my-notifications/my-notifications.page').then(
+            (m) => m.MyNotificationsPage,
+          ),
+      },
+      {
+        path: 'support',
+        loadChildren: () =>
+          import('./features/communication/communication.routes').then((m) => m.SUPPORT_ROUTES),
+      },
+      {
         path: 'reference',
         loadChildren: () =>
           import('./features/reference/reference.routes').then((m) => m.REFERENCE_ROUTES),

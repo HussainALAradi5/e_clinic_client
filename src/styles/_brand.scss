@@ -522,3 +522,12 @@
     }
   }
 }
+
+// Unread notification (bell menu and inbox page): a light blue fill; read ones keep the default background.
+.notice-unread {
+  background: color-mix(in srgb, #2563eb 9%, var(--mat-sys-surface-container-lowest)) !important;
+
+  [data-theme='dark'] & {
+    background: color-mix(in srgb, #3b82f6 18%, var(--mat-sys-surface-container-lowest)) !important;
+  }
+}

@@ -1,0 +1,35 @@
+<ui-resource-list
+  resource="tickets"
+  endpoint="support/tickets"
+  title="Support tickets"
+  [subtitle]="
+    desk()
+      ? 'Every ticket from the staff. Take one, reply, and mark it solved with what was done.'
+      : 'Problems you reported to the support team, and where they stand.'
+  "
+  emptyTitle="No tickets found"
+  rowLink="/support/tickets/:id"
+>
+  <ui-button actions icon="add" access="tickets.create" [action]="openNew">New ticket</ui-button>
+
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="subject" let-row>
+    <span class="font-medium">{{ row.subject }}</span>
+    @if (row.commentsCount) {
+      <span class="ml-1.5 inline-flex items-center gap-0.5 text-xs text-on-surface-variant">
+        <mat-icon class="!size-3.5 !text-sm">chat_bubble_outline</mat-icon>{{ row.commentsCount }}
+      </span>
+    }
+  </ng-template>
+  <ng-template uiCell="requester" let-row>{{ row.requester?.fullName }}</ng-template>
+  <ng-template uiCell="assignee" let-row>
+    @if (row.assignee) {
+      {{ row.assignee.fullName }}
+    } @else {
+      <span class="text-on-surface-variant">Not taken yet</span>
+    }
+  </ng-template>
+  <ng-template uiCell="created_at" let-row>{{ row.createdAt | date: dateTimeFormat }}</ng-template>
+</ui-resource-list>

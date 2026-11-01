@@ -97,14 +97,12 @@ export class ChatLauncher {
         ) {
           const text =
             event.body ?? (event.kind === MessageKind.Voice ? '🎤 Voice note' : '📎 File');
-          this.notify
-            .info(`${event.sender.fullName}: ${text}`, 'Open')
-            .subscribe(
-              () =>
-                void this.router.navigate([CHAT_PATH], {
-                  queryParams: { c: event.conversationId },
-                }),
-            );
+          this.notify.info(`${event.sender.fullName}: ${text}`, 'Open').subscribe(
+            () =>
+              void this.router.navigate([CHAT_PATH], {
+                queryParams: { c: event.conversationId },
+              }),
+          );
         }
       });
   }
