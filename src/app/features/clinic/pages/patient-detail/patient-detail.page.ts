@@ -18,6 +18,7 @@ import { PatientBilling } from '../../../billing/components/patient-billing/pati
 import { PatientMedicines } from '../../../pharmacy/components/patient-medicines/patient-medicines.component';
 import { ConsentsPanel } from '../../components/consents-panel/consents-panel.component';
 import { PatientCare } from '../../components/patient-care/patient-care.component';
+import { MedicalHistoryDialog } from '../../components/medical-history-dialog/medical-history-dialog.component';
 import { PatientFormDialog } from '../../components/patient-form-dialog/patient-form-dialog.component';
 import { PatientFormDialogData } from '../../interfaces/dialog-data.interface';
 import { HasAccessDirective } from '@core/directives/has-access.directive';
@@ -123,7 +124,11 @@ export class PatientDetailPage implements OnInit {
         ? [{ label: 'Blood group', value: this.enums.label('BloodGroup', p.bloodGroup) }]
         : []),
       ...(p.bloodGroup !== undefined
-        ? [{ label: 'Chronic conditions', value: p.chronicConditions }]
+        ? [
+            { label: 'Chronic conditions', value: p.chronicConditions },
+            { label: 'Family history', value: p.familyHistory },
+            { label: 'Surgical history', value: p.surgicalHistory },
+          ]
         : []),
       {
         label: 'Emergency contact',
@@ -208,6 +213,18 @@ export class PatientDetailPage implements OnInit {
     if (saved) {
       this.patient.set(saved);
       this.notify.success('Patient file saved.');
+    }
+  };
+
+  protected readonly editHistory = async (): Promise<void> => {
+    const saved = await this.dialogs.open<MedicalHistoryDialog, PatientFormDialogData, Patient>(
+      MedicalHistoryDialog,
+      { patient: this.patient()! },
+      { width: '640px' },
+    );
+    if (saved) {
+      this.patient.set(saved);
+      this.notify.success('Medical history saved.');
     }
   };
 

@@ -17,6 +17,13 @@
         >Edit file</ui-button
       >
       <ui-button
+        icon="medical_information"
+        [variant]="variants.Tonal"
+        access="records.write & patients.view_medical"
+        [action]="editHistory"
+        >Medical history</ui-button
+      >
+      <ui-button
         icon="badge"
         [variant]="variants.Outlined"
         access="people.write"

@@ -7,6 +7,8 @@ export type PatientForm = FormGroup<{
   bloodGroup: FormControl<BloodGroup | null>;
   allergies: FormControl<string | null>;
   chronicConditions: FormControl<string | null>;
+  familyHistory: FormControl<string | null>;
+  surgicalHistory: FormControl<string | null>;
   emergencyContactName: FormControl<string | null>;
   emergencyContactPhone: FormControl<string | null>;
   emergencyContactRelation: FormControl<string | null>;
@@ -25,6 +27,8 @@ export function patientForm(patient: Patient | null = null, medical = true): Pat
     bloodGroup: new FormControl<BloodGroup | null>(patient?.bloodGroup ?? BloodGroup.Unknown),
     allergies: text(patient?.allergies, 2000),
     chronicConditions: text(patient?.chronicConditions, 2000),
+    familyHistory: text(patient?.familyHistory, 2000),
+    surgicalHistory: text(patient?.surgicalHistory, 2000),
     emergencyContactName: text(patient?.emergencyContactName, 150),
     emergencyContactPhone: new FormControl(patient?.emergencyContactPhone ?? null, [
       AppValidators.phone,
@@ -43,6 +47,8 @@ export function patientForm(patient: Patient | null = null, medical = true): Pat
     form.controls.bloodGroup.disable();
     form.controls.allergies.disable();
     form.controls.chronicConditions.disable();
+    form.controls.familyHistory.disable();
+    form.controls.surgicalHistory.disable();
   }
   return form;
 }

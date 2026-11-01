@@ -1,0 +1,54 @@
+<h2 mat-dialog-title class="flex items-center gap-2">
+  <mat-icon class="text-error">emergency</mat-icon>Emergency access
+</h2>
+<mat-dialog-content>
+  <p class="mt-0 mb-5 text-sm text-on-surface-variant">
+    For a patient who is not under your care. You need a reason; every use is recorded in the audit
+    trail and the administrators are told. Access ends after your shift (12 hours).
+  </p>
+  <div class="flex items-start gap-2">
+    <ui-text
+      class="flex-1"
+      label="File number or national ID"
+      hint="e.g. PRS-000123"
+      [control]="find"
+    />
+    <ui-button icon="search" [variant]="variants.Tonal" [action]="lookup">Find</ui-button>
+  </div>
+
+  @if (found(); as p) {
+    <div class="mb-4 flex items-center gap-3 rounded-2xl border border-outline-variant p-3">
+      <mat-icon class="text-on-surface-variant">person</mat-icon>
+      <div class="flex-1">
+        <div class="font-medium">{{ p.fullName }}</div>
+        <div class="text-sm text-on-surface-variant">{{ p.code }} · {{ p.age }} y</div>
+      </div>
+      <ui-status enum="Gender" [value]="p.gender" />
+    </div>
+    @if (p.inCare) {
+      <p class="text-sm">This patient is already in your care — no emergency access needed.</p>
+      <ui-button icon="folder_open" [action]="openInCare">Open the file</ui-button>
+    } @else {
+      <ui-form
+        [form]="form"
+        [submit]="breakGlass"
+        submitLabel="Open in an emergency"
+        submitIcon="lock_open"
+        lock="once"
+        [compact]="true"
+        (cancelled)="ref.close()"
+      >
+        <ui-text
+          label="Reason"
+          hint="e.g. Collapsed in the waiting room; need allergies and medicines"
+          [multiline]="true"
+          [rows]="2"
+          [maxLength]="500"
+          [control]="form.controls.reason"
+        />
+      </ui-form>
+    }
+  } @else if (searched()) {
+    <p class="text-sm text-on-surface-variant">No patient with that file number or ID.</p>
+  }
+</mat-dialog-content>

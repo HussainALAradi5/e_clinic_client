@@ -19,6 +19,21 @@
     [rows]="2"
     [control]="form().controls.chronicConditions"
   />
+  <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+    <ui-text
+      label="Family history"
+      hint="e.g. Father: type 2 diabetes"
+      [multiline]="true"
+      [rows]="2"
+      [control]="form().controls.familyHistory"
+    />
+    <ui-text
+      label="Surgical history"
+      [multiline]="true"
+      [rows]="2"
+      [control]="form().controls.surgicalHistory"
+    />
+  </div>
 }
 
 <h3 class="m-0 mb-2 text-sm font-semibold text-on-surface-variant">Emergency contact</h3>

@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Medical history — {{ data.patient.fullName }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [compact]="true"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    <ui-text
+      label="Allergies"
+      hint="Shown as a red banner on every clinical screen"
+      [control]="form.controls.allergies"
+    />
+    <ui-text
+      label="Chronic conditions"
+      [multiline]="true"
+      [rows]="2"
+      [control]="form.controls.chronicConditions"
+    />
+    <ui-text
+      label="Family history"
+      hint="e.g. Father: type 2 diabetes; mother: breast cancer at 52"
+      [multiline]="true"
+      [rows]="3"
+      [control]="form.controls.familyHistory"
+    />
+    <ui-text
+      label="Surgical history"
+      [multiline]="true"
+      [rows]="2"
+      [control]="form.controls.surgicalHistory"
+    />
+  </ui-form>
+</mat-dialog-content>

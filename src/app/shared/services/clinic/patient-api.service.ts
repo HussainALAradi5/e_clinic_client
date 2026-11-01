@@ -1,7 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
+  MedicalHistoryPayload,
   Patient,
+  PatientLookup,
   PatientTimelineEntry,
   RegisterPatientPayload,
   UpdatePatientPayload,
@@ -33,5 +35,26 @@ export class PatientApi {
 
   timeline(id: string): Observable<PatientTimelineEntry[]> {
     return this.api.get<PatientTimelineEntry[]>(`${this.path}/${id}/timeline`);
+  }
+
+  /** Clinicians caring for the patient update allergies, chronic conditions, family and surgical history. */
+  medicalHistory(id: string, payload: MedicalHistoryPayload): Observable<Patient> {
+    return this.api.put<Patient>(`${this.path}/${id}/medical-history`, payload);
+  }
+
+  /** A patient by file number or national ID, identity only (to confirm before breaking the glass). */
+  lookup(query: { code?: string; nationalId?: string }): Observable<PatientLookup | null> {
+    const params: Record<string, string> = {};
+    if (query.code) params['code'] = query.code;
+    if (query.nationalId) params['nationalId'] = query.nationalId;
+    return this.api.get<PatientLookup | null>(`${this.path}/lookup`, { params });
+  }
+
+  /** Break the glass: opens the file for a few hours; audited, admins are told. */
+  emergencyAccess(id: string, reason: string): Observable<{ patient: Patient; expiresAt: string }> {
+    return this.api.post<{ patient: Patient; expiresAt: string }>(
+      `${this.path}/${id}/emergency-access`,
+      { reason },
+    );
   }
 }

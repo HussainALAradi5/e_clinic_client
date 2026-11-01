@@ -18,6 +18,8 @@ export interface Patient extends Versioned {
   bloodGroup?: BloodGroup;
   allergies?: string | null;
   chronicConditions?: string | null;
+  familyHistory?: string | null;
+  surgicalHistory?: string | null;
   hasMedicalAlerts: boolean | null;
   emergencyContactName: string | null;
   emergencyContactPhone: string | null;
@@ -40,6 +42,8 @@ export interface PatientFields {
   bloodGroup?: BloodGroup;
   allergies?: string | null;
   chronicConditions?: string | null;
+  familyHistory?: string | null;
+  surgicalHistory?: string | null;
   emergencyContactName?: string | null;
   emergencyContactPhone?: string | null;
   emergencyContactRelation?: string | null;
@@ -55,6 +59,25 @@ export interface RegisterPatientPayload extends PatientFields {
   personId?: string;
   person?: NewPersonPayload;
   forceCreate?: boolean;
+}
+
+/** PUT /patients/{id}/medical-history — the care team's medical history (absent fields unchanged). */
+export interface MedicalHistoryPayload {
+  version: number;
+  allergies?: string | null;
+  chronicConditions?: string | null;
+  familyHistory?: string | null;
+  surgicalHistory?: string | null;
+}
+
+/** GET /patients/lookup — who the patient is (no medical data) and whether the file is open to the caller. */
+export interface PatientLookup {
+  id: string;
+  code: string;
+  fullName: string;
+  gender: string;
+  age: number;
+  inCare: boolean;
 }
 
 /** PUT /patients/{id}. */

@@ -9,6 +9,11 @@
   <ui-button actions icon="person_add" access="patients.create" [action]="register"
     >Register patient</ui-button
   >
+  @if (canBreakGlass()) {
+    <ui-button actions icon="emergency" [variant]="variants.Outlined" [action]="emergency"
+      >Emergency access</ui-button
+    >
+  }
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template
   >
