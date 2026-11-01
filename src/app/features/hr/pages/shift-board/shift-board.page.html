@@ -1,0 +1,185 @@
+<ui-page-header
+  title="Shifts"
+  subtitle="Fixed or flexible hours, and who works them. Drag someone onto a shift card, or add them by name."
+>
+  <ui-button actions icon="add" access="shifts.create" [action]="create">New shift</ui-button>
+</ui-page-header>
+
+<div class="board" [class.busy]="busy()">
+  <!-- Every shift as a card; each card takes a person dropped on it. -->
+  <section class="rail" aria-label="Shifts">
+    <p class="rail-head">{{ shifts().length }} shifts · {{ total() }} people</p>
+
+    @for (s of shifts(); track s.id) {
+      <button
+        type="button"
+        class="card"
+        [class.on]="s.id === selectedId()"
+        [class.flexible]="s.type === 'flexible'"
+        [id]="'card-' + s.id"
+        cdkDropList
+        [cdkDropListConnectedTo]="['people']"
+        (cdkDropListDropped)="dropped(s.id, $event)"
+        (click)="select(s.id)"
+      >
+        <span class="card-top">
+          <span class="code">{{ s.code }}</span>
+          <ui-status enum="ShiftType" [value]="s.type" />
+        </span>
+        <span class="card-name">{{ s.name }}</span>
+        <span class="card-hours">
+          <mat-icon aria-hidden="true">{{
+            s.type === 'flexible' ? 'more_time' : 'schedule'
+          }}</mat-icon>
+          {{ hours(s) }}
+        </span>
+        <span class="card-count">
+          <mat-icon aria-hidden="true">groups</mat-icon>
+          {{ s.employeesCount ?? 0 }} {{ s.employeesCount === 1 ? 'person' : 'people' }}
+        </span>
+        <span class="drop-hint" aria-hidden="true"
+          ><mat-icon>login</mat-icon> Drop to put on {{ s.name }}</span
+        >
+      </button>
+    }
+
+    <button
+      type="button"
+      class="card none"
+      [class.on]="selectedId() === none"
+      [class.warn]="unassigned().length > 0"
+      [id]="'card-' + none"
+      cdkDropList
+      [cdkDropListConnectedTo]="['people']"
+      (cdkDropListDropped)="dropped(none, $event)"
+      (click)="select(none)"
+    >
+      <span class="card-name"><mat-icon aria-hidden="true">person_off</mat-icon> No shift</span>
+      <span class="card-count">
+        {{ unassigned().length }} {{ unassigned().length === 1 ? 'person needs' : 'people need' }} a
+        shift
+      </span>
+      <span class="drop-hint" aria-hidden="true"
+        ><mat-icon>logout</mat-icon> Drop to take off the shift</span
+      >
+    </button>
+  </section>
+
+  <!-- The open shift and its people. -->
+  <section class="panel" aria-live="polite">
+    @if (selected(); as s) {
+      <header class="panel-head">
+        <div class="min-w-0 flex-1">
+          <p class="code m-0">{{ s.code }}</p>
+          <h2 class="m-0 truncate text-xl font-semibold">{{ s.name }}</h2>
+          <p class="m-0 text-sm text-on-surface-variant">{{ hours(s) }}</p>
+          @if (s.notes) {
+            <p class="m-0 mt-1 text-sm">{{ s.notes }}</p>
+          }
+        </div>
+        @if (canEdit) {
+          <button matIconButton aria-label="Shift actions" [matMenuTriggerFor]="shiftMenu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #shiftMenu="matMenu">
+            <button mat-menu-item (click)="edit(s)"><mat-icon>edit</mat-icon>Edit hours</button>
+            <button mat-menu-item class="danger" (click)="remove(s)">
+              <mat-icon>delete</mat-icon>Delete shift
+            </button>
+          </mat-menu>
+        }
+      </header>
+
+      @if (canEdit) {
+        <ui-entity-select
+          class="block"
+          label="Add someone to this shift"
+          icon="person_add"
+          endpoint="hr/employees"
+          subscript="dynamic"
+          [display]="employeeName"
+          [detail]="employeeDetail"
+          [filter]="addFilter"
+          [control]="addControl"
+          (picked)="add($any($event))"
+        />
+      }
+    } @else {
+      <header class="panel-head">
+        <div>
+          <h2 class="m-0 text-xl font-semibold">No shift</h2>
+          <p class="m-0 text-sm text-on-surface-variant">
+            Without a shift, lateness and overtime use the person's own working hours. Drag them
+            onto a shift.
+          </p>
+        </div>
+      </header>
+    }
+
+    <ul
+      id="people"
+      class="people"
+      cdkDropList
+      cdkDropListSortingDisabled
+      [cdkDropListConnectedTo]="cardIds()"
+      aria-label="People on this shift"
+    >
+      @for (m of members(); track m.id) {
+        <li class="person" cdkDrag [cdkDragData]="m" [cdkDragDisabled]="!canEdit">
+          <span class="avatar" aria-hidden="true">
+            @if (m.avatarUrl) {
+              <img [src]="m.avatarUrl" alt="" />
+            } @else {
+              {{ initials(m.fullName) }}
+            }
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium">{{ m.fullName }}</span>
+            <span class="block truncate text-xs text-on-surface-variant">
+              {{ m.jobTitle }}{{ m.department ? ' · ' + m.department : '' }}
+            </span>
+          </span>
+          @if (canEdit) {
+            <mat-icon class="grip" aria-hidden="true">drag_indicator</mat-icon>
+            <button
+              matIconButton
+              [attr.aria-label]="'Move ' + m.fullName"
+              [matMenuTriggerFor]="moveMenu"
+            >
+              <mat-icon>swap_horiz</mat-icon>
+            </button>
+            <mat-menu #moveMenu="matMenu">
+              @for (s of shifts(); track s.id) {
+                @if (s.id !== selectedId()) {
+                  <button mat-menu-item (click)="move(m, s.id)">
+                    <mat-icon>arrow_forward</mat-icon>{{ s.code }} · {{ s.name }}
+                  </button>
+                }
+              }
+              @if (selectedId() !== none) {
+                <button mat-menu-item class="danger" (click)="move(m, none)">
+                  <mat-icon>person_off</mat-icon>Take off this shift
+                </button>
+              }
+            </mat-menu>
+          }
+          <div *cdkDragPlaceholder class="person placeholder"></div>
+        </li>
+      } @empty {
+        @if (!loading()) {
+          <li class="col-span-full">
+            <ui-empty
+              icon="group_add"
+              [title]="selectedId() === none ? 'Everyone has a shift' : 'Nobody on this shift yet'"
+              [message]="
+                selectedId() === none
+                  ? null
+                  : 'Add someone by name above, or drag them here from another shift.'
+              "
+            />
+          </li>
+        }
+      }
+    </ul>
+  </section>
+</div>

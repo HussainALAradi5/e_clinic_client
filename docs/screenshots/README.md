@@ -80,6 +80,10 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 | Employees | ![](hr/employees-light.png) | ![](hr/employees-dark.png) |
 | Leaves | ![](hr/leaves-light.png) | ![](hr/leaves-dark.png) |
 | Payroll run | ![](hr/payroll-run-light.png) | ![](hr/payroll-run-dark.png) |
+| Shifts board | ![](hr/shifts-board-light.png) | ![](hr/shifts-board-dark.png) |
+| Shifts drag | ![](hr/shifts-drag-light.png) | ![](hr/shifts-drag-dark.png) |
+| Shifts new flexible | ![](hr/shifts-new-flexible-light.png) | ![](hr/shifts-new-flexible-dark.png) |
+| Shifts no shift | ![](hr/shifts-no-shift-light.png) | ![](hr/shifts-no-shift-dark.png) |
 
 ## Admin
 

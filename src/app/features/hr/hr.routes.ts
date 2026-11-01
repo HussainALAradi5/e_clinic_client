@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { accessGuard } from '@core/guards/auth.guards';
 
-/** `/hr` — Human resources (lazy): my HR, attendance, leave, payroll, departments and employees. */
+/** `/hr` — Human resources (lazy): my HR, attendance, leave, payroll, departments, shifts and employees. */
 export const HR_ROUTES: Routes = [
   {
     path: '',
@@ -29,6 +29,13 @@ export const HR_ROUTES: Routes = [
           ),
       },
     ],
+  },
+  {
+    path: 'shifts',
+    title: 'Shifts · e-Clinic',
+    canMatch: [accessGuard('shifts.read_all')],
+    loadComponent: () =>
+      import('./pages/shift-board/shift-board.page').then((m) => m.ShiftBoardPage),
   },
   {
     path: 'employees',

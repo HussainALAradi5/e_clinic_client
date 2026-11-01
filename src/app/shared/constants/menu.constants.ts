@@ -160,6 +160,14 @@ export const MENU: NavGroup[] = [
         access: 'employees.read_all | employees.read_own',
       },
       {
+        label: 'Shifts',
+        description:
+          'Fixed or flexible hours with a code, and who works each one — drag people between shifts.',
+        icon: 'schedule',
+        route: '/hr/shifts',
+        access: 'shifts.read_all',
+      },
+      {
         label: 'Departments',
         description: 'The department tree and its managers.',
         icon: 'account_tree',

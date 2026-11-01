@@ -4,7 +4,16 @@
       <h2 class="m-0 text-base font-semibold">Today</h2>
       @if (today(); as t) {
         <p class="m-0 text-sm text-on-surface-variant">
-          Shift {{ t.shift.start }}–{{ t.shift.end }}
+          @if (t.shift.name) {
+            {{ t.shift.name }} ({{ t.shift.code }}) ·
+            {{
+              t.shift.type === 'flexible'
+                ? 'in by ' + t.shift.start
+                : t.shift.start + '–' + t.shift.end
+            }}
+          } @else {
+            Shift {{ t.shift.start }}–{{ t.shift.end }}
+          }
         </p>
       }
     </div>

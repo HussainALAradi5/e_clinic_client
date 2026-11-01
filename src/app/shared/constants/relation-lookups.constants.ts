@@ -3,6 +3,7 @@ export const RELATION_ENDPOINTS: Readonly<Record<string, string>> = {
   accounts: 'accounting/accounts',
   companies: 'reference/companies',
   departments: 'hr/departments',
+  shifts: 'hr/shifts',
   doctors: 'doctors',
   employees: 'hr/employees',
   medications: 'pharmacy/medications',

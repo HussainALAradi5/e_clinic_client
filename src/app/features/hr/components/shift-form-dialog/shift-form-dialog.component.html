@@ -1,0 +1,68 @@
+<h2 mat-dialog-title>{{ shift ? 'Edit ' + shift.code : 'New shift' }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="shift ? 'Save' : 'Create shift'"
+    [compact]="true"
+    [allowPristine]="!shift"
+    (saved)="close()"
+    (cancelled)="ref.close()"
+  >
+    <ui-text
+      label="Name"
+      hint="e.g. Morning, Evening, Office flexi"
+      [control]="form.controls.name"
+    />
+
+    <mat-button-toggle-group
+      class="mb-4 w-full"
+      hideSingleSelectionIndicator
+      aria-label="Kind of shift"
+      [formControl]="form.controls.type"
+    >
+      <mat-button-toggle class="flex-1" [value]="types.Fixed">
+        <mat-icon>schedule</mat-icon> Fixed hours
+      </mat-button-toggle>
+      <mat-button-toggle class="flex-1" [value]="types.Flexible">
+        <mat-icon>more_time</mat-icon> Flexible
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <div class="grid grid-cols-2 gap-x-4">
+      <ui-text
+        [label]="flexible() ? 'Earliest in' : 'Starts'"
+        type="time"
+        [control]="form.controls.startTime"
+      />
+      <ui-text
+        [label]="flexible() ? 'Latest out' : 'Ends'"
+        type="time"
+        [control]="form.controls.endTime"
+      />
+      @if (flexible()) {
+        <ui-text
+          label="Arrive by"
+          type="time"
+          hint="Late after this"
+          [control]="form.controls.latestStart"
+        />
+        <ui-text
+          label="Hours a day"
+          type="number"
+          hint="Overtime is beyond this"
+          [control]="form.controls.hours"
+        />
+      }
+    </div>
+
+    <p
+      class="m-0 mb-3 flex items-start gap-2 rounded-xl bg-surface-container px-3 py-2 text-sm text-on-surface-variant"
+    >
+      <mat-icon class="!size-5 !text-xl" aria-hidden="true">info</mat-icon>
+      <span>{{ summary() }}</span>
+    </p>
+
+    <ui-text label="Notes" [multiline]="true" [rows]="2" [control]="form.controls.notes" />
+  </ui-form>
+</mat-dialog-content>

@@ -1,3 +1,4 @@
+import { ShiftType } from '@shared/enums/hr/shift-type.enum';
 import { AttendanceSource } from '@shared/enums/hr/attendance-source.enum';
 import { AttendanceStatus } from '@shared/enums/hr/attendance-status.enum';
 import { EmployeeSummary } from '@shared/interfaces/common/summary.interface';
@@ -25,7 +26,14 @@ export interface Attendance {
 /** The signed-in employee's day and shift (check-in card). */
 export interface AttendanceToday {
   attendance: Attendance | null;
-  shift: { start: string; end: string };
+  /** Late after `start`; the shift's code / name / type when the employee is on one. */
+  shift: {
+    start: string;
+    end: string;
+    code: string | null;
+    name: string | null;
+    type: ShiftType | null;
+  };
 }
 
 /** One employee's month as payroll sees it. */

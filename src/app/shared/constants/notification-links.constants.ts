@@ -15,7 +15,8 @@ export const NOTIFICATION_ROUTES: Readonly<Record<string, string>> = {
   expense: '/accounting/expenses/:id',
   department: '/hr/departments/:id',
   employee: '/hr/employees/:id',
-  attendance: '/hr/attendance',
+  // Check-in / check-out notices (late, on time, overtime) go to the employee's own day.
+  attendance: '/hr/me',
   leave_request: '/hr/leaves/:id',
   payroll_run: '/hr/payroll/:id',
   payslip: '/hr/me',
