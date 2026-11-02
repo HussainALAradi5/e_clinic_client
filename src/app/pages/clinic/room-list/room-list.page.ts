@@ -10,6 +10,7 @@ import { Room } from '@interfaces/clinic/room.interface';
 import { RoomApi } from '@services/clinic/room-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { ROOM_LIST_TEXT } from '@constants/clinic/room-list.constants';
 
 /** `/clinic/rooms` — rooms with service status and bulk archive / delete / restore. */
 @Component({
@@ -31,7 +32,7 @@ export class RoomListPage {
       { width: '600px' },
     );
     if (room) {
-      this.notify.success(`Room ${room.code} created.`);
+      this.notify.success(ROOM_LIST_TEXT.roomCreated(room.code));
       await this.router.navigate(['/clinic/rooms', room.id]);
     }
   };

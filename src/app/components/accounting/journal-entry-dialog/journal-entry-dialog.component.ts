@@ -23,6 +23,7 @@ import { clinicIsoDate } from '@utilities/clinic-time';
 import { fromMinor, toMinor } from '@utilities/money';
 import { AppValidators } from '@validations/validators';
 import { LineGroup } from '@interfaces/accounting/journal-entry-dialog.interface';
+import { JOURNAL_ENTRY_DIALOG_TEXT } from '@constants/accounting/journal-entry-dialog.constants';
 
 /**
  * A manual (or adjustment) journal entry: date, description and at least two lines, each a debit or a credit on a
@@ -53,8 +54,8 @@ export class JournalEntryDialog {
 
   protected readonly entry = this.data.entry;
   protected readonly types = [
-    { value: JournalEntryType.Manual, label: 'Manual' },
-    { value: JournalEntryType.Adjustment, label: 'Adjustment' },
+    { value: JournalEntryType.Manual, label: JOURNAL_ENTRY_DIALOG_TEXT.manual },
+    { value: JournalEntryType.Adjustment, label: JOURNAL_ENTRY_DIALOG_TEXT.adjustment },
   ];
   protected readonly postable: FilterGroup = { and: [{ isGroup: { eq: false } }] };
   protected readonly accountName = (a: Account): string => `${a.code} · ${a.name}`;

@@ -16,6 +16,7 @@ import { DateRangeHeader, DateRangeHost } from './date-range-header.component';
 import { DateFieldOption } from '@interfaces/list/date-field-option.interface';
 import { DateRangeValue } from '@interfaces/list/date-range-filter.interface';
 import { dateRangeFor } from '@utilities/clinic-time';
+import { DATE_RANGE_FILTER_TEXT } from '@constants/common/date-range-filter.constants';
 
 /**
  * One date filter for a list: a single field that opens one compact calendar — pick the first and the last day; lists
@@ -56,7 +57,9 @@ export class DateRangeFilter implements DateRangeHost {
     return { from: resolved?.[0] ?? from ?? null, to: resolved?.[1] ?? to ?? null };
   });
   protected readonly label = computed(
-    () => this.fields().find((f) => f.value === this.current().field)?.label ?? 'Date',
+    () =>
+      this.fields().find((f) => f.value === this.current().field)?.label ??
+      DATE_RANGE_FILTER_TEXT.date,
   );
   protected readonly active = computed(
     () => !!(this.current().preset || this.current().from || this.current().to),

@@ -5,6 +5,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EXPORT_FORMAT_OPTIONS } from '@constants/transfer.constants';
 import { ExportFormat } from '@enums/list/export-format.enum';
+import { EXPORT_MENU_TEXT } from '@constants/common/export-menu.constants';
 
 /**
  * "Export" button with a format menu (Excel / PDF / CSV, as the server offers them to this user). Says how many rows
@@ -28,8 +29,8 @@ export class ExportMenu {
   );
   protected readonly label = computed(() =>
     this.selectedCount() > 0
-      ? `Export ${this.selectedCount().toLocaleString('en-GB')} selected`
-      : 'Export',
+      ? EXPORT_MENU_TEXT.exportSelected(this.selectedCount().toLocaleString('en-GB'))
+      : EXPORT_MENU_TEXT.export,
   );
 
   protected async choose(format: ExportFormat): Promise<void> {

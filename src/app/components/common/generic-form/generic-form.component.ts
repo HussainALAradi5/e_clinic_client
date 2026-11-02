@@ -15,6 +15,7 @@ import { HasUnsavedChanges } from '@interfaces/ui/unsaved-changes.interface';
 import { NotifyService } from '@services/ui/notify.service';
 import { toPromise } from '@utilities/action-lock';
 import { applyServerErrors } from '@utilities/server-errors';
+import { GENERIC_FORM_TEXT } from '@constants/common/generic-form.constants';
 
 /** Thrown to stop the submit button without a toast (client-side invalid form). */
 const INVALID = Symbol('invalid');
@@ -39,8 +40,8 @@ const INVALID = Symbol('invalid');
 export class GenericForm<T = unknown> implements HasUnsavedChanges {
   readonly form = input.required<FormGroup>();
   readonly submit = input.required<(value: T) => ActionResult>();
-  readonly submitLabel = input('Save');
-  readonly cancelLabel = input<string | null>('Cancel');
+  readonly submitLabel = input(GENERIC_FORM_TEXT.save);
+  readonly cancelLabel = input<string | null>(GENERIC_FORM_TEXT.cancel);
   readonly lock = input<'until-done' | 'once'>('until-done');
   /** Allow submitting an untouched form (e.g. confirmation forms). */
   readonly allowPristine = input(false);

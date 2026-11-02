@@ -42,6 +42,7 @@ import { EmployeeApi } from '@services/hr/employee-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { formatMoney } from '@utilities/money';
+import { EMPLOYEE_DETAIL_TEXT } from '@constants/hr/employee-detail.constants';
 
 /** `/hr/employees/:id` — employment, person and account; edit, suspend / reactivate, terminate; salary; leave. */
 @Component({
@@ -89,17 +90,20 @@ export class EmployeeDetailPage implements OnInit {
     if (!e) return [];
     const days = e.weeklyOffDays.map((d) => this.enums.label('DayOfWeek', d)).join(', ');
     return [
-      { label: 'Department', value: e.department?.name },
-      { label: 'Job title', value: e.jobTitle },
-      { label: 'Contract', value: this.enums.label('EmploymentType', e.employmentType) },
-      { label: 'Hired', value: e.hireDate },
-      { label: 'Probation ends', value: e.probationEndDate },
-      { label: 'Shift', value: `${e.workStartTime} – ${e.workEndTime}` },
-      { label: 'Days off', value: days || 'None' },
+      { label: EMPLOYEE_DETAIL_TEXT.department, value: e.department?.name },
+      { label: EMPLOYEE_DETAIL_TEXT.jobTitle, value: e.jobTitle },
+      {
+        label: EMPLOYEE_DETAIL_TEXT.contract,
+        value: this.enums.label('EmploymentType', e.employmentType),
+      },
+      { label: EMPLOYEE_DETAIL_TEXT.hired, value: e.hireDate },
+      { label: EMPLOYEE_DETAIL_TEXT.probationEnds, value: e.probationEndDate },
+      { label: EMPLOYEE_DETAIL_TEXT.shift, value: `${e.workStartTime} – ${e.workEndTime}` },
+      { label: EMPLOYEE_DETAIL_TEXT.daysOff, value: days || EMPLOYEE_DETAIL_TEXT.none },
       ...(e.terminationDate
         ? [
             {
-              label: 'Terminated',
+              label: EMPLOYEE_DETAIL_TEXT.terminated,
               value: `${e.terminationDate} — ${this.enums.label('TerminationReason', e.terminationReason)}`,
             },
           ]
@@ -111,12 +115,12 @@ export class EmployeeDetailPage implements OnInit {
     const p = this.employee()?.person;
     if (!p) return [];
     return [
-      { label: 'File number', value: p.code, mono: true },
-      { label: 'Gender', value: p.gender, enum: 'Gender' },
-      { label: 'Date of birth', value: p.dateOfBirth },
-      { label: 'National ID', value: p.nationalId, mono: true },
-      { label: 'Mobile', value: p.phone },
-      { label: 'Email', value: p.email },
+      { label: EMPLOYEE_DETAIL_TEXT.fileNumber, value: p.code, mono: true },
+      { label: EMPLOYEE_DETAIL_TEXT.gender, value: p.gender, enum: EMPLOYEE_DETAIL_TEXT.gender },
+      { label: EMPLOYEE_DETAIL_TEXT.dateOfBirth, value: p.dateOfBirth },
+      { label: EMPLOYEE_DETAIL_TEXT.nationalId, value: p.nationalId, mono: true },
+      { label: EMPLOYEE_DETAIL_TEXT.mobile, value: p.phone },
+      { label: EMPLOYEE_DETAIL_TEXT.email, value: p.email },
     ];
   });
 
@@ -124,10 +128,10 @@ export class EmployeeDetailPage implements OnInit {
     const e = this.employee();
     if (!e?.basicSalary) return [];
     return [
-      { label: 'Basic salary', value: formatMoney(e.basicSalary) },
-      { label: 'Bank', value: e.bankName },
+      { label: EMPLOYEE_DETAIL_TEXT.basicSalary, value: formatMoney(e.basicSalary) },
+      { label: EMPLOYEE_DETAIL_TEXT.bank, value: e.bankName },
       { label: 'IBAN', value: e.iban, mono: true },
-      { label: 'GOSI number', value: e.socialInsuranceNumber, mono: true },
+      { label: EMPLOYEE_DETAIL_TEXT.gosiNumber, value: e.socialInsuranceNumber, mono: true },
     ];
   });
 
@@ -165,7 +169,7 @@ export class EmployeeDetailPage implements OnInit {
     );
     if (saved) {
       this.employee.set(saved);
-      this.notify.success('Employment data saved.');
+      this.notify.success(EMPLOYEE_DETAIL_TEXT.employmentDataSaved);
     }
   };
 
@@ -207,15 +211,21 @@ export class EmployeeDetailPage implements OnInit {
   private async changeStatus(status: EmployeeStatus): Promise<void> {
     const suspending = status === EmployeeStatus.Suspended;
     const reason = await this.dialogs.reason({
-      title: suspending ? 'Suspend this employee?' : 'Reactivate this employee?',
+      title: suspending
+        ? EMPLOYEE_DETAIL_TEXT.suspendThisEmployee
+        : EMPLOYEE_DETAIL_TEXT.reactivateThisEmployee,
       message: suspending
-        ? 'Signing in is blocked until the employee is reactivated.'
-        : 'Signing in works again for staff with a password.',
-      confirmLabel: suspending ? 'Suspend' : 'Reactivate',
+        ? EMPLOYEE_DETAIL_TEXT.signingInIsBlockedUntil
+        : EMPLOYEE_DETAIL_TEXT.signingInWorksAgainFor,
+      confirmLabel: suspending ? EMPLOYEE_DETAIL_TEXT.suspend : EMPLOYEE_DETAIL_TEXT.reactivate,
       danger: suspending,
     });
     if (reason === null) return;
     this.employee.set(await firstValueFrom(this.api.changeStatus(this.id(), status, reason)));
-    this.notify.success(suspending ? 'Employee suspended.' : 'Employee reactivated.');
+    this.notify.success(
+      suspending
+        ? EMPLOYEE_DETAIL_TEXT.employeeSuspended
+        : EMPLOYEE_DETAIL_TEXT.employeeReactivated,
+    );
   }
 }

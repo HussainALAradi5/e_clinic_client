@@ -31,6 +31,7 @@ import { EntityDetail } from '@services/data/entity-detail';
 import { DepartmentApi } from '@services/hr/department-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { DEPARTMENT_DETAIL_TEXT } from '@constants/hr/department-detail.constants';
 
 /** `/hr/departments/:id` — facts, sub-departments, staff, history; edit / archive / delete. */
 @Component({
@@ -68,14 +69,17 @@ export class DepartmentDetailPage implements OnInit {
     const d = this.detail.record();
     if (!d) return [];
     return [
-      { label: 'Code', value: d.code, mono: true },
-      { label: 'Part of', value: d.parent?.name ?? 'Top level' },
+      { label: DEPARTMENT_DETAIL_TEXT.code, value: d.code, mono: true },
       {
-        label: 'Manager',
+        label: DEPARTMENT_DETAIL_TEXT.partOf,
+        value: d.parent?.name ?? DEPARTMENT_DETAIL_TEXT.topLevel,
+      },
+      {
+        label: DEPARTMENT_DETAIL_TEXT.manager,
         value: d.manager ? `${d.manager.fullName} — ${d.manager.jobTitle}` : null,
       },
-      { label: 'Cost center', value: d.costCenterCode, mono: true },
-      { label: 'Employees', value: d.employeesCount ?? 0 },
+      { label: DEPARTMENT_DETAIL_TEXT.costCenter, value: d.costCenterCode, mono: true },
+      { label: DEPARTMENT_DETAIL_TEXT.employees, value: d.employeesCount ?? 0 },
     ];
   });
 
@@ -96,7 +100,7 @@ export class DepartmentDetailPage implements OnInit {
 
   protected readonly edit = async (): Promise<void> => {
     if (await this.openForm(this.detail.record(), (payload) => this.detail.update(payload)))
-      this.notify.success('Department saved.');
+      this.notify.success(DEPARTMENT_DETAIL_TEXT.departmentSaved);
   };
 
   protected readonly addChild = async (): Promise<void> => {
@@ -106,29 +110,29 @@ export class DepartmentDetailPage implements OnInit {
       this.detail.record(),
     );
     if (child) {
-      this.notify.success(`Department ${child.name} created.`);
+      this.notify.success(DEPARTMENT_DETAIL_TEXT.departmentCreated(child.name));
       await this.reload();
     }
   };
 
   protected readonly archive = async (): Promise<void> => {
     await this.detail.archive();
-    this.notify.success('Department archived.');
+    this.notify.success(DEPARTMENT_DETAIL_TEXT.departmentArchived);
   };
 
   protected readonly unarchive = async (): Promise<void> => {
     await this.detail.unarchive();
-    this.notify.success('Department back in pickers.');
+    this.notify.success(DEPARTMENT_DETAIL_TEXT.departmentBackInPickers);
   };
 
   protected readonly restore = async (): Promise<void> => {
     await this.detail.restore();
-    this.notify.success('Department restored.');
+    this.notify.success(DEPARTMENT_DETAIL_TEXT.departmentRestored);
   };
 
   protected readonly remove = async (): Promise<void> => {
     await this.detail.remove();
-    this.notify.success('Department deleted.');
+    this.notify.success(DEPARTMENT_DETAIL_TEXT.departmentDeleted);
     await this.router.navigateByUrl('/hr/departments');
   };
 

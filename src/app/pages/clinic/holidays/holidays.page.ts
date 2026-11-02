@@ -13,6 +13,7 @@ import { ScheduleApi } from '@services/clinic/schedule-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { HOLIDAYS_TEXT } from '@constants/clinic/holidays.constants';
 
 /** Days ahead listed (server allows 92). */
 const DAYS_AHEAD = 90;
@@ -49,14 +50,14 @@ export class HolidaysPage {
       ScheduleException
     >(ScheduleExceptionDialog, { providerId: null }, { width: '560px' });
     if (added) {
-      this.notify.success('Holiday added — nobody can be booked that day.');
+      this.notify.success(HOLIDAYS_TEXT.holidayAddedNobodyCanBe);
       await this.load();
     }
   };
 
   protected readonly remove = async (holiday: ScheduleException): Promise<void> => {
     await firstValueFrom(this.api.removeHoliday(holiday.id));
-    this.notify.success('Holiday removed.');
+    this.notify.success(HOLIDAYS_TEXT.holidayRemoved);
     await this.load();
   };
 }

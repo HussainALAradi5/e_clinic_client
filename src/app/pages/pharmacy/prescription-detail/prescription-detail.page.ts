@@ -33,6 +33,7 @@ import { QtyPipe } from '@pipes/qty.pipe';
 import { PrescriptionApi } from '@services/pharmacy/prescription-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 import { percentOf } from '@utilities/quantity';
+import { PRESCRIPTION_DETAIL_TEXT } from '@constants/pharmacy/prescription-detail.constants';
 
 /**
  * `/pharmacy/prescriptions/:id` — the medicines with how much has been handed over, the hand-overs themselves, and
@@ -87,17 +88,23 @@ export class PrescriptionDetailPage implements OnInit {
     const p = this.prescription();
     if (!p) return [];
     return [
-      { label: 'Patient', value: p.patient ? `${p.patient.fullName} · ${p.patient.code}` : null },
-      { label: 'Doctor', value: p.doctor?.fullName },
       {
-        label: 'Visit',
+        label: PRESCRIPTION_DETAIL_TEXT.patient,
+        value: p.patient ? `${p.patient.fullName} · ${p.patient.code}` : null,
+      },
+      { label: PRESCRIPTION_DETAIL_TEXT.doctor, value: p.doctor?.fullName },
+      {
+        label: PRESCRIPTION_DETAIL_TEXT.visit,
         value: p.appointment ? `${p.appointment.code} · ${p.appointment.scheduledDate}` : null,
       },
-      { label: 'Treatment', value: p.treatment?.code },
-      { label: 'Written', value: p.createdAt.slice(0, 10) },
-      { label: 'Valid until', value: p.validUntil + (this.expired() ? ' (expired)' : '') },
-      { label: 'Note to the pharmacist', value: p.notes },
-      { label: 'Cancelled because', value: p.cancellationReason },
+      { label: PRESCRIPTION_DETAIL_TEXT.treatment, value: p.treatment?.code },
+      { label: PRESCRIPTION_DETAIL_TEXT.written, value: p.createdAt.slice(0, 10) },
+      {
+        label: PRESCRIPTION_DETAIL_TEXT.validUntil,
+        value: p.validUntil + (this.expired() ? ' (expired)' : ''),
+      },
+      { label: PRESCRIPTION_DETAIL_TEXT.noteToThePharmacist, value: p.notes },
+      { label: PRESCRIPTION_DETAIL_TEXT.cancelledBecause, value: p.cancellationReason },
     ].filter((f) => f.value !== null && f.value !== undefined && f.value !== '');
   });
 

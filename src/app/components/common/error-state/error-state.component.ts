@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ApiError } from '@interfaces/api/api-error.interface';
 import { isApiError } from '@utilities/guards';
+import { ERROR_STATE_TEXT } from '@constants/common/error-state.constants';
 
 /** Error with retry: what went wrong, in words (the request id stays in the server log). */
 @Component({
@@ -16,6 +17,6 @@ export class ErrorState {
   readonly retry = output<void>();
   protected readonly message = computed(() => {
     const e = this.error();
-    return isApiError(e) ? e.message : 'Something went wrong.';
+    return isApiError(e) ? e.message : ERROR_STATE_TEXT.somethingWentWrong;
   });
 }

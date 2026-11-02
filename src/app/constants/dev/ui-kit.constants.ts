@@ -1,0 +1,23 @@
+/** Text of dev/ui-kit/ui-kit.page (labels, messages, confirmations). */
+export const UI_KIT_TEXT = {
+  physiotherapy: 'Physiotherapy',
+  woundCare: 'Wound care',
+  dialysis: 'Dialysis',
+  laser: 'Laser',
+  injection: 'Injection',
+  code: 'Code',
+  name: 'Name',
+  status: 'Status',
+  price: 'Price',
+  updated: 'Updated',
+  male: 'Male',
+  female: 'Female',
+  thisSlotWasJustBooked: 'This slot was just booked — pick another time.',
+  someFieldsAreInvalid: 'Some fields are invalid.',
+  thisPhoneNumberIsAlready: 'This phone number is already registered.',
+  patientRecordSaved: 'Patient record saved.',
+  aNewVersionOfThe: 'A new version of the price list is available.',
+  thisAppointmentOverlapsWithAnother: 'This appointment overlaps with another booking.',
+  theVerificationCodeIsInvalid: 'The verification code is invalid or has expired.',
+  undo: 'Undo',
+};

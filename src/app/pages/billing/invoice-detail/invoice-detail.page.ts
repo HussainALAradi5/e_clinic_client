@@ -30,6 +30,7 @@ import { InvoiceApi } from '@services/billing/invoice-api.service';
 import { EntityDetail } from '@services/data/entity-detail';
 import { clinicIsoDate } from '@utilities/clinic-time';
 import { toMinor } from '@utilities/money';
+import { INVOICE_DETAIL_TEXT } from '@constants/billing/invoice-detail.constants';
 
 /** Where a line came from, as a link (visit or order). */
 const SOURCE_ROUTES: Record<string, string> = {
@@ -103,15 +104,18 @@ export class InvoiceDetailPage implements OnInit {
     const i = this.detail.record();
     if (!i) return [];
     return [
-      { label: 'Patient', value: i.patient ? `${i.patient.fullName} · ${i.patient.code}` : null },
-      { label: 'Insurer', value: i.patient?.insurer?.name },
       {
-        label: 'Issued',
+        label: INVOICE_DETAIL_TEXT.patient,
+        value: i.patient ? `${i.patient.fullName} · ${i.patient.code}` : null,
+      },
+      { label: INVOICE_DETAIL_TEXT.insurer, value: i.patient?.insurer?.name },
+      {
+        label: INVOICE_DETAIL_TEXT.issued,
         value: i.issueDate ? `${this.date(i.issueDate)} by ${i.issuedBy?.fullName ?? '—'}` : null,
       },
-      { label: 'Due', value: i.dueDate ? this.date(i.dueDate) : null },
-      { label: 'Draft code', value: i.code, mono: true },
-      { label: 'Cancelled', value: i.cancellationReason },
+      { label: INVOICE_DETAIL_TEXT.due, value: i.dueDate ? this.date(i.dueDate) : null },
+      { label: INVOICE_DETAIL_TEXT.draftCode, value: i.code, mono: true },
+      { label: INVOICE_DETAIL_TEXT.cancelled, value: i.cancellationReason },
     ].filter((f) => f.value !== null && f.value !== undefined && f.value !== '');
   });
 

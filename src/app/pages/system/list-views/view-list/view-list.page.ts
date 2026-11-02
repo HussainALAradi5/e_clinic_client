@@ -12,6 +12,7 @@ import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { SavedViewApi } from '@services/view/saved-view-api.service';
 import { humanise } from '@utilities/text';
+import { VIEW_LIST_TEXT } from '@constants/system/view-list.constants';
 
 /** `/system/list-views` — own and shared saved views of every list: rename, make default, delete. */
 @Component({
@@ -32,12 +33,12 @@ export class ViewListPage {
   protected async rename(view: SavedView, event: Event): Promise<void> {
     event.stopPropagation();
     const name = await this.dialogs.reason({
-      title: 'Rename view',
-      message: `Current name: ${view.name}`,
-      confirmLabel: 'Rename',
+      title: VIEW_LIST_TEXT.renameView,
+      message: VIEW_LIST_TEXT.currentName(view.name),
+      confirmLabel: VIEW_LIST_TEXT.rename,
     });
     if (name) {
-      await this.run(this.api.update(view.id, { name }), 'View renamed.');
+      await this.run(this.api.update(view.id, { name }), VIEW_LIST_TEXT.viewRenamed);
     }
   }
 
@@ -49,13 +50,13 @@ export class ViewListPage {
   protected async remove(view: SavedView, event: Event): Promise<void> {
     event.stopPropagation();
     const confirmed = await this.dialogs.confirm({
-      title: `Delete "${view.name}"?`,
-      message: view.isShared ? 'Other users will no longer see this shared view.' : undefined,
-      confirmLabel: 'Delete',
+      title: VIEW_LIST_TEXT.delete2(view.name),
+      message: view.isShared ? VIEW_LIST_TEXT.otherUsersWillNoLonger : undefined,
+      confirmLabel: VIEW_LIST_TEXT.delete,
       danger: true,
     });
     if (confirmed) {
-      await this.run(this.api.remove(view.id), 'View deleted.');
+      await this.run(this.api.remove(view.id), VIEW_LIST_TEXT.viewDeleted);
     }
   }
 

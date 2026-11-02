@@ -12,6 +12,7 @@ import { PatientLookup } from '@interfaces/clinic/patient-lookup.interface';
 import { PatientApi } from '@services/clinic/patient-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { clinicTime } from '@utilities/clinic-time';
+import { EMERGENCY_ACCESS_DIALOG_TEXT } from '@constants/clinic/emergency-access-dialog.constants';
 
 /**
  * Break the glass: find a patient outside your care by file number or national ID, confirm it is the right person,
@@ -63,7 +64,10 @@ export class EmergencyAccessDialog {
       this.api.emergencyAccess(patient.id, this.form.controls.reason.value),
     );
     this.notify.info(
-      `Emergency access to ${patient.fullName} until ${clinicTime(new Date(result.expiresAt))} — it is recorded.`,
+      EMERGENCY_ACCESS_DIALOG_TEXT.emergencyAccessToUntilIt(
+        patient.fullName,
+        clinicTime(new Date(result.expiresAt)),
+      ),
     );
     this.ref.close(patient.id);
     return patient.id;

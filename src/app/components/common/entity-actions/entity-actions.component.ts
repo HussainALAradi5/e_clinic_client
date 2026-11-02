@@ -4,6 +4,7 @@ import { ButtonVariant } from '@enums/ui/button.enum';
 import { ActionResult } from '@interfaces/ui/action.interface';
 import { GenericEntity } from '@interfaces/common/generic-entity.interface';
 import { ConfirmConfig } from '@interfaces/ui/confirm-config.interface';
+import { ENTITY_ACTIONS_TEXT } from '@constants/common/entity-actions.constants';
 
 /**
  * Standard header actions of a GenericEntity detail page: Edit · Archive / Unarchive · Delete, or Restore when
@@ -33,9 +34,9 @@ export class EntityActions {
 
   protected readonly variants = ButtonVariant;
   protected readonly deleteConfirm = computed<ConfirmConfig>(() => ({
-    title: `Delete this ${this.noun()}?`,
-    message: 'It can be restored later from the deleted records list.',
-    confirmLabel: 'Delete',
+    title: ENTITY_ACTIONS_TEXT.deleteThis(this.noun()),
+    message: ENTITY_ACTIONS_TEXT.itCanBeRestoredLater,
+    confirmLabel: ENTITY_ACTIONS_TEXT.delete,
     danger: true,
   }));
 }

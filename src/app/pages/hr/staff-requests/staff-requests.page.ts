@@ -37,12 +37,13 @@ import { StaffRequestApi } from '@services/hr/staff-request-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { StatusTab } from '@interfaces/hr/staff-requests.interface';
+import { STAFF_REQUESTS_TEXT } from '@constants/hr/staff-requests.constants';
 
 const TABS: { value: StatusTab; label: string; icon: string }[] = [
-  { value: 'pending', label: 'Waiting', icon: 'hourglass_top' },
-  { value: 'approved', label: 'Approved', icon: 'check_circle' },
-  { value: 'rejected', label: 'Rejected', icon: 'cancel' },
-  { value: 'all', label: 'All', icon: 'list' },
+  { value: 'pending', label: STAFF_REQUESTS_TEXT.waiting, icon: 'hourglass_top' },
+  { value: 'approved', label: STAFF_REQUESTS_TEXT.approved, icon: 'check_circle' },
+  { value: 'rejected', label: STAFF_REQUESTS_TEXT.rejected, icon: 'cancel' },
+  { value: 'all', label: STAFF_REQUESTS_TEXT.all, icon: 'list' },
 ];
 
 /**
@@ -104,7 +105,9 @@ export class StaffRequestsPage implements OnInit {
   protected readonly loading = signal(true);
   private loadSeq = 0;
 
-  protected readonly title = computed(() => (this.seesEveryone ? 'Requests' : 'My requests'));
+  protected readonly title = computed(() =>
+    this.seesEveryone ? STAFF_REQUESTS_TEXT.requests : STAFF_REQUESTS_TEXT.myRequests,
+  );
 
   ngOnInit(): void {
     void this.reload();
@@ -139,16 +142,16 @@ export class StaffRequestsPage implements OnInit {
     switch (r.status) {
       case ApprovalStatus.Approved:
         return late
-          ? { label: 'Excused', sign: '', tone: 'struck' }
-          : { label: 'Paid', sign: '+', tone: 'plus' };
+          ? { label: STAFF_REQUESTS_TEXT.excused, sign: '', tone: 'struck' }
+          : { label: STAFF_REQUESTS_TEXT.paid, sign: '+', tone: 'plus' };
       case ApprovalStatus.Rejected:
         return late
-          ? { label: 'Deducted', sign: '−', tone: 'minus' }
-          : { label: 'Not paid', sign: '', tone: 'struck' };
+          ? { label: STAFF_REQUESTS_TEXT.deducted, sign: '−', tone: 'minus' }
+          : { label: STAFF_REQUESTS_TEXT.notPaid, sign: '', tone: 'struck' };
       default:
         return late
-          ? { label: 'If not excused', sign: '−', tone: 'minus' }
-          : { label: 'To pay', sign: '+', tone: 'plus' };
+          ? { label: STAFF_REQUESTS_TEXT.ifNotExcused, sign: '−', tone: 'minus' }
+          : { label: STAFF_REQUESTS_TEXT.toPay, sign: '+', tone: 'plus' };
     }
   }
 
@@ -172,7 +175,7 @@ export class StaffRequestsPage implements OnInit {
       StaffRequest
     >(StaffRequestDialog, { day, type }, { width: '520px' });
     if (created) {
-      this.notify.success(`Sent to HR — ${created.code}.`);
+      this.notify.success(STAFF_REQUESTS_TEXT.sentToHr(created.code));
       this.tab.set('pending');
       void this.reload();
     }
@@ -192,9 +195,9 @@ export class StaffRequestsPage implements OnInit {
 
   protected async withdraw(request: StaffRequest): Promise<void> {
     const confirmed = await this.dialogs.confirm({
-      title: `Withdraw ${request.code}?`,
-      message: 'HR will not decide it. You can ask about the same day again later.',
-      confirmLabel: 'Withdraw',
+      title: STAFF_REQUESTS_TEXT.withdraw2(request.code),
+      message: STAFF_REQUESTS_TEXT.hrWillNotDecideIt,
+      confirmLabel: STAFF_REQUESTS_TEXT.withdraw,
       danger: true,
     });
     if (!confirmed) return;

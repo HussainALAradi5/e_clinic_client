@@ -31,6 +31,7 @@ import { AuthApi } from '@services/identity/auth-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { downloadBlob } from '@utilities/download';
 import { AppValidators } from '@validations/validators';
+import { ACCOUNT_SECURITY_TEXT } from '@constants/system/account-security.constants';
 
 /** `/account/security` — change password, set up / disable TOTP 2FA, sign out of all devices. */
 @Component({
@@ -99,9 +100,9 @@ export class AccountSecurityPage implements OnInit {
   });
 
   protected readonly logoutAllConfirm: ConfirmConfig = {
-    title: 'Sign out of all devices?',
-    message: 'Every session, including this one, ends now. You will need to sign in again.',
-    confirmLabel: 'Sign out everywhere',
+    title: ACCOUNT_SECURITY_TEXT.signOutOfAllDevices,
+    message: ACCOUNT_SECURITY_TEXT.everySessionIncludingThisOne,
+    confirmLabel: ACCOUNT_SECURITY_TEXT.signOutEverywhere,
     danger: true,
   };
 
@@ -118,7 +119,7 @@ export class AccountSecurityPage implements OnInit {
   protected readonly changePassword = async (value: ChangePasswordPayload): Promise<void> => {
     await firstValueFrom(this.api.changePassword(value));
     this.passwordForm.reset();
-    this.notify.success('Password changed. Your other devices were signed out.');
+    this.notify.success(ACCOUNT_SECURITY_TEXT.passwordChangedYourOtherDevices);
   };
 
   protected readonly startEnrolment = async (): Promise<void> => {
@@ -132,20 +133,22 @@ export class AccountSecurityPage implements OnInit {
     this.enrolment.set(null);
     this.recoveryCodes.set(result.recoveryCodes);
     this.confirmForm.reset();
-    this.notify.success('Two-factor authentication is on.');
+    this.notify.success(ACCOUNT_SECURITY_TEXT.twoFactorAuthenticationIsOn);
   };
 
   protected readonly disableTwoFactor = async (value: { password: string }): Promise<void> => {
     await firstValueFrom(this.api.disableTwoFactor(value.password));
     this.disableForm.reset();
     await firstValueFrom(this.session.refresh());
-    this.notify.success('Two-factor authentication is off.');
+    this.notify.success(ACCOUNT_SECURITY_TEXT.twoFactorAuthenticationIsOff);
   };
 
   protected readonly logoutAll = (): Promise<number> => firstValueFrom(this.session.logoutAll());
 
   protected copyCodes(codes: string[]): void {
-    void navigator.clipboard.writeText(codes.join('\n')).then(() => this.notify.success('Copied.'));
+    void navigator.clipboard
+      .writeText(codes.join('\n'))
+      .then(() => this.notify.success(ACCOUNT_SECURITY_TEXT.copied));
   }
 
   protected downloadCodes(codes: string[]): void {

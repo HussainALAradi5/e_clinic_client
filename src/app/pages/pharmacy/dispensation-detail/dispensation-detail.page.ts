@@ -36,6 +36,7 @@ import { EnumService } from '@services/data/enum.service';
 import { DispensationApi } from '@services/pharmacy/dispensation-api.service';
 import { clinicDateTime, clinicIsoDate } from '@utilities/clinic-time';
 import { fromMinor, toMinor } from '@utilities/money';
+import { DISPENSATION_DETAIL_TEXT } from '@constants/pharmacy/dispensation-detail.constants';
 
 /**
  * `/pharmacy/dispensations/:id` — what left stock for the patient, from which lots and at what price, the invoice it
@@ -100,13 +101,16 @@ export class DispensationDetailPage implements OnInit {
     const d = this.dispensation();
     if (!d) return [];
     return [
-      { label: 'Patient', value: d.patient ? `${d.patient.fullName} · ${d.patient.code}` : null },
-      { label: 'Kind', value: this.enums.label('DispensationKind', d.kind) },
-      { label: 'When', value: clinicDateTime(d.dispensedAt) },
-      { label: 'By', value: d.dispensedBy?.fullName },
-      { label: 'Witness', value: d.witness?.fullName },
-      { label: 'Notes', value: d.notes },
-      { label: 'Returned because', value: d.cancellationReason },
+      {
+        label: DISPENSATION_DETAIL_TEXT.patient,
+        value: d.patient ? `${d.patient.fullName} · ${d.patient.code}` : null,
+      },
+      { label: DISPENSATION_DETAIL_TEXT.kind, value: this.enums.label('DispensationKind', d.kind) },
+      { label: DISPENSATION_DETAIL_TEXT.when, value: clinicDateTime(d.dispensedAt) },
+      { label: DISPENSATION_DETAIL_TEXT.by, value: d.dispensedBy?.fullName },
+      { label: DISPENSATION_DETAIL_TEXT.witness, value: d.witness?.fullName },
+      { label: DISPENSATION_DETAIL_TEXT.notes, value: d.notes },
+      { label: DISPENSATION_DETAIL_TEXT.returnedBecause, value: d.cancellationReason },
     ].filter((f) => f.value !== null && f.value !== undefined && f.value !== '');
   });
 

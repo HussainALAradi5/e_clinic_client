@@ -27,6 +27,7 @@ import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { AuthStore } from '@services/auth/auth.store';
 import { isFinished, TaskApi } from '@services/task/task-api.service';
 import { humanise } from '@utilities/text';
+import { TASK_DETAIL_TEXT } from '@constants/system/task-detail.constants';
 
 /** `/system/background-tasks/:id` — live progress, result summary, Download and Cancel (owner only). */
 @Component({
@@ -67,9 +68,9 @@ export class TaskDetailPage implements OnInit {
   protected readonly dateTimeFormat = `${DATE_FORMAT}, ${TIME_FORMAT}`;
   protected readonly label = humanise;
   protected readonly cancelConfirm: ConfirmConfig = {
-    title: 'Cancel this task?',
-    message: 'Work done so far is discarded.',
-    confirmLabel: 'Cancel task',
+    title: TASK_DETAIL_TEXT.cancelThisTask,
+    message: TASK_DETAIL_TEXT.workDoneSoFarIs,
+    confirmLabel: TASK_DETAIL_TEXT.cancelTask,
     danger: true,
   };
 

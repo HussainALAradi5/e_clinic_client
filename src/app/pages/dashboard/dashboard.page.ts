@@ -9,6 +9,7 @@ import { ACCOUNT_SECURITY_PATH, DATE_FORMAT, TIME_FORMAT } from '@constants/app.
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { AuthStore } from '@services/auth/auth.store';
 import { NavigationService } from '@services/ui/navigation.service';
+import { DASHBOARD_TEXT } from '@constants/dashboard/dashboard.constants';
 
 /** `/dashboard` — greeting, account notices and a hub of every area the user may open (module widgets come later). */
 @Component({
@@ -33,7 +34,12 @@ export class DashboardPage {
   protected readonly today = new Date();
   protected readonly greeting = computed(() => {
     const hour = this.today.getHours();
-    const part = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+    const part =
+      hour < 12
+        ? DASHBOARD_TEXT.goodMorning
+        : hour < 18
+          ? DASHBOARD_TEXT.goodAfternoon
+          : DASHBOARD_TEXT.goodEvening;
     return `${part}, ${this.auth.user()?.firstName ?? ''}`;
   });
   /** Every area with a hub page (the dashboard's own group is left out). */

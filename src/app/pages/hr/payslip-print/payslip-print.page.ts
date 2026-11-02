@@ -17,6 +17,7 @@ import { Payslip } from '@interfaces/hr/payslip.interface';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { PayrollApi } from '@services/hr/payroll-api.service';
+import { PAYSLIP_PRINT_TEXT } from '@constants/hr/payslip-print.constants';
 
 /** `/print/payslip/:id` — the employee's payslip: earnings, deductions, net and the days behind them (A4). */
 @Component({
@@ -48,7 +49,7 @@ export class PayslipPrintPage implements OnInit {
         })
       : '';
     const draft = s?.run && ![PayrollStatus.Approved, PayrollStatus.Paid].includes(s.run.status);
-    return `Payslip — ${month}${draft ? ' (DRAFT)' : ''}`;
+    return PAYSLIP_PRINT_TEXT.payslip(month, draft ? ' (DRAFT)' : '');
   });
 
   async ngOnInit(): Promise<void> {

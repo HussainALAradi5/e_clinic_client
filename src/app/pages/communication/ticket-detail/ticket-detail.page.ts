@@ -41,6 +41,7 @@ import { SolveTicketData } from '@interfaces/communication/solve-ticket-dialog.i
 import { TicketSolution } from '@interfaces/communication/ticket-solution.interface';
 import { UploadZone } from '@components/common/upload-zone/upload-zone.component';
 import { StatusAction } from '@interfaces/communication/ticket-detail.interface';
+import { TICKET_DETAIL_TEXT } from '@constants/communication/ticket-detail.constants';
 
 /**
  * `/support/tickets/:id` — the ticket with its status, priority and category badges, who opened and took it,
@@ -113,25 +114,28 @@ export class TicketDetailPage implements OnInit {
     const all: StatusAction[] = [
       {
         to: GenericStatus.InProgress,
-        label: 'Take it',
+        label: TICKET_DETAIL_TEXT.takeIt,
         icon: 'assignment_ind',
         variant: ButtonVariant.Tonal,
       },
       {
         to: GenericStatus.Completed,
-        label: 'Mark solved',
+        label: TICKET_DETAIL_TEXT.markSolved,
         icon: 'task_alt',
         variant: ButtonVariant.Filled,
       },
       {
         to: GenericStatus.Pending,
-        label: t.status === GenericStatus.Completed ? 'Reopen' : 'Back to queue',
+        label:
+          t.status === GenericStatus.Completed
+            ? TICKET_DETAIL_TEXT.reopen
+            : TICKET_DETAIL_TEXT.backToQueue,
         icon: t.status === GenericStatus.Completed ? 'replay' : 'undo',
         variant: ButtonVariant.Outlined,
       },
       {
         to: GenericStatus.Cancelled,
-        label: 'Cancel ticket',
+        label: TICKET_DETAIL_TEXT.cancelTicket,
         icon: 'block',
         variant: ButtonVariant.Danger,
       },
@@ -145,16 +149,23 @@ export class TicketDetailPage implements OnInit {
     const t = this.ticket();
     if (!t) return [];
     return [
-      { label: 'Ticket', value: t.code, mono: true },
-      { label: 'Status', value: t.status, enum: 'GenericStatus' },
-      { label: 'Priority', value: t.priority, enum: 'TreatmentPriority' },
-      { label: 'Category', value: t.category, enum: 'TicketCategory' },
-      { label: 'Opened by', value: t.requester?.fullName },
-      { label: 'Opened', value: clinicDateTime(t.createdAt) },
-      { label: 'Taken by', value: t.assignee?.fullName ?? 'Not taken yet' },
-      { label: 'Solved by', value: t.resolver?.fullName },
-      { label: 'Solved', value: clinicDateTime(t.resolvedAt) },
-      { label: 'Requester answer', value: t.confirmation, enum: 'TicketConfirmation' },
+      { label: TICKET_DETAIL_TEXT.ticket, value: t.code, mono: true },
+      { label: TICKET_DETAIL_TEXT.status, value: t.status, enum: 'GenericStatus' },
+      { label: TICKET_DETAIL_TEXT.priority, value: t.priority, enum: 'TreatmentPriority' },
+      { label: TICKET_DETAIL_TEXT.category, value: t.category, enum: 'TicketCategory' },
+      { label: TICKET_DETAIL_TEXT.openedBy, value: t.requester?.fullName },
+      { label: TICKET_DETAIL_TEXT.opened, value: clinicDateTime(t.createdAt) },
+      {
+        label: TICKET_DETAIL_TEXT.takenBy,
+        value: t.assignee?.fullName ?? TICKET_DETAIL_TEXT.notTakenYet,
+      },
+      { label: TICKET_DETAIL_TEXT.solvedBy, value: t.resolver?.fullName },
+      { label: TICKET_DETAIL_TEXT.solved, value: clinicDateTime(t.resolvedAt) },
+      {
+        label: TICKET_DETAIL_TEXT.requesterAnswer,
+        value: t.confirmation,
+        enum: 'TicketConfirmation',
+      },
     ].filter((f) => f.value !== null && f.value !== undefined);
   });
 
@@ -208,20 +219,20 @@ export class TicketDetailPage implements OnInit {
 
   protected readonly confirmFixed = async (): Promise<void> => {
     this.ticket.set(await firstValueFrom(this.api.confirm(this.id())));
-    this.notify.success('Thanks — the support team is told it works.');
+    this.notify.success(TICKET_DETAIL_TEXT.thanksTheSupportTeamIs);
   };
 
   protected readonly declineFix = async (): Promise<void> => {
     const reason = await this.dialogs.reason({
-      title: 'Still not fixed?',
-      message: 'Say what still happens; the ticket goes back to the support team.',
-      reasonLabel: 'What still happens',
-      confirmLabel: 'Not fixed',
+      title: TICKET_DETAIL_TEXT.stillNotFixed,
+      message: TICKET_DETAIL_TEXT.sayWhatStillHappensThe,
+      reasonLabel: TICKET_DETAIL_TEXT.whatStillHappens,
+      confirmLabel: TICKET_DETAIL_TEXT.notFixed,
       danger: true,
     });
     if (!reason) return;
     this.ticket.set(await firstValueFrom(this.api.decline(this.id(), reason)));
-    this.notify.success('Sent back to the support team.');
+    this.notify.success(TICKET_DETAIL_TEXT.sentBackToTheSupport);
   };
 
   protected isImage(mime: string): boolean {
@@ -236,15 +247,15 @@ export class TicketDetailPage implements OnInit {
       if (action.to === GenericStatus.Completed) {
         solution = await this.dialogs.open<SolveTicketDialog, SolveTicketData, TicketSolution>(
           SolveTicketDialog,
-          { code: t.code, requester: t.requester?.fullName ?? 'The requester' },
+          { code: t.code, requester: t.requester?.fullName ?? TICKET_DETAIL_TEXT.theRequester },
           { width: '600px' },
         );
         if (!solution) return;
       } else if (action.to === GenericStatus.Cancelled) {
         const ok = await this.dialogs.confirm({
-          title: 'Cancel this ticket?',
-          message: 'A cancelled ticket is final: no more replies or status changes.',
-          confirmLabel: 'Cancel ticket',
+          title: TICKET_DETAIL_TEXT.cancelThisTicket,
+          message: TICKET_DETAIL_TEXT.aCancelledTicketIsFinal,
+          confirmLabel: TICKET_DETAIL_TEXT.cancelTicket,
           danger: true,
         });
         if (!ok) return;

@@ -12,6 +12,7 @@ import { Shift } from '@interfaces/hr/shift.interface';
 import { ShiftPayload } from '@interfaces/hr/shift-payload.interface';
 import { hoursText, minutesOf } from '@utilities/hr/shift-hours';
 import { ShiftFormDialogData } from '@interfaces/hr/shift-form-dialog.interface';
+import { SHIFT_FORM_DIALOG_TEXT } from '@constants/hr/shift-form-dialog.constants';
 
 /**
  * Create or edit a shift. Fixed: start and end. Flexible: the window (earliest in, latest out), the time to arrive
@@ -80,7 +81,7 @@ export class ShiftFormDialog {
   protected readonly submit = async (): Promise<Shift> => {
     const v = this.form.getRawValue();
     if (minutesOf(v.endTime) <= minutesOf(v.startTime)) {
-      throw new Error('The end must be after the start.');
+      throw new Error(SHIFT_FORM_DIALOG_TEXT.theEndMustBeAfter);
     }
     const flexible = v.type === ShiftType.Flexible;
     this.saved = await this.data.save({

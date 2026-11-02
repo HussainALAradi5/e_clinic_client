@@ -22,6 +22,7 @@ import {
   WEEKDAYS,
 } from '@constants/clinic-info.constants';
 import { clinicClock, openingStatus } from '@utilities/opening-hours';
+import { HOME_TEXT } from '@constants/public/home.constants';
 
 const STATUS_REFRESH_MS = 60_000;
 
@@ -60,13 +61,13 @@ export class HomePage {
   protected readonly statusText = computed(() => {
     const s = this.status();
     if (s.open) {
-      return `Until ${s.closesAt} today`;
+      return HOME_TEXT.untilToday(s.closesAt);
     }
     if (!s.nextOpen) {
-      return 'No opening hours published';
+      return HOME_TEXT.noOpeningHoursPublished;
     }
     const when = s.nextOpen.day === this.today() ? 'today' : this.weekdays[s.nextOpen.day];
-    return `Opens ${when} at ${s.nextOpen.time}`;
+    return HOME_TEXT.opensAt(when, s.nextOpen.time);
   });
 
   protected readonly code = new FormControl('', { nonNullable: true });

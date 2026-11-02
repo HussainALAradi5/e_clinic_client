@@ -23,6 +23,7 @@ import { AuthStore } from '@services/auth/auth.store';
 import { ConsentApi } from '@services/clinic/consent-api.service';
 import { TreatmentApi } from '@services/clinic/treatment-api.service';
 import { Scope } from '@interfaces/clinic/consent-dialog.interface';
+import { CONSENT_DIALOG_TEXT } from '@constants/clinic/consent-dialog.constants';
 
 /** Under this age a parent or guardian signs (server rule). */
 const ADULT_AGE = 18;
@@ -58,12 +59,16 @@ export class ConsentDialog {
     { initialValue: [] },
   );
   protected readonly scopes = [
-    { value: 'patient', label: 'The whole patient file' },
-    ...(this.data.appointmentId ? [{ value: 'appointment', label: 'This visit only' }] : []),
-    ...(this.data.treatmentId
-      ? [{ value: 'treatment', label: 'This treatment plan (all sessions)' }]
+    { value: 'patient', label: CONSENT_DIALOG_TEXT.theWholePatientFile },
+    ...(this.data.appointmentId
+      ? [{ value: 'appointment', label: CONSENT_DIALOG_TEXT.thisVisitOnly }]
       : []),
-    ...(this.data.clinicalOrderId ? [{ value: 'clinical_order', label: 'This order' }] : []),
+    ...(this.data.treatmentId
+      ? [{ value: 'treatment', label: CONSENT_DIALOG_TEXT.thisTreatmentPlanAllSessions }]
+      : []),
+    ...(this.data.clinicalOrderId
+      ? [{ value: 'clinical_order', label: CONSENT_DIALOG_TEXT.thisOrder }]
+      : []),
   ];
 
   private readonly type0 = this.data.type ?? ConsentType.GeneralTreatment;

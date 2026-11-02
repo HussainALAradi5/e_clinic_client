@@ -15,6 +15,7 @@ import { AuthStore } from '@services/auth/auth.store';
 import { SessionService } from '@services/auth/session.service';
 import { EnumService } from '@services/data/enum.service';
 import { ThemeService } from '@services/ui/theme.service';
+import { PORTAL_TEXT } from '@constants/layout/portal.constants';
 
 /** Activity that keeps a portal session alive. */
 const ACTIVITY_EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'] as const;
@@ -83,8 +84,6 @@ export class PortalLayout {
   }
 
   private expire(): void {
-    this.session
-      .logout(`You were signed out after ${PORTAL_IDLE_MINUTES} minutes without activity.`)
-      .subscribe();
+    this.session.logout(PORTAL_TEXT.youWereSignedOutAfter(PORTAL_IDLE_MINUTES)).subscribe();
   }
 }

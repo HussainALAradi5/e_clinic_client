@@ -20,6 +20,7 @@ import { InventoryApi } from '@services/pharmacy/inventory-api.service';
 import { addDays, clinicIsoDate } from '@utilities/clinic-time';
 import { divideHalfUp, formatAmount, toScaled } from '@utilities/money';
 import { AppValidators } from '@validations/validators';
+import { RECEIVE_STOCK_DIALOG_TEXT } from '@constants/pharmacy/receive-stock-dialog.constants';
 
 /**
  * Goods receipt of one lot: medicine, the maker's lot number and expiry, how many and at what cost, from which
@@ -54,7 +55,9 @@ export class ReceiveStockDialog {
   private readonly enums = inject(EnumService);
   protected readonly unitHint = computed(() => {
     const unit = this.picked()?.unit;
-    return unit ? `Counted in ${this.enums.label('DispenseUnit', unit).toLowerCase()}` : null;
+    return unit
+      ? RECEIVE_STOCK_DIALOG_TEXT.countedIn(this.enums.label('DispenseUnit', unit).toLowerCase())
+      : null;
   });
 
   protected readonly form = new FormGroup({

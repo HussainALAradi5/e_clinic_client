@@ -61,6 +61,7 @@ import { NotifyService } from '@services/ui/notify.service';
 import { AUTOSAVE_MS, DOCUMENTABLE, VITAL_KEYS } from '@constants/visit.constants';
 import { SaveState } from '@interfaces/clinic/visit-workspace.interface';
 import { VitalKey } from '@interfaces/clinic/vital-key.type';
+import { VISIT_WORKSPACE_TEXT } from '@constants/clinic/visit-workspace.constants';
 
 /**
  * `/clinic/appointments/:id/visit` — the clinician's screen during a visit: SOAP notes and vitals (saved as you
@@ -230,7 +231,7 @@ export class VisitWorkspacePage implements OnInit {
     await this.save();
     this.applyRecord(await firstValueFrom(this.records.sign(this.id())));
     this.saveState.set('idle');
-    this.notify.success('Visit note signed — it is now read-only.');
+    this.notify.success(VISIT_WORKSPACE_TEXT.visitNoteSignedItIs);
   };
 
   /** Sign, then complete the visit (the complete dialog offers a follow-up). */
@@ -245,14 +246,14 @@ export class VisitWorkspacePage implements OnInit {
 
   protected readonly addAddendum = async (): Promise<void> => {
     const text = await this.dialogs.reason({
-      title: 'Add an addendum',
-      message: 'Dated and signed with your name; the original note stays as it was.',
-      reasonLabel: 'Addendum',
-      confirmLabel: 'Add',
+      title: VISIT_WORKSPACE_TEXT.addAnAddendum,
+      message: VISIT_WORKSPACE_TEXT.datedAndSignedWithYour,
+      reasonLabel: VISIT_WORKSPACE_TEXT.addendum,
+      confirmLabel: VISIT_WORKSPACE_TEXT.add,
     });
     if (!text) return;
     this.applyRecord(await firstValueFrom(this.records.addAddendum(this.id(), text)));
-    this.notify.success('Addendum added.');
+    this.notify.success(VISIT_WORKSPACE_TEXT.addendumAdded);
   };
 
   protected readonly newOrder = async (): Promise<void> => {
@@ -277,7 +278,7 @@ export class VisitWorkspacePage implements OnInit {
       { width: '520px' },
     );
     if (leave) {
-      this.notify.success(`Sick leave ${leave.code} issued — ${leave.days} days.`);
+      this.notify.success(VISIT_WORKSPACE_TEXT.sickLeaveIssuedDays(leave.code, leave.days));
       window.open(`/print/sick-leave/${leave.id}`, '_blank', 'noopener');
     }
   };

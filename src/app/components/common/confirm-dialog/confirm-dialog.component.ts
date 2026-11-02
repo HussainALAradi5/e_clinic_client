@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { REASON_MAX_LENGTH } from '@constants/limits.constants';
 import { ConfirmConfig } from '@interfaces/ui/confirm-config.interface';
+import { CONFIRM_DIALOG_TEXT } from '@constants/common/confirm-dialog.constants';
 
 /**
  * `ui-confirm` / `ui-reason` in one component: closes with `true` (confirm), the reason string (reason mode) or nothing.
@@ -33,7 +34,10 @@ export class ConfirmDialog {
   protected readonly typed = new FormControl('', { nonNullable: true });
   /** "Cancel" next to "Cancel treatment" is ambiguous: the way back reads "Keep it" then. */
   protected readonly dismissLabel =
-    this.data.cancelLabel ?? (this.data.confirmLabel?.startsWith('Cancel') ? 'Keep it' : 'Cancel');
+    this.data.cancelLabel ??
+    (this.data.confirmLabel?.startsWith(CONFIRM_DIALOG_TEXT.cancel)
+      ? CONFIRM_DIALOG_TEXT.keepIt
+      : CONFIRM_DIALOG_TEXT.cancel);
 
   protected canConfirm(): boolean {
     const reasonOk = !this.data.reason || this.reason.value.trim().length > 0;

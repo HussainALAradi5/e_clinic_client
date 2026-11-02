@@ -22,12 +22,13 @@ import { EntityDetail } from '@services/data/entity-detail';
 import { EnumService } from '@services/data/enum.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { clinicDateTime } from '@utilities/clinic-time';
+import { JOURNAL_DETAIL_TEXT } from '@constants/accounting/journal-detail.constants';
 
 /** Pages of the documents automatic entries are posted for. */
 const SOURCE_PAGES: Record<string, { label: string; route: string }> = {
-  invoice: { label: 'Invoice', route: '/billing/invoices' },
-  cash_session: { label: 'Cash drawer', route: '/billing/cash-drawers' },
-  expense: { label: 'Expense', route: '/accounting/expenses' },
+  invoice: { label: JOURNAL_DETAIL_TEXT.invoice, route: '/billing/invoices' },
+  cash_session: { label: JOURNAL_DETAIL_TEXT.cashDrawer, route: '/billing/cash-drawers' },
+  expense: { label: JOURNAL_DETAIL_TEXT.expense, route: '/accounting/expenses' },
 };
 
 /** `/accounting/journal/:id` — one entry: its lines, where it came from, and post / reverse / edit a draft. */
@@ -78,23 +79,24 @@ export class JournalDetailPage implements OnInit {
     const e = this.detail.record();
     if (!e) return [];
     return [
-      { label: 'Kind', value: this.enums.label('JournalEntryType', e.type) },
+      { label: JOURNAL_DETAIL_TEXT.kind, value: this.enums.label('JournalEntryType', e.type) },
       {
-        label: 'Period',
+        label: JOURNAL_DETAIL_TEXT.period,
         value: e.fiscalPeriod ? `${e.fiscalPeriod.name} (${e.fiscalPeriod.status})` : null,
       },
       {
-        label: 'Written by',
-        value: e.createdBy?.fullName ?? (e.isManual ? null : 'Posted automatically'),
+        label: JOURNAL_DETAIL_TEXT.writtenBy,
+        value:
+          e.createdBy?.fullName ?? (e.isManual ? null : JOURNAL_DETAIL_TEXT.postedAutomatically),
       },
       {
-        label: 'Posted',
+        label: JOURNAL_DETAIL_TEXT.posted,
         value: e.postedAt
           ? `${clinicDateTime(e.postedAt)} · ${e.postedBy?.fullName ?? 'system'}`
           : null,
       },
-      { label: 'Reverses', value: e.reversalOf?.entryNumber },
-      { label: 'Reversed by', value: e.reversedBy?.entryNumber },
+      { label: JOURNAL_DETAIL_TEXT.reverses, value: e.reversalOf?.entryNumber },
+      { label: JOURNAL_DETAIL_TEXT.reversedBy, value: e.reversedBy?.entryNumber },
     ].filter((f) => f.value !== null && f.value !== undefined && f.value !== '');
   });
 
@@ -120,7 +122,7 @@ export class JournalDetailPage implements OnInit {
 
   protected readonly remove = async (): Promise<void> => {
     await this.detail.remove();
-    this.notify.success('Draft entry deleted.');
+    this.notify.success(JOURNAL_DETAIL_TEXT.draftEntryDeleted);
     await this.router.navigateByUrl('/accounting/journal');
   };
 }

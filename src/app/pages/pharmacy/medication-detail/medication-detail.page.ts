@@ -40,6 +40,7 @@ import { NotifyService } from '@services/ui/notify.service';
 import { defaultQuery } from '@utilities/list-query';
 import { formatMoney } from '@utilities/money';
 import { compareQty } from '@utilities/quantity';
+import { MEDICATION_DETAIL_TEXT } from '@constants/pharmacy/medication-detail.constants';
 
 /**
  * `/pharmacy/medications/:id` — the medication card, its stock lot by lot (correct a count, quarantine a lot,
@@ -94,20 +95,23 @@ export class MedicationDetailPage implements OnInit {
     const m = this.detail.record();
     if (!m) return [];
     return [
-      { label: 'Generic name', value: m.genericName },
-      { label: 'Brand', value: m.brandName },
-      { label: 'Arabic name', value: m.nameAr },
-      { label: 'Form', value: this.enums.label('MedicationForm', m.form) },
-      { label: 'Strength', value: m.strength },
-      { label: 'Counted in', value: this.enums.label('DispenseUnit', m.unit) },
-      { label: 'Barcode (GTIN)', value: m.gtin, mono: true },
-      { label: 'Manufacturer', value: m.manufacturer?.name },
-      { label: 'Made in', value: m.originCountry?.name },
-      { label: 'Price', value: m.price ? `${formatMoney(m.price)} per unit` : null },
+      { label: MEDICATION_DETAIL_TEXT.genericName, value: m.genericName },
+      { label: MEDICATION_DETAIL_TEXT.brand, value: m.brandName },
+      { label: MEDICATION_DETAIL_TEXT.arabicName, value: m.nameAr },
+      { label: MEDICATION_DETAIL_TEXT.form, value: this.enums.label('MedicationForm', m.form) },
+      { label: MEDICATION_DETAIL_TEXT.strength, value: m.strength },
+      { label: MEDICATION_DETAIL_TEXT.countedIn, value: this.enums.label('DispenseUnit', m.unit) },
+      { label: MEDICATION_DETAIL_TEXT.barcodeGtin, value: m.gtin, mono: true },
+      { label: MEDICATION_DETAIL_TEXT.manufacturer, value: m.manufacturer?.name },
+      { label: MEDICATION_DETAIL_TEXT.madeIn, value: m.originCountry?.name },
+      {
+        label: MEDICATION_DETAIL_TEXT.price,
+        value: m.price ? `${formatMoney(m.price)} per unit` : null,
+      },
       { label: 'VAT', value: m.taxRate !== undefined ? `${m.taxRate} %` : null },
-      { label: 'Reorder level', value: m.reorderLevel },
-      { label: 'Storage', value: m.storageNotes },
-      { label: 'Indications', value: m.description },
+      { label: MEDICATION_DETAIL_TEXT.reorderLevel, value: m.reorderLevel },
+      { label: MEDICATION_DETAIL_TEXT.storage, value: m.storageNotes },
+      { label: MEDICATION_DETAIL_TEXT.indications, value: m.description },
     ].filter((f) => f.value !== null && f.value !== undefined && f.value !== '');
   });
 
@@ -152,7 +156,7 @@ export class MedicationDetailPage implements OnInit {
 
   protected readonly remove = async (): Promise<void> => {
     await this.detail.remove();
-    this.notify.success('Medication deleted.');
+    this.notify.success(MEDICATION_DETAIL_TEXT.medicationDeleted);
     await this.router.navigateByUrl('/pharmacy/medications');
   };
 

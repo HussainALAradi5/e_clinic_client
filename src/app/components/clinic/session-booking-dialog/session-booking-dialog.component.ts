@@ -22,6 +22,7 @@ import { AccessService } from '@services/auth/access.service';
 import { TreatmentApi } from '@services/clinic/treatment-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 import { isApiError } from '@utilities/guards';
+import { SESSION_BOOKING_DIALOG_TEXT } from '@constants/clinic/session-booking-dialog.constants';
 
 /**
  * Book the next session of a plan: therapist / doctor, day, room and a free time. The session takes the plan's
@@ -84,7 +85,11 @@ export class SessionBookingDialog {
   protected readonly summary = computed(() => {
     const t = this.data.treatment;
     const next = (t.progress?.attendedSessions ?? 0) + (t.progress?.upcomingSessions ?? 0) + 1;
-    return `Session ${Math.min(next, t.plannedSessions)} of ${t.plannedSessions} · ${t.sessionDurationMinutes} min`;
+    return SESSION_BOOKING_DIALOG_TEXT.sessionOfMin(
+      Math.min(next, t.plannedSessions),
+      t.plannedSessions,
+      t.sessionDurationMinutes,
+    );
   });
 
   protected readonly book = async (): Promise<void> => {

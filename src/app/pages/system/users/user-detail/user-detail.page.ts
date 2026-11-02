@@ -26,6 +26,7 @@ import { ConfirmConfig } from '@interfaces/ui/confirm-config.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { USER_DETAIL_TEXT } from '@constants/system/user-detail.constants';
 
 /** `/system/users/:id` — account + personal data, status / roles / reset-link actions and the audit history. */
 @Component({
@@ -63,10 +64,9 @@ export class UserDetailPage implements OnInit {
   protected readonly dateTimeFormat = `${DATE_FORMAT}, ${TIME_FORMAT}`;
   protected readonly dateFormat = DATE_FORMAT;
   protected readonly resetConfirm: ConfirmConfig = {
-    title: 'Send a password reset link?',
-    message:
-      'The user receives an email to choose a new password. Administrators never see passwords.',
-    confirmLabel: 'Send link',
+    title: USER_DETAIL_TEXT.sendAPasswordResetLink,
+    message: USER_DETAIL_TEXT.theUserReceivesAnEmail,
+    confirmLabel: USER_DETAIL_TEXT.sendLink,
   };
 
   ngOnInit(): void {
@@ -75,7 +75,7 @@ export class UserDetailPage implements OnInit {
 
   protected readonly sendResetLink = async (): Promise<void> => {
     await this.store.sendResetLink();
-    this.notify.success('Reset link sent.');
+    this.notify.success(USER_DETAIL_TEXT.resetLinkSent);
   };
 
   protected readonly changeStatus = async (): Promise<void> => {
@@ -89,7 +89,7 @@ export class UserDetailPage implements OnInit {
         },
       );
       if (changed) {
-        this.notify.success(`Account status of ${user.fullName} changed.`);
+        this.notify.success(USER_DETAIL_TEXT.accountStatusOfChanged(user.fullName));
       }
     }
   };
@@ -103,7 +103,7 @@ export class UserDetailPage implements OnInit {
         { width: '720px' },
       );
       if (saved) {
-        this.notify.success('Personal data saved.');
+        this.notify.success(USER_DETAIL_TEXT.personalDataSaved);
       }
     }
   };

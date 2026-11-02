@@ -12,6 +12,7 @@ import { TicketCategory } from '@enums/communication/ticket.enum';
 import { SupportTicket } from '@interfaces/communication/support-ticket.interface';
 import { TicketApi } from '@services/communication/ticket-api.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { NEW_TICKET_DIALOG_TEXT } from '@constants/communication/new-ticket-dialog.constants';
 
 const MAX_FILES = 10;
 const MAX_FILE_MB = 10;
@@ -140,7 +141,7 @@ export class NewTicketDialog {
   protected pick(input: HTMLInputElement): void {
     const picked = [...(input.files ?? [])].filter((f) => f.size <= MAX_FILE_MB * 1048576);
     if (picked.length < (input.files?.length ?? 0))
-      this.notify.warning(`Files over ${MAX_FILE_MB} MB were left out.`);
+      this.notify.warning(NEW_TICKET_DIALOG_TEXT.filesOverMbWereLeft(MAX_FILE_MB));
     this.files.update((list) => [...list, ...picked].slice(0, MAX_FILES));
     input.value = '';
   }

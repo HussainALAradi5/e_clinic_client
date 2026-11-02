@@ -36,6 +36,7 @@ import { EnumService } from '@services/data/enum.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { ROOM_DETAIL_TEXT } from '@constants/clinic/room-detail.constants';
 
 /** `/clinic/rooms/:id` — facts, bookings of a day, service switch (with the bookings to move), history. */
 @Component({
@@ -77,16 +78,18 @@ export class RoomDetailPage implements OnInit {
     const r = this.detail.record();
     if (!r) return [];
     return [
-      { label: 'Code', value: r.code, mono: true },
-      { label: 'Type', value: this.enums.label('RoomType', r.type) },
-      { label: 'Department', value: r.department?.name },
-      { label: 'Floor', value: r.floor },
-      { label: 'Capacity', value: r.capacity },
+      { label: ROOM_DETAIL_TEXT.code, value: r.code, mono: true },
+      { label: ROOM_DETAIL_TEXT.type, value: this.enums.label('RoomType', r.type) },
+      { label: ROOM_DETAIL_TEXT.department, value: r.department?.name },
+      { label: ROOM_DETAIL_TEXT.floor, value: r.floor },
+      { label: ROOM_DETAIL_TEXT.capacity, value: r.capacity },
       {
-        label: 'Status',
-        value: r.isInService ? 'In service' : `Out of service — ${r.outOfServiceReason ?? ''}`,
+        label: ROOM_DETAIL_TEXT.status,
+        value: r.isInService
+          ? ROOM_DETAIL_TEXT.inService
+          : ROOM_DETAIL_TEXT.outOfService2(r.outOfServiceReason ?? ''),
       },
-      { label: 'Equipment / notes', value: r.notes },
+      { label: ROOM_DETAIL_TEXT.equipmentNotes, value: r.notes },
     ];
   });
 
@@ -103,10 +106,9 @@ export class RoomDetailPage implements OnInit {
 
   protected readonly outOfService = async (): Promise<void> => {
     const reason = await this.dialogs.reason({
-      title: 'Take this room out of service?',
-      message:
-        'It disappears from booking. Existing bookings stay — you get the list to move them.',
-      confirmLabel: 'Out of service',
+      title: ROOM_DETAIL_TEXT.takeThisRoomOutOf,
+      message: ROOM_DETAIL_TEXT.itDisappearsFromBookingExisting,
+      confirmLabel: ROOM_DETAIL_TEXT.outOfService,
     });
     if (reason === null) return;
     const result = await firstValueFrom(this.api.setInService(this.id(), false, reason));
@@ -114,8 +116,8 @@ export class RoomDetailPage implements OnInit {
     this.affected.set(result.affectedAppointments);
     this.notify.success(
       result.affectedAppointments.length
-        ? `Room out of service — ${result.affectedAppointments.length} booking(s) to move.`
-        : 'Room out of service.',
+        ? ROOM_DETAIL_TEXT.roomOutOfServiceBooking(result.affectedAppointments.length)
+        : ROOM_DETAIL_TEXT.roomOutOfService,
     );
   };
 
@@ -123,7 +125,7 @@ export class RoomDetailPage implements OnInit {
     const result = await firstValueFrom(this.api.setInService(this.id(), true));
     this.detail.set(result);
     this.affected.set([]);
-    this.notify.success('Room back in service.');
+    this.notify.success(ROOM_DETAIL_TEXT.roomBackInService);
   };
 
   protected readonly edit = async (): Promise<void> => {
@@ -132,27 +134,27 @@ export class RoomDetailPage implements OnInit {
       { room: this.detail.record(), save: (payload) => this.detail.update(payload) },
       { width: '600px' },
     );
-    if (saved) this.notify.success('Room saved.');
+    if (saved) this.notify.success(ROOM_DETAIL_TEXT.roomSaved);
   };
 
   protected readonly archive = async (): Promise<void> => {
     await this.detail.archive();
-    this.notify.success('Room archived.');
+    this.notify.success(ROOM_DETAIL_TEXT.roomArchived);
   };
 
   protected readonly unarchive = async (): Promise<void> => {
     await this.detail.unarchive();
-    this.notify.success('Room back in pickers.');
+    this.notify.success(ROOM_DETAIL_TEXT.roomBackInPickers);
   };
 
   protected readonly restore = async (): Promise<void> => {
     await this.detail.restore();
-    this.notify.success('Room restored.');
+    this.notify.success(ROOM_DETAIL_TEXT.roomRestored);
   };
 
   protected readonly remove = async (): Promise<void> => {
     await this.detail.remove();
-    this.notify.success('Room deleted.');
+    this.notify.success(ROOM_DETAIL_TEXT.roomDeleted);
     await this.router.navigateByUrl('/clinic/rooms');
   };
 }

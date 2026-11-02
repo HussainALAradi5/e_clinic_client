@@ -11,6 +11,7 @@ import { ScanResult } from '@interfaces/code/scan-result.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { CodeApi } from '@services/code/code-api.service';
 import { humanise } from '@utilities/text';
+import { VERIFY_TEXT } from '@constants/public/verify.constants';
 
 /**
  * `/verify?code=…` — public authenticity check of a printed document (the QR on invoices, payslips,
@@ -60,7 +61,7 @@ export class VerifyPage implements OnInit {
   }
 
   protected isDate(key: string): boolean {
-    return key.endsWith('At') || key.endsWith('Date') || key === 'date';
+    return key.endsWith(VERIFY_TEXT.at) || key.endsWith(VERIFY_TEXT.date) || key === 'date';
   }
 
   private check(): void {
@@ -78,9 +79,7 @@ export class VerifyPage implements OnInit {
       },
       error: (e: ApiError) => {
         this.error.set(
-          e.status === 404
-            ? 'No document with this code exists.'
-            : 'This code was not issued by the clinic, or it was mistyped. Check it and try again.',
+          e.status === 404 ? VERIFY_TEXT.noDocumentWithThisCode : VERIFY_TEXT.thisCodeWasNotIssued,
         );
         this.busy.set(false);
       },

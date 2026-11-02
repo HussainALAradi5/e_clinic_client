@@ -37,6 +37,7 @@ import { NotifyService } from '@services/ui/notify.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 import { isApiError } from '@utilities/guards';
 import { BlockForm } from '@interfaces/clinic/schedule-editor.interface';
+import { SCHEDULE_EDITOR_TEXT } from '@constants/clinic/schedule-editor.constants';
 
 /** Days ahead the exception list covers (server allows 92). */
 const EXCEPTION_DAYS = 90;
@@ -72,7 +73,7 @@ export class ScheduleEditorPage implements OnInit {
   private readonly enums = inject(EnumService);
   protected readonly canEdit = inject(AccessService).can('schedules.write');
 
-  protected readonly name = signal('Weekly schedule');
+  protected readonly name = signal<string>(SCHEDULE_EDITOR_TEXT.weeklySchedule);
   /** Computed: the enum catalog may still be loading on a direct visit. */
   protected readonly days = computed(() =>
     WEEK_DAYS.map((d) => ({
@@ -147,7 +148,7 @@ export class ScheduleEditorPage implements OnInit {
           }),
         ),
       );
-      this.notify.success(`Schedule saved from ${v.effectiveFrom}.`);
+      this.notify.success(SCHEDULE_EDITOR_TEXT.scheduleSavedFrom(v.effectiveFrom));
     } catch (error) {
       if (isApiError(error) && error.code === ErrorCode.ScheduleHasAppointments) {
         this.conflicts.set((error.meta?.['appointments'] as AffectedBooking[] | undefined) ?? []);
@@ -163,14 +164,14 @@ export class ScheduleEditorPage implements OnInit {
       ScheduleException
     >(ScheduleExceptionDialog, { providerId: this.providerId() }, { width: '560px' });
     if (added) {
-      this.notify.success('Saved — free times follow the change.');
+      this.notify.success(SCHEDULE_EDITOR_TEXT.savedFreeTimesFollowThe);
       await this.loadExceptions();
     }
   };
 
   protected readonly removeException = async (exception: ScheduleException): Promise<void> => {
     await firstValueFrom(this.api.removeException(this.providerId(), exception.id));
-    this.notify.success('Removed — the usual hours apply again.');
+    this.notify.success(SCHEDULE_EDITOR_TEXT.removedTheUsualHoursApply);
     await this.loadExceptions();
   };
 

@@ -18,6 +18,7 @@ import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { humanise } from '@utilities/text';
 import { Flag } from '@components/common/flag/flag.component';
+import { COMPANY_DETAIL_TEXT } from '@constants/reference/company-detail.constants';
 
 /** `/reference/companies/:id` — contacts, address, where the company is used, history; edit / archive / delete. */
 @Component({
@@ -51,9 +52,9 @@ export class CompanyDetailPage implements OnInit {
   protected readonly usage = computed(() => Object.entries(this.store.company()?.usage ?? {}));
   protected readonly inUse = computed(() => this.usage().some(([, count]) => count > 0));
   protected readonly deleteConfirm: ConfirmConfig = {
-    title: 'Delete this company?',
-    message: 'It can be restored later from the deleted companies list.',
-    confirmLabel: 'Delete',
+    title: COMPANY_DETAIL_TEXT.deleteThisCompany,
+    message: COMPANY_DETAIL_TEXT.itCanBeRestoredLater,
+    confirmLabel: COMPANY_DETAIL_TEXT.delete,
     danger: true,
   };
 
@@ -68,28 +69,28 @@ export class CompanyDetailPage implements OnInit {
       { width: '720px' },
     );
     if (saved) {
-      this.notify.success('Company saved.');
+      this.notify.success(COMPANY_DETAIL_TEXT.companySaved);
     }
   };
 
   protected readonly archive = async (): Promise<void> => {
     await this.store.archive();
-    this.notify.success('Company archived — hidden from pickers.');
+    this.notify.success(COMPANY_DETAIL_TEXT.companyArchivedHiddenFromPickers);
   };
 
   protected readonly unarchive = async (): Promise<void> => {
     await this.store.unarchive();
-    this.notify.success('Company restored to pickers.');
+    this.notify.success(COMPANY_DETAIL_TEXT.companyRestoredToPickers);
   };
 
   protected readonly restore = async (): Promise<void> => {
     await this.store.restore();
-    this.notify.success('Company restored.');
+    this.notify.success(COMPANY_DETAIL_TEXT.companyRestored);
   };
 
   protected readonly remove = async (): Promise<void> => {
     await this.store.remove();
-    this.notify.success('Company deleted.');
+    this.notify.success(COMPANY_DETAIL_TEXT.companyDeleted);
     await this.router.navigateByUrl('/reference/companies');
   };
 }

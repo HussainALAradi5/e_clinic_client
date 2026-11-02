@@ -36,6 +36,7 @@ import { EnumService } from '@services/data/enum.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { formatMoney } from '@utilities/money';
+import { TREATMENT_DETAIL_TEXT } from '@constants/clinic/treatment-detail.constants';
 
 /** `/clinic/treatments/:id` — progress, sessions (each opens its booking and visit note), plan details and history. */
 @Component({
@@ -80,27 +81,30 @@ export class TreatmentDetailPage implements OnInit {
     const t = this.detail.record();
     if (!t) return [];
     return [
-      { label: 'Type', value: this.enums.label('TreatmentType', t.type) },
+      { label: TREATMENT_DETAIL_TEXT.type, value: this.enums.label('TreatmentType', t.type) },
       {
-        label: 'Responsible doctor',
+        label: TREATMENT_DETAIL_TEXT.responsibleDoctor,
         value: t.doctor
           ? `${t.doctor.fullName}${t.doctor.specialty ? ' · ' + t.doctor.specialty : ''}`
           : null,
       },
-      { label: 'Prescribed in visit', value: t.appointment?.code },
-      { label: 'Session length', value: `${t.sessionDurationMinutes} min` },
+      { label: TREATMENT_DETAIL_TEXT.prescribedInVisit, value: t.appointment?.code },
+      { label: TREATMENT_DETAIL_TEXT.sessionLength, value: `${t.sessionDurationMinutes} min` },
       {
-        label: 'Billed per session',
+        label: TREATMENT_DETAIL_TEXT.billedPerSession,
         value: t.billableService
           ? `${t.billableService.name} · ${formatMoney(t.billableService.price)}`
-          : 'Not billed',
+          : TREATMENT_DETAIL_TEXT.notBilled,
       },
       {
-        label: 'Started',
+        label: TREATMENT_DETAIL_TEXT.started,
         value: t.startDate ? formatDate(t.startDate, DATE_FORMAT, 'en-GB') : null,
       },
-      { label: 'Ended', value: t.endDate ? formatDate(t.endDate, DATE_FORMAT, 'en-GB') : null },
-      { label: 'Cancellation reason', value: t.cancellationReason },
+      {
+        label: TREATMENT_DETAIL_TEXT.ended,
+        value: t.endDate ? formatDate(t.endDate, DATE_FORMAT, 'en-GB') : null,
+      },
+      { label: TREATMENT_DETAIL_TEXT.cancellationReason, value: t.cancellationReason },
     ].filter((f) => f.value !== null && f.value !== undefined);
   });
 
@@ -131,41 +135,41 @@ export class TreatmentDetailPage implements OnInit {
 
   protected readonly complete = async (): Promise<void> => {
     await firstValueFrom(this.api.complete(this.id()));
-    this.notify.success('Treatment completed — remaining bookings were cancelled.');
+    this.notify.success(TREATMENT_DETAIL_TEXT.treatmentCompletedRemainingBookingsWere);
     await this.load();
   };
 
   protected readonly cancel = async (): Promise<void> => {
     const reason = await this.dialogs.reason({
-      title: 'Cancel this treatment?',
-      message: 'Booked sessions are cancelled and the patient is told.',
-      confirmLabel: 'Cancel treatment',
+      title: TREATMENT_DETAIL_TEXT.cancelThisTreatment,
+      message: TREATMENT_DETAIL_TEXT.bookedSessionsAreCancelledAnd,
+      confirmLabel: TREATMENT_DETAIL_TEXT.cancelTreatment,
       danger: true,
     });
     if (!reason) return;
     await firstValueFrom(this.api.cancel(this.id(), reason));
-    this.notify.success('Treatment cancelled.');
+    this.notify.success(TREATMENT_DETAIL_TEXT.treatmentCancelled);
     await this.load();
   };
 
   protected readonly archive = async (): Promise<void> => {
     await this.detail.archive();
-    this.notify.success('Treatment archived.');
+    this.notify.success(TREATMENT_DETAIL_TEXT.treatmentArchived);
   };
 
   protected readonly unarchive = async (): Promise<void> => {
     await this.detail.unarchive();
-    this.notify.success('Treatment back in lists.');
+    this.notify.success(TREATMENT_DETAIL_TEXT.treatmentBackInLists);
   };
 
   protected readonly restore = async (): Promise<void> => {
     await this.detail.restore();
-    this.notify.success('Treatment restored.');
+    this.notify.success(TREATMENT_DETAIL_TEXT.treatmentRestored);
   };
 
   protected readonly remove = async (): Promise<void> => {
     await this.detail.remove();
-    this.notify.success('Treatment deleted.');
+    this.notify.success(TREATMENT_DETAIL_TEXT.treatmentDeleted);
     await this.router.navigateByUrl('/clinic/treatments');
   };
 }

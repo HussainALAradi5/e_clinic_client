@@ -19,6 +19,7 @@ import { AccessService } from '@services/auth/access.service';
 import { UserApi } from '@services/identity/user-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { PEOPLE_SEARCH_TEXT } from '@constants/system/people-search.constants';
 
 /**
  * `/system/people` — find any person (patient or staff) before registering anyone, so the existing record is reused.
@@ -81,7 +82,7 @@ export class PeopleSearchPage {
       { width: '720px' },
     );
     if (saved) {
-      this.notify.success('Personal data saved.');
+      this.notify.success(PEOPLE_SEARCH_TEXT.personalDataSaved);
       this.list().reload();
     }
   }

@@ -31,6 +31,7 @@ import { QtyPipe } from '@pipes/qty.pipe';
 import { AuthStore } from '@services/auth/auth.store';
 import { PayrollApi } from '@services/hr/payroll-api.service';
 import { clinicDateTime, clinicIsoDate } from '@utilities/clinic-time';
+import { PAYROLL_DETAIL_TEXT } from '@constants/hr/payroll-detail.constants';
 
 /** `/hr/payroll/:id` — one month's payroll: totals, every payslip, and the next step (calculate → approve → pay). */
 @Component({
@@ -95,24 +96,24 @@ export class PayrollDetailPage implements OnInit {
     const r = this.run();
     if (!r) return [];
     return [
-      { label: 'Month', value: `${r.periodStart} – ${r.periodEnd}` },
+      { label: PAYROLL_DETAIL_TEXT.month, value: `${r.periodStart} – ${r.periodEnd}` },
       {
-        label: 'Calculated',
+        label: PAYROLL_DETAIL_TEXT.calculated,
         value: r.calculatedBy
           ? `${r.calculatedBy.fullName} · ${clinicDateTime(r.calculatedAt)}`
           : null,
       },
       {
-        label: 'Approved',
+        label: PAYROLL_DETAIL_TEXT.approved,
         value: r.approvedBy ? `${r.approvedBy.fullName} · ${clinicDateTime(r.approvedAt)}` : null,
       },
       {
-        label: 'Paid on',
+        label: PAYROLL_DETAIL_TEXT.paidOn,
         value: r.paidOn
           ? `${r.paidOn}${r.paymentReference ? ' · ' + r.paymentReference : ''}`
           : null,
       },
-      { label: 'Cancelled because', value: r.cancellationReason },
+      { label: PAYROLL_DETAIL_TEXT.cancelledBecause, value: r.cancellationReason },
     ].filter((f) => f.value !== null && f.value !== undefined && f.value !== '');
   });
 

@@ -12,6 +12,7 @@ import { Account } from '@interfaces/accounting/account.interface';
 import { AccountApi } from '@services/accounting/account-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { ACCOUNT_LIST_TEXT } from '@constants/accounting/account-list.constants';
 
 /** `/accounting/chart-of-accounts` — flat, searchable chart with bulk archive / delete / restore. */
 @Component({
@@ -33,7 +34,7 @@ export class AccountListPage {
       { width: '640px' },
     );
     if (account) {
-      this.notify.success(`Account ${account.code} ${account.name} created.`);
+      this.notify.success(ACCOUNT_LIST_TEXT.accountCreated(account.code, account.name));
       await this.router.navigate(['/accounting/chart-of-accounts', account.id]);
     }
   };

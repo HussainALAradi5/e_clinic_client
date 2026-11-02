@@ -33,6 +33,7 @@ import { PrescriptionApi } from '@services/pharmacy/prescription-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { compareQty, formatQty, isPositiveQty } from '@utilities/quantity';
 import { AppValidators } from '@validations/validators';
+import { RX_DISPENSE_PANEL_TEXT } from '@constants/pharmacy/rx-dispense-panel.constants';
 
 /**
  * Hand-over of one prescription at the counter: what is left on each line, how much to give now (partial allowed),
@@ -112,7 +113,7 @@ export class RxDispensePanel {
     if (!code) return;
     const line = this.items().find((i) => i.medication.gtin === code);
     if (!line) {
-      this.notify.error('This pack is not on the prescription.');
+      this.notify.error(RX_DISPENSE_PANEL_TEXT.thisPackIsNotOn);
       return;
     }
     this.verified.update((set) => new Set([...set, line.id]));
@@ -122,11 +123,11 @@ export class RxDispensePanel {
   protected readonly dispense = async (): Promise<void> => {
     if (this.quantities.invalid) {
       this.quantities.markAllAsTouched();
-      throw new Error('Check the quantities.');
+      throw new Error(RX_DISPENSE_PANEL_TEXT.checkTheQuantities);
     }
     if (this.needsWitness() && !this.witness.value) {
       this.witness.markAsTouched();
-      throw new Error('A controlled drug needs a witness.');
+      throw new Error(RX_DISPENSE_PANEL_TEXT.aControlledDrugNeedsA);
     }
     const rx = this.prescription() as Prescription;
     const lines = this.items()

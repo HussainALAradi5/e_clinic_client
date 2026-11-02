@@ -17,6 +17,7 @@ import { ChatApi } from '@services/communication/chat-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { ChatAvatar } from '../chat-avatar/chat-avatar.component';
+import { GROUP_INFO_DIALOG_TEXT } from '@constants/communication/group-info-dialog.constants';
 
 /**
  * Who is in the chat, with Leader / Member / You badges. A leader renames the group, adds people, makes someone
@@ -88,9 +89,9 @@ export class GroupInfoDialog {
 
   protected async remove(member: ChatMember): Promise<void> {
     const ok = await this.dialogs.confirm({
-      title: `Remove ${member.fullName}?`,
-      message: 'They stop receiving this group’s messages.',
-      confirmLabel: 'Remove',
+      title: GROUP_INFO_DIALOG_TEXT.remove2(member.fullName),
+      message: GROUP_INFO_DIALOG_TEXT.theyStopReceivingThisGroup,
+      confirmLabel: GROUP_INFO_DIALOG_TEXT.remove,
       danger: true,
     });
     if (!ok) return;
@@ -108,9 +109,9 @@ export class GroupInfoDialog {
     const me = this.me();
     if (!me) return;
     const ok = await this.dialogs.confirm({
-      title: 'Leave this group?',
-      message: 'You will no longer see its messages unless someone adds you back.',
-      confirmLabel: 'Leave',
+      title: GROUP_INFO_DIALOG_TEXT.leaveThisGroup,
+      message: GROUP_INFO_DIALOG_TEXT.youWillNoLongerSee,
+      confirmLabel: GROUP_INFO_DIALOG_TEXT.leave,
       danger: true,
     });
     if (!ok) return;

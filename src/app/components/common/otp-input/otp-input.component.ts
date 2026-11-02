@@ -13,6 +13,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { startWith } from 'rxjs';
+import { OTP_INPUT_TEXT } from '@constants/common/otp-input.constants';
 
 /**
  * One-time code shown as separate digit boxes. One real input lies over the boxes, so typing, paste, browser
@@ -29,7 +30,7 @@ import { startWith } from 'rxjs';
 export class OtpInput {
   readonly control = input.required<FormControl<string>>();
   readonly length = input(6);
-  readonly label = input('Verification code');
+  readonly label = input(OTP_INPUT_TEXT.verificationCode);
   readonly autofocus = input(true);
 
   private readonly field = viewChild.required<ElementRef<HTMLInputElement>>('field');

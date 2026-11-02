@@ -14,6 +14,7 @@ import { BillableService } from '@interfaces/billing/billable-service.interface'
 import { EnumOption } from '@interfaces/common/enum-option.interface';
 import { AppointmentApi } from '@services/clinic/appointment-api.service';
 import { formatMoney } from '@utilities/money';
+import { COMPLETE_DIALOG_TEXT } from '@constants/clinic/complete-dialog.constants';
 
 /** Close a visit: extra services performed (charged with the visit) and an optional follow-up suggestion. */
 @Component({
@@ -42,8 +43,10 @@ export class CompleteDialog {
     value: d,
     label:
       d < 14
-        ? `In ${d} days`
-        : `In ${d / 7 >= 4 ? Math.round(d / 30) + ' month' + (d >= 60 ? 's' : '') : d / 7 + ' weeks'}`,
+        ? COMPLETE_DIALOG_TEXT.inDays(d)
+        : COMPLETE_DIALOG_TEXT.in(
+            d / 7 >= 4 ? Math.round(d / 30) + ' month' + (d >= 60 ? 's' : '') : d / 7 + ' weeks',
+          ),
   }));
   protected readonly serviceName = (s: BillableService): string =>
     `${s.name} — ${formatMoney(s.price)}`;

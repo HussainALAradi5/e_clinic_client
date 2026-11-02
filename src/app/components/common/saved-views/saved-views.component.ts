@@ -23,6 +23,7 @@ import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { SavedViewApi } from '@services/view/saved-view-api.service';
 import { toViewQuery } from '@utilities/list-query';
+import { SAVED_VIEWS_TEXT } from '@constants/common/saved-views.constants';
 
 /**
  * "Views" menu of a list: own + shared saved views, save the current layout, manage views.
@@ -100,7 +101,7 @@ export class SavedViews implements OnInit {
         ),
       );
       this.active.set(view.id);
-      this.notify.success(`View "${view.name}" saved.`);
+      this.notify.success(SAVED_VIEWS_TEXT.viewSaved(view.name));
     }
   }
 }

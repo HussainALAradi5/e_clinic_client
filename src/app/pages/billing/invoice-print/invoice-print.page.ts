@@ -18,6 +18,7 @@ import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { InvoiceApi } from '@services/billing/invoice-api.service';
 import { toMinor } from '@utilities/money';
+import { INVOICE_PRINT_TEXT } from '@constants/billing/invoice-print.constants';
 
 /** `/print/invoice/:id` — the issued invoice (a tax invoice when it carries VAT) with payments and balance. */
 @Component({
@@ -35,7 +36,9 @@ export class InvoicePrintPage implements OnInit {
   protected readonly dateFormat = DATE_FORMAT;
   protected readonly dateTimeFormat = DATE_TIME_FORMAT;
   protected readonly title = computed(() =>
-    (toMinor(this.invoice()?.taxTotal.amount) ?? 0n) > 0n ? 'Tax invoice' : 'Invoice',
+    (toMinor(this.invoice()?.taxTotal.amount) ?? 0n) > 0n
+      ? INVOICE_PRINT_TEXT.taxInvoice
+      : INVOICE_PRINT_TEXT.invoice,
   );
   protected readonly payments = computed(() =>
     (this.invoice()?.payments ?? []).filter((p) => p.status === PaymentStatus.Completed),

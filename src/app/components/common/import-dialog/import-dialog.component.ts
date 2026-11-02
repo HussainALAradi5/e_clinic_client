@@ -11,6 +11,7 @@ import { ImportResult } from '@interfaces/list/import-result.interface';
 import { ImportRowError } from '@interfaces/list/import-row-error.interface';
 import { TransferApi } from '@services/data/transfer-api.service';
 import { isApiError } from '@utilities/guards';
+import { IMPORT_DIALOG_TEXT } from '@constants/common/import-dialog.constants';
 
 /**
  * Excel import: download the template, pick the filled-in file, import it in one request. When the server rejects
@@ -66,7 +67,7 @@ export class ImportDialog {
   protected setFile(file: File | null): void {
     this.clearProblems();
     if (file && !file.name.toLowerCase().endsWith('.xlsx')) {
-      this.problem.set('Choose an Excel file (.xlsx) — start from the template.');
+      this.problem.set(IMPORT_DIALOG_TEXT.chooseAnExcelFileXlsx);
       return;
     }
     this.file.set(file);
@@ -80,7 +81,7 @@ export class ImportDialog {
 
   private show(error: unknown): void {
     if (!isApiError(error)) {
-      this.problem.set('Something went wrong. Please try again.');
+      this.problem.set(IMPORT_DIALOG_TEXT.somethingWentWrongPleaseTry);
       return;
     }
     this.problem.set(error.message);

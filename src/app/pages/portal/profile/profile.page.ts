@@ -13,6 +13,7 @@ import { CLINIC_LOCALE, DATE_FORMAT, PORTAL_PATH } from '@constants/app.constant
 import { Patient } from '@interfaces/clinic/patient.interface';
 import { Fact } from '@interfaces/ui/fact.interface';
 import { PortalApi } from '@services/portal/portal-api.service';
+import { PROFILE_TEXT } from '@constants/portal/profile.constants';
 
 const day = (iso: string): string => formatDate(`${iso}T00:00:00`, DATE_FORMAT, CLINIC_LOCALE);
 
@@ -38,27 +39,27 @@ export class MyProfilePage {
     const p = this.patient();
     if (!p) return [];
     return [
-      { label: 'Patient number', value: p.code, mono: true },
-      { label: 'Name', value: p.fullName },
-      { label: 'Date of birth', value: day(p.dateOfBirth) },
-      { label: 'Gender', value: p.gender, enum: 'Gender' },
+      { label: PROFILE_TEXT.patientNumber, value: p.code, mono: true },
+      { label: PROFILE_TEXT.name, value: p.fullName },
+      { label: PROFILE_TEXT.dateOfBirth, value: day(p.dateOfBirth) },
+      { label: PROFILE_TEXT.gender, value: p.gender, enum: PROFILE_TEXT.gender },
       {
-        label: 'Nationality',
+        label: PROFILE_TEXT.nationality,
         value: p.person.nationality?.nationality,
         flag: p.person.nationalityCode,
       },
-      { label: 'ID number', value: p.person.nationalId, mono: true },
+      { label: PROFILE_TEXT.idNumber, value: p.person.nationalId, mono: true },
     ];
   });
   protected readonly contact = computed<Fact[]>(() => {
     const p = this.patient();
     if (!p) return [];
     return [
-      { label: 'Mobile', value: p.phone },
-      { label: 'Email', value: p.email },
-      { label: 'Address', value: p.person.address?.formatted },
+      { label: PROFILE_TEXT.mobile, value: p.phone },
+      { label: PROFILE_TEXT.email, value: p.email },
+      { label: PROFILE_TEXT.address, value: p.person.address?.formatted },
       {
-        label: 'Emergency contact',
+        label: PROFILE_TEXT.emergencyContact,
         value: [p.emergencyContactName, p.emergencyContactRelation, p.emergencyContactPhone]
           .filter(Boolean)
           .join(' · '),
@@ -69,13 +70,16 @@ export class MyProfilePage {
     const p = this.patient();
     if (!p?.insurer) return [];
     return [
-      { label: 'Insurer', value: p.insurer.name },
-      { label: 'Policy number', value: p.insurancePolicyNumber, mono: true },
+      { label: PROFILE_TEXT.insurer, value: p.insurer.name },
+      { label: PROFILE_TEXT.policyNumber, value: p.insurancePolicyNumber, mono: true },
       {
-        label: 'Covers',
+        label: PROFILE_TEXT.covers,
         value: p.insuranceCoveragePercent ? `${+p.insuranceCoveragePercent} %` : null,
       },
-      { label: 'Valid until', value: p.insuranceExpiryDate ? day(p.insuranceExpiryDate) : null },
+      {
+        label: PROFILE_TEXT.validUntil,
+        value: p.insuranceExpiryDate ? day(p.insuranceExpiryDate) : null,
+      },
     ];
   });
 

@@ -1,0 +1,24 @@
+/** Text of clinic/room-detail/room-detail.page (labels, messages, confirmations). */
+export const ROOM_DETAIL_TEXT = {
+  code: 'Code',
+  type: 'Type',
+  department: 'Department',
+  floor: 'Floor',
+  capacity: 'Capacity',
+  status: 'Status',
+  inService: 'In service',
+  equipmentNotes: 'Equipment / notes',
+  takeThisRoomOutOf: 'Take this room out of service?',
+  itDisappearsFromBookingExisting:
+    'It disappears from booking. Existing bookings stay — you get the list to move them.',
+  outOfService: 'Out of service',
+  roomOutOfService: 'Room out of service.',
+  roomBackInService: 'Room back in service.',
+  roomSaved: 'Room saved.',
+  roomArchived: 'Room archived.',
+  roomBackInPickers: 'Room back in pickers.',
+  roomRestored: 'Room restored.',
+  roomDeleted: 'Room deleted.',
+  outOfService2: (p0: unknown) => `Out of service — ${p0}`,
+  roomOutOfServiceBooking: (p0: unknown) => `Room out of service — ${p0} booking(s) to move.`,
+};

@@ -10,6 +10,7 @@ import { Department } from '@interfaces/hr/department.interface';
 import { DepartmentApi } from '@services/hr/department-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { DEPARTMENT_LIST_TEXT } from '@constants/hr/department-list.constants';
 
 /** `/hr/departments` — department list with bulk archive / delete / restore. */
 @Component({
@@ -35,7 +36,7 @@ export class DepartmentListPage {
       { width: '560px' },
     );
     if (department) {
-      this.notify.success(`Department ${department.name} created.`);
+      this.notify.success(DEPARTMENT_LIST_TEXT.departmentCreated(department.name));
       await this.router.navigate(['/hr/departments', department.id]);
     }
   };

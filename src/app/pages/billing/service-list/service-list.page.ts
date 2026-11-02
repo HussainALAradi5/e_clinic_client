@@ -11,6 +11,7 @@ import { MoneyPipe } from '@pipes/money.pipe';
 import { BillableServiceApi } from '@services/billing/billable-service-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { SERVICE_LIST_TEXT } from '@constants/billing/service-list.constants';
 
 /** `/billing/service-catalog` — the price list with bulk archive / delete / restore, Excel export and import. */
 @Component({
@@ -36,7 +37,7 @@ export class ServiceListPage {
       { width: '720px' },
     );
     if (service) {
-      this.notify.success(`Service ${service.code} created.`);
+      this.notify.success(SERVICE_LIST_TEXT.serviceCreated(service.code));
       await this.router.navigate(['/billing/service-catalog', service.id]);
     }
   };

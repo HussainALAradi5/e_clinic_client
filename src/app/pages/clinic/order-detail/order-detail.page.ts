@@ -31,6 +31,7 @@ import { EnumService } from '@services/data/enum.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { formatMoney } from '@utilities/money';
+import { ORDER_DETAIL_TEXT } from '@constants/clinic/order-detail.constants';
 
 /** `/clinic/clinical-orders/:id` — the order or referral, its next step, the result with images, and history. */
 @Component({
@@ -81,11 +82,19 @@ export class OrderDetailPage implements OnInit {
     if (!o) return null;
     if (o.status === GenericStatus.Pending) {
       if (o.type !== ClinicalOrderType.Referral)
-        return { label: 'Start', icon: 'play_arrow', access: 'orders.write & orders.perform' };
+        return {
+          label: ORDER_DETAIL_TEXT.start,
+          icon: 'play_arrow',
+          access: 'orders.write & orders.perform',
+        };
       return o.referredToCompanyId
-        ? { label: 'Letter sent', icon: 'outgoing_mail', access: 'orders.write & orders.perform' }
+        ? {
+            label: ORDER_DETAIL_TEXT.letterSent,
+            icon: 'outgoing_mail',
+            access: 'orders.write & orders.perform',
+          }
         : {
-            label: 'Book visit',
+            label: ORDER_DETAIL_TEXT.bookVisit,
             icon: 'event_available',
             access: 'orders.write | appointments.create',
           };
@@ -95,7 +104,10 @@ export class OrderDetailPage implements OnInit {
       (o.type !== ClinicalOrderType.Referral || o.referredToCompanyId)
     ) {
       return {
-        label: o.type === ClinicalOrderType.Referral ? 'Reply received' : 'Record result',
+        label:
+          o.type === ClinicalOrderType.Referral
+            ? ORDER_DETAIL_TEXT.replyReceived
+            : ORDER_DETAIL_TEXT.recordResult,
         icon: 'task_alt',
         access: 'orders.write & orders.perform',
       };
@@ -125,31 +137,31 @@ export class OrderDetailPage implements OnInit {
     const target =
       o.referredToDoctor?.fullName ?? o.referredToSpecialty?.name ?? o.referredToCompany?.name;
     return [
-      { label: 'Kind', value: this.enums.label('ClinicalOrderType', o.type) },
-      { label: 'Ordered by', value: o.orderingDoctor?.fullName },
-      { label: 'From visit', value: o.appointment?.code },
+      { label: ORDER_DETAIL_TEXT.kind, value: this.enums.label('ClinicalOrderType', o.type) },
+      { label: ORDER_DETAIL_TEXT.orderedBy, value: o.orderingDoctor?.fullName },
+      { label: ORDER_DETAIL_TEXT.fromVisit, value: o.appointment?.code },
       {
-        label: 'Treatment',
+        label: ORDER_DETAIL_TEXT.treatment,
         value: o.treatment ? `${o.treatment.code} · ${o.treatment.title}` : null,
       },
       {
-        label: 'Service',
+        label: ORDER_DETAIL_TEXT.service,
         value: o.billableService
           ? `${o.billableService.name} · ${formatMoney(o.billableService.price)}`
           : null,
       },
-      { label: 'Body part / sample', value: o.bodyPart },
-      { label: 'Referred to', value: target },
+      { label: ORDER_DETAIL_TEXT.bodyPartSample, value: o.bodyPart },
+      { label: ORDER_DETAIL_TEXT.referredTo, value: target },
       {
-        label: 'Referred visit',
+        label: ORDER_DETAIL_TEXT.referredVisit,
         value: o.referralAppointment
           ? `${o.referralAppointment.code} · ${o.referralAppointment.scheduledDate} ${o.referralAppointment.startTime}`
           : null,
       },
-      { label: 'Room', value: o.room ? `${o.room.code} · ${o.room.name}` : null },
-      { label: 'Performed by', value: o.performer?.fullName },
-      { label: 'Reported by', value: o.reporter?.fullName },
-      { label: 'Cancellation reason', value: o.cancellationReason },
+      { label: ORDER_DETAIL_TEXT.room, value: o.room ? `${o.room.code} · ${o.room.name}` : null },
+      { label: ORDER_DETAIL_TEXT.performedBy, value: o.performer?.fullName },
+      { label: ORDER_DETAIL_TEXT.reportedBy, value: o.reporter?.fullName },
+      { label: ORDER_DETAIL_TEXT.cancellationReason, value: o.cancellationReason },
     ].filter((f) => f.value !== null && f.value !== undefined);
   });
 
@@ -171,13 +183,13 @@ export class OrderDetailPage implements OnInit {
 
   protected readonly cancel = async (): Promise<void> => {
     const reason = await this.dialogs.reason({
-      title: 'Cancel this order?',
-      confirmLabel: 'Cancel order',
+      title: ORDER_DETAIL_TEXT.cancelThisOrder,
+      confirmLabel: ORDER_DETAIL_TEXT.cancelOrder,
       danger: true,
     });
     if (!reason) return;
     this.detail.set(await firstValueFrom(this.api.cancel(this.id(), reason)));
-    this.notify.success('Order cancelled.');
+    this.notify.success(ORDER_DETAIL_TEXT.orderCancelled);
   };
 
   protected readonly open = async (file: Attachment): Promise<void> => {
@@ -186,22 +198,22 @@ export class OrderDetailPage implements OnInit {
 
   protected readonly archive = async (): Promise<void> => {
     await this.detail.archive();
-    this.notify.success('Order archived.');
+    this.notify.success(ORDER_DETAIL_TEXT.orderArchived);
   };
 
   protected readonly unarchive = async (): Promise<void> => {
     await this.detail.unarchive();
-    this.notify.success('Order back in lists.');
+    this.notify.success(ORDER_DETAIL_TEXT.orderBackInLists);
   };
 
   protected readonly restore = async (): Promise<void> => {
     await this.detail.restore();
-    this.notify.success('Order restored.');
+    this.notify.success(ORDER_DETAIL_TEXT.orderRestored);
   };
 
   protected readonly remove = async (): Promise<void> => {
     await this.detail.remove();
-    this.notify.success('Order deleted.');
+    this.notify.success(ORDER_DETAIL_TEXT.orderDeleted);
     await this.router.navigateByUrl('/clinic/clinical-orders');
   };
 }

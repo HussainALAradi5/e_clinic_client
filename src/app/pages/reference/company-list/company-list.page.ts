@@ -11,6 +11,7 @@ import { CompanyApi } from '@services/reference/company-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { Flag } from '@components/common/flag/flag.component';
+import { COMPANY_LIST_TEXT } from '@constants/reference/company-list.constants';
 
 /** `/reference/companies` — manufacturers, suppliers, insurers, labs and hospitals; bulk archive / delete / restore. */
 @Component({
@@ -32,7 +33,7 @@ export class CompanyListPage {
       { width: '720px' },
     );
     if (company) {
-      this.notify.success(`Company ${company.name} created.`);
+      this.notify.success(COMPANY_LIST_TEXT.companyCreated(company.name));
       await this.router.navigate(['/reference/companies', company.id]);
     }
   };

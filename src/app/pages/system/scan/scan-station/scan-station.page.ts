@@ -29,6 +29,7 @@ import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { AccessService } from '@services/auth/access.service';
 import { CodeApi } from '@services/code/code-api.service';
 import { humanise } from '@utilities/text';
+import { SCAN_STATION_TEXT } from '@constants/system/scan-station.constants';
 
 const DETECT_EVERY_MS = 250;
 const HISTORY_SIZE = 10;
@@ -106,7 +107,7 @@ export class ScanStationPage {
         audio: false,
       });
     } catch {
-      this.error.set('Camera access was denied.');
+      this.error.set(SCAN_STATION_TEXT.cameraAccessWasDenied);
       return;
     }
     this.cameraOn.set(true);

@@ -10,6 +10,7 @@ import { AccessService } from '@services/auth/access.service';
 import { SpecialtyApi } from '@services/clinic/doctor-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { SPECIALTY_LIST_TEXT } from '@constants/clinic/specialty-list.constants';
 
 /** `/clinic/specialties` — specialties with bulk archive / delete / restore; click a row to edit. */
 @Component({
@@ -27,7 +28,7 @@ export class SpecialtyListPage {
 
   protected readonly create = async (): Promise<void> => {
     const saved = await this.open(null, (payload) => firstValueFrom(this.api.create(payload)));
-    if (saved) this.notify.success(`Specialty ${saved.name} created.`);
+    if (saved) this.notify.success(SPECIALTY_LIST_TEXT.specialtyCreated(saved.name));
   };
 
   protected async edit(row: { id: string }): Promise<void> {
@@ -36,7 +37,7 @@ export class SpecialtyListPage {
     const saved = await this.open(specialty, (payload) =>
       firstValueFrom(this.api.update(specialty.id, payload)),
     );
-    if (saved) this.notify.success('Specialty saved.');
+    if (saved) this.notify.success(SPECIALTY_LIST_TEXT.specialtySaved);
   }
 
   private async open(

@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { statusTone, TONE_CLASSES } from '@constants/status-tones.constants';
 import { ExpiryStatus } from '@enums/pharmacy/expiry-status.enum';
+import { EXPIRY_CHIP_TEXT } from '@constants/pharmacy/expiry-chip.constants';
 
 const LABELS: Record<ExpiryStatus, string> = {
-  [ExpiryStatus.Ok]: 'In date',
-  [ExpiryStatus.Expiring]: 'Expires soon',
-  [ExpiryStatus.Expired]: 'Expired',
+  [ExpiryStatus.Ok]: EXPIRY_CHIP_TEXT.inDate,
+  [ExpiryStatus.Expiring]: EXPIRY_CHIP_TEXT.expiresSoon,
+  [ExpiryStatus.Expired]: EXPIRY_CHIP_TEXT.expired,
 };
 
 /** `<app-expiry-chip [status]="lot.expiryStatus" />` — in date / expires soon / expired, in the status colours. */

@@ -38,6 +38,7 @@ import { RelativeTimePipe } from '@pipes/relative-time.pipe';
 import { NotificationApi } from '@services/notification/notification-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { ReadFilter } from '@interfaces/system/my-notifications.interface';
+import { MY_NOTIFICATIONS_TEXT } from '@constants/system/my-notifications.constants';
 const PAGE_SIZE = 20;
 
 /**
@@ -74,11 +75,11 @@ export class MyNotificationsPage {
 
   protected readonly topics = NOTIFICATION_TOPICS;
   protected readonly dateTimeFormat = DATE_TIME_FORMAT;
-  protected readonly dateFields = [{ value: 'created_at', label: 'Received' }];
+  protected readonly dateFields = [{ value: 'created_at', label: MY_NOTIFICATIONS_TEXT.received }];
   protected readonly chips: { value: ReadFilter; label: string }[] = [
-    { value: 'all', label: 'All' },
-    { value: 'unread', label: 'Unread' },
-    { value: 'read', label: 'Read' },
+    { value: 'all', label: MY_NOTIFICATIONS_TEXT.all },
+    { value: 'unread', label: MY_NOTIFICATIONS_TEXT.unread },
+    { value: 'read', label: MY_NOTIFICATIONS_TEXT.read },
   ];
 
   protected readonly read = signal<ReadFilter>('all');

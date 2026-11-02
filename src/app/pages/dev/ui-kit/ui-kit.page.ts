@@ -41,12 +41,20 @@ import { ThemeService } from '@services/ui/theme.service';
 import { ListSelection } from '@utilities/list-selection';
 import { money } from '@utilities/money';
 import { AppValidators } from '@validations/validators';
+import { UI_KIT_TEXT } from '@constants/dev/ui-kit.constants';
 
 const STATUSES: GenericStatus[] = Object.values(GenericStatus);
 const ROWS: DemoRow[] = Array.from({ length: 42 }, (_, i) => ({
   id: `row-${i + 1}`,
   code: `WID-2026-${String(i + 1).padStart(6, '0')}`,
-  name: ['Physiotherapy', 'Wound care', 'Dialysis', 'Laser', 'Injection'][i % 5] + ` #${i + 1}`,
+  name:
+    [
+      UI_KIT_TEXT.physiotherapy,
+      UI_KIT_TEXT.woundCare,
+      UI_KIT_TEXT.dialysis,
+      UI_KIT_TEXT.laser,
+      UI_KIT_TEXT.injection,
+    ][i % 5] + ` #${i + 1}`,
   status: STATUSES[i % 4],
   price: { amount: (12.5 + i * 3.25).toFixed(3), currency: Currency.BHD },
   updatedAt: new Date(Date.now() - i * 3_600_000).toISOString(),
@@ -72,11 +80,11 @@ const SCHEMA: ResourceSchema = {
   search: true,
   dateFields: ['updated_at'],
   columns: [
-    { field: 'code', label: 'Code' },
-    { field: 'name', label: 'Name' },
-    { field: 'status', label: 'Status' },
-    { field: 'price', label: 'Price' },
-    { field: 'updated_at', label: 'Updated' },
+    { field: 'code', label: UI_KIT_TEXT.code },
+    { field: 'name', label: UI_KIT_TEXT.name },
+    { field: 'status', label: UI_KIT_TEXT.status },
+    { field: 'price', label: UI_KIT_TEXT.price },
+    { field: 'updated_at', label: UI_KIT_TEXT.updated },
   ],
   bulkActions: [],
   exportFormats: [],
@@ -128,8 +136,8 @@ export class UiKitPage {
   protected readonly schema = SCHEMA;
   protected readonly selection = new ListSelection();
   protected readonly genders = [
-    { value: 'male', label: 'Male' },
-    { value: 'female', label: 'Female' },
+    { value: 'male', label: UI_KIT_TEXT.male },
+    { value: 'female', label: UI_KIT_TEXT.female },
   ];
   protected readonly columns: TableColumn[] = SCHEMA.columns.map((c) => ({
     ...c,
@@ -154,11 +162,7 @@ export class UiKitPage {
     timer(600).pipe(
       switchMap(() =>
         throwError(() =>
-          this.demoError(
-            'This slot was just booked — pick another time.',
-            'SLOT_UNAVAILABLE',
-            null,
-          ),
+          this.demoError(UI_KIT_TEXT.thisSlotWasJustBooked, 'SLOT_UNAVAILABLE', null),
         ),
       ),
     );
@@ -168,8 +172,8 @@ export class UiKitPage {
     timer(700).pipe(
       switchMap(() =>
         throwError(() =>
-          this.demoError('Some fields are invalid.', 'VALIDATION_FAILED', {
-            phone: ['This phone number is already registered.'],
+          this.demoError(UI_KIT_TEXT.someFieldsAreInvalid, 'VALIDATION_FAILED', {
+            phone: [UI_KIT_TEXT.thisPhoneNumberIsAlready],
           }),
         ),
       ),
@@ -222,13 +226,13 @@ export class UiKitPage {
 
   protected toast(type: ToastType): void {
     const samples: Record<ToastType, string> = {
-      [ToastType.Success]: 'Patient record saved.',
-      [ToastType.Info]: 'A new version of the price list is available.',
-      [ToastType.Warning]: 'This appointment overlaps with another booking.',
-      [ToastType.Error]: 'The verification code is invalid or has expired.',
+      [ToastType.Success]: UI_KIT_TEXT.patientRecordSaved,
+      [ToastType.Info]: UI_KIT_TEXT.aNewVersionOfThe,
+      [ToastType.Warning]: UI_KIT_TEXT.thisAppointmentOverlapsWithAnother,
+      [ToastType.Error]: UI_KIT_TEXT.theVerificationCodeIsInvalid,
     };
     this.notify.show(type, samples[type], {
-      action: type === ToastType.Success ? 'Undo' : undefined,
+      action: type === ToastType.Success ? UI_KIT_TEXT.undo : undefined,
     });
   }
 }

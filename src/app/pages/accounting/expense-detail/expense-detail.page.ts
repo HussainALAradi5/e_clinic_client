@@ -39,6 +39,7 @@ import { NotifyService } from '@services/ui/notify.service';
 import { clinicDateTime } from '@utilities/clinic-time';
 import { defaultQuery } from '@utilities/list-query';
 import { formatMoney } from '@utilities/money';
+import { EXPENSE_DETAIL_TEXT } from '@constants/accounting/expense-detail.constants';
 
 /** `/accounting/expenses/:id` — the expense, its vendor invoice scans, the next step and history. */
 @Component({
@@ -106,28 +107,31 @@ export class ExpenseDetailPage implements OnInit {
     const e = this.detail.record();
     if (!e) return [];
     return [
-      { label: 'Paid to', value: e.payeeName },
-      { label: 'Category', value: this.enums.label('ExpenseCategory', e.category) },
+      { label: EXPENSE_DETAIL_TEXT.paidTo, value: e.payeeName },
       {
-        label: 'Account',
+        label: EXPENSE_DETAIL_TEXT.category,
+        value: this.enums.label('ExpenseCategory', e.category),
+      },
+      {
+        label: EXPENSE_DETAIL_TEXT.account,
         value: e.expenseAccount ? `${e.expenseAccount.code} · ${e.expenseAccount.name}` : null,
       },
-      { label: 'Department', value: e.department?.name },
-      { label: 'Date', value: e.expenseDate },
-      { label: 'Amount', value: formatMoney(e.amount) },
+      { label: EXPENSE_DETAIL_TEXT.department, value: e.department?.name },
+      { label: EXPENSE_DETAIL_TEXT.date, value: e.expenseDate },
+      { label: EXPENSE_DETAIL_TEXT.amount, value: formatMoney(e.amount) },
       {
-        label: 'Of which VAT',
+        label: EXPENSE_DETAIL_TEXT.ofWhichVat,
         value: e.taxAmount.amount !== '0.000' ? formatMoney(e.taxAmount) : null,
       },
-      { label: 'Vendor invoice', value: e.vendorInvoiceNumber },
-      { label: 'Submitted by', value: e.submittedBy?.fullName },
+      { label: EXPENSE_DETAIL_TEXT.vendorInvoice, value: e.vendorInvoiceNumber },
+      { label: EXPENSE_DETAIL_TEXT.submittedBy, value: e.submittedBy?.fullName },
       {
-        label: 'Approved by',
+        label: EXPENSE_DETAIL_TEXT.approvedBy,
         value: e.approvedBy ? `${e.approvedBy.fullName} · ${clinicDateTime(e.approvedAt)}` : null,
       },
-      { label: 'Rejected because', value: e.rejectionReason },
+      { label: EXPENSE_DETAIL_TEXT.rejectedBecause, value: e.rejectionReason },
       {
-        label: 'Paid',
+        label: EXPENSE_DETAIL_TEXT.paid,
         value: e.paidAt
           ? `${clinicDateTime(e.paidAt)} · ${this.enums.label('PaymentMethod', e.paymentMethod ?? '')}${e.paymentReference ? ' · ' + e.paymentReference : ''}`
           : null,
@@ -164,7 +168,7 @@ export class ExpenseDetailPage implements OnInit {
 
   protected readonly remove = async (): Promise<void> => {
     await this.detail.remove();
-    this.notify.success('Expense deleted.');
+    this.notify.success(EXPENSE_DETAIL_TEXT.expenseDeleted);
     await this.router.navigateByUrl('/accounting/expenses');
   };
 

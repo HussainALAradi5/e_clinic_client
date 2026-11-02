@@ -14,6 +14,7 @@ import { Appointment } from '@interfaces/clinic/appointment.interface';
 import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { AppointmentApi } from '@services/clinic/appointment-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { APPOINTMENTS_TEXT } from '@constants/portal/appointments.constants';
 
 const PAGE_SIZE = 20;
 const UPCOMING = [
@@ -49,8 +50,8 @@ export class MyAppointmentsPage {
 
   protected readonly empty = computed(() =>
     this.view() === 'upcoming'
-      ? { title: 'No upcoming visits', message: 'Book a visit and it will show here.' }
-      : { title: 'No past visits yet', message: null },
+      ? { title: APPOINTMENTS_TEXT.noUpcomingVisits, message: APPOINTMENTS_TEXT.bookAVisitAndIt }
+      : { title: APPOINTMENTS_TEXT.noPastVisitsYet, message: null },
   );
 
   constructor() {

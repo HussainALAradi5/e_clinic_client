@@ -20,6 +20,7 @@ import { EnumService } from '@services/data/enum.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { humanise } from '@utilities/text';
+import { ACCOUNT_DETAIL_TEXT } from '@constants/accounting/account-detail.constants';
 
 /** `/accounting/chart-of-accounts/:id` — account facts, child accounts, where it is used, history. */
 @Component({
@@ -57,13 +58,27 @@ export class AccountDetailPage implements OnInit {
     const a = this.detail.record();
     if (!a) return [];
     return [
-      { label: 'Code', value: a.code, mono: true },
-      { label: 'Type', value: this.enums.label('AccountType', a.type) },
-      { label: 'Normal balance', value: this.enums.label('BalanceSide', a.normalBalance) },
-      { label: 'Kind', value: a.isGroup ? 'Group (not posted to)' : 'Posting account' },
-      { label: 'Parent', value: a.parent ? `${a.parent.code} ${a.parent.name}` : 'Top level' },
-      { label: 'System account', value: a.isSystem ? 'Yes — cannot be deleted' : 'No' },
-      { label: 'Description', value: a.description },
+      { label: ACCOUNT_DETAIL_TEXT.code, value: a.code, mono: true },
+      { label: ACCOUNT_DETAIL_TEXT.type, value: this.enums.label('AccountType', a.type) },
+      {
+        label: ACCOUNT_DETAIL_TEXT.normalBalance,
+        value: this.enums.label('BalanceSide', a.normalBalance),
+      },
+      {
+        label: ACCOUNT_DETAIL_TEXT.kind,
+        value: a.isGroup
+          ? ACCOUNT_DETAIL_TEXT.groupNotPostedTo
+          : ACCOUNT_DETAIL_TEXT.postingAccount,
+      },
+      {
+        label: ACCOUNT_DETAIL_TEXT.parent,
+        value: a.parent ? `${a.parent.code} ${a.parent.name}` : ACCOUNT_DETAIL_TEXT.topLevel,
+      },
+      {
+        label: ACCOUNT_DETAIL_TEXT.systemAccount,
+        value: a.isSystem ? ACCOUNT_DETAIL_TEXT.yesCannotBeDeleted : ACCOUNT_DETAIL_TEXT.no,
+      },
+      { label: ACCOUNT_DETAIL_TEXT.description, value: a.description },
     ];
   });
 
@@ -77,27 +92,27 @@ export class AccountDetailPage implements OnInit {
       { account: this.detail.record(), save: (payload) => this.detail.update(payload) },
       { width: '640px' },
     );
-    if (saved) this.notify.success('Account saved.');
+    if (saved) this.notify.success(ACCOUNT_DETAIL_TEXT.accountSaved);
   };
 
   protected readonly archive = async (): Promise<void> => {
     await this.detail.archive();
-    this.notify.success('Account archived — hidden from pickers.');
+    this.notify.success(ACCOUNT_DETAIL_TEXT.accountArchivedHiddenFromPickers);
   };
 
   protected readonly unarchive = async (): Promise<void> => {
     await this.detail.unarchive();
-    this.notify.success('Account back in pickers.');
+    this.notify.success(ACCOUNT_DETAIL_TEXT.accountBackInPickers);
   };
 
   protected readonly restore = async (): Promise<void> => {
     await this.detail.restore();
-    this.notify.success('Account restored.');
+    this.notify.success(ACCOUNT_DETAIL_TEXT.accountRestored);
   };
 
   protected readonly remove = async (): Promise<void> => {
     await this.detail.remove();
-    this.notify.success('Account deleted.');
+    this.notify.success(ACCOUNT_DETAIL_TEXT.accountDeleted);
     await this.router.navigateByUrl('/accounting/chart-of-accounts');
   };
 }

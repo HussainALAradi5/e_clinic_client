@@ -17,6 +17,7 @@ import { GenericStatus } from '@enums/shared/generic-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { ClinicalOrder } from '@interfaces/clinic/clinical-order.interface';
 import { ClinicalOrderApi } from '@services/clinic/clinical-order-api.service';
+import { ORDER_WORKLIST_TEXT } from '@constants/clinic/order-worklist.constants';
 
 /** Work list refresh — orders arrive from consulting rooms all day. */
 const REFRESH_MS = 60_000;
@@ -89,8 +90,12 @@ export class OrderWorklistPage {
 
   protected nextLabel(order: ClinicalOrder): string {
     if (order.status !== GenericStatus.Pending)
-      return order.type === ClinicalOrderType.Referral ? 'Reply received' : 'Record result';
-    if (order.type !== ClinicalOrderType.Referral) return 'Start';
-    return order.referredToCompanyId ? 'Letter sent' : 'Book visit';
+      return order.type === ClinicalOrderType.Referral
+        ? ORDER_WORKLIST_TEXT.replyReceived
+        : ORDER_WORKLIST_TEXT.recordResult;
+    if (order.type !== ClinicalOrderType.Referral) return ORDER_WORKLIST_TEXT.start;
+    return order.referredToCompanyId
+      ? ORDER_WORKLIST_TEXT.letterSent
+      : ORDER_WORKLIST_TEXT.bookVisit;
   }
 }

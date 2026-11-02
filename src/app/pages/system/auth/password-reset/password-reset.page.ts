@@ -27,6 +27,7 @@ import { ResetStep } from '@enums/auth/reset-step.enum';
 import { AuthApi } from '@services/identity/auth-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { AppValidators } from '@validations/validators';
+import { PASSWORD_RESET_TEXT } from '@constants/system/password-reset.constants';
 
 /**
  * `/password/forgot` — email → 6-digit code sent by email → new password (neutral answers, no account enumeration).
@@ -118,7 +119,7 @@ export class PasswordResetPage implements OnInit {
   }): Promise<void> => {
     const token = this.codeToken() ?? this.token() ?? '';
     await firstValueFrom(this.api.resetPassword({ ...value, token }));
-    this.notify.success('Password saved. Sign in with your new password.');
+    this.notify.success(PASSWORD_RESET_TEXT.passwordSavedSignInWith);
     await this.router.navigateByUrl(LOGIN_PATH);
   };
 
@@ -126,7 +127,7 @@ export class PasswordResetPage implements OnInit {
     await firstValueFrom(this.api.forgotPassword({ email: this.requestForm.controls.email.value }));
     this.codeForm.reset();
     this.startCooldown();
-    this.notify.info('A new code is on its way. Earlier codes no longer work.');
+    this.notify.info(PASSWORD_RESET_TEXT.aNewCodeIsOn);
   };
 
   ngOnInit(): void {

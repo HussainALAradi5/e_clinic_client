@@ -36,6 +36,7 @@ import { PageChange } from '@interfaces/ui/page-change.interface';
 import { TableColumn } from '@interfaces/ui/table.interface';
 import { SavedView } from '@interfaces/view/saved-view.interface';
 import { defaultQuery, fromViewQuery, queryFromUrl, queryToUrl } from '@utilities/list-query';
+import { RESOURCE_LIST_TEXT } from '@constants/common/resource-list.constants';
 
 /**
  * Generic list page for any resource: schema-driven filters, saved views, table, pagination, multi-select bulk bar,
@@ -79,7 +80,7 @@ export class ResourceListPage implements OnInit {
   /** Router link with `:id`, e.g. '/clinic/rooms/:id'. */
   readonly rowLink = input<string | null>(null);
   readonly defaults = input<ListQuery>(defaultQuery());
-  readonly emptyTitle = input('No records found');
+  readonly emptyTitle = input(RESOURCE_LIST_TEXT.noRecordsFound);
   /** Offer the saved-views menu. */
   readonly views = input(true);
   /** Fixed endpoint parameters, e.g. `{ role: 'doctor' }` (the users of one role). */

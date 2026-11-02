@@ -47,6 +47,7 @@ import {
 } from '@utilities/filter-conditions';
 import { rootConditions, setRootCondition } from '@utilities/list-query';
 import { recordName } from '@utilities/text';
+import { GENERIC_FILTER_TEXT } from '@constants/common/generic-filter.constants';
 
 /** Labels named in the search placeholder before it ends in "…". */
 const SEARCH_HINT_WORDS = 2;
@@ -135,14 +136,17 @@ export class GenericFilter implements OnInit {
   protected readonly searchPlaceholder = computed(() => {
     const words = (this.schema().searchHint ?? []).map((label) => label.toLowerCase());
     return words.length
-      ? `Search ${words.slice(0, SEARCH_HINT_WORDS).join(', ')}${words.length > SEARCH_HINT_WORDS ? '…' : ''}`
-      : 'Search';
+      ? GENERIC_FILTER_TEXT.search2(
+          words.slice(0, SEARCH_HINT_WORDS).join(', '),
+          words.length > SEARCH_HINT_WORDS ? '…' : '',
+        )
+      : GENERIC_FILTER_TEXT.search;
   });
   /** The whole list when the placeholder had to stop short. */
   protected readonly searchTip = computed(() => {
     const words = (this.schema().searchHint ?? []).map((label) => label.toLowerCase());
     return words.length > SEARCH_HINT_WORDS
-      ? `Finds ${words.slice(0, -1).join(', ')} and ${words[words.length - 1]}`
+      ? GENERIC_FILTER_TEXT.findsAnd(words.slice(0, -1).join(', '), words[words.length - 1])
       : '';
   });
   protected readonly hasActive = computed(() => {

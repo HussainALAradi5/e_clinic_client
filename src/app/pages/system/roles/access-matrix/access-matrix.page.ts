@@ -27,13 +27,14 @@ import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { FLAG_KEYS, matrixDiff, setAction, setAll, setFlag } from '@utilities/access-matrix';
 import { humanise } from '@utilities/text';
+import { ACCESS_MATRIX_TEXT } from '@constants/system/access-matrix.constants';
 
 const FLAG_LABELS: Record<AccessFlag, string> = {
-  [AccessFlag.ReadOwn]: 'Read own',
-  [AccessFlag.ReadAll]: 'Read all',
-  [AccessFlag.Create]: 'Create',
-  [AccessFlag.Write]: 'Write',
-  [AccessFlag.Delete]: 'Delete',
+  [AccessFlag.ReadOwn]: ACCESS_MATRIX_TEXT.readOwn,
+  [AccessFlag.ReadAll]: ACCESS_MATRIX_TEXT.readAll,
+  [AccessFlag.Create]: ACCESS_MATRIX_TEXT.create,
+  [AccessFlag.Write]: ACCESS_MATRIX_TEXT.write,
+  [AccessFlag.Delete]: ACCESS_MATRIX_TEXT.delete,
 };
 
 /**
@@ -142,17 +143,17 @@ export class AccessMatrixPage implements OnInit, HasUnsavedChanges {
   protected readonly save = async (): Promise<void> => {
     const { added, removed, changedRows } = this.diff();
     const confirmed = await this.dialogs.confirm({
-      title: 'Save access changes?',
+      title: ACCESS_MATRIX_TEXT.saveAccessChanges,
       message:
         `${added.length} permission(s) granted, ${removed.length} removed on ${changedRows.length} resource(s). ` +
-        'Users holding this role are signed out so the new rights apply.',
-      confirmLabel: 'Save',
+        ACCESS_MATRIX_TEXT.usersHoldingThisRoleAre,
+      confirmLabel: ACCESS_MATRIX_TEXT.save,
     });
     if (!confirmed) {
       return;
     }
     await this.store.saveMatrix(changedRows);
-    this.notify.success('Access matrix saved.');
+    this.notify.success(ACCESS_MATRIX_TEXT.accessMatrixSaved);
   };
 
   private replace(row: AccessRow): void {

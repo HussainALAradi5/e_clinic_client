@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { DATE_FORMAT } from '@constants/app.constants';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
+import { APPOINTMENT_ROWS_TEXT } from '@constants/clinic/appointment-rows.constants';
 
 /** Compact booking rows (date, time, who, status) linking to the booking — patient, doctor and room pages. */
 @Component({
@@ -17,6 +18,6 @@ export class AppointmentRows {
   readonly appointments = input.required<Appointment[]>();
   /** Which party to name: the patient (doctor / room pages) or the provider (patient page). */
   readonly show = input<'patient' | 'provider'>('patient');
-  readonly empty = input('No appointments.');
+  readonly empty = input(APPOINTMENT_ROWS_TEXT.noAppointments);
   protected readonly dateFormat = DATE_FORMAT;
 }

@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { BrandMark } from '@components/common/brand-mark/brand-mark.component';
 import { CodeImage } from '@components/common/code-image/code-image.component';
 import { CLINIC_TIME_ZONE } from '@constants/app.constants';
+import { PRINT_SHEET_TEXT } from '@constants/common/print-sheet.constants';
 
 /**
  * Printable document: clinic header, title, content, and a signed QR the receiver can scan to check the document
@@ -25,9 +26,7 @@ export class PrintSheet {
   readonly reference = input.required<string>();
   readonly paper = input<'a4' | 'receipt'>('a4');
   /** Line next to the QR code. */
-  readonly verifyNote = input(
-    'Scan the code to check this document is genuine and still valid. It carries no medical details.',
-  );
+  readonly verifyNote = input(PRINT_SHEET_TEXT.scanTheCodeToCheck);
 
   protected readonly today = new Intl.DateTimeFormat('en-GB', {
     dateStyle: 'long',

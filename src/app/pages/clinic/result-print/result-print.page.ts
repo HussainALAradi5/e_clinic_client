@@ -17,6 +17,7 @@ import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { AttachmentApi } from '@services/attachment/attachment-api.service';
 import { EnumService } from '@services/data/enum.service';
 import { ClinicalOrderApi } from '@services/clinic/clinical-order-api.service';
+import { RESULT_PRINT_TEXT } from '@constants/clinic/result-print.constants';
 
 /**
  * `/print/result/:id` — the report of an X-ray, ultrasound or lab test: patient, who ordered, performed and reported
@@ -40,13 +41,13 @@ export class ResultPrintPage implements OnInit {
   protected readonly title = computed(() => {
     switch (this.order()?.type) {
       case 'xray':
-        return 'X-ray report';
+        return RESULT_PRINT_TEXT.xRayReport;
       case 'ultrasound':
-        return 'Ultrasound report';
+        return RESULT_PRINT_TEXT.ultrasoundReport;
       case 'lab_test':
-        return 'Laboratory result';
+        return RESULT_PRINT_TEXT.laboratoryResult;
       default:
-        return 'Result report';
+        return RESULT_PRINT_TEXT.resultReport;
     }
   });
 

@@ -25,6 +25,7 @@ import { TreatmentApi } from '@services/clinic/treatment-api.service';
 import { PrescriptionApi } from '@services/pharmacy/prescription-api.service';
 import { clinicIsoDate, clinicTime } from '@utilities/clinic-time';
 import { formatMoney, fromMinor, money, toMinor } from '@utilities/money';
+import { HOME_TEXT } from '@constants/portal/home.constants';
 
 const UPCOMING = [
   AppointmentStatus.Pending,
@@ -63,7 +64,12 @@ export class PortalHomePage {
   protected readonly visitsPath = `${PORTAL_PATH}/appointments`;
   protected readonly greeting = computed(() => {
     const hour = Number(clinicTime().slice(0, 2));
-    const part = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+    const part =
+      hour < 12
+        ? HOME_TEXT.goodMorning
+        : hour < 18
+          ? HOME_TEXT.goodAfternoon
+          : HOME_TEXT.goodEvening;
     return `${part}, ${this.auth.user()?.firstName ?? ''}`;
   });
 
@@ -137,14 +143,14 @@ export class PortalHomePage {
       { ...area(RESULTS), ...this.resultLine(results?.data[0]) },
       {
         ...area(INVOICES),
-        detail: due > 0n ? `${formatMoney(money(fromMinor(due)))} to pay` : 'Nothing to pay',
+        detail: due > 0n ? `${formatMoney(money(fromMinor(due)))} to pay` : HOME_TEXT.nothingToPay,
         flag: due > 0n,
       },
     ]);
   }
 
   private treatmentLine(t: Treatment | undefined): Pick<Glance, 'detail' | 'flag'> {
-    if (!t) return { detail: 'No treatment plan running', flag: false };
+    if (!t) return { detail: HOME_TEXT.noTreatmentPlanRunning, flag: false };
     const next = t.progress?.nextSession;
     const done = `${t.progress?.attendedSessions ?? 0} of ${t.plannedSessions} sessions`;
     return {
@@ -158,7 +164,7 @@ export class PortalHomePage {
   private prescriptionLine(list: Prescription[]): Pick<Glance, 'detail' | 'flag'> {
     return list.length
       ? { detail: `${list.length} to collect at the pharmacy`, flag: true }
-      : { detail: 'Nothing to collect', flag: false };
+      : { detail: HOME_TEXT.nothingToCollect, flag: false };
   }
 
   private resultLine(o: ClinicalOrder | undefined): Pick<Glance, 'detail' | 'flag'> {
@@ -167,6 +173,6 @@ export class PortalHomePage {
           detail: `${o.description}${o.completedAt ? ', ' + visitDay(o.completedAt.slice(0, 10)) : ''}`,
           flag: false,
         }
-      : { detail: 'No results yet', flag: false };
+      : { detail: HOME_TEXT.noResultsYet, flag: false };
   }
 }

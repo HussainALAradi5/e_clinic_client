@@ -19,6 +19,7 @@ import { ChatMessage } from '@interfaces/communication/chat-message.interface';
 import { SendMessagePayload } from '@interfaces/communication/send-message-payload.interface';
 import { ChatAvatar } from '../chat-avatar/chat-avatar.component';
 import { fileSize } from '@utilities/communication/chat-style';
+import { MESSAGE_COMPOSER_TEXT } from '@constants/communication/message-composer.constants';
 
 /** Same limits as the server (attachments config: chat_media). */
 const MAX_FILES = 10;
@@ -96,10 +97,11 @@ export class MessageComposer implements OnDestroy {
     const tooBig = incoming.filter((f) => f.size > MAX_MB * 1024 * 1024);
     if (tooBig.length)
       this.rejected.emit(
-        `Files over ${MAX_MB} MB can't be sent: ${tooBig.map((f) => f.name).join(', ')}`,
+        MESSAGE_COMPOSER_TEXT.filesOverMbCanT(MAX_MB, tooBig.map((f) => f.name).join(', ')),
       );
     const next = [...this.files(), ...incoming.filter((f) => !tooBig.includes(f))];
-    if (next.length > MAX_FILES) this.rejected.emit(`Up to ${MAX_FILES} files per message.`);
+    if (next.length > MAX_FILES)
+      this.rejected.emit(MESSAGE_COMPOSER_TEXT.upToFilesPerMessage(MAX_FILES));
     this.files.set(next.slice(0, MAX_FILES));
   }
 
@@ -201,7 +203,7 @@ export class MessageComposer implements OnDestroy {
       this.seconds.set(0);
       this.timer = setInterval(() => this.seconds.update((s) => s + 1), 1000);
     } catch {
-      this.rejected.emit('Microphone not available — allow it in the browser to send voice notes.');
+      this.rejected.emit(MESSAGE_COMPOSER_TEXT.microphoneNotAvailableAllowIt);
     }
   }
 

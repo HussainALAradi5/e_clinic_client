@@ -12,6 +12,7 @@ import { ButtonVariant } from '@enums/ui/button.enum';
 import { AccessService } from '@services/auth/access.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { PATIENT_LIST_TEXT } from '@constants/clinic/patient-list.constants';
 
 /** `/clinic/patients` — find a patient by name, file number or mobile; register new ones. */
 @Component({
@@ -57,7 +58,7 @@ export class PatientListPage {
       this.notify.success(`${result.patient.fullName} registered as ${result.patient.code}.`);
       await this.router.navigate(['/clinic/patients', result.patient.id]);
     } else {
-      this.notify.info('This person already has a patient file — opening it.');
+      this.notify.info(PATIENT_LIST_TEXT.thisPersonAlreadyHasA);
       await this.router.navigate(['/clinic/patients', result.existingId]);
     }
   };

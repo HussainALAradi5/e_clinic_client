@@ -40,6 +40,7 @@ import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 import { formatMoney } from '@utilities/money';
+import { DOCTOR_DETAIL_TEXT } from '@constants/clinic/doctor-detail.constants';
 
 /** `/clinic/doctors/:id` — profile, fees, weekly schedule, upcoming bookings; booking switch. */
 @Component({
@@ -87,30 +88,33 @@ export class DoctorDetailPage implements OnInit {
     const d = this.doctor();
     if (!d) return [];
     return [
-      { label: 'Specialty', value: d.specialty?.name },
-      { label: 'Title', value: d.title },
-      { label: 'Department', value: d.department?.name },
-      { label: 'NHRA licence', value: d.licenseNumber, mono: true },
-      { label: 'Licence valid until', value: d.licenseExpiryDate },
+      { label: DOCTOR_DETAIL_TEXT.specialty, value: d.specialty?.name },
+      { label: DOCTOR_DETAIL_TEXT.title, value: d.title },
+      { label: DOCTOR_DETAIL_TEXT.department, value: d.department?.name },
+      { label: DOCTOR_DETAIL_TEXT.nhraLicence, value: d.licenseNumber, mono: true },
+      { label: DOCTOR_DETAIL_TEXT.licenceValidUntil, value: d.licenseExpiryDate },
       {
-        label: 'Consultation',
+        label: DOCTOR_DETAIL_TEXT.consultation,
         value: d.consultationService
           ? `${d.consultationService.name} — ${formatMoney(d.consultationService.price)}`
           : null,
       },
       {
-        label: 'Follow-up',
+        label: DOCTOR_DETAIL_TEXT.followUp,
         value: d.followUpService
           ? `${d.followUpService.name} — ${formatMoney(d.followUpService.price)}`
           : null,
       },
-      { label: 'Slot length', value: `${d.defaultSlotMinutes} min` },
-      { label: 'Daily limit', value: d.maxDailyAppointments ?? 'None' },
+      { label: DOCTOR_DETAIL_TEXT.slotLength, value: `${d.defaultSlotMinutes} min` },
       {
-        label: 'Usual room',
+        label: DOCTOR_DETAIL_TEXT.dailyLimit,
+        value: d.maxDailyAppointments ?? DOCTOR_DETAIL_TEXT.none,
+      },
+      {
+        label: DOCTOR_DETAIL_TEXT.usualRoom,
         value: d.defaultRoom ? `${d.defaultRoom.code} · ${d.defaultRoom.name}` : null,
       },
-      { label: 'Mobile', value: d.phone },
+      { label: DOCTOR_DETAIL_TEXT.mobile, value: d.phone },
     ];
   });
 
@@ -145,7 +149,9 @@ export class DoctorDetailPage implements OnInit {
   protected async setAccepting(accepting: boolean): Promise<void> {
     this.doctor.set(await firstValueFrom(this.api.setAccepting(this.id(), accepting)));
     this.notify.success(
-      accepting ? 'New bookings are open.' : 'New bookings paused — existing ones stay.',
+      accepting
+        ? DOCTOR_DETAIL_TEXT.newBookingsAreOpen
+        : DOCTOR_DETAIL_TEXT.newBookingsPausedExistingOnes,
     );
   }
 
@@ -157,7 +163,7 @@ export class DoctorDetailPage implements OnInit {
     );
     if (saved) {
       this.doctor.set(saved);
-      this.notify.success('Doctor profile saved.');
+      this.notify.success(DOCTOR_DETAIL_TEXT.doctorProfileSaved);
     }
   };
 

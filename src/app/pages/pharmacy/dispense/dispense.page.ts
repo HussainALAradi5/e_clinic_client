@@ -20,6 +20,7 @@ import { CodeApi } from '@services/code/code-api.service';
 import { PrescriptionApi } from '@services/pharmacy/prescription-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { defaultQuery } from '@utilities/list-query';
+import { DISPENSE_TEXT } from '@constants/pharmacy/dispense.constants';
 
 /** Signed QR payload of a record: `<alias>:<code>.<signature>`. */
 const QR_PAYLOAD = /^[a-z_]+:[A-Z0-9-]+\.[a-f0-9]+$/;
@@ -88,7 +89,7 @@ export class DispensePage implements OnInit {
         this.mode.set('prescriptions');
         this.selected.set(result.id);
       } else {
-        this.notify.error('This code is not a valid prescription.');
+        this.notify.error(DISPENSE_TEXT.thisCodeIsNotA);
       }
       await this.loadQueue();
       return;

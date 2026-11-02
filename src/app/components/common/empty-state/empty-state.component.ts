@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { EMPTY_STATE_TEXT } from '@constants/common/empty-state.constants';
 
 /** Empty state with the primary action projected: <ui-empty title="No rooms yet"><ui-button>New room</ui-button></ui-empty> */
 @Component({
@@ -10,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './empty-state.component.scss',
 })
 export class EmptyState {
-  readonly title = input('Nothing here yet');
+  readonly title = input(EMPTY_STATE_TEXT.nothingHereYet);
   readonly message = input<string | null>(null);
   readonly icon = input('inbox');
 }

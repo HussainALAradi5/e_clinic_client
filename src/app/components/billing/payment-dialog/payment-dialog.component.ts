@@ -32,14 +32,19 @@ import { DialogService } from '@services/ui/dialog.service';
 import { fromMinor, toMinor } from '@utilities/money';
 import { AppValidators } from '@validations/validators';
 import { PaymentRow } from '@interfaces/billing/payment-dialog.interface';
+import { PAYMENT_DIALOG_TEXT } from '@constants/billing/payment-dialog.constants';
 
 /** Desk methods (insurance settles through claims, never at the desk). */
 const METHODS: readonly { value: PaymentMethod; label: string; icon: string }[] = [
-  { value: PaymentMethod.Cash, label: 'Cash', icon: 'payments' },
-  { value: PaymentMethod.Card, label: 'Card', icon: 'credit_card' },
+  { value: PaymentMethod.Cash, label: PAYMENT_DIALOG_TEXT.cash, icon: 'payments' },
+  { value: PaymentMethod.Card, label: PAYMENT_DIALOG_TEXT.card, icon: 'credit_card' },
   { value: PaymentMethod.BenefitPay, label: 'BenefitPay', icon: 'qr_code_2' },
-  { value: PaymentMethod.BankTransfer, label: 'Transfer', icon: 'account_balance' },
-  { value: PaymentMethod.Cheque, label: 'Cheque', icon: 'receipt' },
+  {
+    value: PaymentMethod.BankTransfer,
+    label: PAYMENT_DIALOG_TEXT.transfer,
+    icon: 'account_balance',
+  },
+  { value: PaymentMethod.Cheque, label: PAYMENT_DIALOG_TEXT.cheque, icon: 'receipt' },
 ];
 
 /**

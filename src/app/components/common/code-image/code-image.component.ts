@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { CodeApi } from '@services/code/code-api.service';
+import { CODE_IMAGE_TEXT } from '@constants/common/code-image.constants';
 
 /**
  * Signed QR code of a record (`entity` alias + id), loaded from the API as an image. Size it with classes on the host
@@ -24,7 +25,7 @@ export class CodeImage {
   readonly entity = input.required<string>();
   readonly recordId = input.required<string>();
   readonly pixels = input(240);
-  readonly label = input('QR code');
+  readonly label = input(CODE_IMAGE_TEXT.qrCode);
 
   private readonly codes = inject(CodeApi);
   protected readonly url = signal<string | null>(null);

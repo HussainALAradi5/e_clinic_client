@@ -37,6 +37,7 @@ import { LeaveApi } from '@services/hr/leave-api.service';
 import { clinicDateTime, clinicIsoDate } from '@utilities/clinic-time';
 import { defaultQuery } from '@utilities/list-query';
 import { formatQty } from '@utilities/quantity';
+import { LEAVE_DETAIL_TEXT } from '@constants/hr/leave-detail.constants';
 
 /** `/hr/leaves/:id` — a leave request, its certificate, the decision (by someone else) and its history. */
 @Component({
@@ -99,23 +100,29 @@ export class LeaveDetailPage implements OnInit {
     if (!l) return [];
     return [
       {
-        label: 'Employee',
+        label: LEAVE_DETAIL_TEXT.employee,
         value: l.employee ? `${l.employee.fullName} · ${l.employee.jobTitle}` : null,
       },
-      { label: 'Department', value: l.employee?.department?.name },
+      { label: LEAVE_DETAIL_TEXT.department, value: l.employee?.department?.name },
       {
-        label: 'Type',
+        label: LEAVE_DETAIL_TEXT.type,
         value: l.leaveType ? `${l.leaveType.name}${l.leaveType.isPaid ? '' : ' (unpaid)'}` : null,
       },
-      { label: 'From', value: l.startDate },
-      { label: 'To', value: l.endDate },
-      { label: 'Working days', value: l.isHalfDay ? 'Half a day' : formatQty(l.totalDays) },
-      { label: 'Reason', value: l.reason },
+      { label: LEAVE_DETAIL_TEXT.from, value: l.startDate },
+      { label: LEAVE_DETAIL_TEXT.to, value: l.endDate },
       {
-        label: l.status === ApprovalStatus.Rejected ? 'Rejected by' : 'Decided by',
+        label: LEAVE_DETAIL_TEXT.workingDays,
+        value: l.isHalfDay ? LEAVE_DETAIL_TEXT.halfADay : formatQty(l.totalDays),
+      },
+      { label: LEAVE_DETAIL_TEXT.reason, value: l.reason },
+      {
+        label:
+          l.status === ApprovalStatus.Rejected
+            ? LEAVE_DETAIL_TEXT.rejectedBy
+            : LEAVE_DETAIL_TEXT.decidedBy,
         value: l.reviewedBy ? `${l.reviewedBy.fullName} · ${clinicDateTime(l.reviewedAt)}` : null,
       },
-      { label: 'Note', value: l.reviewNotes },
+      { label: LEAVE_DETAIL_TEXT.note, value: l.reviewNotes },
     ].filter((f) => f.value !== null && f.value !== undefined && f.value !== '');
   });
 

@@ -17,6 +17,7 @@ import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { AccessService } from '@services/auth/access.service';
 import { AccountApi } from '@services/accounting/account-api.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { ACCOUNT_MAPPINGS_TEXT } from '@constants/accounting/account-mappings.constants';
 
 /** `/accounting/chart-of-accounts/mappings` — which posting account each automatic entry uses. */
 @Component({
@@ -81,6 +82,6 @@ export class AccountMappingsPage {
       .map(([key, control]) => ({ key, accountId: control.value as string }));
     this.mappings.set(await firstValueFrom(this.api.updateMappings(changed)));
     this.form.markAsPristine();
-    this.notify.success('Posting accounts saved.');
+    this.notify.success(ACCOUNT_MAPPINGS_TEXT.postingAccountsSaved);
   };
 }

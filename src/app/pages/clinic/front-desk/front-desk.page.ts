@@ -23,16 +23,33 @@ import { Appointment } from '@interfaces/clinic/appointment.interface';
 import { AppointmentApi } from '@services/clinic/appointment-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 import { Lane } from '@interfaces/clinic/front-desk.interface';
+import { FRONT_DESK_TEXT } from '@constants/clinic/front-desk.constants';
 
 /** Board refresh interval — other desks and doctors move bookings too. */
 const REFRESH_MS = 30_000;
 
 const { Pending, Confirmed, CheckedIn, InProgress, Completed, NoShow } = AppointmentStatus;
 const LANES: Lane[] = [
-  { title: 'Expected', hint: 'Check patients in as they arrive', statuses: [Pending, Confirmed] },
-  { title: 'Waiting', hint: 'Checked in, waiting for the doctor', statuses: [CheckedIn] },
-  { title: 'With doctor', hint: 'Visit in progress', statuses: [InProgress] },
-  { title: 'Done', hint: 'Completed or did not come', statuses: [Completed, NoShow] },
+  {
+    title: FRONT_DESK_TEXT.expected,
+    hint: FRONT_DESK_TEXT.checkPatientsInAsThey,
+    statuses: [Pending, Confirmed],
+  },
+  {
+    title: FRONT_DESK_TEXT.waiting,
+    hint: FRONT_DESK_TEXT.checkedInWaitingForThe,
+    statuses: [CheckedIn],
+  },
+  {
+    title: FRONT_DESK_TEXT.withDoctor,
+    hint: FRONT_DESK_TEXT.visitInProgress,
+    statuses: [InProgress],
+  },
+  {
+    title: FRONT_DESK_TEXT.done,
+    hint: FRONT_DESK_TEXT.completedOrDidNotCome,
+    statuses: [Completed, NoShow],
+  },
 ];
 
 /** `/clinic/front-desk` — today's bookings as a board: expected → waiting → with doctor → done. Refreshes itself. */

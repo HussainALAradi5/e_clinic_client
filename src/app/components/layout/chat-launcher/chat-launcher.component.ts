@@ -15,6 +15,7 @@ import { ChatSettingsStore } from '@services/communication/chat-settings.store';
 import { RealtimeService } from '@services/communication/realtime.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { poll } from '@utilities/poll';
+import { CHAT_LAUNCHER_TEXT } from '@constants/layout/chat-launcher.constants';
 
 const POLL_MS = 60_000;
 export const CHAT_PATH = '/chat';
@@ -98,7 +99,7 @@ export class ChatLauncher {
         ) {
           const text =
             event.body ?? (event.kind === MessageKind.Voice ? '🎤 Voice note' : '📎 File');
-          this.notify.info(`${event.sender.fullName}: ${text}`, 'Open').subscribe(
+          this.notify.info(`${event.sender.fullName}: ${text}`, CHAT_LAUNCHER_TEXT.open).subscribe(
             () =>
               void this.router.navigate([CHAT_PATH], {
                 queryParams: { c: event.conversationId },

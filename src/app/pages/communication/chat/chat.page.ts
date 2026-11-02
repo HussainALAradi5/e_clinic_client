@@ -45,6 +45,7 @@ import { MessageComposer } from '@components/communication/message-composer/mess
 import { NewChatDialog } from '@components/communication/new-chat-dialog/new-chat-dialog.component';
 import { chatStamp, dayLabel } from '@utilities/communication/chat-style';
 import { MessageRow } from '@interfaces/communication/message-row.interface';
+import { CHAT_TEXT } from '@constants/communication/chat.constants';
 
 const PAGE_SIZE = 20;
 /** Messages closer than this from the same sender share one avatar / name. */
@@ -105,11 +106,11 @@ export class ChatPage implements OnInit {
   protected readonly roles = ParticipantRole;
   protected readonly types = ConversationType;
   protected readonly chips = [
-    { value: ChatFilter.All, label: 'All', icon: 'forum' },
-    { value: ChatFilter.Unread, label: 'Unread', icon: 'mark_chat_unread' },
-    { value: ChatFilter.Groups, label: 'Groups', icon: 'groups' },
-    { value: ChatFilter.Direct, label: 'One-to-one', icon: 'person' },
-    { value: ChatFilter.Read, label: 'Read', icon: 'done_all' },
+    { value: ChatFilter.All, label: CHAT_TEXT.all, icon: 'forum' },
+    { value: ChatFilter.Unread, label: CHAT_TEXT.unread, icon: 'mark_chat_unread' },
+    { value: ChatFilter.Groups, label: CHAT_TEXT.groups, icon: 'groups' },
+    { value: ChatFilter.Direct, label: CHAT_TEXT.oneToOne, icon: 'person' },
+    { value: ChatFilter.Read, label: CHAT_TEXT.read, icon: 'done_all' },
   ];
 
   // Chat list (server-side search, filters and paging)
@@ -147,7 +148,7 @@ export class ChatPage implements OnInit {
       const partner = chat.members.find((m) => !m.isMe);
       return partner ? this.enums.label('UserType', partner.userType) : '';
     }
-    return chat.members.map((m) => (m.isMe ? 'You' : m.fullName.split(' ')[0])).join(', ');
+    return chat.members.map((m) => (m.isMe ? CHAT_TEXT.you : m.fullName.split(' ')[0])).join(', ');
   });
 
   protected readonly rows = computed<MessageRow[]>(() => {
@@ -380,7 +381,7 @@ export class ChatPage implements OnInit {
   protected jumpTo(messageId: string): void {
     const el = document.getElementById(`msg-${messageId}`);
     if (!el) {
-      this.notify.info('That message is further back — scroll up to load it.');
+      this.notify.info(CHAT_TEXT.thatMessageIsFurtherBack);
       return;
     }
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -436,12 +437,12 @@ export class ChatPage implements OnInit {
 
   protected async deleteChat(chat: Conversation): Promise<void> {
     const ok = await this.dialogs.confirm({
-      title: `Delete "${chat.title}"?`,
+      title: CHAT_TEXT.delete(chat.title),
       message:
         chat.type === ConversationType.Group
-          ? 'The group disappears for every member. Nothing is erased — an admin can restore it.'
-          : 'The chat disappears for both of you. Nothing is erased — an admin can restore it.',
-      confirmLabel: 'Delete chat',
+          ? CHAT_TEXT.theGroupDisappearsForEvery
+          : CHAT_TEXT.theChatDisappearsForBoth,
+      confirmLabel: CHAT_TEXT.deleteChat,
       danger: true,
     });
     if (!ok) return;
@@ -450,7 +451,7 @@ export class ChatPage implements OnInit {
         this.chats.update((list) => list.filter((c) => c.id !== chat.id));
         this.total.update((n) => Math.max(0, n - 1));
         if (this.selectedId() === chat.id) this.back();
-        this.notify.success('Chat deleted.');
+        this.notify.success(CHAT_TEXT.chatDeleted);
       },
       error: (e: unknown) => this.notify.error(e),
     });
@@ -492,7 +493,7 @@ export class ChatPage implements OnInit {
   // ---- drag & drop ------------------------------------------------------------------------------------------
 
   protected dragOver(event: DragEvent): void {
-    if (!this.selectedId() || !event.dataTransfer?.types.includes('Files')) return;
+    if (!this.selectedId() || !event.dataTransfer?.types.includes(CHAT_TEXT.files)) return;
     event.preventDefault();
     this.dragging.set(true);
   }
@@ -516,10 +517,11 @@ export class ChatPage implements OnInit {
 
   protected preview(chat: Conversation): string {
     const m = chat.lastMessage;
-    if (!m) return chat.type === ConversationType.Group ? 'Group created' : 'Say hello 👋';
+    if (!m)
+      return chat.type === ConversationType.Group ? CHAT_TEXT.groupCreated : CHAT_TEXT.sayHello;
     const who =
       m.sender.id === this.me()
-        ? 'You: '
+        ? CHAT_TEXT.you2
         : chat.type === ConversationType.Group
           ? `${m.sender.fullName.split(' ')[0]}: `
           : '';
@@ -527,7 +529,7 @@ export class ChatPage implements OnInit {
       m.kind === MessageKind.Voice
         ? '🎤 Voice note'
         : m.kind === MessageKind.Media && !m.body
-          ? `📎 ${m.attachments.length > 1 ? `${m.attachments.length} files` : 'File'}`
+          ? `📎 ${m.attachments.length > 1 ? `${m.attachments.length} files` : CHAT_TEXT.file}`
           : (m.body ?? '');
     return who + text;
   }
@@ -547,7 +549,7 @@ export class ChatPage implements OnInit {
         if (event.sender.id !== this.me()) this.markRead(event.conversationId);
       } else if (event.sender.id !== this.me() && this.settings().notifyMessages) {
         this.notify.info(
-          `${event.sender.fullName}: ${event.body ?? (event.kind === MessageKind.Voice ? 'Voice note' : 'File')}`,
+          `${event.sender.fullName}: ${event.body ?? (event.kind === MessageKind.Voice ? CHAT_TEXT.voiceNote : CHAT_TEXT.file)}`,
         );
       }
       this.bump(event, !open && event.sender.id !== this.me());

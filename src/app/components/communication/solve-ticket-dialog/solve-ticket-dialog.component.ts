@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SolveTicketData } from '@interfaces/communication/solve-ticket-dialog.interface';
 import { TicketSolution } from '@interfaces/communication/ticket-solution.interface';
+import { SOLVE_TICKET_DIALOG_TEXT } from '@constants/communication/solve-ticket-dialog.constants';
 
 const MAX_STEPS = 20;
 
@@ -190,7 +191,9 @@ export class SolveTicketDialog {
   );
   protected readonly label = computed(() => {
     const n = this.filled().length;
-    return n ? `Mark solved (${n} ${n === 1 ? 'step' : 'steps'})` : 'Mark solved';
+    return n
+      ? SOLVE_TICKET_DIALOG_TEXT.markSolved2(n, n === 1 ? 'step' : 'steps')
+      : SOLVE_TICKET_DIALOG_TEXT.markSolved;
   });
 
   protected done(): void {

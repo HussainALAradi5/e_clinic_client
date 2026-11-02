@@ -34,6 +34,7 @@ import { ConfirmConfig } from '@interfaces/ui/confirm-config.interface';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { humanise, initials } from '@utilities/text';
+import { ROLE_DETAIL_TEXT } from '@constants/system/role-detail.constants';
 
 /** `/system/roles-permissions/:id` — role facts, granted rights (read-only), lifecycle actions and history. */
 @Component({
@@ -83,9 +84,9 @@ export class RoleDetailPage implements OnInit {
       ),
   );
   protected readonly deleteConfirm: ConfirmConfig = {
-    title: 'Delete this role?',
-    message: 'It can be restored later from the deleted roles list.',
-    confirmLabel: 'Delete',
+    title: ROLE_DETAIL_TEXT.deleteThisRole,
+    message: ROLE_DETAIL_TEXT.itCanBeRestoredLater,
+    confirmLabel: ROLE_DETAIL_TEXT.delete,
     danger: true,
   };
 
@@ -103,7 +104,7 @@ export class RoleDetailPage implements OnInit {
       },
     );
     if (saved) {
-      this.notify.success('Role saved.');
+      this.notify.success(ROLE_DETAIL_TEXT.roleSaved);
     }
   };
 
@@ -112,17 +113,17 @@ export class RoleDetailPage implements OnInit {
 
   protected readonly archive = async (): Promise<void> => {
     await this.store.archive();
-    this.notify.success('Role archived — hidden from pickers.');
+    this.notify.success(ROLE_DETAIL_TEXT.roleArchivedHiddenFromPickers);
   };
 
   protected readonly unarchive = async (): Promise<void> => {
     await this.store.unarchive();
-    this.notify.success('Role restored to pickers.');
+    this.notify.success(ROLE_DETAIL_TEXT.roleRestoredToPickers);
   };
 
   protected readonly remove = async (): Promise<void> => {
     await this.store.remove();
-    this.notify.success('Role deleted.');
+    this.notify.success(ROLE_DETAIL_TEXT.roleDeleted);
     await this.router.navigateByUrl('/system/roles-permissions');
   };
 
@@ -146,9 +147,9 @@ export class RoleDetailPage implements OnInit {
 
   protected removeConfirm(user: User): ConfirmConfig {
     return {
-      title: `Remove ${user.fullName} from ${this.store.role()?.displayName}?`,
-      message: 'They keep their other roles and are signed out, so the change applies right away.',
-      confirmLabel: 'Remove',
+      title: ROLE_DETAIL_TEXT.removeFrom(user.fullName, this.store.role()?.displayName),
+      message: ROLE_DETAIL_TEXT.theyKeepTheirOtherRoles,
+      confirmLabel: ROLE_DETAIL_TEXT.remove,
       danger: true,
     };
   }
@@ -163,10 +164,10 @@ export class RoleDetailPage implements OnInit {
 
   protected flags(row: AccessRow): string {
     return [
-      row.readAll ? 'Read all' : row.readOwn ? 'Read own' : null,
-      row.create ? 'Create' : null,
-      row.write ? 'Write' : null,
-      row.delete ? 'Delete' : null,
+      row.readAll ? ROLE_DETAIL_TEXT.readAll : row.readOwn ? ROLE_DETAIL_TEXT.readOwn : null,
+      row.create ? ROLE_DETAIL_TEXT.create : null,
+      row.write ? ROLE_DETAIL_TEXT.write : null,
+      row.delete ? ROLE_DETAIL_TEXT.delete : null,
     ]
       .filter((flag) => flag !== null)
       .join(' · ');

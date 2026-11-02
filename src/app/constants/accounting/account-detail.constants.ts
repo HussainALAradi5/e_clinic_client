@@ -1,0 +1,20 @@
+/** Text of accounting/account-detail/account-detail.page (labels, messages, confirmations). */
+export const ACCOUNT_DETAIL_TEXT = {
+  code: 'Code',
+  type: 'Type',
+  normalBalance: 'Normal balance',
+  kind: 'Kind',
+  groupNotPostedTo: 'Group (not posted to)',
+  postingAccount: 'Posting account',
+  parent: 'Parent',
+  topLevel: 'Top level',
+  systemAccount: 'System account',
+  yesCannotBeDeleted: 'Yes — cannot be deleted',
+  no: 'No',
+  description: 'Description',
+  accountSaved: 'Account saved.',
+  accountArchivedHiddenFromPickers: 'Account archived — hidden from pickers.',
+  accountBackInPickers: 'Account back in pickers.',
+  accountRestored: 'Account restored.',
+  accountDeleted: 'Account deleted.',
+};

@@ -13,6 +13,7 @@ import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { ConsentApi } from '@services/clinic/consent-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { CONSENTS_PANEL_TEXT } from '@constants/clinic/consents-panel.constants';
 
 /** The patient's consents with validity; record, print and revoke (patient file tab and visit workspace). */
 @Component({
@@ -50,14 +51,14 @@ export class ConsentsPanel implements OnInit {
 
   protected readonly revoke = async (consent: PatientConsent): Promise<void> => {
     const reason = await this.dialogs.reason({
-      title: `Revoke ${consent.code}?`,
-      message: 'Work that needs this consent is blocked from now on.',
-      confirmLabel: 'Revoke',
+      title: CONSENTS_PANEL_TEXT.revoke2(consent.code),
+      message: CONSENTS_PANEL_TEXT.workThatNeedsThisConsent,
+      confirmLabel: CONSENTS_PANEL_TEXT.revoke,
       danger: true,
     });
     if (!reason) return;
     await firstValueFrom(this.api.revoke(consent.id, reason));
-    this.notify.success('Consent revoked.');
+    this.notify.success(CONSENTS_PANEL_TEXT.consentRevoked);
     await this.load();
   };
 }

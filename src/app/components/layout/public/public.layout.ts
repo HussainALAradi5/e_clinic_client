@@ -7,6 +7,7 @@ import { LOGIN_PATH } from '@constants/app.constants';
 import { CLINIC_INFO } from '@constants/clinic-info.constants';
 import { AuthStore } from '@services/auth/auth.store';
 import { ThemeService } from '@services/ui/theme.service';
+import { PUBLIC_TEXT } from '@constants/layout/public.constants';
 
 /** Public website frame (no sign-in): navbar, page, footer. Signed-in users get a link back to their workspace or portal. */
 @Component({
@@ -29,9 +30,9 @@ export class PublicLayout {
   protected readonly tel = 'tel:' + CLINIC_INFO.phone.replaceAll(' ', '');
   protected readonly year = new Date().getFullYear();
   protected readonly links = [
-    { label: 'Services', fragment: 'services' },
-    { label: 'Your visit', fragment: 'visit' },
-    { label: 'Contact', fragment: 'contact' },
+    { label: PUBLIC_TEXT.services, fragment: 'services' },
+    { label: PUBLIC_TEXT.yourVisit, fragment: 'visit' },
+    { label: PUBLIC_TEXT.contact, fragment: 'contact' },
   ];
 
   protected readonly scrolled = signal(false);

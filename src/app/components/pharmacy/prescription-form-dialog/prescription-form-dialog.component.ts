@@ -27,6 +27,7 @@ import { isApiError } from '@utilities/guards';
 import { formatQty } from '@utilities/quantity';
 import { AppValidators } from '@validations/validators';
 import { ItemGroup } from '@interfaces/pharmacy/prescription-form-dialog.interface';
+import { PRESCRIPTION_FORM_DIALOG_TEXT } from '@constants/pharmacy/prescription-form-dialog.constants';
 
 /**
  * Prescription form: one line per medicine with a structured dosage (dose, how often, route, for how many days) and
@@ -150,10 +151,12 @@ export class PrescriptionFormDialog implements OnInit {
       if (!warning) throw error;
       const allergy = error.code === ErrorCode.AllergyWarning;
       const ok = await this.dialogs.confirm({
-        title: allergy ? 'Allergy warning' : 'Already prescribed',
+        title: allergy
+          ? PRESCRIPTION_FORM_DIALOG_TEXT.allergyWarning
+          : PRESCRIPTION_FORM_DIALOG_TEXT.alreadyPrescribed,
         message: error.message,
-        confirmLabel: 'Prescribe anyway',
-        cancelLabel: 'Review',
+        confirmLabel: PRESCRIPTION_FORM_DIALOG_TEXT.prescribeAnyway,
+        cancelLabel: PRESCRIPTION_FORM_DIALOG_TEXT.review,
         danger: allergy,
       });
       if (!ok) return undefined;

@@ -31,6 +31,7 @@ import { MoneyPipe } from '@pipes/money.pipe';
 import { InsuranceClaimApi } from '@services/billing/insurance-claim-api.service';
 import { clinicDateTime } from '@utilities/clinic-time';
 import { formatMoney } from '@utilities/money';
+import { CLAIM_DETAIL_TEXT } from '@constants/billing/claim-detail.constants';
 
 /** `/billing/insurance-claims/:id` — the claim, its lines and diagnoses, the next step and history. */
 @Component({
@@ -70,20 +71,26 @@ export class ClaimDetailPage implements OnInit {
     const c = this.claim();
     if (!c) return [];
     return [
-      { label: 'Patient', value: c.patient ? `${c.patient.fullName} · ${c.patient.code}` : null },
-      { label: 'Insurer', value: c.insurer?.name },
-      { label: 'Policy', value: c.policyNumber },
-      { label: 'Coverage', value: `${+c.coveragePercent}%` },
-      { label: 'Pre-authorisation', value: c.preAuthorizationNumber },
-      { label: 'Claimed', value: formatMoney(c.claimedAmount) },
-      { label: 'Approved', value: c.approvedAmount ? formatMoney(c.approvedAmount) : null },
-      { label: 'Sent', value: clinicDateTime(c.submittedAt) },
-      { label: 'Decided', value: clinicDateTime(c.decidedAt) },
-      { label: 'Insurer reference', value: c.insurerReference },
-      { label: 'Rejected because', value: c.rejectionReason },
-      { label: 'Cancelled because', value: c.cancellationReason },
       {
-        label: 'Remitted',
+        label: CLAIM_DETAIL_TEXT.patient,
+        value: c.patient ? `${c.patient.fullName} · ${c.patient.code}` : null,
+      },
+      { label: CLAIM_DETAIL_TEXT.insurer, value: c.insurer?.name },
+      { label: CLAIM_DETAIL_TEXT.policy, value: c.policyNumber },
+      { label: CLAIM_DETAIL_TEXT.coverage, value: `${+c.coveragePercent}%` },
+      { label: CLAIM_DETAIL_TEXT.preAuthorisation, value: c.preAuthorizationNumber },
+      { label: CLAIM_DETAIL_TEXT.claimed, value: formatMoney(c.claimedAmount) },
+      {
+        label: CLAIM_DETAIL_TEXT.approved,
+        value: c.approvedAmount ? formatMoney(c.approvedAmount) : null,
+      },
+      { label: CLAIM_DETAIL_TEXT.sent, value: clinicDateTime(c.submittedAt) },
+      { label: CLAIM_DETAIL_TEXT.decided, value: clinicDateTime(c.decidedAt) },
+      { label: CLAIM_DETAIL_TEXT.insurerReference, value: c.insurerReference },
+      { label: CLAIM_DETAIL_TEXT.rejectedBecause, value: c.rejectionReason },
+      { label: CLAIM_DETAIL_TEXT.cancelledBecause, value: c.cancellationReason },
+      {
+        label: CLAIM_DETAIL_TEXT.remitted,
         value: c.remittedAt ? `${c.remittedAt} · ${c.remittanceReference}` : null,
       },
     ].filter((f) => f.value !== null && f.value !== undefined && f.value !== '');

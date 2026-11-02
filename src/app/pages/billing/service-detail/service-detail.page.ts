@@ -21,6 +21,7 @@ import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { formatMoney } from '@utilities/money';
 import { humanise } from '@utilities/text';
+import { SERVICE_DETAIL_TEXT } from '@constants/billing/service-detail.constants';
 
 /** `/billing/service-catalog/:id` — price, posting, where it is used, history. */
 @Component({
@@ -57,19 +58,27 @@ export class ServiceDetailPage implements OnInit {
     const s = this.detail.record();
     if (!s) return [];
     return [
-      { label: 'Code', value: s.code, mono: true },
-      { label: 'Category', value: this.enums.label('ServiceCategory', s.category) },
-      { label: 'Price', value: formatMoney(s.price) },
+      { label: SERVICE_DETAIL_TEXT.code, value: s.code, mono: true },
+      {
+        label: SERVICE_DETAIL_TEXT.category,
+        value: this.enums.label('ServiceCategory', s.category),
+      },
+      { label: SERVICE_DETAIL_TEXT.price, value: formatMoney(s.price) },
       { label: 'VAT', value: `${+s.taxRate}%` },
       {
-        label: 'Revenue account',
+        label: SERVICE_DETAIL_TEXT.revenueAccount,
         value: s.revenueAccount ? `${s.revenueAccount.code} ${s.revenueAccount.name}` : null,
       },
-      { label: 'Specialty', value: s.specialty?.name },
-      { label: 'Insurable', value: s.isInsurable ? 'Yes' : 'No' },
+      { label: SERVICE_DETAIL_TEXT.specialty, value: s.specialty?.name },
       {
-        label: 'Consent needed',
-        value: s.consentType ? this.enums.label('ConsentType', s.consentType) : 'No',
+        label: SERVICE_DETAIL_TEXT.insurable,
+        value: s.isInsurable ? SERVICE_DETAIL_TEXT.yes : SERVICE_DETAIL_TEXT.no,
+      },
+      {
+        label: SERVICE_DETAIL_TEXT.consentNeeded,
+        value: s.consentType
+          ? this.enums.label('ConsentType', s.consentType)
+          : SERVICE_DETAIL_TEXT.no,
       },
     ];
   });
@@ -88,27 +97,27 @@ export class ServiceDetailPage implements OnInit {
       { service: this.detail.record(), save: (payload) => this.detail.update(payload) },
       { width: '720px' },
     );
-    if (saved) this.notify.success('Service saved.');
+    if (saved) this.notify.success(SERVICE_DETAIL_TEXT.serviceSaved);
   };
 
   protected readonly archive = async (): Promise<void> => {
     await this.detail.archive();
-    this.notify.success('Service archived — no longer offered.');
+    this.notify.success(SERVICE_DETAIL_TEXT.serviceArchivedNoLongerOffered);
   };
 
   protected readonly unarchive = async (): Promise<void> => {
     await this.detail.unarchive();
-    this.notify.success('Service offered again.');
+    this.notify.success(SERVICE_DETAIL_TEXT.serviceOfferedAgain);
   };
 
   protected readonly restore = async (): Promise<void> => {
     await this.detail.restore();
-    this.notify.success('Service restored.');
+    this.notify.success(SERVICE_DETAIL_TEXT.serviceRestored);
   };
 
   protected readonly remove = async (): Promise<void> => {
     await this.detail.remove();
-    this.notify.success('Service deleted.');
+    this.notify.success(SERVICE_DETAIL_TEXT.serviceDeleted);
     await this.router.navigateByUrl('/billing/service-catalog');
   };
 }

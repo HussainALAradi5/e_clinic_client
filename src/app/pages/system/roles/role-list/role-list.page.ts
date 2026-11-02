@@ -11,6 +11,7 @@ import { Role } from '@interfaces/identity/role.interface';
 import { RoleApi } from '@services/identity/role-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { DialogService } from '@services/ui/dialog.service';
+import { ROLE_LIST_TEXT } from '@constants/system/role-list.constants';
 
 /** `/system/roles-permissions` — roles with user / permission counts; bulk archive, delete and restore. */
 @Component({
@@ -31,7 +32,7 @@ export class RoleListPage {
       save: (payload) => firstValueFrom(this.api.create(payload)),
     });
     if (role) {
-      this.notify.success(`Role ${role.displayName} created. Now choose what it may do.`);
+      this.notify.success(ROLE_LIST_TEXT.roleCreatedNowChooseWhat(role.displayName));
       await this.router.navigate(['/system/roles-permissions', role.id, 'access']);
     }
   };

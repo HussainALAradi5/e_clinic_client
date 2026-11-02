@@ -31,6 +31,7 @@ import { AccessService } from '@services/auth/access.service';
 import { ShiftApi } from '@services/hr/shift-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { SHIFT_BOARD_TEXT } from '@constants/hr/shift-board.constants';
 
 /** The "No shift" card: people not on any shift. */
 const NONE = 'none';
@@ -156,7 +157,7 @@ export class ShiftBoardPage implements OnInit {
   protected readonly create = async (): Promise<void> => {
     const shift = await this.openForm(null);
     if (shift) {
-      this.notify.success(`Shift ${shift.code} · ${shift.name} created.`);
+      this.notify.success(SHIFT_BOARD_TEXT.shiftCreated(shift.code, shift.name));
       await this.refresh(shift.id);
     }
   };
@@ -171,9 +172,9 @@ export class ShiftBoardPage implements OnInit {
 
   protected async remove(shift: Shift): Promise<void> {
     const ok = await this.dialogs.confirm({
-      title: `Delete ${shift.code} · ${shift.name}?`,
-      message: 'Only an empty shift can be deleted. Move its people to another shift first.',
-      confirmLabel: 'Delete shift',
+      title: SHIFT_BOARD_TEXT.delete(shift.code, shift.name),
+      message: SHIFT_BOARD_TEXT.onlyAnEmptyShiftCan,
+      confirmLabel: SHIFT_BOARD_TEXT.deleteShift,
       danger: true,
     });
     if (!ok) return;

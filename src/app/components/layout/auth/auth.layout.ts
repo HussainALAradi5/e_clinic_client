@@ -5,6 +5,7 @@ import { BrandMark } from '@components/common/brand-mark/brand-mark.component';
 import { BrandSurface } from '@components/common/hub/brand-surface.component';
 import { CLINIC_INFO } from '@constants/clinic-info.constants';
 import { Highlight } from '@interfaces/ui/highlight.interface';
+import { AUTH_TEXT } from '@constants/layout/auth.constants';
 
 /** Sign-in / password pages: brand panel on the left (desktop), form on the right, always a way back to the website. */
 @Component({
@@ -20,14 +21,14 @@ export class AuthLayout {
   protected readonly highlights: Highlight[] = [
     {
       icon: 'event_available',
-      title: 'Next visit today at 10:30',
-      detail: 'Dr. Omar Khalil, family medicine',
+      title: AUTH_TEXT.nextVisitTodayAt10,
+      detail: AUTH_TEXT.drOmarKhalilFamilyMedicine,
     },
-    { icon: 'labs', title: 'Lab results released', detail: 'Full blood count and lipid profile' },
+    { icon: 'labs', title: AUTH_TEXT.labResultsReleased, detail: AUTH_TEXT.fullBloodCountAndLipid },
     {
       icon: 'medication',
-      title: 'Prescription ready',
-      detail: 'Show the QR code at the counter',
+      title: AUTH_TEXT.prescriptionReady,
+      detail: AUTH_TEXT.showTheQrCodeAt,
     },
   ];
 }

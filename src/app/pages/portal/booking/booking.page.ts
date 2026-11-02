@@ -22,6 +22,7 @@ import { DoctorApi, SpecialtyApi } from '@services/clinic/doctor-api.service';
 import { PortalApi } from '@services/portal/portal-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { addDays, clinicIsoDate } from '@utilities/clinic-time';
+import { BOOKING_TEXT } from '@constants/portal/booking.constants';
 
 /** Days offered in the date strip (the clinic books up to 90 days ahead; most patients look at the next two weeks). */
 const DAYS_SHOWN = 21;
@@ -57,8 +58,8 @@ export class PortalBookingPage {
 
   protected readonly visitsPath = `${PORTAL_PATH}/appointments`;
   protected readonly types = [
-    { value: AppointmentType.Consultation, label: 'New problem' },
-    { value: AppointmentType.FollowUp, label: 'Follow-up' },
+    { value: AppointmentType.Consultation, label: BOOKING_TEXT.newProblem },
+    { value: AppointmentType.FollowUp, label: BOOKING_TEXT.followUp },
   ];
   protected readonly lockOnce = LockMode.Once;
   protected readonly days = Array.from({ length: DAYS_SHOWN }, (_, i) =>
@@ -140,7 +141,7 @@ export class PortalBookingPage {
       this.reloadSlots();
       throw error;
     });
-    this.notify.success('Booking sent. The clinic will confirm it shortly.');
+    this.notify.success(BOOKING_TEXT.bookingSentTheClinicWill);
     await this.router.navigateByUrl(this.visitsPath);
   };
 

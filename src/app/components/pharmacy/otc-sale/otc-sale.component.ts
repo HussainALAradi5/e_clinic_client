@@ -27,6 +27,7 @@ import { divideHalfUp, formatAmount, toMinor, toScaled } from '@utilities/money'
 import { formatQty } from '@utilities/quantity';
 import { AppValidators } from '@validations/validators';
 import { SaleLine } from '@interfaces/pharmacy/otc-sale.interface';
+import { OTC_SALE_TEXT } from '@constants/pharmacy/otc-sale.constants';
 
 /**
  * Over-the-counter sale: a patient, medicines that need no prescription (scan the pack or pick it) and quantities.
@@ -116,7 +117,7 @@ export class OtcSale {
     if (!code) return;
     const medication = await firstValueFrom(this.medications.byBarcode(code)).catch(() => null);
     if (!medication) {
-      this.notify.error('No medicine with this barcode.');
+      this.notify.error(OTC_SALE_TEXT.noMedicineWithThisBarcode);
       return;
     }
     if (medication.requiresPrescription) {
@@ -140,7 +141,7 @@ export class OtcSale {
     if (this.patientId.invalid || this.lines.invalid) {
       this.patientId.markAsTouched();
       this.lines.markAllAsTouched();
-      throw new Error('Pick the patient and the medicines.');
+      throw new Error(OTC_SALE_TEXT.pickThePatientAndThe);
     }
     const result = await firstValueFrom(
       this.api.dispense(
@@ -149,7 +150,7 @@ export class OtcSale {
           items: this.lines
             .getRawValue()
             .map((l) => ({ medicationId: l.medicationId as string, quantity: String(l.quantity) })),
-          notes: 'Over the counter',
+          notes: OTC_SALE_TEXT.overTheCounter,
         },
         this.key,
       ),

@@ -47,6 +47,7 @@ import { UserApi } from '@services/identity/user-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { PATIENT_DETAIL_TEXT } from '@constants/clinic/patient-detail.constants';
 
 /** `/clinic/patients/:id` — the patient file: alerts, personal and insurance data, visits, timeline, history. */
 @Component({
@@ -93,27 +94,27 @@ export class PatientDetailPage implements OnInit {
   protected readonly variants = ButtonVariant;
   protected readonly dateTimeFormat = DATE_TIME_FORMAT;
   protected readonly portalConfirm: ConfirmConfig = {
-    title: 'Create a portal account?',
-    message: 'The patient receives an email to set a password, then books and sees results online.',
-    confirmLabel: 'Create account',
+    title: PATIENT_DETAIL_TEXT.createAPortalAccount,
+    message: PATIENT_DETAIL_TEXT.thePatientReceivesAnEmail,
+    confirmLabel: PATIENT_DETAIL_TEXT.createAccount,
   };
 
   protected readonly personal = computed<Fact[]>(() => {
     const p = this.patient();
     if (!p) return [];
     return [
-      { label: 'File number', value: p.code, mono: true },
-      { label: 'Gender', value: p.gender, enum: 'Gender' },
-      { label: 'Date of birth', value: `${p.dateOfBirth} (${p.age} y)` },
-      { label: 'National ID', value: p.person.nationalId, mono: true },
+      { label: PATIENT_DETAIL_TEXT.fileNumber, value: p.code, mono: true },
+      { label: PATIENT_DETAIL_TEXT.gender, value: p.gender, enum: PATIENT_DETAIL_TEXT.gender },
+      { label: PATIENT_DETAIL_TEXT.dateOfBirth, value: `${p.dateOfBirth} (${p.age} y)` },
+      { label: PATIENT_DETAIL_TEXT.nationalId, value: p.person.nationalId, mono: true },
       {
-        label: 'Nationality',
+        label: PATIENT_DETAIL_TEXT.nationality,
         value: p.person.nationality?.nationality,
         flag: p.person.nationalityCode,
       },
-      { label: 'Mobile', value: p.phone },
-      { label: 'Email', value: p.email },
-      { label: 'Address', value: p.person.address?.formatted },
+      { label: PATIENT_DETAIL_TEXT.mobile, value: p.phone },
+      { label: PATIENT_DETAIL_TEXT.email, value: p.email },
+      { label: PATIENT_DETAIL_TEXT.address, value: p.person.address?.formatted },
     ];
   });
 
@@ -122,30 +123,38 @@ export class PatientDetailPage implements OnInit {
     if (!p) return [];
     return [
       ...(p.bloodGroup
-        ? [{ label: 'Blood group', value: this.enums.label('BloodGroup', p.bloodGroup) }]
+        ? [
+            {
+              label: PATIENT_DETAIL_TEXT.bloodGroup,
+              value: this.enums.label('BloodGroup', p.bloodGroup),
+            },
+          ]
         : []),
       ...(p.bloodGroup !== undefined
         ? [
-            { label: 'Chronic conditions', value: p.chronicConditions },
-            { label: 'Family history', value: p.familyHistory },
-            { label: 'Surgical history', value: p.surgicalHistory },
+            { label: PATIENT_DETAIL_TEXT.chronicConditions, value: p.chronicConditions },
+            { label: PATIENT_DETAIL_TEXT.familyHistory, value: p.familyHistory },
+            { label: PATIENT_DETAIL_TEXT.surgicalHistory, value: p.surgicalHistory },
           ]
         : []),
       {
-        label: 'Emergency contact',
+        label: PATIENT_DETAIL_TEXT.emergencyContact,
         value: p.emergencyContactName
           ? `${p.emergencyContactName} (${p.emergencyContactRelation ?? '—'}) ${p.emergencyContactPhone ?? ''}`
           : null,
       },
-      { label: 'Insurer', value: p.insurer?.name ?? 'Self-pay' },
-      { label: 'Policy', value: p.insurancePolicyNumber, mono: true },
-      { label: 'Valid until', value: p.insuranceExpiryDate },
+      { label: PATIENT_DETAIL_TEXT.insurer, value: p.insurer?.name ?? PATIENT_DETAIL_TEXT.selfPay },
+      { label: PATIENT_DETAIL_TEXT.policy, value: p.insurancePolicyNumber, mono: true },
+      { label: PATIENT_DETAIL_TEXT.validUntil, value: p.insuranceExpiryDate },
       {
-        label: 'Insurer pays',
+        label: PATIENT_DETAIL_TEXT.insurerPays,
         value: p.insuranceCoveragePercent ? `${+p.insuranceCoveragePercent}%` : null,
       },
-      { label: 'Portal account', value: p.hasPortalAccount ? 'Yes' : 'No' },
-      { label: 'Notes', value: p.notes },
+      {
+        label: PATIENT_DETAIL_TEXT.portalAccount,
+        value: p.hasPortalAccount ? PATIENT_DETAIL_TEXT.yes : PATIENT_DETAIL_TEXT.no,
+      },
+      { label: PATIENT_DETAIL_TEXT.notes, value: p.notes },
     ];
   });
 
@@ -213,7 +222,7 @@ export class PatientDetailPage implements OnInit {
     );
     if (saved) {
       this.patient.set(saved);
-      this.notify.success('Patient file saved.');
+      this.notify.success(PATIENT_DETAIL_TEXT.patientFileSaved);
     }
   };
 
@@ -225,7 +234,7 @@ export class PatientDetailPage implements OnInit {
     );
     if (saved) {
       this.patient.set(saved);
-      this.notify.success('Medical history saved.');
+      this.notify.success(PATIENT_DETAIL_TEXT.medicalHistorySaved);
     }
   };
 
@@ -239,14 +248,14 @@ export class PatientDetailPage implements OnInit {
       { width: '720px' },
     );
     if (saved) {
-      this.notify.success('Personal data saved.');
+      this.notify.success(PATIENT_DETAIL_TEXT.personalDataSaved);
       await this.load();
     }
   };
 
   protected readonly createPortal = async (): Promise<void> => {
     await firstValueFrom(this.api.createPortalAccount(this.id()));
-    this.notify.success('Portal account created — the invitation email is on its way.');
+    this.notify.success(PATIENT_DETAIL_TEXT.portalAccountCreatedTheInvitation);
     await this.load();
   };
 }

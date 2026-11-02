@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { PAGE_LOADER_TEXT } from '@constants/common/page-loader.constants';
 
 /**
  * Full-screen loading state: the beating clinic cross over a heartbeat line. Same markup and CSS (styles/_brand.scss)
@@ -11,5 +12,5 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   templateUrl: './page-loader.component.html',
 })
 export class PageLoader {
-  readonly label = input('Loading');
+  readonly label = input(PAGE_LOADER_TEXT.loading);
 }

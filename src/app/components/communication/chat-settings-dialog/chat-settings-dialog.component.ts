@@ -10,6 +10,7 @@ import { ChatSettings } from '@interfaces/communication/chat-settings.interface'
 import { ChatSettingsStore } from '@services/communication/chat-settings.store';
 import { NotifyService } from '@services/ui/notify.service';
 import { BUBBLE_COLORS, LEADER_BUBBLE } from '@utilities/communication/chat-style';
+import { CHAT_SETTINGS_DIALOG_TEXT } from '@constants/communication/chat-settings-dialog.constants';
 
 /** Chat settings: notifications switches and how bubbles look, with a live preview. Saves on every change. */
 @Component({
@@ -35,9 +36,9 @@ export class ChatSettingsDialog {
     ...BUBBLE_COLORS[value],
   }));
   protected readonly styles = [
-    { value: BubbleStyle.Rounded, label: 'Rounded', icon: 'chat_bubble' },
-    { value: BubbleStyle.Square, label: 'Square', icon: 'crop_square' },
-    { value: BubbleStyle.Minimal, label: 'Minimal', icon: 'notes' },
+    { value: BubbleStyle.Rounded, label: CHAT_SETTINGS_DIALOG_TEXT.rounded, icon: 'chat_bubble' },
+    { value: BubbleStyle.Square, label: CHAT_SETTINGS_DIALOG_TEXT.square, icon: 'crop_square' },
+    { value: BubbleStyle.Minimal, label: CHAT_SETTINGS_DIALOG_TEXT.minimal, icon: 'notes' },
   ];
   protected readonly leader = LEADER_BUBBLE;
   protected readonly mine = computed(() => BUBBLE_COLORS[this.settings().myColor]);

@@ -39,6 +39,7 @@ import { CashSessionApi } from '@services/finance/cash-session-api.service';
 import { clinicDateTime } from '@utilities/clinic-time';
 import { formatMoney, fromMinor, toMinor } from '@utilities/money';
 import { defaultQuery } from '@utilities/list-query';
+import { CASH_SESSION_DETAIL_TEXT } from '@constants/billing/cash-session-detail.constants';
 
 /**
  * `/billing/cash-drawers/:id` — one shift: how the expected cash was built, the count note by note, the
@@ -93,24 +94,30 @@ export class CashSessionDetailPage implements OnInit {
     const s = this.session();
     if (!s) return [];
     return [
-      { label: 'Cashier', value: s.cashier?.fullName },
-      { label: 'Opened', value: clinicDateTime(s.openedAt) },
-      { label: 'Closed', value: clinicDateTime(s.closedAt) },
-      { label: 'Opening float', value: formatMoney(s.openingFloat) },
+      { label: CASH_SESSION_DETAIL_TEXT.cashier, value: s.cashier?.fullName },
+      { label: CASH_SESSION_DETAIL_TEXT.opened, value: clinicDateTime(s.openedAt) },
+      { label: CASH_SESSION_DETAIL_TEXT.closed, value: clinicDateTime(s.closedAt) },
+      { label: CASH_SESSION_DETAIL_TEXT.openingFloat, value: formatMoney(s.openingFloat) },
       {
-        label: 'Expected at close',
+        label: CASH_SESSION_DETAIL_TEXT.expectedAtClose,
         value: s.expectedClosing ? formatMoney(s.expectedClosing) : null,
       },
-      { label: 'Counted', value: s.countedClosing ? formatMoney(s.countedClosing) : null },
-      { label: 'Difference', value: s.difference ? formatMoney(s.difference) : null },
-      { label: 'Difference accepted by', value: s.approvedBy?.fullName },
       {
-        label: 'Deposit',
+        label: CASH_SESSION_DETAIL_TEXT.counted,
+        value: s.countedClosing ? formatMoney(s.countedClosing) : null,
+      },
+      {
+        label: CASH_SESSION_DETAIL_TEXT.difference,
+        value: s.difference ? formatMoney(s.difference) : null,
+      },
+      { label: CASH_SESSION_DETAIL_TEXT.differenceAcceptedBy, value: s.approvedBy?.fullName },
+      {
+        label: CASH_SESSION_DETAIL_TEXT.deposit,
         value: s.depositAmount
           ? `${formatMoney(s.depositAmount)} on ${s.depositedAt} · ${s.depositReference}`
           : null,
       },
-      { label: 'Notes', value: s.notes },
+      { label: CASH_SESSION_DETAIL_TEXT.notes, value: s.notes },
     ].filter((f) => f.value !== null && f.value !== undefined && f.value !== '');
   });
 
