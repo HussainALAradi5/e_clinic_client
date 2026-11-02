@@ -9,6 +9,7 @@ import { SignedLink } from '@interfaces/task/signed-link.interface';
 import { ApiClient } from '@services/api/api-client.service';
 import { openSignedLink } from '@utilities/download';
 import { poll } from '@utilities/poll';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Identity › Background tasks — own tasks (administrators: all). */
 @Injectable({ providedIn: 'root' })
@@ -16,21 +17,24 @@ export class TaskApi {
   private readonly api = inject(ApiClient);
 
   list(query: ListQuery): Observable<Page<BackgroundTask>> {
-    return this.api.list<BackgroundTask>('tasks', query);
+    return this.api.list<BackgroundTask>(ENDPOINTS.tasks, query);
   }
 
   get(id: string, quiet = false): Observable<BackgroundTask> {
-    return this.api.get<BackgroundTask>(`tasks/${id}`, quiet ? { context: silent() } : {});
+    return this.api.get<BackgroundTask>(
+      `${ENDPOINTS.tasks}/${id}`,
+      quiet ? { context: silent() } : {},
+    );
   }
 
   cancel(id: string): Observable<BackgroundTask> {
-    return this.api.post<BackgroundTask>(`tasks/${id}/cancel`);
+    return this.api.post<BackgroundTask>(`${ENDPOINTS.tasks}/${id}/cancel`);
   }
 
   /** Requests a 5-minute signed link and starts the download. */
   download(id: string): Observable<SignedLink> {
     return this.api
-      .get<SignedLink>(`tasks/${id}/download`)
+      .get<SignedLink>(`${ENDPOINTS.tasks}/${id}/download`)
       .pipe(tap((link) => openSignedLink(link)));
   }
 

@@ -8,12 +8,13 @@ import { BulkActionRequest } from '@interfaces/bulk/bulk.interface';
 import { BulkResult } from '@interfaces/bulk/bulk-result.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Billing › Refunds — requested at the desk, approved by someone else, paid out by the cashier. */
 @Injectable({ providedIn: 'root' })
 export class RefundApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'billing/refunds';
+  private readonly path = ENDPOINTS.billing.refunds;
 
   list(query: ListQuery): Observable<Page<Refund>> {
     return this.api.list<Refund>(this.path, query);

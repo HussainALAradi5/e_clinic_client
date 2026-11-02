@@ -5,6 +5,7 @@ import { Page } from '@interfaces/api/page.interface';
 import { SickLeave } from '@interfaces/clinic/sick-leave.interface';
 import { SickLeavePayload } from '@interfaces/clinic/sick-leave-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Sick leave certificates: issued at a visit by its doctor; listed (own / all), printed, cancelled. */
 @Injectable({ providedIn: 'root' })
@@ -12,18 +13,21 @@ export class SickLeaveApi {
   private readonly api = inject(ApiClient);
 
   list(query: ListQuery): Observable<Page<SickLeave>> {
-    return this.api.list<SickLeave>('sick-leaves', query);
+    return this.api.list<SickLeave>(ENDPOINTS.sickLeaves, query);
   }
 
   get(id: string): Observable<SickLeave> {
-    return this.api.get<SickLeave>(`sick-leaves/${id}`);
+    return this.api.get<SickLeave>(`${ENDPOINTS.sickLeaves}/${id}`);
   }
 
   issue(appointmentId: string, payload: SickLeavePayload): Observable<SickLeave> {
-    return this.api.post<SickLeave>(`appointments/${appointmentId}/sick-leaves`, payload);
+    return this.api.post<SickLeave>(
+      `${ENDPOINTS.appointments}/${appointmentId}/sick-leaves`,
+      payload,
+    );
   }
 
   cancel(id: string, reason: string): Observable<SickLeave> {
-    return this.api.patch<SickLeave>(`sick-leaves/${id}/cancel`, { reason });
+    return this.api.patch<SickLeave>(`${ENDPOINTS.sickLeaves}/${id}/cancel`, { reason });
   }
 }

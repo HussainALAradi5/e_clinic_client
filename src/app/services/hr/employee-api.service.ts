@@ -8,12 +8,13 @@ import { SalaryComponentPayload } from '@interfaces/hr/salary-component-payload.
 import { TerminationPayload } from '@interfaces/hr/termination-payload.interface';
 import { UpdateEmployeePayload } from '@interfaces/hr/update-employee-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** HR › Employees (one method per endpoint). */
 @Injectable({ providedIn: 'root' })
 export class EmployeeApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'hr/employees';
+  private readonly path = ENDPOINTS.hr.employees;
 
   get(id: string): Observable<Employee> {
     return this.api.get<Employee>(`${this.path}/${id}`);

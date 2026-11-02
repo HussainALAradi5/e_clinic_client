@@ -7,12 +7,13 @@ import { AttendanceToday } from '@interfaces/hr/attendance-today.interface';
 import { ManualAttendancePayload } from '@interfaces/hr/manual-attendance-payload.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** HR › Attendance — self check-in / check-out, HR corrections, overtime approval and monthly totals. */
 @Injectable({ providedIn: 'root' })
 export class AttendanceApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'hr/attendance';
+  private readonly path = ENDPOINTS.hr.attendance;
 
   list(query: ListQuery): Observable<Page<Attendance>> {
     return this.api.list<Attendance>(this.path, query);

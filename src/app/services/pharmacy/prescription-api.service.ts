@@ -5,12 +5,13 @@ import { ListQuery } from '@interfaces/list/list-query.interface';
 import { Prescription } from '@interfaces/pharmacy/prescription.interface';
 import { PrescriptionPayload } from '@interfaces/pharmacy/prescription-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Pharmacy › Prescriptions — written by the doctor, queued for the pharmacy until dispensed or cancelled. */
 @Injectable({ providedIn: 'root' })
 export class PrescriptionApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'pharmacy/prescriptions';
+  private readonly path = ENDPOINTS.pharmacy.prescriptions;
 
   list(query: ListQuery): Observable<Page<Prescription>> {
     return this.api.list<Prescription>(this.path, query);

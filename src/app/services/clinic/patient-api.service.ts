@@ -8,12 +8,13 @@ import { RegisterPatientPayload } from '@interfaces/clinic/register-patient-payl
 import { UpdatePatientPayload } from '@interfaces/clinic/update-patient-payload.interface';
 import { User } from '@interfaces/identity/user.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Clinic › Patients (one method per endpoint). */
 @Injectable({ providedIn: 'root' })
 export class PatientApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'patients';
+  private readonly path = ENDPOINTS.patients;
 
   get(id: string): Observable<Patient> {
     return this.api.get<Patient>(`${this.path}/${id}`);

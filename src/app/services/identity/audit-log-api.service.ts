@@ -4,6 +4,7 @@ import { Page } from '@interfaces/api/page.interface';
 import { AuditLog } from '@interfaces/identity/audit-log.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Identity › Audit Logs endpoints (cursor pagination; a date range is always required). */
 @Injectable({ providedIn: 'root' })
@@ -11,11 +12,11 @@ export class AuditLogApi {
   private readonly api = inject(ApiClient);
 
   index(query: ListQuery): Observable<Page<AuditLog>> {
-    return this.api.list<AuditLog>('audit-logs', query);
+    return this.api.list<AuditLog>(ENDPOINTS.auditLogs, query);
   }
 
   /** History tab of one record; `type` is the whitelisted alias (`role`, `user`, `person`, `invoice` …). */
   forModel(type: string, id: string): Observable<AuditLog[]> {
-    return this.api.get<AuditLog[]>(`audit-logs/${type}/${id}`);
+    return this.api.get<AuditLog[]>(`${ENDPOINTS.auditLogs}/${type}/${id}`);
   }
 }

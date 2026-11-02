@@ -5,12 +5,13 @@ import { Room } from '@interfaces/clinic/room.interface';
 import { RoomPayload } from '@interfaces/clinic/room-payload.interface';
 import { RoomServiceResult } from '@interfaces/clinic/room-service-result.interface';
 import { EntityApi } from '@services/api/entity-api.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Clinic › Rooms — CRUD, archive / delete / restore, bulk, service switch and the day's bookings. */
 @Injectable({ providedIn: 'root' })
 export class RoomApi extends EntityApi<Room, RoomPayload> {
   constructor() {
-    super('rooms');
+    super(ENDPOINTS.rooms);
   }
 
   setInService(

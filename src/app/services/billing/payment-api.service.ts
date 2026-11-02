@@ -7,12 +7,13 @@ import { Payment } from '@interfaces/billing/payment.interface';
 import { PaymentPayload } from '@interfaces/billing/payment-payload.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Billing › Payments — money taken against invoices; never edited, voided the same day or refunded. */
 @Injectable({ providedIn: 'root' })
 export class PaymentApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'billing/payments';
+  private readonly path = ENDPOINTS.billing.payments;
 
   list(query: ListQuery): Observable<Page<Payment>> {
     return this.api.list<Payment>(this.path, query);

@@ -1,6 +1,5 @@
-/** App-wide constants (API, routes, storage, clinic locale). */
+/** App-wide constants (request headers, routes, storage, clinic locale). API location: `config/api.config.ts`. */
 
-export const API_PREFIX = '/api/v1/';
 export const REQUEST_ID_HEADER = 'X-Request-Id';
 export const IDEMPOTENCY_HEADER = 'Idempotency-Key';
 

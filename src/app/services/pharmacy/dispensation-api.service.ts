@@ -10,6 +10,7 @@ import { AppointmentMedicines } from '@interfaces/pharmacy/appointment-medicines
 import { Dispensation } from '@interfaces/pharmacy/dispensation.interface';
 import { DispensePayload } from '@interfaces/pharmacy/dispense-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /**
  * Pharmacy › Dispensing — hand-over at the pharmacy, medicines given in a session, same-day returns. Both kinds are
@@ -18,7 +19,7 @@ import { ApiClient } from '@services/api/api-client.service';
 @Injectable({ providedIn: 'root' })
 export class DispensationApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'pharmacy/dispensations';
+  private readonly path = ENDPOINTS.pharmacy.dispensations;
 
   list(query: ListQuery): Observable<Page<Dispensation>> {
     return this.api.list<Dispensation>(this.path, query);
@@ -39,13 +40,19 @@ export class DispensationApi {
     payload: AdministerPayload,
     idempotencyKey: string,
   ): Observable<Dispensation> {
-    return this.api.post<Dispensation>(`appointments/${appointmentId}/medications`, payload, {
-      context: withIdempotencyKey(idempotencyKey),
-    });
+    return this.api.post<Dispensation>(
+      `${ENDPOINTS.appointments}/${appointmentId}/medications`,
+      payload,
+      {
+        context: withIdempotencyKey(idempotencyKey),
+      },
+    );
   }
 
   forAppointment(appointmentId: string): Observable<AppointmentMedicines> {
-    return this.api.get<AppointmentMedicines>(`appointments/${appointmentId}/medications`);
+    return this.api.get<AppointmentMedicines>(
+      `${ENDPOINTS.appointments}/${appointmentId}/medications`,
+    );
   }
 
   /** Same-day return to stock. */
@@ -55,6 +62,6 @@ export class DispensationApi {
 
   /** Staff who may witness a controlled drug or approve a stock correction (never the caller). */
   colleagues(right: ColleagueRight): Observable<UserSummary[]> {
-    return this.api.get<UserSummary[]>('pharmacy/colleagues', { params: { right } });
+    return this.api.get<UserSummary[]>(ENDPOINTS.pharmacy.colleagues, { params: { right } });
   }
 }

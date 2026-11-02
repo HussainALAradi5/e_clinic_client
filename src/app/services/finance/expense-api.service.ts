@@ -5,12 +5,13 @@ import { PaymentMethod } from '@enums/shared/payment-method.enum';
 import { Expense } from '@interfaces/finance/expense.interface';
 import { ExpensePayload } from '@interfaces/finance/expense-payload.interface';
 import { EntityApi } from '@services/api/entity-api.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Finance › Expenses — submit for approval, approve / reject (someone else), pay (cash from the drawer or bank). */
 @Injectable({ providedIn: 'root' })
 export class ExpenseApi extends EntityApi<Expense, ExpensePayload> {
   constructor() {
-    super('finance/expenses');
+    super(ENDPOINTS.finance.expenses);
   }
 
   submit(id: string): Observable<Expense> {

@@ -10,6 +10,7 @@ import { TwoFactorChallengePayload } from '@interfaces/auth/two-factor-challenge
 import { TwoFactorSetup } from '@interfaces/auth/two-factor-setup.interface';
 import { Session } from '@interfaces/auth/session.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Identity › Authentication endpoints (one method per endpoint, no state). */
 @Injectable({ providedIn: 'root' })
@@ -17,51 +18,53 @@ export class AuthApi {
   private readonly api = inject(ApiClient);
 
   login(body: LoginPayload): Observable<Session> {
-    return this.api.post<Session>('auth/login', body);
+    return this.api.post<Session>(ENDPOINTS.auth.login, body);
   }
 
   twoFactorChallenge(body: TwoFactorChallengePayload): Observable<Session> {
-    return this.api.post<Session>('auth/two-factor/challenge', body);
+    return this.api.post<Session>(`${ENDPOINTS.auth.twoFactor}/challenge`, body);
   }
 
   logout(): Observable<void> {
-    return this.api.post<void>('auth/logout');
+    return this.api.post<void>(ENDPOINTS.auth.logout);
   }
 
   logoutAll(): Observable<{ revoked: number }> {
-    return this.api.post<{ revoked: number }>('auth/logout-all');
+    return this.api.post<{ revoked: number }>(ENDPOINTS.auth.logoutAll);
   }
 
   me(): Observable<Session> {
-    return this.api.get<Session>('auth/me');
+    return this.api.get<Session>(ENDPOINTS.auth.me);
   }
 
   changePassword(body: ChangePasswordPayload): Observable<void> {
-    return this.api.put<void>('auth/password', body);
+    return this.api.put<void>(ENDPOINTS.auth.password, body);
   }
 
   forgotPassword(body: ForgotPasswordPayload): Observable<void> {
-    return this.api.post<void>('auth/forgot-password', body);
+    return this.api.post<void>(ENDPOINTS.auth.forgotPassword, body);
   }
 
   /** Emailed 6-digit code → one-time reset token. */
   verifyResetCode(body: VerifyResetCodePayload): Observable<ResetToken> {
-    return this.api.post<ResetToken>('auth/verify-reset-code', body);
+    return this.api.post<ResetToken>(ENDPOINTS.auth.verifyResetCode, body);
   }
 
   resetPassword(body: ResetPasswordPayload): Observable<void> {
-    return this.api.post<void>('auth/reset-password', body);
+    return this.api.post<void>(ENDPOINTS.auth.resetPassword, body);
   }
 
   enableTwoFactor(): Observable<TwoFactorSetup> {
-    return this.api.post<TwoFactorSetup>('auth/two-factor/enable');
+    return this.api.post<TwoFactorSetup>(`${ENDPOINTS.auth.twoFactor}/enable`);
   }
 
   confirmTwoFactor(code: string): Observable<{ recoveryCodes: string[] }> {
-    return this.api.post<{ recoveryCodes: string[] }>('auth/two-factor/confirm', { code });
+    return this.api.post<{ recoveryCodes: string[] }>(`${ENDPOINTS.auth.twoFactor}/confirm`, {
+      code,
+    });
   }
 
   disableTwoFactor(password: string): Observable<void> {
-    return this.api.delete('auth/two-factor', { body: { password } });
+    return this.api.delete(ENDPOINTS.auth.twoFactor, { body: { password } });
   }
 }

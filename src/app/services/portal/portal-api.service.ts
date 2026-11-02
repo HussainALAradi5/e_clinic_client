@@ -8,6 +8,7 @@ import { Patient } from '@interfaces/clinic/patient.interface';
 import { PortalBookingPayload } from '@interfaces/portal/portal.interface';
 import { PortalProfilePayload } from '@interfaces/portal/portal-profile-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /**
  * Patient portal — what a patient changes themselves (`/portal/*`). Their appointments, treatments, results,
@@ -16,7 +17,7 @@ import { ApiClient } from '@services/api/api-client.service';
 @Injectable({ providedIn: 'root' })
 export class PortalApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'portal';
+  private readonly path = ENDPOINTS.portal.root;
 
   profile(): Observable<Patient> {
     return this.api.get<Patient>(`${this.path}/profile`);

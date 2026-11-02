@@ -10,12 +10,13 @@ import { Treatment } from '@interfaces/clinic/treatment.interface';
 import { TreatmentPayload } from '@interfaces/clinic/treatment-payload.interface';
 import { TreatmentSession } from '@interfaces/clinic/treatment-session.interface';
 import { EntityApi } from '@services/api/entity-api.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Clinic › Treatments — plans, their sessions, the reception queue and the plan lifecycle. */
 @Injectable({ providedIn: 'root' })
 export class TreatmentApi extends EntityApi<Treatment, TreatmentPayload> {
   constructor() {
-    super('treatments');
+    super(ENDPOINTS.treatments);
   }
 
   /** Prescribe (sent with the dialog's Idempotency-Key). */
@@ -59,6 +60,8 @@ export class TreatmentApi extends EntityApi<Treatment, TreatmentPayload> {
 
   /** Doctors (and medical staff for sessions) that can take a booking. */
   providers(type: AppointmentType): Observable<BookableProvider[]> {
-    return this.api.get<BookableProvider[]>('appointments/providers', { params: { type } });
+    return this.api.get<BookableProvider[]>(`${ENDPOINTS.appointments}/providers`, {
+      params: { type },
+    });
   }
 }

@@ -12,12 +12,13 @@ import { ConversationQuery } from '@interfaces/communication/conversation-query.
 import { NewChatPayload } from '@interfaces/communication/new-chat-payload.interface';
 import { SendMessagePayload } from '@interfaces/communication/send-message-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Staff chat — my chats (filtered on the server), messages, reactions, groups and my chat settings. */
 @Injectable({ providedIn: 'root' })
 export class ChatApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'chat';
+  private readonly path = ENDPOINTS.chat.root;
 
   conversations(query: ConversationQuery, quiet = false): Observable<Page<Conversation>> {
     const { page, perPage, ...filters } = query;

@@ -8,12 +8,13 @@ import { LeaveType } from '@interfaces/hr/leave.interface';
 import { LeaveTypePayload } from '@interfaces/hr/leave-type-payload.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** HR › Leaves — types, yearly balances and requests (approved by someone other than the requester). */
 @Injectable({ providedIn: 'root' })
 export class LeaveApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'hr/leaves';
+  private readonly path = ENDPOINTS.hr.leaves;
 
   types(withArchived = false): Observable<LeaveType[]> {
     return this.api.get<LeaveType[]>(`${this.path}/types`, { params: { withArchived } });

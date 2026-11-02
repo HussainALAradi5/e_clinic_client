@@ -4,6 +4,7 @@ import { Icd10Code } from '@interfaces/clinic/icd10-code.interface';
 import { MedicalRecord } from '@interfaces/clinic/medical-record.interface';
 import { MedicalRecordPayload } from '@interfaces/clinic/medical-record-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Clinic › Medical records — the note of one visit (same id as the appointment) and ICD-10 search. */
 @Injectable({ providedIn: 'root' })
@@ -27,7 +28,7 @@ export class MedicalRecordApi {
   }
 
   searchIcd10(search: string): Observable<Icd10Code[]> {
-    return this.api.get<Icd10Code[]>('icd10', { params: { search } });
+    return this.api.get<Icd10Code[]>(ENDPOINTS.icd10, { params: { search } });
   }
 
   private path(appointmentId: string): string {

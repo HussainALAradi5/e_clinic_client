@@ -8,6 +8,7 @@ import { ListQuery } from '@interfaces/list/list-query.interface';
 import { BackgroundTask } from '@interfaces/task/background-task.interface';
 import { SignedLink } from '@interfaces/task/signed-link.interface';
 import { openSignedLink } from '@utilities/download';
+import { ENDPOINTS } from '@config/endpoints';
 
 /**
  * Identity › Attachments — list / archive / delete / restore / bulk (EntityApi), signed downloads and ZIP.
@@ -16,7 +17,7 @@ import { openSignedLink } from '@utilities/download';
 @Injectable({ providedIn: 'root' })
 export class AttachmentApi extends EntityApi<Attachment> {
   constructor() {
-    super('attachments');
+    super(ENDPOINTS.attachments);
   }
 
   /** Files of one record (read access to the owner record is enough). */

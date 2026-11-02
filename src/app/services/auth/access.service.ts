@@ -5,6 +5,7 @@ import { AuthStore } from './auth.store';
 import { ApiEnvelope } from '@interfaces/api/api-envelope.interface';
 import { EffectiveAccess } from '@interfaces/auth/effective-access.interface';
 import { evaluatePermissionExpression } from '@utilities/permission-expression';
+import { ENDPOINTS } from '@config/endpoints';
 
 /**
  * Client mirror of PermissionExpression + CheckAccess: `can('invoices.write & invoices.issue')`.
@@ -38,7 +39,7 @@ export class AccessService {
     if (this.auth.accessLoaded()) {
       return of(true);
     }
-    return this.http.get<ApiEnvelope<EffectiveAccess>>('roles/me/access').pipe(
+    return this.http.get<ApiEnvelope<EffectiveAccess>>(`${ENDPOINTS.roles}/me/access`).pipe(
       tap((res) => this.auth.setAccess(res.data)),
       map(() => true),
     );

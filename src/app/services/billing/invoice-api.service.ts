@@ -7,12 +7,13 @@ import { InvoicePayload } from '@interfaces/billing/invoice-payload.interface';
 import { Page } from '@interfaces/api/page.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { EntityApi } from '@services/api/entity-api.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Billing › Invoices — the patient's draft, issuing (number + revenue), cancelling, billing a visit by hand. */
 @Injectable({ providedIn: 'root' })
 export class InvoiceApi extends EntityApi<Invoice, InvoicePayload> {
   constructor() {
-    super('billing/invoices');
+    super(ENDPOINTS.billing.invoices);
   }
 
   /** Issued invoices with a balance, oldest first (cashier desk). */

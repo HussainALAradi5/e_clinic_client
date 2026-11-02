@@ -8,12 +8,13 @@ import { Page } from '@interfaces/api/page.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
 import { EntityApi } from '@services/api/entity-api.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Clinic › Doctors (one method per endpoint). */
 @Injectable({ providedIn: 'root' })
 export class DoctorApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'doctors';
+  private readonly path = ENDPOINTS.doctors;
 
   list(query: ListQuery): Observable<Page<Doctor>> {
     return this.api.list<Doctor>(this.path, query);
@@ -40,6 +41,6 @@ export class DoctorApi {
 @Injectable({ providedIn: 'root' })
 export class SpecialtyApi extends EntityApi<Specialty, SpecialtyPayload> {
   constructor() {
-    super('doctors/specialties');
+    super(`${ENDPOINTS.doctors}/specialties`);
   }
 }

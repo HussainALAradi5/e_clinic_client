@@ -9,12 +9,13 @@ import { StockAdjustmentPayload } from '@interfaces/pharmacy/stock-adjustment-pa
 import { StockMovement } from '@interfaces/pharmacy/stock-movement.interface';
 import { StockTransferPayload } from '@interfaces/pharmacy/stock-transfer-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Pharmacy › Inventory — lots, the stock ledger, receipts, count corrections and quarantine. */
 @Injectable({ providedIn: 'root' })
 export class InventoryApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'pharmacy/inventory';
+  private readonly path = ENDPOINTS.pharmacy.inventory;
 
   stock(query: ListQuery): Observable<Page<MedicationBatch>> {
     return this.api.list<MedicationBatch>(`${this.path}/stock`, query);

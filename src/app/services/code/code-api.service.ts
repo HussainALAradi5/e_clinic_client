@@ -6,6 +6,7 @@ import { CodeImage } from '@interfaces/code/code-image.interface';
 import { CodeImageOptions } from '@interfaces/code/code-image-options.interface';
 import { ScanResult } from '@interfaces/code/scan-result.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Identity › Codes — signed QR / barcodes of records, scanning and public document verification. */
 @Injectable({ providedIn: 'root' })
@@ -22,7 +23,11 @@ export class CodeApi {
       }
     }
     return this.http
-      .get(`codes/${entity}/${id}`, { params, responseType: 'blob', observe: 'response' })
+      .get(`${ENDPOINTS.codes}/${entity}/${id}`, {
+        params,
+        responseType: 'blob',
+        observe: 'response',
+      })
       .pipe(
         map((res: HttpResponse<Blob>) => ({
           url: URL.createObjectURL(res.body ?? new Blob()),
@@ -32,11 +37,16 @@ export class CodeApi {
   }
 
   scan(payload: string, purpose: ScanPurpose): Observable<ScanResult> {
-    return this.api.post<ScanResult>('codes/scan', { payload: payload.trim(), purpose });
+    return this.api.post<ScanResult>(`${ENDPOINTS.codes}/scan`, {
+      payload: payload.trim(),
+      purpose,
+    });
   }
 
   /** Public authenticity check (no sign-in). */
   verify(payload: string): Observable<ScanResult> {
-    return this.api.get<ScanResult>(`public/verify/${encodeURIComponent(payload.trim())}`);
+    return this.api.get<ScanResult>(
+      `${ENDPOINTS.public}/verify/${encodeURIComponent(payload.trim())}`,
+    );
   }
 }

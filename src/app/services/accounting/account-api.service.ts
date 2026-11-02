@@ -5,12 +5,13 @@ import { Account } from '@interfaces/accounting/account.interface';
 import { AccountMapping } from '@interfaces/accounting/account-mapping.interface';
 import { AccountPayload } from '@interfaces/accounting/account-payload.interface';
 import { EntityApi } from '@services/api/entity-api.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Accounting › Chart of accounts — CRUD, archive / delete / restore, bulk, tree and mappings. */
 @Injectable({ providedIn: 'root' })
 export class AccountApi extends EntityApi<Account, AccountPayload> {
   constructor() {
-    super('accounting/accounts');
+    super(ENDPOINTS.accounting.accounts);
   }
 
   tree(type?: AccountType | null): Observable<Account[]> {

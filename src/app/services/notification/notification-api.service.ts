@@ -8,6 +8,7 @@ import { ListQuery } from '@interfaces/list/list-query.interface';
 import { DevicePayload } from '@interfaces/notification/device.interface';
 import { AppNotification } from '@interfaces/notification/notification.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Identity › Notifications — own in-app inbox, push devices and the delivery log. */
 @Injectable({ providedIn: 'root' })
@@ -24,7 +25,7 @@ export class NotificationApi {
     quiet = false,
   ): Observable<Page<AppNotification>> {
     return this.api.list<AppNotification>(
-      'notifications/mine',
+      `${ENDPOINTS.notifications}/mine`,
       query,
       { read },
       quiet ? silent() : undefined,
@@ -38,38 +39,38 @@ export class NotificationApi {
   }
 
   markRead(id: string): Observable<AppNotification> {
-    return this.api.patch<AppNotification>(`notifications/${id}/read`);
+    return this.api.patch<AppNotification>(`${ENDPOINTS.notifications}/${id}/read`);
   }
 
   markAllRead(): Observable<{ updated: number }> {
-    return this.api.patch<{ updated: number }>('notifications/mine/read-all');
+    return this.api.patch<{ updated: number }>(`${ENDPOINTS.notifications}/mine/read-all`);
   }
 
   registerDevice(payload: DevicePayload): Observable<{ id: string }> {
-    return this.api.post<{ id: string }>('notifications/devices', payload);
+    return this.api.post<{ id: string }>(`${ENDPOINTS.notifications}/devices`, payload);
   }
 
   unregisterDevice(token: string): Observable<void> {
-    return this.api.delete(`notifications/devices/${encodeURIComponent(token)}`);
+    return this.api.delete(`${ENDPOINTS.notifications}/devices/${encodeURIComponent(token)}`);
   }
 
   log(query: ListQuery): Observable<Page<AppNotification>> {
-    return this.api.list<AppNotification>('notifications', query);
+    return this.api.list<AppNotification>(ENDPOINTS.notifications, query);
   }
 
   get(id: string): Observable<AppNotification> {
-    return this.api.get<AppNotification>(`notifications/${id}`);
+    return this.api.get<AppNotification>(`${ENDPOINTS.notifications}/${id}`);
   }
 
   resend(id: string): Observable<AppNotification> {
-    return this.api.post<AppNotification>(`notifications/${id}/resend`);
+    return this.api.post<AppNotification>(`${ENDPOINTS.notifications}/${id}/resend`);
   }
 
   cancel(id: string): Observable<AppNotification> {
-    return this.api.patch<AppNotification>(`notifications/${id}/cancel`);
+    return this.api.patch<AppNotification>(`${ENDPOINTS.notifications}/${id}/cancel`);
   }
 
   bulk(request: BulkActionRequest): Observable<BulkResult> {
-    return this.api.post<BulkResult>('notifications/bulk', request);
+    return this.api.post<BulkResult>(`${ENDPOINTS.notifications}/bulk`, request);
   }
 }

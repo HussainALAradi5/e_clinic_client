@@ -6,13 +6,14 @@ import { ReportParams } from '@interfaces/accounting/report-params.interface';
 import { ReportTable } from '@interfaces/accounting/report-table.interface';
 import { ApiClient } from '@services/api/api-client.service';
 import { downloadBlob } from '@utilities/download';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Accounting › Financial reports — every report is one table; export writes it to Excel or PDF. */
 @Injectable({ providedIn: 'root' })
 export class ReportApi {
   private readonly api = inject(ApiClient);
   private readonly http = inject(HttpClient);
-  private readonly path = 'accounting/reports';
+  private readonly path = ENDPOINTS.accounting.reports;
 
   build(type: ReportType, params: ReportParams): Observable<ReportTable> {
     return this.api.get<ReportTable>(`${this.path}/${type.replace(/_/g, '-')}`, {

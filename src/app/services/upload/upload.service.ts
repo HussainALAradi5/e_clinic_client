@@ -10,6 +10,7 @@ import { UploadSession } from '@interfaces/attachment/upload-session.interface';
 import { UploadItem } from '@interfaces/upload/upload.interface';
 import { UploadQueueOptions } from '@interfaces/upload/upload-queue-options.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /**
  * Upload pipeline: files ≤ 20 MB go to POST /attachments with progress; larger files use resumable 5 MB chunks
@@ -38,7 +39,7 @@ export class UploadService {
     form.append('attachable_id', options.owner.id);
 
     return this.http
-      .post<ApiEnvelope<UploadResult>>('attachments', form, {
+      .post<ApiEnvelope<UploadResult>>(ENDPOINTS.attachments, form, {
         reportProgress: true,
         observe: 'events',
       })
@@ -68,8 +69,8 @@ export class UploadService {
     progress: (pct: number) => void,
   ): Observable<Attachment> {
     const session$ = item.sessionId
-      ? this.api.get<UploadSession>(`attachments/uploads/${item.sessionId}`)
-      : this.api.post<UploadSession>('attachments/uploads', {
+      ? this.api.get<UploadSession>(`${ENDPOINTS.attachments}/uploads/${item.sessionId}`)
+      : this.api.post<UploadSession>(`${ENDPOINTS.attachments}/uploads`, {
           fileName: item.file.name,
           mimeType: item.file.type || 'application/octet-stream',
           sizeBytes: item.file.size,
@@ -89,7 +90,7 @@ export class UploadService {
         );
       }),
       concatMap((session) =>
-        this.api.post<Attachment>(`attachments/uploads/${session.id}/complete`, {
+        this.api.post<Attachment>(`${ENDPOINTS.attachments}/uploads/${session.id}/complete`, {
           attachableType: options.owner.type,
           attachableId: options.owner.id,
         }),
@@ -99,7 +100,9 @@ export class UploadService {
 
   /** @internal */
   cancelSession(sessionId: string): void {
-    this.api.delete(`attachments/uploads/${sessionId}`).subscribe({ error: () => undefined });
+    this.api
+      .delete(`${ENDPOINTS.attachments}/uploads/${sessionId}`)
+      .subscribe({ error: () => undefined });
   }
 
   private sendChunk(session: UploadSession, file: File): Observable<UploadSession> {
@@ -112,7 +115,9 @@ export class UploadService {
       'Content-Type': 'application/offset+octet-stream',
     });
     return this.http
-      .patch<ApiEnvelope<UploadSession>>(`attachments/uploads/${session.id}`, chunk, { headers })
+      .patch<ApiEnvelope<UploadSession>>(`${ENDPOINTS.attachments}/uploads/${session.id}`, chunk, {
+        headers,
+      })
       .pipe(map((res) => res.data));
   }
 }

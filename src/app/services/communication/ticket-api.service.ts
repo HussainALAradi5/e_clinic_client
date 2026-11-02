@@ -8,6 +8,7 @@ import { SupportTicket } from '@interfaces/communication/support-ticket.interfac
 import { TicketComment } from '@interfaces/communication/ticket-comment.interface';
 import { TicketPayload } from '@interfaces/communication/ticket-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /**
  * Support tickets. The list goes through `ui-resource-list` (endpoint `support/tickets`, schema `tickets`);
@@ -16,7 +17,7 @@ import { ApiClient } from '@services/api/api-client.service';
 @Injectable({ providedIn: 'root' })
 export class TicketApi {
   private readonly api = inject(ApiClient);
-  readonly path = 'support/tickets';
+  readonly path = ENDPOINTS.support.tickets;
 
   get(id: string, quiet = false): Observable<SupportTicket> {
     return this.api.get<SupportTicket>(`${this.path}/${id}`, quiet ? { context: silent() } : {});
@@ -61,6 +62,6 @@ export class TicketApi {
     form.append('category', AttachmentCategory.TicketAttachment);
     form.append('attachable_type', 'support_ticket');
     form.append('attachable_id', id);
-    return this.api.post<UploadResult>('attachments', form);
+    return this.api.post<UploadResult>(ENDPOINTS.attachments, form);
   }
 }

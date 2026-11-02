@@ -1,0 +1,91 @@
+/**
+ * API endpoints — resource paths under `/api/v1/`, matching the server routes (`routes/api.php` of each
+ * server module). Services build sub-paths from these: `${ENDPOINTS.hr.requests}/${id}/approve`.
+ */
+export const ENDPOINTS = {
+  appointments: 'appointments',
+  attachments: 'attachments',
+  auditLogs: 'audit-logs',
+  broadcasting: 'broadcasting',
+  clinicalOrders: 'clinical-orders',
+  codes: 'codes',
+  consents: 'consents',
+  doctors: 'doctors',
+  icd10: 'icd10',
+  notifications: 'notifications',
+  patients: 'patients',
+  people: 'people',
+  providers: 'providers',
+  public: 'public',
+  roles: 'roles',
+  rooms: 'rooms',
+  schedules: 'schedules',
+  sickLeaves: 'sick-leaves',
+  tasks: 'tasks',
+  treatments: 'treatments',
+  users: 'users',
+  views: 'views',
+  accounting: {
+    accounts: 'accounting/accounts',
+    fiscalYears: 'accounting/fiscal-years',
+    journalEntries: 'accounting/journal-entries',
+    reports: 'accounting/reports',
+  },
+  auth: {
+    forgotPassword: 'auth/forgot-password',
+    login: 'auth/login',
+    logout: 'auth/logout',
+    logoutAll: 'auth/logout-all',
+    me: 'auth/me',
+    password: 'auth/password',
+    resetPassword: 'auth/reset-password',
+    twoFactor: 'auth/two-factor',
+    verifyResetCode: 'auth/verify-reset-code',
+  },
+  billing: {
+    insuranceClaims: 'billing/insurance-claims',
+    invoices: 'billing/invoices',
+    payments: 'billing/payments',
+    refunds: 'billing/refunds',
+    services: 'billing/services',
+  },
+  chat: {
+    root: 'chat',
+  },
+  finance: {
+    cashSessions: 'finance/cash-sessions',
+    expenses: 'finance/expenses',
+  },
+  hr: {
+    attendance: 'hr/attendance',
+    departments: 'hr/departments',
+    employees: 'hr/employees',
+    leaves: 'hr/leaves',
+    payrollRuns: 'hr/payroll-runs',
+    payslips: 'hr/payslips',
+    requests: 'hr/requests',
+    settings: 'hr/settings',
+    shifts: 'hr/shifts',
+  },
+  meta: {
+    enums: 'meta/enums',
+    resources: 'meta/resources',
+  },
+  pharmacy: {
+    colleagues: 'pharmacy/colleagues',
+    dispensations: 'pharmacy/dispensations',
+    inventory: 'pharmacy/inventory',
+    medications: 'pharmacy/medications',
+    prescriptions: 'pharmacy/prescriptions',
+  },
+  portal: {
+    root: 'portal',
+  },
+  reference: {
+    companies: 'reference/companies',
+    countries: 'reference/countries',
+  },
+  support: {
+    tickets: 'support/tickets',
+  },
+} as const;

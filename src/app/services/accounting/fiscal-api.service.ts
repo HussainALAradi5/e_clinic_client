@@ -4,12 +4,13 @@ import { FiscalPeriod } from '@interfaces/accounting/fiscal.interface';
 import { FiscalYear } from '@interfaces/accounting/fiscal-year.interface';
 import { FiscalYearPayload } from '@interfaces/accounting/fiscal-year-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Accounting › Fiscal years — monthly periods closed in order, reopened with a reason, years closed and locked. */
 @Injectable({ providedIn: 'root' })
 export class FiscalApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'accounting/fiscal-years';
+  private readonly path = ENDPOINTS.accounting.fiscalYears;
 
   years(): Observable<FiscalYear[]> {
     return this.api.get<FiscalYear[]>(this.path);

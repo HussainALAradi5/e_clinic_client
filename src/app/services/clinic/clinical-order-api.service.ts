@@ -7,12 +7,13 @@ import { ClinicalOrder } from '@interfaces/clinic/clinical-order.interface';
 import { ClinicalOrderPayload } from '@interfaces/clinic/clinical-order-payload.interface';
 import { OrderResultPayload } from '@interfaces/clinic/order-result-payload.interface';
 import { EntityApi } from '@services/api/entity-api.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Clinic › Clinical orders — imaging, lab, ECG and referrals: work list, start, result, referral link. */
 @Injectable({ providedIn: 'root' })
 export class ClinicalOrderApi extends EntityApi<ClinicalOrder, ClinicalOrderPayload> {
   constructor() {
-    super('clinical-orders');
+    super(ENDPOINTS.clinicalOrders);
   }
 
   order(payload: ClinicalOrderPayload, idempotencyKey: string): Observable<ClinicalOrder> {

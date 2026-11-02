@@ -5,12 +5,13 @@ import { Payslip } from '@interfaces/hr/payslip.interface';
 import { PayrollRun } from '@interfaces/hr/payroll-run.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** HR › Payroll — monthly runs (calculate → approve → mark paid) and payslips. */
 @Injectable({ providedIn: 'root' })
 export class PayrollApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'hr/payroll-runs';
+  private readonly path = ENDPOINTS.hr.payrollRuns;
 
   list(query: ListQuery): Observable<Page<PayrollRun>> {
     return this.api.list<PayrollRun>(this.path, query);
@@ -41,10 +42,10 @@ export class PayrollApi {
   }
 
   payslips(query: ListQuery): Observable<Page<Payslip>> {
-    return this.api.list<Payslip>('hr/payslips', query);
+    return this.api.list<Payslip>(ENDPOINTS.hr.payslips, query);
   }
 
   payslip(id: string): Observable<Payslip> {
-    return this.api.get<Payslip>(`hr/payslips/${id}`);
+    return this.api.get<Payslip>(`${ENDPOINTS.hr.payslips}/${id}`);
   }
 }

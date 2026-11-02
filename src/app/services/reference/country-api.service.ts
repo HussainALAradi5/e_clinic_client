@@ -5,6 +5,7 @@ import { ListQuery } from '@interfaces/list/list-query.interface';
 import { Country } from '@interfaces/reference/country.interface';
 import { CountryPayload } from '@interfaces/reference/country-payload.type';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Reference › Countries — the picker list is fetched once per session and shared. */
 @Injectable({ providedIn: 'root' })
@@ -14,18 +15,20 @@ export class CountryApi {
 
   /** Active countries, GCC first (cached; public endpoint, so it also works before sign-in). */
   options(): Observable<Country[]> {
-    return (this.options$ ??= this.api.get<Country[]>('public/countries').pipe(shareReplay(1)));
+    return (this.options$ ??= this.api
+      .get<Country[]>(`${ENDPOINTS.public}/countries`)
+      .pipe(shareReplay(1)));
   }
 
   list(query: ListQuery, includeInactive = false): Observable<Page<Country>> {
-    return this.api.list<Country>('reference/countries', query, {
+    return this.api.list<Country>(ENDPOINTS.reference.countries, query, {
       includeInactive: includeInactive || undefined,
     });
   }
 
   update(code: string, payload: CountryPayload): Observable<Country> {
     return this.api
-      .put<Country>(`reference/countries/${code}`, payload)
+      .put<Country>(`${ENDPOINTS.reference.countries}/${code}`, payload)
       .pipe(tap(() => (this.options$ = null)));
   }
 }

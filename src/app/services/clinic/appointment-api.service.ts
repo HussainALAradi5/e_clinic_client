@@ -14,12 +14,13 @@ import { BulkResult } from '@interfaces/bulk/bulk-result.interface';
 import { Page } from '@interfaces/api/page.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Clinic › Appointments (one method per endpoint). Booking sends the wizard's Idempotency-Key. */
 @Injectable({ providedIn: 'root' })
 export class AppointmentApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'appointments';
+  private readonly path = ENDPOINTS.appointments;
 
   list(query: ListQuery): Observable<Page<Appointment>> {
     return this.api.list<Appointment>(this.path, query);

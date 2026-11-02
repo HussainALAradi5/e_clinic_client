@@ -8,6 +8,7 @@ import { EnumOption } from '@interfaces/common/enum-option.interface';
 import { CATEGORY_TONES, STATUS_TONES } from '@constants/status-tones.constants';
 import { StatusTone } from '@enums/ui/status-tone.enum';
 import { humanise } from '@utilities/text';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Labels, options and transitions of every enum from GET /meta/enums (loaded once; keys kept as sent). */
 @Injectable({ providedIn: 'root' })
@@ -23,7 +24,7 @@ export class EnumService {
       return of(this.catalog());
     }
     this.request$ ??= this.http
-      .get<ApiEnvelope<EnumCatalog>>('meta/enums', {
+      .get<ApiEnvelope<EnumCatalog>>(ENDPOINTS.meta.enums, {
         context: new HttpContext().set(SKIP_CASE, true),
       })
       .pipe(

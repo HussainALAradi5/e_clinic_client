@@ -7,6 +7,7 @@ import { environment } from '@env';
 import { SKIP_CASE } from '@middlewares/interceptors/http-context';
 import { AuthStore } from '@services/auth/auth.store';
 import { convertKeys, toCamel } from '@utilities/case';
+import { ENDPOINTS } from '@config/endpoints';
 
 /**
  * The live connection (Reverb, Pusher protocol). One socket per signed-in session; private channels are joined
@@ -76,7 +77,7 @@ export class RealtimeService {
         ) => {
           this.http
             .post<{ auth: string }>(
-              'broadcasting/auth',
+              `${ENDPOINTS.broadcasting}/auth`,
               { socket_id: socketId, channel_name: channel.name },
               {
                 context: new HttpContext().set(SKIP_CASE, true),

@@ -6,12 +6,13 @@ import { StaffRequest } from '@interfaces/hr/staff-request.interface';
 import { StaffRequestPayload } from '@interfaces/hr/staff-request-payload.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** HR › Requests — late excuses and overtime: staff ask about their days, HR approves or rejects with a reason. */
 @Injectable({ providedIn: 'root' })
 export class StaffRequestApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'hr/requests';
+  private readonly path = ENDPOINTS.hr.requests;
 
   /** Own requests, or everyone's for HR. */
   list(query: ListQuery): Observable<Page<StaffRequest>> {

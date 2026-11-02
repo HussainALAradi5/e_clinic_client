@@ -7,12 +7,13 @@ import { InsuranceClaim } from '@interfaces/billing/insurance-claim.interface';
 import { RemittancePayload } from '@interfaces/billing/remittance-payload.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** Billing › Insurance claims — prepare from an invoice, send, record the decision and the insurer's remittance. */
 @Injectable({ providedIn: 'root' })
 export class InsuranceClaimApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'billing/insurance-claims';
+  private readonly path = ENDPOINTS.billing.insuranceClaims;
 
   list(query: ListQuery): Observable<Page<InsuranceClaim>> {
     return this.api.list<InsuranceClaim>(this.path, query);

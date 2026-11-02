@@ -6,12 +6,13 @@ import { Setting } from '@interfaces/hr/setting.interface';
 import { SettingPayload } from '@interfaces/hr/setting-payload.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
+import { ENDPOINTS } from '@config/endpoints';
 
 /** HR › Settings — the late excuse and overtime switches and the overtime pay per hour (HR and admins). */
 @Injectable({ providedIn: 'root' })
 export class SettingApi {
   private readonly api = inject(ApiClient);
-  private readonly path = 'hr/settings';
+  private readonly path = ENDPOINTS.hr.settings;
 
   list(query: ListQuery = { perPage: 50 }): Observable<Page<Setting>> {
     return this.api.list<Setting>(this.path, query);

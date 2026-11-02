@@ -6,24 +6,23 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '@env';
 import { catchError, finalize, from, map, retry, switchMap, throwError, timer } from 'rxjs';
 import { IDEMPOTENCY_KEY, RAW_URL, SILENT, SKIP_CASE } from './http-context';
 import { blobText } from '@utilities/download';
 import {
   ACCOUNT_SECURITY_PATH,
-  API_PREFIX,
   IDEMPOTENCY_HEADER,
   LOGIN_PATH,
   REQUEST_ID_HEADER,
 } from '@constants/app.constants';
+import { apiUrl } from '@config/api.config';
 import { ErrorCode } from '@enums/api/error-code.enum';
 import { ApiError } from '@interfaces/api/api-error.interface';
 import { AuthStore } from '@services/auth/auth.store';
 import { LoadingService } from '@services/ui/loading.service';
 import { convertKeys, toCamel, toSnake, toSnakeParam } from '@utilities/case';
 
-/** 1 — Relative URLs go to `${environment.apiUrl}/api/v1/…`. */
+/** 1 — Relative URLs go to the API (`config/api.config.ts`). */
 export const apiUrlInterceptor: HttpInterceptorFn = (req, next) => {
   if (
     req.context.get(RAW_URL) ||
@@ -32,7 +31,7 @@ export const apiUrlInterceptor: HttpInterceptorFn = (req, next) => {
   ) {
     return next(req);
   }
-  return next(req.clone({ url: environment.apiUrl + API_PREFIX + req.url.replace(/^\/+/, '') }));
+  return next(req.clone({ url: apiUrl(req.url) }));
 };
 
 /** 2 — Bearer token from AuthStore. */
