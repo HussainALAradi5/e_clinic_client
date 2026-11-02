@@ -1,0 +1,65 @@
+<ui-page-header
+  title="HR settings"
+  subtitle="How lateness and overtime are handled. Changes apply from the next request and payroll."
+/>
+
+<div class="grid">
+  @for (s of settings(); track s.key) {
+    <section class="setting" [class]="look[s.key].tone" [class.on]="s.isEnabled">
+      <div class="head">
+        <span class="badge" aria-hidden="true"
+          ><mat-icon>{{ look[s.key].icon }}</mat-icon></span
+        >
+        <div class="min-w-0 flex-1">
+          <h2 class="m-0 text-lg font-semibold">{{ s.label }}</h2>
+          <p class="m-0 text-xs text-on-surface-variant">
+            {{ s.code }}
+            @if (s.updatedAt) {
+              · changed {{ s.updatedAt | date: dateTimeFormat : zone }}
+            }
+          </p>
+        </div>
+        <mat-slide-toggle
+          [checked]="s.isEnabled"
+          [disabled]="!canEdit || saving() === s.key"
+          [attr.aria-label]="s.label"
+          (change)="toggle(s, $event)"
+        />
+      </div>
+
+      <p class="m-0 text-sm">{{ s.description }}</p>
+
+      <p class="state">
+        <mat-icon aria-hidden="true">{{ s.isEnabled ? 'toggle_on' : 'toggle_off' }}</mat-icon>
+        @if (s.key === 'late_excuse') {
+          {{
+            s.isEnabled
+              ? 'On — staff can send an excuse; late minutes HR does not excuse are deducted.'
+              : 'Off — lateness is recorded only, nothing is deducted.'
+          }}
+        } @else {
+          {{
+            s.isEnabled
+              ? 'On — staff ask for their overtime; HR approves it under Requests.'
+              : 'Off — HR approves overtime straight from Attendance.'
+          }}
+        }
+      </p>
+
+      @if (s.hasAmount) {
+        <div class="rate">
+          <ui-money
+            label="Overtime pay per hour"
+            [control]="rate"
+            hint="Empty: each employee's hourly wage × 1.25."
+          />
+          @if (canEdit) {
+            <ui-button icon="save" variant="tonal" [action]="saveRate" [disabled]="rate.invalid"
+              >Save rate</ui-button
+            >
+          }
+        </div>
+      }
+    </section>
+  }
+</div>

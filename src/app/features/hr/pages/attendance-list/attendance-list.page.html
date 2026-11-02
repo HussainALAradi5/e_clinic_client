@@ -50,15 +50,29 @@
   <ng-template uiCell="worked_minutes" let-row
     ><span class="tabular-nums">{{ duration(row.workedMinutes) }}</span></ng-template
   >
-  <ng-template uiCell="late_minutes" let-row
-    ><span class="tabular-nums">{{ row.lateMinutes || '—' }}</span></ng-template
-  >
+  <ng-template uiCell="late_minutes" let-row>
+    <span class="tabular-nums">{{ row.lateMinutes || '—' }}</span>
+    @if (row.lateMinutes && row.lateExcused) {
+      <mat-icon
+        class="ml-1 !text-base align-middle text-green-700"
+        matTooltip="Excused by HR — not deducted"
+        >verified</mat-icon
+      >
+    }
+  </ng-template>
   <ng-template uiCell="overtime_minutes" let-row>
     @if (row.overtimeMinutes) {
       <span class="tabular-nums">{{ duration(row.overtimeMinutes) }}</span>
       @if (row.overtimeApproved) {
         <mat-icon class="ml-1 !text-base align-middle text-green-700" matTooltip="Approved"
           >check_circle</mat-icon
+        >
+      } @else if (overtimeByRequest()) {
+        <a
+          class="ml-1 text-xs text-primary underline"
+          routerLink="/hr/requests"
+          matTooltip="Overtime requests are on: approved from the employee's request"
+          >Via request</a
         >
       } @else if (row.employeeId !== me && !row.isLocked) {
         <ui-button

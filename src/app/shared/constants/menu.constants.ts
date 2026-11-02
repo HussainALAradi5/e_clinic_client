@@ -147,6 +147,22 @@ export const MENU: NavGroup[] = [
         access: 'attendance.read_all',
       },
       {
+        label: 'Requests',
+        description:
+          'Excuse a late arrival or get overtime paid; HR approves or rejects with a reason.',
+        icon: 'fact_check',
+        route: '/hr/requests',
+        access: 'staff_requests.read_all | staff_requests.read_own',
+      },
+      {
+        label: 'HR settings',
+        description:
+          'Switch late excuses and overtime requests on or off; the overtime pay per hour.',
+        icon: 'tune',
+        route: '/hr/settings',
+        access: 'settings.read_all',
+      },
+      {
         label: 'Leave',
         description: 'Leave requests to decide, balances and leave types.',
         icon: 'beach_access',

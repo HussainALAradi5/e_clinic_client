@@ -1,6 +1,7 @@
 import { ShiftType } from '@shared/enums/hr/shift-type.enum';
 import { AttendanceSource } from '@shared/enums/hr/attendance-source.enum';
 import { AttendanceStatus } from '@shared/enums/hr/attendance-status.enum';
+import { Money } from '@shared/interfaces/common/money.interface';
 import { EmployeeSummary } from '@shared/interfaces/common/summary.interface';
 
 /** Mirror of AttendanceResource — one employee's working day. */
@@ -23,6 +24,10 @@ export interface Attendance {
   lateMinutes: number;
   overtimeMinutes: number;
   overtimeApproved: boolean;
+  /** Priced when the overtime is approved (HR rate per hour, or hourly wage × 1.25). */
+  overtimeAmount: Money | null;
+  /** HR accepted the excuse: these late minutes are not deducted. */
+  lateExcused: boolean;
   status: AttendanceStatus;
   source: AttendanceSource;
   notes: string | null;
@@ -54,6 +59,9 @@ export interface AttendanceSummary {
   lateMinutes: number;
   approvedOvertimeMinutes: number;
   pendingOvertimeMinutes: number;
+  /** Deducted from pay while late excuses are on. */
+  unexcusedLateMinutes: number;
+  approvedOvertimeAmount: Money;
 }
 
 /** HR correction: times (clinic time, HH:mm) or, without a check-in, what the day was. */

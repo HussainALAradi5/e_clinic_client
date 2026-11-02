@@ -1,0 +1,254 @@
+<ui-page-header
+  [title]="title()"
+  [subtitle]="
+    canReview
+      ? 'Late excuses and overtime from the team. Approve with an optional note; a rejection always says why.'
+      : 'Ask HR to excuse a late arrival or to pay your overtime, and follow the decision.'
+  "
+/>
+
+<div class="layout" [class.with-rail]="canAsk">
+  <!-- Requests: status tabs with server counts, type chips, search, cards, pages. -->
+  <section class="min-w-0" aria-label="Requests">
+    <div class="tabs" role="tablist">
+      @for (t of tabs; track t.value) {
+        <button
+          type="button"
+          role="tab"
+          class="tab"
+          [class.on]="tab() === t.value"
+          [class]="'tab-' + t.value"
+          [attr.aria-selected]="tab() === t.value"
+          (click)="setTab(t.value)"
+        >
+          <mat-icon aria-hidden="true">{{ t.icon }}</mat-icon>
+          <span>{{ t.label }}</span>
+          <span class="count">{{ counts()[t.value] ?? '·' }}</span>
+        </button>
+      }
+    </div>
+
+    <div class="filters">
+      <div class="chips" role="group" aria-label="Kind of request">
+        <button type="button" class="chip" [class.on]="type() === null" (click)="setType(null)">
+          All kinds
+        </button>
+        <button
+          type="button"
+          class="chip late"
+          [class.on]="type() === types.LateExcuse"
+          (click)="setType(types.LateExcuse)"
+        >
+          <mat-icon aria-hidden="true">running_with_errors</mat-icon> Late excuses
+        </button>
+        <button
+          type="button"
+          class="chip overtime"
+          [class.on]="type() === types.Overtime"
+          (click)="setType(types.Overtime)"
+        >
+          <mat-icon aria-hidden="true">more_time</mat-icon> Overtime
+        </button>
+      </div>
+      <label class="search">
+        <mat-icon aria-hidden="true">search</mat-icon>
+        <input
+          type="search"
+          [placeholder]="seesEveryone ? 'Code or reason' : 'Search my requests'"
+          [value]="search()"
+          (change)="setSearch($any($event.target).value)"
+          aria-label="Search requests"
+        />
+      </label>
+    </div>
+
+    <div class="list" [class.loading]="loading()" aria-live="polite">
+      @for (r of requests(); track r.id) {
+        <article class="card" [class.late]="r.type === types.LateExcuse">
+          <header class="card-head">
+            @if (seesEveryone) {
+              <span class="avatar" aria-hidden="true">{{ initials(r.employee?.fullName) }}</span>
+              <div class="min-w-0 flex-1">
+                <p class="m-0 truncate font-semibold">
+                  {{ r.employee?.fullName }}
+                  @if (r.employeeId === me()) {
+                    <span class="you">you</span>
+                  }
+                </p>
+                <p class="m-0 truncate text-xs text-on-surface-variant">
+                  {{ r.employee?.jobTitle }}
+                  @if (r.employee?.department) {
+                    · {{ r.employee?.department?.name }}
+                  }
+                </p>
+              </div>
+            } @else {
+              <div class="min-w-0 flex-1">
+                <p class="m-0 font-semibold">{{ r.attendance?.date | date: dateFormat }}</p>
+              </div>
+            }
+            <ui-status enum="StaffRequestType" [value]="r.type" />
+            <ui-status enum="ApprovalStatus" [value]="r.status" />
+          </header>
+
+          <div class="facts">
+            @if (seesEveryone) {
+              <div>
+                <span class="label">Day</span>
+                <span>{{ r.attendance?.date | date: dateFormat }}</span>
+              </div>
+            }
+            <div>
+              <span class="label">{{ r.type === types.LateExcuse ? 'Late by' : 'Overtime' }}</span>
+              <span class="big">{{ r.minutes | duration }}</span>
+            </div>
+            <div>
+              <span class="label">In – out</span>
+              <span
+                >{{
+                  r.attendance?.checkInAt
+                    ? (r.attendance?.checkInAt | date: timeFormat : zone)
+                    : '—'
+                }}
+                –
+                {{
+                  r.attendance?.checkOutAt
+                    ? (r.attendance?.checkOutAt | date: timeFormat : zone)
+                    : '—'
+                }}</span
+              >
+            </div>
+            @if (r.details?.amount; as amount) {
+              @let a = amountLabel(r);
+              <div>
+                <span class="label">{{ a.label }}</span>
+                <span [class]="a.tone">{{ a.sign }}{{ amount | money }}</span>
+              </div>
+            }
+            <div class="ml-auto text-right">
+              <span class="label">{{ r.code }}</span>
+              <span class="text-xs text-on-surface-variant">{{
+                r.createdAt | date: dateTimeFormat : zone
+              }}</span>
+            </div>
+          </div>
+
+          <p class="reason" [class.empty]="!r.reason">
+            <mat-icon aria-hidden="true">format_quote</mat-icon>
+            {{ r.reason ?? 'No reason given.' }}
+          </p>
+
+          @if (r.reviewedAt) {
+            <div class="decision" [class.rejected]="r.status === 'rejected'">
+              <mat-icon aria-hidden="true">{{
+                r.status === 'rejected' ? 'cancel' : 'verified'
+              }}</mat-icon>
+              <div class="min-w-0">
+                <p class="m-0 text-sm">
+                  <span class="font-semibold">{{
+                    r.status === 'rejected' ? 'Rejected' : 'Approved'
+                  }}</span>
+                  by {{ r.reviewedBy?.fullName ?? 'HR' }} ·
+                  {{ r.reviewedAt | date: dateTimeFormat : zone }}
+                </p>
+                @if (r.reviewReason) {
+                  <p class="m-0 text-sm">“{{ r.reviewReason }}”</p>
+                }
+              </div>
+            </div>
+          }
+
+          @if (r.status === 'pending') {
+            <footer class="actions">
+              @if (canReview && r.employeeId !== me()) {
+                <button matButton="outlined" class="reject" (click)="review(r, 'reject')">
+                  <mat-icon>close</mat-icon> Reject
+                </button>
+                <button matButton="filled" (click)="review(r, 'approve')">
+                  <mat-icon>check</mat-icon> Approve
+                </button>
+              }
+              @if (r.employeeId === me()) {
+                <button matButton (click)="withdraw(r)"><mat-icon>undo</mat-icon> Withdraw</button>
+              }
+            </footer>
+          }
+        </article>
+      } @empty {
+        @if (!loading()) {
+          <ui-empty
+            icon="fact_check"
+            [title]="tab() === 'pending' ? 'Nothing waiting' : 'No requests here'"
+            [message]="
+              tab() === 'pending'
+                ? canReview
+                  ? 'Every late excuse and overtime request has been decided.'
+                  : 'You have no request waiting for HR.'
+                : 'Try another tab or kind.'
+            "
+          />
+        }
+      }
+    </div>
+
+    @if (meta(); as m) {
+      @if ((m.total ?? 0) > m.perPage) {
+        <ui-paginator [meta]="m" [pageSizes]="[10, 25, 50]" (pageChange)="changePage($event)" />
+      }
+    }
+  </section>
+
+  <!-- My days I can still ask about (only the kinds HR has switched on). -->
+  @if (canAsk) {
+    <aside class="rail" aria-label="Ask HR about a day">
+      <h2 class="m-0 text-base font-semibold">Ask HR about a day</h2>
+      <p class="m-0 mb-1 text-sm text-on-surface-variant">
+        Your last 31 days with late minutes or overtime not settled yet.
+      </p>
+      @for (a of askable(); track a.attendance.id) {
+        <div class="day">
+          <div class="day-head">
+            <span class="font-semibold">{{ a.attendance.date | date: 'EEE d MMM' }}</span>
+            <span class="text-xs text-on-surface-variant">
+              {{
+                a.attendance.checkInAt ? (a.attendance.checkInAt | date: timeFormat : zone) : '—'
+              }}
+              –
+              {{
+                a.attendance.checkOutAt ? (a.attendance.checkOutAt | date: timeFormat : zone) : '—'
+              }}
+            </span>
+          </div>
+          <div class="day-actions">
+            @for (t of a.types; track t) {
+              <button
+                type="button"
+                class="ask"
+                [class.late]="t === types.LateExcuse"
+                [matTooltip]="t === types.LateExcuse ? 'Ask HR to excuse it' : 'Ask HR to pay it'"
+                (click)="ask(a.attendance, t)"
+              >
+                <mat-icon aria-hidden="true">{{
+                  t === types.LateExcuse ? 'running_with_errors' : 'more_time'
+                }}</mat-icon>
+                <span>
+                  {{ t === types.LateExcuse ? 'Late' : 'Overtime' }}
+                  <strong>{{ minutesOf(a.attendance, t) | duration }}</strong>
+                </span>
+                <mat-icon class="go" aria-hidden="true">arrow_forward</mat-icon>
+              </button>
+            }
+          </div>
+        </div>
+      } @empty {
+        <div class="day calm">
+          <mat-icon aria-hidden="true">sentiment_satisfied</mat-icon>
+          <p class="m-0 text-sm">
+            Nothing to ask about — no late arrivals or unpaid overtime, or HR has these requests
+            switched off.
+          </p>
+        </div>
+      }
+    </aside>
+  }
+</div>

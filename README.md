@@ -131,8 +131,10 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 
 | Screen | Light | Dark |
 |---|---|---|
+| Ask excuse dialog | ![](docs/screenshots/nurse/ask-excuse-dialog-light.png) | ![](docs/screenshots/nurse/ask-excuse-dialog-dark.png) |
 | Dashboard | ![](docs/screenshots/nurse/dashboard-light.png) | ![](docs/screenshots/nurse/dashboard-dark.png) |
 | My patients only | ![](docs/screenshots/nurse/my-patients-only-light.png) | ![](docs/screenshots/nurse/my-patients-only-dark.png) |
+| My requests | ![](docs/screenshots/nurse/my-requests-light.png) | ![](docs/screenshots/nurse/my-requests-dark.png) |
 | Treatment plan | ![](docs/screenshots/nurse/treatment-plan-light.png) | ![](docs/screenshots/nurse/treatment-plan-dark.png) |
 | Treatments | ![](docs/screenshots/nurse/treatments-light.png) | ![](docs/screenshots/nurse/treatments-dark.png) |
 
@@ -173,6 +175,11 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 | Employees | ![](docs/screenshots/hr/employees-light.png) | ![](docs/screenshots/hr/employees-dark.png) |
 | Leaves | ![](docs/screenshots/hr/leaves-light.png) | ![](docs/screenshots/hr/leaves-dark.png) |
 | Payroll run | ![](docs/screenshots/hr/payroll-run-light.png) | ![](docs/screenshots/hr/payroll-run-dark.png) |
+| Requests approve dialog | ![](docs/screenshots/hr/requests-approve-dialog-light.png) | ![](docs/screenshots/hr/requests-approve-dialog-dark.png) |
+| Requests decided | ![](docs/screenshots/hr/requests-decided-light.png) | ![](docs/screenshots/hr/requests-decided-dark.png) |
+| Requests reject dialog | ![](docs/screenshots/hr/requests-reject-dialog-light.png) | ![](docs/screenshots/hr/requests-reject-dialog-dark.png) |
+| Requests to review | ![](docs/screenshots/hr/requests-to-review-light.png) | ![](docs/screenshots/hr/requests-to-review-dark.png) |
+| Settings switches | ![](docs/screenshots/hr/settings-switches-light.png) | ![](docs/screenshots/hr/settings-switches-dark.png) |
 | Shifts board | ![](docs/screenshots/hr/shifts-board-light.png) | ![](docs/screenshots/hr/shifts-board-dark.png) |
 | Shifts drag | ![](docs/screenshots/hr/shifts-drag-light.png) | ![](docs/screenshots/hr/shifts-drag-dark.png) |
 | Shifts new flexible | ![](docs/screenshots/hr/shifts-new-flexible-light.png) | ![](docs/screenshots/hr/shifts-new-flexible-dark.png) |

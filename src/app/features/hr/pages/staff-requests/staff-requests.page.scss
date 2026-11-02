@@ -1,0 +1,438 @@
+// Late is amber, overtime blue — the same colours as their badges (StaffRequestType tones).
+:host {
+  --late: #d97706;
+  --late-soft: color-mix(in srgb, #f59e0b 12%, transparent);
+  --overtime: #2563eb;
+  --overtime-soft: color-mix(in srgb, #3b82f6 12%, transparent);
+  display: block;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+
+  &.with-rail {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+  }
+
+  @media (max-width: 1000px) {
+    &.with-rail {
+      grid-template-columns: minmax(0, 1fr);
+
+      .rail {
+        order: -1;
+      }
+    }
+  }
+}
+
+// Status tabs with the server's counts.
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface-variant);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+
+  mat-icon {
+    font-size: 1.1rem;
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .count {
+    min-width: 1.6rem;
+    padding: 0 0.4rem;
+    border-radius: 999px;
+    background: var(--mat-sys-surface-container-high);
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
+  &:hover {
+    border-color: var(--mat-sys-primary);
+  }
+
+  &.on {
+    background: var(--mat-sys-primary);
+    border-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+
+    .count {
+      background: color-mix(in srgb, var(--mat-sys-on-primary) 22%, transparent);
+    }
+  }
+
+  &.tab-pending:not(.on) .count {
+    background: var(--late-soft);
+    color: var(--late);
+    font-weight: 600;
+  }
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.9rem 0 1rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  background: transparent;
+  color: var(--mat-sys-on-surface);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &.late mat-icon {
+    color: var(--late);
+  }
+
+  &.overtime mat-icon {
+    color: var(--overtime);
+  }
+
+  &.on {
+    background: var(--mat-sys-secondary-container);
+    border-color: transparent;
+  }
+
+  &.late.on {
+    background: var(--late-soft);
+    color: var(--late);
+  }
+
+  &.overtime.on {
+    background: var(--overtime-soft);
+    color: var(--overtime);
+  }
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  padding: 0.35rem 0.75rem;
+  min-width: min(16rem, 100%);
+  border-radius: 0.6rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface);
+
+  mat-icon {
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--mat-sys-on-surface);
+    font: inherit;
+  }
+
+  &:focus-within {
+    border-color: var(--mat-sys-primary);
+  }
+
+  @media (max-width: 640px) {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  transition: opacity 120ms ease;
+
+  &.loading {
+    opacity: 0.6;
+  }
+}
+
+// One request: a coloured edge for its kind, the day and minutes, the reasons, the decision.
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem 1rem 1.35rem;
+  border-radius: 1rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container-low);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 5px;
+    background: var(--overtime);
+  }
+
+  &.late::before {
+    background: var(--late);
+  }
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.you {
+  margin-left: 0.35rem;
+  padding: 0 0.4rem;
+  border-radius: 0.4rem;
+  background: var(--mat-sys-surface-container-high);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.75rem;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  .big {
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .minus {
+    color: var(--mat-sys-error);
+    font-weight: 500;
+  }
+
+  .plus {
+    color: #15803d;
+    font-weight: 500;
+  }
+
+  .struck {
+    color: var(--mat-sys-on-surface-variant);
+    text-decoration: line-through;
+  }
+}
+
+.reason {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.6rem;
+  background: var(--mat-sys-surface);
+  font-size: 0.9rem;
+
+  mat-icon {
+    flex: none;
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  &.empty {
+    color: var(--mat-sys-on-surface-variant);
+    font-style: italic;
+  }
+}
+
+.decision {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, #22c55e 12%, transparent);
+
+  > mat-icon {
+    flex: none;
+    color: #15803d;
+  }
+
+  &.rejected {
+    background: color-mix(in srgb, var(--mat-sys-error) 10%, transparent);
+
+    > mat-icon {
+      color: var(--mat-sys-error);
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+
+  .reject {
+    color: var(--mat-sys-error);
+  }
+}
+
+// Days I can still ask about.
+.rail {
+  position: sticky;
+  top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container-low);
+
+  @media (max-width: 1000px) {
+    position: static;
+  }
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.7rem;
+  border-radius: 0.8rem;
+  background: var(--mat-sys-surface);
+  border: 1px solid var(--mat-sys-outline-variant);
+
+  &.calm {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.day-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.day-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.ask {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border-radius: 0.6rem;
+  border: 0;
+  background: var(--overtime-soft);
+  color: var(--overtime);
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 120ms ease;
+
+  span {
+    flex: 1;
+  }
+
+  .go {
+    opacity: 0.6;
+    transition: transform 120ms ease;
+  }
+
+  &.late {
+    background: var(--late-soft);
+    color: var(--late);
+  }
+
+  &:hover .go {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+:host-context([data-theme='dark']) {
+  --late: #fbbf24;
+  --overtime: #93c5fd;
+
+  .facts .plus,
+  .decision > mat-icon {
+    color: #4ade80;
+  }
+}

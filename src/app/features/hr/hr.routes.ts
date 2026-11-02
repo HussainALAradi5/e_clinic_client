@@ -62,6 +62,20 @@ export const HR_ROUTES: Routes = [
     loadComponent: () => import('./pages/my-hr/my-hr.page').then((m) => m.MyHrPage),
   },
   {
+    path: 'requests',
+    title: 'Requests · e-Clinic',
+    canMatch: [accessGuard('staff_requests.read_all | staff_requests.read_own')],
+    loadComponent: () =>
+      import('./pages/staff-requests/staff-requests.page').then((m) => m.StaffRequestsPage),
+  },
+  {
+    path: 'settings',
+    title: 'HR settings · e-Clinic',
+    canMatch: [accessGuard('settings.read_all')],
+    loadComponent: () =>
+      import('./pages/hr-settings/hr-settings.page').then((m) => m.HrSettingsPage),
+  },
+  {
     path: 'attendance',
     title: 'Attendance · e-Clinic',
     canMatch: [accessGuard('attendance.read_all')],

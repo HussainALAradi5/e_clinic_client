@@ -1,0 +1,98 @@
+// Late is amber, overtime blue — as their requests and badges.
+:host {
+  --late: #d97706;
+  --overtime: #2563eb;
+  display: block;
+}
+
+:host-context([data-theme='dark']) {
+  --late: #fbbf24;
+  --overtime: #93c5fd;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+  gap: 1rem;
+  max-width: 60rem;
+}
+
+.setting {
+  --tone: var(--overtime);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.1rem 1.2rem;
+  border-radius: 1rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container-low);
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+
+  &.late {
+    --tone: var(--late);
+  }
+
+  &.on {
+    border-color: color-mix(in srgb, var(--tone) 55%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--tone) 12%, transparent);
+  }
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.badge {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  flex: none;
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, var(--tone) 14%, transparent);
+  color: var(--tone);
+}
+
+.state {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.6rem;
+  background: var(--mat-sys-surface);
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+
+  mat-icon {
+    flex: none;
+  }
+
+  .on & {
+    color: var(--mat-sys-on-surface);
+
+    mat-icon {
+      color: var(--tone);
+    }
+  }
+}
+
+.rate {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+
+  ui-money {
+    flex: 1;
+    min-width: 12rem;
+  }
+
+  ui-button {
+    margin-top: 0.4rem;
+  }
+}
