@@ -1,5 +1,5 @@
 import { Directive, inject, input, TemplateRef } from '@angular/core';
-import { CellContext } from '@interfaces/ui/table.interface';
+import { CellContext } from '@interfaces/ui/cell-context.interface';
 
 /** `uiCell="row_actions"` adds a last column of buttons for each row (clicks there never open the row). */
 export const ROW_ACTIONS = 'row_actions';

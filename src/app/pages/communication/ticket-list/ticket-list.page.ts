@@ -8,7 +8,7 @@ import { AppButton } from '@components/common/app-button/app-button.component';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { DATE_TIME_FORMAT } from '@constants/app.constants';
-import { SupportTicket } from '@interfaces/communication/ticket.interface';
+import { SupportTicket } from '@interfaces/communication/support-ticket.interface';
 import { AccessService } from '@services/auth/access.service';
 import { AuthStore } from '@services/auth/auth.store';
 import { RealtimeService } from '@services/communication/realtime.service';

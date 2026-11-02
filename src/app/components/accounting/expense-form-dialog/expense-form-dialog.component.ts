@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { ExpenseFormDialogData } from '@interfaces/accounting/dialog-data.interface';
+import { ExpenseFormDialogData } from '@interfaces/accounting/expense-form-dialog-data.interface';
 import { EntitySelect } from '@components/common/entity-select/entity-select.component';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { MoneyInput } from '@components/common/money-input/money-input.component';
@@ -14,7 +14,7 @@ import { ExpenseCategory } from '@enums/finance/expense-category.enum';
 import { Account } from '@interfaces/accounting/account.interface';
 import { Expense } from '@interfaces/finance/expense.interface';
 import { Department } from '@interfaces/hr/department.interface';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { Company } from '@interfaces/reference/company.interface';
 import { ExpenseApi } from '@services/finance/expense-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';

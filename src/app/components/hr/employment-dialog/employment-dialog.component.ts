@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { EmploymentFields } from '../employment-fields/employment-fields.component';
-import { EmploymentDialogData } from '@interfaces/hr/dialog-data.interface';
+import { EmploymentDialogData } from '@interfaces/hr/employment-dialog-data.interface';
 import { employmentForm } from '@utilities/hr/employment-form';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
-import { Employee, UpdateEmployeePayload } from '@interfaces/hr/employee.interface';
+import { Employee } from '@interfaces/hr/employee.interface';
+import { UpdateEmployeePayload } from '@interfaces/hr/update-employee-payload.interface';
 import { EmployeeApi } from '@services/hr/employee-api.service';
 import { dirtyPayload } from '@utilities/form-payload';
 

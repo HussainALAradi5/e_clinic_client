@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { ScheduleExceptionDialog } from '@components/clinic/schedule-exception-dialog/schedule-exception-dialog.component';
-import { ScheduleExceptionDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { ScheduleExceptionDialogData } from '@interfaces/clinic/schedule-exception-dialog-data.interface';
 import { WEEK_DAYS } from '@utilities/clinic/schedule';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
@@ -24,11 +24,9 @@ import { TextField } from '@components/common/text-field/text-field.component';
 import { DATE_FORMAT } from '@constants/app.constants';
 import { ErrorCode } from '@enums/api/error-code.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
-import {
-  AffectedBooking,
-  ScheduleBlock,
-  ScheduleException,
-} from '@interfaces/clinic/schedule.interface';
+import { AffectedBooking } from '@interfaces/clinic/affected-booking.interface';
+import { ScheduleBlock } from '@interfaces/clinic/schedule.interface';
+import { ScheduleException } from '@interfaces/clinic/schedule-exception.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { AccessService } from '@services/auth/access.service';
 import { DoctorApi } from '@services/clinic/doctor-api.service';

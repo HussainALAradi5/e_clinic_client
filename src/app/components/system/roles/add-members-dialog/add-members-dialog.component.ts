@@ -8,7 +8,7 @@ import { AppButton } from '@components/common/app-button/app-button.component';
 import { EntitySelect } from '@components/common/entity-select/entity-select.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { UserType } from '@enums/identity/user-type.enum';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { User } from '@interfaces/identity/user.interface';
 import { initials } from '@utilities/text';
 

@@ -22,11 +22,11 @@ import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { AttachmentCategory } from '@enums/attachment/attachment-category.enum';
-import { TicketConfirmation } from '@enums/communication/ticket.enum';
+import { TicketConfirmation } from '@enums/communication/ticket-confirmation.enum';
 import { GenericStatus } from '@enums/shared/generic-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { ApiError } from '@interfaces/api/api-error.interface';
-import { SupportTicket } from '@interfaces/communication/ticket.interface';
+import { SupportTicket } from '@interfaces/communication/support-ticket.interface';
 import { Fact } from '@interfaces/ui/fact.interface';
 import { AccessService } from '@services/auth/access.service';
 import { AuthStore } from '@services/auth/auth.store';
@@ -37,10 +37,8 @@ import { NotifyService } from '@services/ui/notify.service';
 import { clinicDateTime } from '@utilities/clinic-time';
 import { initials } from '@utilities/communication/chat-style';
 import { SolveTicketDialog } from '@components/communication/solve-ticket-dialog/solve-ticket-dialog.component';
-import {
-  SolveTicketData,
-  TicketSolution,
-} from '@interfaces/communication/solve-ticket-dialog.interface';
+import { SolveTicketData } from '@interfaces/communication/solve-ticket-dialog.interface';
+import { TicketSolution } from '@interfaces/communication/ticket-solution.interface';
 import { UploadZone } from '@components/common/upload-zone/upload-zone.component';
 import { StatusAction } from '@interfaces/communication/ticket-detail.interface';
 

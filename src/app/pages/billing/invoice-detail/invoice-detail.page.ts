@@ -21,7 +21,7 @@ import { PaymentStatus } from '@enums/billing/payment-status.enum';
 import { ApprovalStatus } from '@enums/shared/approval-status.enum';
 import { PaymentMethod } from '@enums/shared/payment-method.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
-import { InvoiceItem } from '@interfaces/billing/invoice.interface';
+import { InvoiceItem } from '@interfaces/billing/invoice-item.interface';
 import { Payment } from '@interfaces/billing/payment.interface';
 import { Refund } from '@interfaces/billing/refund.interface';
 import { Fact } from '@interfaces/ui/fact.interface';

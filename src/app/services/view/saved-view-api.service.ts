@@ -2,7 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from '@interfaces/api/page.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
-import { SavedView, SavedViewPayload } from '@interfaces/view/saved-view.interface';
+import { SavedView } from '@interfaces/view/saved-view.interface';
+import { SavedViewPayload } from '@interfaces/view/saved-view-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /** Identity › List views — own + shared saved layouts per resource. */

@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from '@interfaces/api/page.interface';
-import { Payslip, PayrollRun } from '@interfaces/hr/payroll.interface';
+import { Payslip } from '@interfaces/hr/payslip.interface';
+import { PayrollRun } from '@interfaces/hr/payroll-run.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
 

@@ -3,8 +3,9 @@ import { patchState, signalStore, withComputed, withMethods, withState } from '@
 import { firstValueFrom } from 'rxjs';
 import { UserState } from '@interfaces/system/users/user-state.interface';
 import { ApiError } from '@interfaces/api/api-error.interface';
-import { PersonPayload } from '@interfaces/identity/person.interface';
-import { ChangeUserStatusPayload, User } from '@interfaces/identity/user.interface';
+import { PersonPayload } from '@interfaces/identity/person-payload.interface';
+import { ChangeUserStatusPayload } from '@interfaces/identity/change-user-status-payload.interface';
+import { User } from '@interfaces/identity/user.interface';
 import { AuthStore } from '@services/auth/auth.store';
 import { RoleApi } from '@services/identity/role-api.service';
 import { UserApi } from '@services/identity/user-api.service';

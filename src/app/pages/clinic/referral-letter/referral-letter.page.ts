@@ -5,7 +5,7 @@ import { PrintSheet } from '@components/common/print-sheet/print-sheet.component
 import { ErrorState } from '@components/common/error-state/error-state.component';
 import { DATE_FORMAT } from '@constants/app.constants';
 import { ClinicalOrder } from '@interfaces/clinic/clinical-order.interface';
-import { RecordDiagnosis } from '@interfaces/clinic/medical-record.interface';
+import { RecordDiagnosis } from '@interfaces/clinic/record-diagnosis.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { ClinicalOrderApi } from '@services/clinic/clinical-order-api.service';
 import { MedicalRecordApi } from '@services/clinic/medical-record-api.service';

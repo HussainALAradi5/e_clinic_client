@@ -3,12 +3,12 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { MatCardModule } from '@angular/material/card';
 import { firstValueFrom } from 'rxjs';
 import { ScheduleExceptionDialog } from '@components/clinic/schedule-exception-dialog/schedule-exception-dialog.component';
-import { ScheduleExceptionDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { ScheduleExceptionDialogData } from '@interfaces/clinic/schedule-exception-dialog-data.interface';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { DATE_FORMAT } from '@constants/app.constants';
 import { ButtonVariant } from '@enums/ui/button.enum';
-import { ScheduleException } from '@interfaces/clinic/schedule.interface';
+import { ScheduleException } from '@interfaces/clinic/schedule-exception.interface';
 import { ScheduleApi } from '@services/clinic/schedule-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';

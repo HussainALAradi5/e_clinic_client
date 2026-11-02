@@ -22,7 +22,8 @@ import { PasswordStrength } from '@components/common/password-strength/password-
 import { TextField } from '@components/common/text-field/text-field.component';
 import { TOTP_LENGTH } from '@constants/limits.constants';
 import { ButtonVariant } from '@enums/ui/button.enum';
-import { ChangePasswordPayload, TwoFactorSetup } from '@interfaces/auth/auth-payloads.interface';
+import { ChangePasswordPayload } from '@interfaces/auth/change-password-payload.interface';
+import { TwoFactorSetup } from '@interfaces/auth/two-factor-setup.interface';
 import { ConfirmConfig } from '@interfaces/ui/confirm-config.interface';
 import { AuthStore } from '@services/auth/auth.store';
 import { SessionService } from '@services/auth/session.service';

@@ -13,7 +13,7 @@ import { ErrorState } from '@components/common/error-state/error-state.component
 import { PrintSheet } from '@components/common/print-sheet/print-sheet.component';
 import { DATE_FORMAT } from '@constants/app.constants';
 import { Dispensation } from '@interfaces/pharmacy/dispensation.interface';
-import { PrescriptionItem } from '@interfaces/pharmacy/prescription.interface';
+import { PrescriptionItem } from '@interfaces/pharmacy/prescription-item.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { DispensationApi } from '@services/pharmacy/dispensation-api.service';

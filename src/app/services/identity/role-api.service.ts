@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EffectiveAccess } from '@interfaces/auth/session.interface';
-import {
-  AccessRow,
-  PermissionGroup,
-  ResourceAccess,
-  Role,
-  RolePayload,
-} from '@interfaces/identity/role.interface';
+import { EffectiveAccess } from '@interfaces/auth/effective-access.interface';
+import { AccessRow } from '@interfaces/identity/access-row.interface';
+import { PermissionGroup } from '@interfaces/identity/permission-group.interface';
+import { ResourceAccess } from '@interfaces/identity/resource-access.interface';
+import { Role } from '@interfaces/identity/role.interface';
+import { RolePayload } from '@interfaces/identity/role-payload.interface';
 import { User } from '@interfaces/identity/user.interface';
 import { EntityApi } from '@services/api/entity-api.service';
 

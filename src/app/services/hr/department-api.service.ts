@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Department, DepartmentPayload } from '@interfaces/hr/department.interface';
+import { Department } from '@interfaces/hr/department.interface';
+import { DepartmentPayload } from '@interfaces/hr/department-payload.interface';
 import { EntityApi } from '@services/api/entity-api.service';
 
 /** HR › Departments — CRUD, archive / delete / restore, bulk and the tree. */

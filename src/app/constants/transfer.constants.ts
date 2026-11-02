@@ -1,5 +1,5 @@
 import { ExportFormat } from '@enums/list/export-format.enum';
-import { ExportFormatOption } from '@interfaces/list/transfer.interface';
+import { ExportFormatOption } from '@interfaces/list/export-format-option.interface';
 
 /** Export menu entries, in menu order. */
 export const EXPORT_FORMAT_OPTIONS: ExportFormatOption[] = [

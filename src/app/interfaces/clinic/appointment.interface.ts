@@ -1,10 +1,10 @@
-import { InvoiceRef } from '@interfaces/billing/invoice.interface';
 import { AppointmentSource } from '@enums/clinic/appointment-source.enum';
 import { AppointmentStatus } from '@enums/clinic/appointment-status.enum';
 import { AppointmentType } from '@enums/clinic/appointment-type.enum';
 import { CancelledBy } from '@enums/clinic/cancelled-by.enum';
 import { Gender } from '@enums/shared/gender.enum';
-import { Versioned } from '@interfaces/common/generic-entity.interface';
+import { InvoiceRef } from '@interfaces/billing/invoice-ref.interface';
+import { Versioned } from '@interfaces/common/versioned.interface';
 import { Money } from '@interfaces/common/money.interface';
 
 /** Mirror of AppointmentResource. `allowedTransitions` drives the action buttons. */
@@ -53,46 +53,4 @@ export interface Appointment extends Versioned {
   updatedAt: string;
   /** Complete response only. */
   followUpSuggestedDate?: string | null;
-}
-
-/** POST /appointments (sent with an Idempotency-Key). */
-export interface BookAppointmentPayload {
-  patientId: string;
-  providerId: string;
-  type: AppointmentType;
-  scheduledDate: string;
-  startTime: string;
-  endTime?: string | null;
-  source: AppointmentSource;
-  roomId?: string | null;
-  reason?: string | null;
-  notes?: string | null;
-}
-
-/** GET /appointments/available-slots item. */
-export interface Slot {
-  start: string;
-  end: string;
-  startTime: string;
-  endTime: string;
-}
-
-/** PATCH /appointments/{id}/cancel. */
-export interface CancelAppointmentPayload {
-  reason: string;
-  cancelledBy: CancelledBy;
-}
-
-/** POST /appointments/{id}/reschedule. */
-export interface ReschedulePayload {
-  scheduledDate: string;
-  startTime: string;
-  providerId?: string | null;
-  roomId?: string | null;
-}
-
-/** PATCH /appointments/{id}/complete. */
-export interface CompleteAppointmentPayload {
-  billableServiceIds?: string[];
-  followUpInDays?: number | null;
 }

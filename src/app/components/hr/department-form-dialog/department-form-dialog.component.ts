@@ -6,9 +6,10 @@ import { EntitySelect } from '@components/common/entity-select/entity-select.com
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { EmployeeStatus } from '@enums/hr/employee-status.enum';
-import { Department, DepartmentPayload } from '@interfaces/hr/department.interface';
+import { Department } from '@interfaces/hr/department.interface';
+import { DepartmentPayload } from '@interfaces/hr/department-payload.interface';
 import { Employee } from '@interfaces/hr/employee.interface';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { dirtyPayload } from '@utilities/form-payload';
 
 /** Create or edit a department: code, name, parent (never itself or below) and an active manager. */

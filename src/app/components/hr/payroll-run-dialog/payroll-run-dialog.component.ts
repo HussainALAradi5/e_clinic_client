@@ -4,8 +4,8 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { SelectField } from '@components/common/select-field/select-field.component';
-import { EnumOption } from '@interfaces/common/enum-meta.interface';
-import { PayrollRun } from '@interfaces/hr/payroll.interface';
+import { EnumOption } from '@interfaces/common/enum-option.interface';
+import { PayrollRun } from '@interfaces/hr/payroll-run.interface';
 import { PayrollApi } from '@services/hr/payroll-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 

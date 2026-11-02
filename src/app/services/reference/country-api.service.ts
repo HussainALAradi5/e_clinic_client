@@ -2,7 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, shareReplay, tap } from 'rxjs';
 import { Page } from '@interfaces/api/page.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
-import { Country, CountryPayload } from '@interfaces/reference/country.interface';
+import { Country } from '@interfaces/reference/country.interface';
+import { CountryPayload } from '@interfaces/reference/country-payload.type';
 import { ApiClient } from '@services/api/api-client.service';
 
 /** Reference › Countries — the picker list is fetched once per session and shared. */

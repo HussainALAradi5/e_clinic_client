@@ -5,7 +5,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { TextField } from '@components/common/text-field/text-field.component';
-import { FiscalYear } from '@interfaces/accounting/fiscal.interface';
+import { FiscalYear } from '@interfaces/accounting/fiscal-year.interface';
 import { FiscalApi } from '@services/accounting/fiscal-api.service';
 import { AppValidators } from '@validations/validators';
 

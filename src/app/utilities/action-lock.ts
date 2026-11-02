@@ -2,7 +2,7 @@ import { computed, signal } from '@angular/core';
 import { isObservable, lastValueFrom } from 'rxjs';
 import { MIN_BUSY_MS, SUCCESS_MS } from '@constants/limits.constants';
 import { ActionState } from '@enums/ui/action-state.enum';
-import { LockMode } from '@enums/ui/button.enum';
+import { LockMode } from '@enums/ui/lock-mode.enum';
 import { ActionResult } from '@interfaces/ui/action.interface';
 
 export function toPromise(result: ActionResult): Promise<unknown> {

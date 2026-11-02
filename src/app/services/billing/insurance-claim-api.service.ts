@@ -2,11 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { withIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { Page } from '@interfaces/api/page.interface';
-import {
-  ClaimDecisionPayload,
-  InsuranceClaim,
-  RemittancePayload,
-} from '@interfaces/billing/insurance-claim.interface';
+import { ClaimDecisionPayload } from '@interfaces/billing/claim-decision-payload.interface';
+import { InsuranceClaim } from '@interfaces/billing/insurance-claim.interface';
+import { RemittancePayload } from '@interfaces/billing/remittance-payload.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
 

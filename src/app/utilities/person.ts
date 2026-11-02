@@ -1,6 +1,6 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Gender } from '@enums/shared/gender.enum';
-import { NewPersonPayload } from '@interfaces/identity/person.interface';
+import { NewPersonPayload } from '@interfaces/identity/new-person-payload.interface';
 import { AppValidators } from '@validations/validators';
 import { NewPersonForm } from '@interfaces/common/person.interface';
 

@@ -3,11 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { withIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { ClinicalOrderType } from '@enums/clinic/clinical-order-type.enum';
-import {
-  ClinicalOrder,
-  ClinicalOrderPayload,
-  OrderResultPayload,
-} from '@interfaces/clinic/clinical-order.interface';
+import { ClinicalOrder } from '@interfaces/clinic/clinical-order.interface';
+import { ClinicalOrderPayload } from '@interfaces/clinic/clinical-order-payload.interface';
+import { OrderResultPayload } from '@interfaces/clinic/order-result-payload.interface';
 import { EntityApi } from '@services/api/entity-api.service';
 
 /** Clinic › Clinical orders — imaging, lab, ECG and referrals: work list, start, result, referral link. */

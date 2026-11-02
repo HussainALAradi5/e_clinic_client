@@ -1,18 +1,15 @@
+import { AppointmentStatus } from '@enums/clinic/appointment-status.enum';
 import { ClinicalOrderType } from '@enums/clinic/clinical-order-type.enum';
 import { ConsentType } from '@enums/clinic/consent-type.enum';
 import { TreatmentPriority } from '@enums/clinic/treatment-priority.enum';
-import { AppointmentStatus } from '@enums/clinic/appointment-status.enum';
 import { Gender } from '@enums/shared/gender.enum';
 import { GenericStatus } from '@enums/shared/generic-status.enum';
-import { InvoiceRef } from '@interfaces/billing/invoice.interface';
 import { Attachment } from '@interfaces/attachment/attachment.interface';
-import { GenericEntity, Versioned } from '@interfaces/common/generic-entity.interface';
+import { InvoiceRef } from '@interfaces/billing/invoice-ref.interface';
+import { PersonRef } from '@interfaces/clinic/person-ref.interface';
+import { GenericEntity } from '@interfaces/common/generic-entity.interface';
+import { Versioned } from '@interfaces/common/versioned.interface';
 import { Money } from '@interfaces/common/money.interface';
-
-interface PersonRef {
-  id: string;
-  fullName: string;
-}
 
 /** Mirror of ClinicalOrderResource. Notes, report and images only with `patients.view_medical`. */
 export interface ClinicalOrder extends GenericEntity, Versioned {
@@ -66,28 +63,4 @@ export interface ClinicalOrder extends GenericEntity, Versioned {
   /** The live invoice this order is billed on (detail only). */
   invoice?: InvoiceRef | null;
   attachments?: Attachment[];
-}
-
-/** POST /clinical-orders and PUT /clinical-orders/{id}. */
-export interface ClinicalOrderPayload {
-  version?: number;
-  type?: ClinicalOrderType;
-  patientId?: string;
-  orderedBy?: string | null;
-  appointmentId?: string | null;
-  treatmentId?: string | null;
-  billableServiceId?: string | null;
-  referredToDoctorId?: string | null;
-  referredToSpecialtyId?: string | null;
-  referredToCompanyId?: string | null;
-  bodyPart?: string | null;
-  clinicalNotes?: string | null;
-  priority?: TreatmentPriority;
-}
-
-/** PATCH /clinical-orders/{id}/complete. */
-export interface OrderResultPayload {
-  report: string;
-  isAbnormal?: boolean | null;
-  reportedBy?: string | null;
 }

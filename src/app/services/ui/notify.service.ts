@@ -5,7 +5,8 @@ import type { Toast } from '@components/common/toast/toast.component';
 import { TOAST_STYLES } from '@constants/toast.constants';
 import { ToastType } from '@enums/ui/toast-type.enum';
 import { ApiError } from '@interfaces/api/api-error.interface';
-import { ToastData, ToastOptions } from '@interfaces/ui/toast.interface';
+import { ToastData } from '@interfaces/ui/toast.interface';
+import { ToastOptions } from '@interfaces/ui/toast-options.interface';
 import { isApiError } from '@utilities/guards';
 import { ToastKit } from '@interfaces/ui/notify.interface';
 

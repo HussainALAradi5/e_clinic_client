@@ -4,14 +4,12 @@ import { toSnake } from '@utilities/case';
 import { DEFAULT_PER_PAGE, MAX_PER_PAGE } from '@constants/limits.constants';
 import { DateRangePreset } from '@enums/shared/date-range-preset.enum';
 import { LogicalOperator } from '@enums/shared/logical-operator.enum';
-import {
-  FilterGroup,
-  FilterNode,
-  FilterValue,
-  ListQuery,
-} from '@interfaces/list/list-query.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
+import { FilterNode } from '@interfaces/list/filter-node.type';
+import { FilterValue } from '@interfaces/list/filter-value.type';
+import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ExportFilter } from '@interfaces/list/transfer.interface';
-import { SavedViewQuery } from '@interfaces/view/saved-view.interface';
+import { SavedViewQuery } from '@interfaces/view/saved-view-query.type';
 
 const LOGICAL = new Set<string>(Object.values(LogicalOperator));
 

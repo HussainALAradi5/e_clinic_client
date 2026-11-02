@@ -1,15 +1,6 @@
 import { ShiftType } from '@enums/hr/shift-type.enum';
 import { GenericEntity } from '@interfaces/common/generic-entity.interface';
-
-/** Someone on a shift (ShiftResource.employees). */
-export interface ShiftMember {
-  id: string;
-  code: string;
-  fullName: string;
-  avatarUrl: string | null;
-  jobTitle: string;
-  department: string | null;
-}
+import { ShiftMember } from '@interfaces/hr/shift-member.interface';
 
 /** Mirror of ShiftResource. Fixed: start → end. Flexible: any time start → end, in by `latestStart`, hours due. */
 export interface Shift extends GenericEntity {
@@ -24,15 +15,4 @@ export interface Shift extends GenericEntity {
   notes: string | null;
   employeesCount?: number;
   employees?: ShiftMember[];
-}
-
-/** POST / PUT /hr/shifts. */
-export interface ShiftPayload {
-  name: string;
-  type: ShiftType;
-  startTime: string;
-  endTime: string;
-  latestStart?: string | null;
-  requiredMinutes?: number | null;
-  notes?: string | null;
 }

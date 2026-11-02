@@ -1,4 +1,6 @@
-import { ClinicInfo, ServiceLine, VisitStep } from '@interfaces/public/clinic-info.interface';
+import { ClinicInfo } from '@interfaces/public/clinic-info.interface';
+import { ServiceLine } from '@interfaces/public/service-line.interface';
+import { VisitStep } from '@interfaces/public/visit-step.interface';
 
 /**
  * Public facts shown on the website. Replace with the clinic's real details before go-live

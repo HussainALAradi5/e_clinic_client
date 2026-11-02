@@ -26,7 +26,7 @@ import { AppointmentActionsBar } from '@components/clinic/appointment-actions/ap
 import { ConsentsPanel } from '@components/clinic/consents-panel/consents-panel.component';
 import { Icd10Picker } from '@components/clinic/icd10-picker/icd10-picker.component';
 import { ProgressMeter } from '@components/common/progress-meter/progress-meter.component';
-import { ConsentDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { ConsentDialogData } from '@interfaces/clinic/consent-dialog-data.interface';
 import { AppointmentActions } from '@services/clinic/appointment-actions.service';
 import { ClinicalActions } from '@services/clinic/clinical-actions.service';
 import { bmi } from '@utilities/clinic/clinical';
@@ -41,13 +41,11 @@ import { AppointmentStatus } from '@enums/clinic/appointment-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
 import { ClinicalOrder } from '@interfaces/clinic/clinical-order.interface';
-import {
-  Icd10Code,
-  MedicalRecord,
-  MedicalRecordPayload,
-  RecordDiagnosis,
-  Vitals,
-} from '@interfaces/clinic/medical-record.interface';
+import { Icd10Code } from '@interfaces/clinic/icd10-code.interface';
+import { MedicalRecord } from '@interfaces/clinic/medical-record.interface';
+import { MedicalRecordPayload } from '@interfaces/clinic/medical-record-payload.interface';
+import { RecordDiagnosis } from '@interfaces/clinic/record-diagnosis.interface';
+import { Vitals } from '@interfaces/clinic/vitals.interface';
 import { Patient } from '@interfaces/clinic/patient.interface';
 import { Treatment } from '@interfaces/clinic/treatment.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
@@ -61,7 +59,8 @@ import { TreatmentApi } from '@services/clinic/treatment-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { AUTOSAVE_MS, DOCUMENTABLE, VITAL_KEYS } from '@constants/visit.constants';
-import { SaveState, VitalKey } from '@interfaces/clinic/visit-workspace.interface';
+import { SaveState } from '@interfaces/clinic/visit-workspace.interface';
+import { VitalKey } from '@interfaces/clinic/vital-key.type';
 
 /**
  * `/clinic/appointments/:id/visit` — the clinician's screen during a visit: SOAP notes and vitals (saved as you

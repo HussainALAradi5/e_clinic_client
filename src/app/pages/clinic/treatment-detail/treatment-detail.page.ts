@@ -28,7 +28,7 @@ import { StatusChip } from '@components/common/status-chip/status-chip.component
 import { DATE_FORMAT } from '@constants/app.constants';
 import { isOpenGenericStatus } from '@enums/shared/generic-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
-import { TreatmentSession } from '@interfaces/clinic/treatment.interface';
+import { TreatmentSession } from '@interfaces/clinic/treatment-session.interface';
 import { Fact } from '@interfaces/ui/fact.interface';
 import { TreatmentApi } from '@services/clinic/treatment-api.service';
 import { EntityDetail } from '@services/data/entity-detail';

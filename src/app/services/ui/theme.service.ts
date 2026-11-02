@@ -1,6 +1,7 @@
 import { computed, DOCUMENT, effect, inject, Injectable, signal } from '@angular/core';
 import { STORAGE_KEYS } from '@constants/app.constants';
-import { Density, ThemeMode } from '@enums/ui/theme.enum';
+import { Density } from '@enums/ui/density.enum';
+import { ThemeMode } from '@enums/ui/theme.enum';
 
 /**
  * Light or dark (the user's choice, light by default) and density, stored per browser (no PHI). Writes data-theme

@@ -2,7 +2,8 @@ import { inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiClient } from './api-client.service';
 import { Page } from '@interfaces/api/page.interface';
-import { BulkActionRequest, BulkResult } from '@interfaces/bulk/bulk.interface';
+import { BulkActionRequest } from '@interfaces/bulk/bulk.interface';
+import { BulkResult } from '@interfaces/bulk/bulk-result.interface';
 import { GenericEntity } from '@interfaces/common/generic-entity.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 

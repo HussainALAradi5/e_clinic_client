@@ -8,7 +8,8 @@ import { startWith } from 'rxjs';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { ShiftType } from '@enums/hr/shift-type.enum';
-import { Shift, ShiftPayload } from '@interfaces/hr/shift.interface';
+import { Shift } from '@interfaces/hr/shift.interface';
+import { ShiftPayload } from '@interfaces/hr/shift-payload.interface';
 import { hoursText, minutesOf } from '@utilities/hr/shift-hours';
 import { ShiftFormDialogData } from '@interfaces/hr/shift-form-dialog.interface';
 

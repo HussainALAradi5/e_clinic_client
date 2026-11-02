@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { CountryFormDialogData } from '@interfaces/reference/dialog-data.interface';
+import { CountryFormDialogData } from '@interfaces/reference/country-form-dialog-data.interface';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { TextField } from '@components/common/text-field/text-field.component';
-import { Country, CountryPayload } from '@interfaces/reference/country.interface';
+import { Country } from '@interfaces/reference/country.interface';
+import { CountryPayload } from '@interfaces/reference/country-payload.type';
 import { Flag } from '@components/common/flag/flag.component';
 
 /** Edits a country's labels, dial code, picker order and active flag (deactivating keeps existing data). */

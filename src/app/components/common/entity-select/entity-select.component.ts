@@ -15,7 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { catchError, debounceTime, distinctUntilChanged, of, Subject, switchMap } from 'rxjs';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { ApiClient } from '@services/api/api-client.service';
 import { errorMessage } from '@validations/validators';
 

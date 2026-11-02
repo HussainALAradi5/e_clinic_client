@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DoctorFormDialog } from '@components/clinic/doctor-form-dialog/doctor-form-dialog.component';
-import { DoctorFormDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { DoctorFormDialogData } from '@interfaces/clinic/doctor-form-dialog-data.interface';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';

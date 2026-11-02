@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { MatCalendarHeader } from '@angular/material/datepicker';
-import { DateFieldOption, DateRangeValue } from '@interfaces/list/date-range-filter.interface';
+import { DateFieldOption } from '@interfaces/list/date-field-option.interface';
+import { DateRangeValue } from '@interfaces/list/date-range-filter.interface';
 
 /** What the calendar header needs from the field that opened it (provided by DateRangeFilter). */
 export abstract class DateRangeHost {

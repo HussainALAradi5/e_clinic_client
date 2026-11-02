@@ -2,8 +2,10 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { withIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { Page } from '@interfaces/api/page.interface';
-import { Refund, RefundPayload } from '@interfaces/billing/refund.interface';
-import { BulkActionRequest, BulkResult } from '@interfaces/bulk/bulk.interface';
+import { Refund } from '@interfaces/billing/refund.interface';
+import { RefundPayload } from '@interfaces/billing/refund-payload.interface';
+import { BulkActionRequest } from '@interfaces/bulk/bulk.interface';
+import { BulkResult } from '@interfaces/bulk/bulk-result.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
 

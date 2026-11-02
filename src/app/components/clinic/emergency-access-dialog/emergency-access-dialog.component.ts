@@ -8,7 +8,7 @@ import { GenericForm } from '@components/common/generic-form/generic-form.compon
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { ButtonVariant } from '@enums/ui/button.enum';
-import { PatientLookup } from '@interfaces/clinic/patient.interface';
+import { PatientLookup } from '@interfaces/clinic/patient-lookup.interface';
 import { PatientApi } from '@services/clinic/patient-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { clinicTime } from '@utilities/clinic-time';

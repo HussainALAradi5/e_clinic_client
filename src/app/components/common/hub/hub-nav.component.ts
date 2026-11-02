@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { NavGroup } from '@interfaces/ui/nav.interface';
+import { NavGroup } from '@interfaces/ui/nav-group.interface';
 import { HubSection } from './hub-section.component';
 import { HubTile } from './hub-tile.component';
 

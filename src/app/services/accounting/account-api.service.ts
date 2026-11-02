@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AccountType } from '@enums/accounting/account-type.enum';
-import { Account, AccountMapping, AccountPayload } from '@interfaces/accounting/account.interface';
+import { Account } from '@interfaces/accounting/account.interface';
+import { AccountMapping } from '@interfaces/accounting/account-mapping.interface';
+import { AccountPayload } from '@interfaces/accounting/account-payload.interface';
 import { EntityApi } from '@services/api/entity-api.service';
 
 /** Accounting › Chart of accounts — CRUD, archive / delete / restore, bulk, tree and mappings. */

@@ -27,11 +27,13 @@ import { Paginator } from '@components/common/paginator/paginator.component';
 import { SavedViews } from '@components/common/saved-views/saved-views.component';
 import { ExportFormat } from '@enums/list/export-format.enum';
 import { ListQuery } from '@interfaces/list/list-query.interface';
-import { ImportDialogData, ImportResult } from '@interfaces/list/transfer.interface';
+import { ImportDialogData } from '@interfaces/list/import-dialog-data.interface';
+import { ImportResult } from '@interfaces/list/import-result.interface';
 import { TransferService } from '@services/data/transfer.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
-import { PageChange, TableColumn } from '@interfaces/ui/table.interface';
+import { PageChange } from '@interfaces/ui/page-change.interface';
+import { TableColumn } from '@interfaces/ui/table.interface';
 import { SavedView } from '@interfaces/view/saved-view.interface';
 import { defaultQuery, fromViewQuery, queryFromUrl, queryToUrl } from '@utilities/list-query';
 

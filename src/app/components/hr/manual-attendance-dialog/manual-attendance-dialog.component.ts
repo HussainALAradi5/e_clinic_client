@@ -4,7 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { ManualAttendanceDialogData } from '@interfaces/hr/dialog-data.interface';
+import { ManualAttendanceDialogData } from '@interfaces/hr/manual-attendance-dialog-data.interface';
 import { EntitySelect } from '@components/common/entity-select/entity-select.component';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { SelectField } from '@components/common/select-field/select-field.component';
@@ -13,7 +13,7 @@ import { AttendanceStatus } from '@enums/hr/attendance-status.enum';
 import { EmployeeStatus } from '@enums/hr/employee-status.enum';
 import { Attendance } from '@interfaces/hr/attendance.interface';
 import { Employee } from '@interfaces/hr/employee.interface';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { EnumService } from '@services/data/enum.service';
 import { AttendanceApi } from '@services/hr/attendance-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';

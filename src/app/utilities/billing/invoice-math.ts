@@ -1,6 +1,8 @@
 import { DiscountType } from '@enums/billing/discount-type.enum';
 import { divideHalfUp, fromMinor, toMinor, toScaled } from '@utilities/money';
-import { InvoiceAmounts, LineAmounts, LineDraft } from '@interfaces/billing/invoice-math.interface';
+import { InvoiceAmounts } from '@interfaces/billing/invoice-amounts.interface';
+import { LineAmounts } from '@interfaces/billing/line-amounts.interface';
+import { LineDraft } from '@interfaces/billing/invoice-math.interface';
 
 /**
  * Preview of InvoiceCalculator::line() in fils (HALF_UP, 3 decimals): gross = qty × price; discount fixed or %,

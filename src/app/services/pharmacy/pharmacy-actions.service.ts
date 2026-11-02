@@ -7,16 +7,15 @@ import { AdministerDialog } from '@components/pharmacy/administer-dialog/adminis
 import { MedicationFormDialog } from '@components/pharmacy/medication-form-dialog/medication-form-dialog.component';
 import { PrescriptionFormDialog } from '@components/pharmacy/prescription-form-dialog/prescription-form-dialog.component';
 import { ReceiveStockDialog } from '@components/pharmacy/receive-stock-dialog/receive-stock-dialog.component';
-import {
-  AdjustStockDialogData,
-  TransferStockDialogData,
-  AdministerDialogData,
-  MedicationFormDialogData,
-  PrescriptionFormDialogData,
-  ReceiveStockDialogData,
-} from '@interfaces/pharmacy/dialog-data.interface';
+import { AdjustStockDialogData } from '@interfaces/pharmacy/adjust-stock-dialog-data.interface';
+import { TransferStockDialogData } from '@interfaces/pharmacy/transfer-stock-dialog-data.interface';
+import { AdministerDialogData } from '@interfaces/pharmacy/administer-dialog-data.interface';
+import { MedicationFormDialogData } from '@interfaces/pharmacy/dialog-data.interface';
+import { PrescriptionFormDialogData } from '@interfaces/pharmacy/prescription-form-dialog-data.interface';
+import { ReceiveStockDialogData } from '@interfaces/pharmacy/receive-stock-dialog-data.interface';
 import { Dispensation } from '@interfaces/pharmacy/dispensation.interface';
-import { MedicationBatch, StockMovement } from '@interfaces/pharmacy/inventory.interface';
+import { MedicationBatch } from '@interfaces/pharmacy/inventory.interface';
+import { StockMovement } from '@interfaces/pharmacy/stock-movement.interface';
 import { Medication } from '@interfaces/pharmacy/medication.interface';
 import { Prescription } from '@interfaces/pharmacy/prescription.interface';
 import { DispensationApi } from '@services/pharmacy/dispensation-api.service';

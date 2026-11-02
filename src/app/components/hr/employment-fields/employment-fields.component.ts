@@ -4,7 +4,8 @@ import { EntitySelect } from '@components/common/entity-select/entity-select.com
 import { MoneyInput } from '@components/common/money-input/money-input.component';
 import { SelectField } from '@components/common/select-field/select-field.component';
 import { TextField } from '@components/common/text-field/text-field.component';
-import { Department, DepartmentRef } from '@interfaces/hr/department.interface';
+import { Department } from '@interfaces/hr/department.interface';
+import { DepartmentRef } from '@interfaces/hr/department-ref.interface';
 import { EnumService } from '@services/data/enum.service';
 
 /** Employment fields shared by the hire and edit dialogs; salary fields only when `salary` is true. */

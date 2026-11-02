@@ -17,7 +17,7 @@ import { AppButton } from '@components/common/app-button/app-button.component';
 import { EntitySelect } from '@components/common/entity-select/entity-select.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { Patient } from '@interfaces/clinic/patient.interface';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { Dispensation } from '@interfaces/pharmacy/dispensation.interface';
 import { Medication } from '@interfaces/pharmacy/medication.interface';
 import { DispensationApi } from '@services/pharmacy/dispensation-api.service';

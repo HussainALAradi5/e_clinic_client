@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { firstValueFrom } from 'rxjs';
-import { PrescriptionFormDialogData } from '@interfaces/pharmacy/dialog-data.interface';
+import { PrescriptionFormDialogData } from '@interfaces/pharmacy/prescription-form-dialog-data.interface';
 import { EntitySelect } from '@components/common/entity-select/entity-select.component';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { SelectField } from '@components/common/select-field/select-field.component';
@@ -15,11 +15,9 @@ import { MedicationRoute } from '@enums/pharmacy/medication-route.enum';
 import { Doctor } from '@interfaces/clinic/doctor.interface';
 import { Patient } from '@interfaces/clinic/patient.interface';
 import { Medication } from '@interfaces/pharmacy/medication.interface';
-import {
-  Prescription,
-  PrescriptionItem,
-  PrescriptionPayload,
-} from '@interfaces/pharmacy/prescription.interface';
+import { Prescription } from '@interfaces/pharmacy/prescription.interface';
+import { PrescriptionItem } from '@interfaces/pharmacy/prescription-item.interface';
+import { PrescriptionPayload } from '@interfaces/pharmacy/prescription-payload.interface';
 import { AuthStore } from '@services/auth/auth.store';
 import { PatientApi } from '@services/clinic/patient-api.service';
 import { PrescriptionApi } from '@services/pharmacy/prescription-api.service';

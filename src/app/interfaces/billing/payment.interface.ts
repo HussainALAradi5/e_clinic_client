@@ -3,7 +3,8 @@ import { CashSessionStatus } from '@enums/finance/cash-session-status.enum';
 import { PaymentMethod } from '@enums/shared/payment-method.enum';
 import { Refund } from '@interfaces/billing/refund.interface';
 import { Money } from '@interfaces/common/money.interface';
-import { PatientSummary, UserSummary } from '@interfaces/common/summary.interface';
+import { PatientSummary } from '@interfaces/common/summary.interface';
+import { UserSummary } from '@interfaces/common/user-summary.interface';
 
 /** Mirror of PaymentResource — its code is the receipt number. */
 export interface Payment {
@@ -36,29 +37,4 @@ export interface Payment {
   refunds?: Refund[];
   journalEntryId: string | null;
   createdAt: string;
-}
-
-/** POST /billing/payments — one method; a split payment is one request per method. */
-export interface PaymentPayload {
-  invoiceId: string;
-  amount: string;
-  method: PaymentMethod;
-  referenceNumber?: string | null;
-  cardLast4?: string | null;
-  notes?: string | null;
-}
-
-/** GET /billing/payments/daily-summary — end-of-day takings per method and cashier. */
-export interface DailySummary {
-  date: string;
-  rows: {
-    method: PaymentMethod;
-    receivedBy: string;
-    cashier: string;
-    count: number;
-    total: string;
-  }[];
-  totals: { method: PaymentMethod; total: string }[];
-  grandTotal: string;
-  refunds: string;
 }

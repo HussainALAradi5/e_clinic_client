@@ -5,17 +5,16 @@ import { LeaveTypeDialog } from '@components/hr/leave-type-dialog/leave-type-dia
 import { ManualAttendanceDialog } from '@components/hr/manual-attendance-dialog/manual-attendance-dialog.component';
 import { PayPayrollDialog } from '@components/hr/pay-payroll-dialog/pay-payroll-dialog.component';
 import { PayrollRunDialog } from '@components/hr/payroll-run-dialog/payroll-run-dialog.component';
-import {
-  LeaveRequestDialogData,
-  LeaveTypeDialogData,
-  ManualAttendanceDialogData,
-  PayPayrollDialogData,
-} from '@interfaces/hr/dialog-data.interface';
+import { LeaveRequestDialogData } from '@interfaces/hr/leave-request-dialog-data.interface';
+import { LeaveTypeDialogData } from '@interfaces/hr/leave-type-dialog-data.interface';
+import { ManualAttendanceDialogData } from '@interfaces/hr/manual-attendance-dialog-data.interface';
+import { PayPayrollDialogData } from '@interfaces/hr/pay-payroll-dialog-data.interface';
 import { ErrorCode } from '@enums/api/error-code.enum';
 import { ApprovalStatus } from '@enums/shared/approval-status.enum';
 import { Attendance } from '@interfaces/hr/attendance.interface';
-import { LeaveRequest, LeaveType } from '@interfaces/hr/leave.interface';
-import { PayrollRun } from '@interfaces/hr/payroll.interface';
+import { LeaveRequest } from '@interfaces/hr/leave-request.interface';
+import { LeaveType } from '@interfaces/hr/leave.interface';
+import { PayrollRun } from '@interfaces/hr/payroll-run.interface';
 import { AttendanceApi } from '@services/hr/attendance-api.service';
 import { LeaveApi } from '@services/hr/leave-api.service';
 import { PayrollApi } from '@services/hr/payroll-api.service';

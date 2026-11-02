@@ -20,19 +20,15 @@ import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, EMPTY, interval, merge, Subject, switchMap } from 'rxjs';
-import {
-  ChatFilter,
-  ConversationType,
-  MessageKind,
-  ParticipantRole,
-} from '@enums/communication/chat.enum';
-import {
-  ChatMessage,
-  Conversation,
-  ConversationQuery,
-  ReadReceipt,
-  SendMessagePayload,
-} from '@interfaces/communication/chat.interface';
+import { ChatFilter } from '@enums/communication/chat-filter.enum';
+import { ConversationType } from '@enums/communication/chat.enum';
+import { MessageKind } from '@enums/communication/message-kind.enum';
+import { ParticipantRole } from '@enums/communication/participant-role.enum';
+import { ChatMessage } from '@interfaces/communication/chat-message.interface';
+import { Conversation } from '@interfaces/communication/conversation.interface';
+import { ConversationQuery } from '@interfaces/communication/conversation-query.interface';
+import { ReadReceipt } from '@interfaces/communication/read-receipt.interface';
+import { SendMessagePayload } from '@interfaces/communication/send-message-payload.interface';
 import { AuthStore } from '@services/auth/auth.store';
 import { ChatApi } from '@services/communication/chat-api.service';
 import { ChatSettingsStore } from '@services/communication/chat-settings.store';
@@ -48,7 +44,7 @@ import { MessageBubble } from '@components/communication/message-bubble/message-
 import { MessageComposer } from '@components/communication/message-composer/message-composer.component';
 import { NewChatDialog } from '@components/communication/new-chat-dialog/new-chat-dialog.component';
 import { chatStamp, dayLabel } from '@utilities/communication/chat-style';
-import { MessageRow } from '@interfaces/communication/chat.interface';
+import { MessageRow } from '@interfaces/communication/message-row.interface';
 
 const PAGE_SIZE = 20;
 /** Messages closer than this from the same sender share one avatar / name. */

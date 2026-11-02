@@ -3,7 +3,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { EnumOption } from '@interfaces/common/enum-meta.interface';
+import { EnumOption } from '@interfaces/common/enum-option.interface';
 import { EnumService } from '@services/data/enum.service';
 import { errorMessage } from '@validations/validators';
 

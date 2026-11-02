@@ -8,11 +8,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ChangeStatusDialog } from '@components/system/users/change-status-dialog/change-status-dialog.component';
 import { PersonFormDialog } from '@components/system/users/person-form-dialog/person-form-dialog.component';
 import { UserRolesDialog } from '@components/system/users/user-roles-dialog/user-roles-dialog.component';
-import {
-  ChangeStatusDialogData,
-  PersonFormDialogData,
-  UserRolesDialogData,
-} from '@interfaces/system/users/dialog-data.interface';
+import { ChangeStatusDialogData } from '@interfaces/system/users/dialog-data.interface';
+import { PersonFormDialogData } from '@interfaces/system/users/person-form-dialog-data.interface';
+import { UserRolesDialogData } from '@interfaces/system/users/user-roles-dialog-data.interface';
 import { UserStore } from '@services/system/users/user.store';
 import { HasAccessDirective } from '@directives/has-access.directive';
 import { AppButton } from '@components/common/app-button/app-button.component';

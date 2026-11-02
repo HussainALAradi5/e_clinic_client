@@ -3,12 +3,10 @@ import { Observable } from 'rxjs';
 import { silent } from '@middlewares/interceptors/http-context';
 import { AttachmentCategory } from '@enums/attachment/attachment-category.enum';
 import { GenericStatus } from '@enums/shared/generic-status.enum';
-import { UploadResult } from '@interfaces/attachment/attachment.interface';
-import {
-  SupportTicket,
-  TicketComment,
-  TicketPayload,
-} from '@interfaces/communication/ticket.interface';
+import { UploadResult } from '@interfaces/attachment/upload-result.interface';
+import { SupportTicket } from '@interfaces/communication/support-ticket.interface';
+import { TicketComment } from '@interfaces/communication/ticket-comment.interface';
+import { TicketPayload } from '@interfaces/communication/ticket-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /**

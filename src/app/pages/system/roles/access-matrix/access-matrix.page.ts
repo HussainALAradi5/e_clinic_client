@@ -21,7 +21,7 @@ import { PageHeader } from '@components/common/page-header/page-header.component
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { AccessFlag } from '@enums/identity/access-flag.enum';
 import { MatrixGroup } from '@interfaces/identity/access-matrix.interface';
-import { AccessRow } from '@interfaces/identity/role.interface';
+import { AccessRow } from '@interfaces/identity/access-row.interface';
 import { HasUnsavedChanges } from '@interfaces/ui/unsaved-changes.interface';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';

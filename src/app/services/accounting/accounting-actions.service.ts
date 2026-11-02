@@ -4,14 +4,13 @@ import { ExpenseFormDialog } from '@components/accounting/expense-form-dialog/ex
 import { FiscalYearDialog } from '@components/accounting/fiscal-year-dialog/fiscal-year-dialog.component';
 import { JournalEntryDialog } from '@components/accounting/journal-entry-dialog/journal-entry-dialog.component';
 import { PayExpenseDialog } from '@components/accounting/pay-expense-dialog/pay-expense-dialog.component';
-import {
-  ExpenseFormDialogData,
-  JournalEntryDialogData,
-  PayExpenseDialogData,
-} from '@interfaces/accounting/dialog-data.interface';
+import { ExpenseFormDialogData } from '@interfaces/accounting/expense-form-dialog-data.interface';
+import { JournalEntryDialogData } from '@interfaces/accounting/journal-entry-dialog-data.interface';
+import { PayExpenseDialogData } from '@interfaces/accounting/pay-expense-dialog-data.interface';
 import { JournalEntryStatus } from '@enums/accounting/journal-entry-status.enum';
-import { FiscalPeriod, FiscalYear } from '@interfaces/accounting/fiscal.interface';
-import { JournalEntry } from '@interfaces/accounting/journal.interface';
+import { FiscalPeriod } from '@interfaces/accounting/fiscal.interface';
+import { FiscalYear } from '@interfaces/accounting/fiscal-year.interface';
+import { JournalEntry } from '@interfaces/accounting/journal-entry.interface';
 import { Expense } from '@interfaces/finance/expense.interface';
 import { FiscalApi } from '@services/accounting/fiscal-api.service';
 import { JournalApi } from '@services/accounting/journal-api.service';

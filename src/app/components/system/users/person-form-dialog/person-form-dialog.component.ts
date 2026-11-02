@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { PersonFormDialogData } from '@interfaces/system/users/dialog-data.interface';
+import { PersonFormDialogData } from '@interfaces/system/users/person-form-dialog-data.interface';
 import { AddressFields } from '@components/common/address-fields/address-fields.component';
 import { CountrySelect } from '@components/common/country-select/country-select.component';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { SelectField } from '@components/common/select-field/select-field.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { Gender } from '@enums/shared/gender.enum';
-import { PersonPayload } from '@interfaces/identity/person.interface';
+import { PersonPayload } from '@interfaces/identity/person-payload.interface';
 import { addressForm, toAddressPayload } from '@utilities/address';
 import { AppValidators } from '@validations/validators';
 

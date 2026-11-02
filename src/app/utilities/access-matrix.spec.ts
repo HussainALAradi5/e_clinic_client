@@ -1,6 +1,6 @@
 import { matrixDiff, rowPermissions, setAction, setAll, setFlag } from '@utilities/access-matrix';
 import { AccessFlag } from '@enums/identity/access-flag.enum';
-import { AccessRow } from '@interfaces/identity/role.interface';
+import { AccessRow } from '@interfaces/identity/access-row.interface';
 
 const row = (overrides: Partial<AccessRow> = {}): AccessRow => ({
   resource: 'invoices',

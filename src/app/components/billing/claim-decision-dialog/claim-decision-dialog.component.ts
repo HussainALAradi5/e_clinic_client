@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { ClaimDecisionDialogData } from '@interfaces/billing/dialog-data.interface';
+import { ClaimDecisionDialogData } from '@interfaces/billing/claim-decision-dialog-data.interface';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { MoneyInput } from '@components/common/money-input/money-input.component';
 import { TextField } from '@components/common/text-field/text-field.component';

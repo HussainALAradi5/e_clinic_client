@@ -24,7 +24,7 @@ import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { PayrollStatus } from '@enums/hr/payroll-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
-import { PayrollRun } from '@interfaces/hr/payroll.interface';
+import { PayrollRun } from '@interfaces/hr/payroll-run.interface';
 import { Fact } from '@interfaces/ui/fact.interface';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { QtyPipe } from '@pipes/qty.pipe';

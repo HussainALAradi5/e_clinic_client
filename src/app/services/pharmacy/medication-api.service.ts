@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Medication, MedicationPayload } from '@interfaces/pharmacy/medication.interface';
+import { Medication } from '@interfaces/pharmacy/medication.interface';
+import { MedicationPayload } from '@interfaces/pharmacy/medication-payload.interface';
 import { EntityApi } from '@services/api/entity-api.service';
 
 /** Pharmacy › Medications — the catalogue (priced through the service catalogue), barcode lookup and low stock. */

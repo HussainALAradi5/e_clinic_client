@@ -1,5 +1,6 @@
 import { CLINIC_TIME_ZONE } from '@constants/app.constants';
-import { DayHours, OpeningStatus } from '@interfaces/public/clinic-info.interface';
+import { DayHours } from '@interfaces/public/day-hours.interface';
+import { OpeningStatus } from '@interfaces/public/opening-status.interface';
 
 const WEEKDAY_INDEX: Record<string, number> = {
   Sun: 0,

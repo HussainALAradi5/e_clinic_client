@@ -2,7 +2,8 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ScanPurpose } from '@enums/code/scan-purpose.enum';
-import { CodeImage, CodeImageOptions } from '@interfaces/code/code-image.interface';
+import { CodeImage } from '@interfaces/code/code-image.interface';
+import { CodeImageOptions } from '@interfaces/code/code-image-options.interface';
 import { ScanResult } from '@interfaces/code/scan-result.interface';
 import { ApiClient } from '@services/api/api-client.service';
 

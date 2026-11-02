@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { RoomFormDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { RoomFormDialogData } from '@interfaces/clinic/room-form-dialog-data.interface';
 import { EntitySelect } from '@components/common/entity-select/entity-select.component';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { SelectField } from '@components/common/select-field/select-field.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { RoomType } from '@enums/clinic/room-type.enum';
-import { Room, RoomPayload } from '@interfaces/clinic/room.interface';
+import { Room } from '@interfaces/clinic/room.interface';
+import { RoomPayload } from '@interfaces/clinic/room-payload.interface';
 import { Department } from '@interfaces/hr/department.interface';
 import { dirtyPayload } from '@utilities/form-payload';
 

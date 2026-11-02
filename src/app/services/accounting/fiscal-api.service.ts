@@ -1,10 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  FiscalPeriod,
-  FiscalYear,
-  FiscalYearPayload,
-} from '@interfaces/accounting/fiscal.interface';
+import { FiscalPeriod } from '@interfaces/accounting/fiscal.interface';
+import { FiscalYear } from '@interfaces/accounting/fiscal-year.interface';
+import { FiscalYearPayload } from '@interfaces/accounting/fiscal-year-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /** Accounting › Fiscal years — monthly periods closed in order, reopened with a reason, years closed and locked. */

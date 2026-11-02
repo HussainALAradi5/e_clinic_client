@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } fro
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { ConsentDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { ConsentDialogData } from '@interfaces/clinic/consent-dialog-data.interface';
 import { ClinicalActions } from '@services/clinic/clinical-actions.service';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { DATE_FORMAT } from '@constants/app.constants';

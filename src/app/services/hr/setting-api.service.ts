@@ -2,7 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SettingKey } from '@enums/hr/setting-key.enum';
 import { Page } from '@interfaces/api/page.interface';
-import { Setting, SettingPayload } from '@interfaces/hr/setting.interface';
+import { Setting } from '@interfaces/hr/setting.interface';
+import { SettingPayload } from '@interfaces/hr/setting-payload.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
 

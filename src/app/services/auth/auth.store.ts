@@ -2,7 +2,9 @@ import { computed } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { HOME_PATH, PORTAL_PATH, STORAGE_KEYS } from '@constants/app.constants';
 import { UserType } from '@enums/identity/user-type.enum';
-import { AuthState, EffectiveAccess, Session } from '@interfaces/auth/session.interface';
+import { AuthState } from '@interfaces/auth/auth-state.interface';
+import { EffectiveAccess } from '@interfaces/auth/effective-access.interface';
+import { Session } from '@interfaces/auth/session.interface';
 import { User } from '@interfaces/identity/user.interface';
 
 function readToken(): string | null {

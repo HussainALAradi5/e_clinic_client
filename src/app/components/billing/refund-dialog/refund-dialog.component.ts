@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { RefundDialogData } from '@interfaces/billing/dialog-data.interface';
+import { RefundDialogData } from '@interfaces/billing/refund-dialog-data.interface';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { MoneyInput } from '@components/common/money-input/money-input.component';
 import { SelectField } from '@components/common/select-field/select-field.component';

@@ -4,7 +4,7 @@ import { EntitySelect } from '@components/common/entity-select/entity-select.com
 import { SelectField } from '@components/common/select-field/select-field.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { CompanyType } from '@enums/reference/company-type.enum';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { Company } from '@interfaces/reference/company.interface';
 
 /** Patient-file fields (registration and edit): medical alerts, emergency contact, insurance. */

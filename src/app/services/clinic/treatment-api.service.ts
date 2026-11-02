@@ -4,13 +4,11 @@ import { withIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { AppointmentType } from '@enums/clinic/appointment-type.enum';
 import { TreatmentPriority } from '@enums/clinic/treatment-priority.enum';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
-import {
-  BookableProvider,
-  SessionBookingPayload,
-  Treatment,
-  TreatmentPayload,
-  TreatmentSession,
-} from '@interfaces/clinic/treatment.interface';
+import { BookableProvider } from '@interfaces/clinic/bookable-provider.interface';
+import { SessionBookingPayload } from '@interfaces/clinic/session-booking-payload.interface';
+import { Treatment } from '@interfaces/clinic/treatment.interface';
+import { TreatmentPayload } from '@interfaces/clinic/treatment-payload.interface';
+import { TreatmentSession } from '@interfaces/clinic/treatment-session.interface';
 import { EntityApi } from '@services/api/entity-api.service';
 
 /** Clinic › Treatments — plans, their sessions, the reception queue and the plan lifecycle. */

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { PROGRESS_HEALTH } from '@constants/progress-health.constants';
 import { GenericStatus } from '@enums/shared/generic-status.enum';
-import { TreatmentProgress } from '@interfaces/clinic/treatment.interface';
+import { TreatmentProgress } from '@interfaces/clinic/treatment-progress.interface';
 import { progressHealth } from '@utilities/treatment-progress';
 import { Cell } from '@interfaces/common/progress-meter.interface';
 

@@ -12,7 +12,8 @@ import { PersonFields } from '@components/common/person-fields/person-fields.com
 import { SelectField } from '@components/common/select-field/select-field.component';
 import { RoleName } from '@enums/identity/role-name.enum';
 import { UserType } from '@enums/identity/user-type.enum';
-import { Employee, HireEmployeePayload } from '@interfaces/hr/employee.interface';
+import { Employee } from '@interfaces/hr/employee.interface';
+import { HireEmployeePayload } from '@interfaces/hr/hire-employee-payload.interface';
 import { Person } from '@interfaces/identity/person.interface';
 import { EnumService } from '@services/data/enum.service';
 import { EmployeeApi } from '@services/hr/employee-api.service';

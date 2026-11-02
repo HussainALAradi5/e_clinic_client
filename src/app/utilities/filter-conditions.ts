@@ -1,8 +1,8 @@
 import { humanise } from '@utilities/text';
 import { FilterFieldType } from '@enums/list/filter-field-type.enum';
 import { FilterOperator } from '@enums/shared/filter-operator.enum';
-import { FilterValue } from '@interfaces/list/list-query.interface';
-import { FilterDef } from '@interfaces/list/resource-schema.interface';
+import { FilterValue } from '@interfaces/list/filter-value.type';
+import { FilterDef } from '@interfaces/list/filter-def.interface';
 import { FilterDraft } from '@interfaces/ui/filter-draft.interface';
 import { Ops } from '@interfaces/common/filter-conditions.interface';
 

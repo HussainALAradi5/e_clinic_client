@@ -13,7 +13,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { DateRangeHeader, DateRangeHost } from './date-range-header.component';
-import { DateFieldOption, DateRangeValue } from '@interfaces/list/date-range-filter.interface';
+import { DateFieldOption } from '@interfaces/list/date-field-option.interface';
+import { DateRangeValue } from '@interfaces/list/date-range-filter.interface';
 import { dateRangeFor } from '@utilities/clinic-time';
 
 /**

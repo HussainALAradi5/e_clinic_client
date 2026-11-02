@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { DepositDialogData } from '@interfaces/billing/dialog-data.interface';
+import { DepositDialogData } from '@interfaces/billing/deposit-dialog-data.interface';
 import { newIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { MoneyInput } from '@components/common/money-input/money-input.component';

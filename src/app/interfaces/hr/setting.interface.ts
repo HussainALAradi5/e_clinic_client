@@ -15,8 +15,3 @@ export interface Setting {
   amount: Money | null;
   updatedAt: string | null;
 }
-
-export interface SettingPayload {
-  isEnabled: boolean;
-  amount?: string | null;
-}

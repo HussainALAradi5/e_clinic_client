@@ -22,11 +22,13 @@ import { StatusChip } from '@components/common/status-chip/status-chip.component
 import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from '@constants/app.constants';
 import { StaffRequestType } from '@enums/hr/staff-request-type.enum';
 import { ApprovalStatus } from '@enums/shared/approval-status.enum';
-import { PageMeta } from '@interfaces/api/page.interface';
+import { PageMeta } from '@interfaces/api/page-meta.interface';
 import { Attendance } from '@interfaces/hr/attendance.interface';
-import { AskableDay, StaffRequest } from '@interfaces/hr/staff-request.interface';
-import { FilterCondition, ListQuery } from '@interfaces/list/list-query.interface';
-import { PageChange } from '@interfaces/ui/table.interface';
+import { AskableDay } from '@interfaces/hr/askable-day.interface';
+import { StaffRequest } from '@interfaces/hr/staff-request.interface';
+import { FilterCondition } from '@interfaces/list/filter-condition.type';
+import { ListQuery } from '@interfaces/list/list-query.interface';
+import { PageChange } from '@interfaces/ui/page-change.interface';
 import { DurationPipe } from '@pipes/duration.pipe';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { AccessService } from '@services/auth/access.service';

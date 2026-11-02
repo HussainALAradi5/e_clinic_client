@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { ProfileDialogData } from '@interfaces/portal/dialog-data.interface';
+import { ProfileDialogData } from '@interfaces/portal/profile-dialog-data.interface';
 import { AddressFields } from '@components/common/address-fields/address-fields.component';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { TextField } from '@components/common/text-field/text-field.component';

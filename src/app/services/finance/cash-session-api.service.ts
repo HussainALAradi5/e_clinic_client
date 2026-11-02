@@ -2,11 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { withIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { Page } from '@interfaces/api/page.interface';
-import {
-  CashSession,
-  CloseSessionPayload,
-  DepositPayload,
-} from '@interfaces/finance/cash-session.interface';
+import { CashSession } from '@interfaces/finance/cash-session.interface';
+import { CloseSessionPayload } from '@interfaces/finance/close-session-payload.interface';
+import { DepositPayload } from '@interfaces/finance/deposit-payload.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
 

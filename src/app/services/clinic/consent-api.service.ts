@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ConsentPayload, PatientConsent } from '@interfaces/clinic/consent.interface';
+import { ConsentPayload } from '@interfaces/clinic/consent-payload.interface';
+import { PatientConsent } from '@interfaces/clinic/consent.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /** Clinic › Patient consents — list, record, revoke. */

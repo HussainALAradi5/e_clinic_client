@@ -4,8 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PageMeta } from '@interfaces/api/page.interface';
-import { PageChange } from '@interfaces/ui/table.interface';
+import { PageMeta } from '@interfaces/api/page-meta.interface';
+import { PageChange } from '@interfaces/ui/page-change.interface';
 
 /**
  * Page mode: "1–25 of 1,284", first / previous / next / last, go to page, per page 10/25/50/100.

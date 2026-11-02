@@ -1,7 +1,8 @@
 import { ApprovalStatus } from '@enums/shared/approval-status.enum';
 import { PaymentMethod } from '@enums/shared/payment-method.enum';
 import { Money } from '@interfaces/common/money.interface';
-import { PatientSummary, UserSummary } from '@interfaces/common/summary.interface';
+import { PatientSummary } from '@interfaces/common/summary.interface';
+import { UserSummary } from '@interfaces/common/user-summary.interface';
 
 /** Mirror of RefundResource — requested → approved by someone else → paid out (`isProcessed`). */
 export interface Refund {
@@ -26,11 +27,4 @@ export interface Refund {
   referenceNumber: string | null;
   cashSessionId: string | null;
   createdAt: string;
-}
-
-export interface RefundPayload {
-  paymentId: string;
-  amount: string;
-  method?: PaymentMethod | null;
-  reason: string;
 }

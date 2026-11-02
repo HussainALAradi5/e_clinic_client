@@ -3,8 +3,3 @@ export enum ThemeMode {
   Light = 'light',
   Dark = 'dark',
 }
-
-export enum Density {
-  Comfortable = 'comfortable',
-  Compact = 'compact',
-}

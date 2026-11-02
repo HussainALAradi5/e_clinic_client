@@ -1,13 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  MedicalHistoryPayload,
-  Patient,
-  PatientLookup,
-  PatientTimelineEntry,
-  RegisterPatientPayload,
-  UpdatePatientPayload,
-} from '@interfaces/clinic/patient.interface';
+import { MedicalHistoryPayload } from '@interfaces/clinic/medical-history-payload.interface';
+import { Patient } from '@interfaces/clinic/patient.interface';
+import { PatientLookup } from '@interfaces/clinic/patient-lookup.interface';
+import { PatientTimelineEntry } from '@interfaces/clinic/patient-timeline-entry.interface';
+import { RegisterPatientPayload } from '@interfaces/clinic/register-patient-payload.interface';
+import { UpdatePatientPayload } from '@interfaces/clinic/update-patient-payload.interface';
 import { User } from '@interfaces/identity/user.interface';
 import { ApiClient } from '@services/api/api-client.service';
 

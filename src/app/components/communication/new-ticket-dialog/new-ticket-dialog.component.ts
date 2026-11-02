@@ -9,7 +9,7 @@ import { SelectField } from '@components/common/select-field/select-field.compon
 import { TextField } from '@components/common/text-field/text-field.component';
 import { TreatmentPriority } from '@enums/clinic/treatment-priority.enum';
 import { TicketCategory } from '@enums/communication/ticket.enum';
-import { SupportTicket } from '@interfaces/communication/ticket.interface';
+import { SupportTicket } from '@interfaces/communication/support-ticket.interface';
 import { TicketApi } from '@services/communication/ticket-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 

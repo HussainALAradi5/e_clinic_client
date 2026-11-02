@@ -5,17 +5,15 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { firstValueFrom, startWith } from 'rxjs';
-import { ScheduleExceptionDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { ScheduleExceptionDialogData } from '@interfaces/clinic/schedule-exception-dialog-data.interface';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { SelectField } from '@components/common/select-field/select-field.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { ErrorCode } from '@enums/api/error-code.enum';
 import { ScheduleExceptionType } from '@enums/clinic/schedule-exception-type.enum';
-import {
-  AffectedBooking,
-  ScheduleException,
-  ScheduleExceptionPayload,
-} from '@interfaces/clinic/schedule.interface';
+import { AffectedBooking } from '@interfaces/clinic/affected-booking.interface';
+import { ScheduleException } from '@interfaces/clinic/schedule-exception.interface';
+import { ScheduleExceptionPayload } from '@interfaces/clinic/schedule-exception-payload.interface';
 import { ScheduleApi } from '@services/clinic/schedule-api.service';
 import { EnumService } from '@services/data/enum.service';
 import { clinicIsoDate } from '@utilities/clinic-time';

@@ -3,20 +3,3 @@ export interface DetectedBarcode {
   rawValue: string;
   format: string;
 }
-
-export interface BarcodeDetectorLike {
-  detect(source: CanvasImageSource): Promise<DetectedBarcode[]>;
-}
-
-export interface BarcodeDetectorConstructor {
-  new (options?: { formats: string[] }): BarcodeDetectorLike;
-  getSupportedFormats(): Promise<string[]>;
-}
-
-/** One resolved scan kept in the station's history. */
-export interface ScanHistoryEntry {
-  at: number;
-  payload: string;
-  ok: boolean;
-  label: string;
-}

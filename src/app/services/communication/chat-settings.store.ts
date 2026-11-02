@@ -1,7 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { BubbleColor, BubbleStyle } from '@enums/communication/chat.enum';
-import { ChatSettings } from '@interfaces/communication/chat.interface';
+import { BubbleColor } from '@enums/communication/bubble-color.enum';
+import { BubbleStyle } from '@enums/communication/bubble-style.enum';
+import { ChatSettings } from '@interfaces/communication/chat-settings.interface';
 import { ChatApi } from './chat-api.service';
 
 const DEFAULTS: ChatSettings = {

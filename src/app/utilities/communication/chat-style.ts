@@ -1,6 +1,6 @@
 import { CLINIC_TIME_ZONE } from '@constants/app.constants';
 import { addDays, clinicIsoDate, clinicTime } from '@utilities/clinic-time';
-import { BubbleColor } from '@enums/communication/chat.enum';
+import { BubbleColor } from '@enums/communication/bubble-color.enum';
 
 /** Bubble colours the user can pick (fill + text), readable in light and dark. */
 export const BUBBLE_COLORS: Record<BubbleColor, { bg: string; fg: string; label: string }> = {

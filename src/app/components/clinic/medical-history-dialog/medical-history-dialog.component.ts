@@ -5,7 +5,8 @@ import { firstValueFrom } from 'rxjs';
 import { PatientFormDialogData } from '@interfaces/clinic/dialog-data.interface';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { TextField } from '@components/common/text-field/text-field.component';
-import { MedicalHistoryPayload, Patient } from '@interfaces/clinic/patient.interface';
+import { MedicalHistoryPayload } from '@interfaces/clinic/medical-history-payload.interface';
+import { Patient } from '@interfaces/clinic/patient.interface';
 import { PatientApi } from '@services/clinic/patient-api.service';
 import { dirtyPayload } from '@utilities/form-payload';
 

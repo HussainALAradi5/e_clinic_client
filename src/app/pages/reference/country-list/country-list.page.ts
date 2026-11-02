@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { CountryFormDialog } from '@components/reference/country-form-dialog/country-form-dialog.component';
-import { CountryFormDialogData } from '@interfaces/reference/dialog-data.interface';
+import { CountryFormDialogData } from '@interfaces/reference/country-form-dialog-data.interface';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { Country } from '@interfaces/reference/country.interface';

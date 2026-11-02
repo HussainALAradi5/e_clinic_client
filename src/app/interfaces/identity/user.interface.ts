@@ -1,18 +1,8 @@
 import { UserStatus } from '@enums/identity/user-status.enum';
 import { UserType } from '@enums/identity/user-type.enum';
-import { Person } from './person.interface';
-
-export interface TwoFactorState {
-  enabled: boolean;
-  /** One of the user's roles makes 2FA mandatory. */
-  required: boolean;
-}
-
-export interface UserRoleRef {
-  id: string;
-  name: string;
-  displayName: string;
-}
+import { Person } from '@interfaces/identity/person.interface';
+import { TwoFactorState } from '@interfaces/identity/two-factor-state.interface';
+import { UserRoleRef } from '@interfaces/identity/user-role-ref.interface';
 
 /** Mirror of UserResource — a login account with its person's name and contact data. */
 export interface User {
@@ -35,10 +25,4 @@ export interface User {
   roles?: UserRoleRef[];
   /** Detail endpoints only. */
   person?: Person;
-}
-
-/** PATCH /users/{user}/status — reason required for locked / inactive. */
-export interface ChangeUserStatusPayload {
-  status: UserStatus;
-  reason?: string | null;
 }

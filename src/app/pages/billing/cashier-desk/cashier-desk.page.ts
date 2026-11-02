@@ -35,7 +35,7 @@ import { InvoiceStatus } from '@enums/billing/invoice-status.enum';
 import { CashSessionStatus } from '@enums/finance/cash-session-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { Invoice } from '@interfaces/billing/invoice.interface';
-import { DailySummary } from '@interfaces/billing/payment.interface';
+import { DailySummary } from '@interfaces/billing/daily-summary.interface';
 import { CashSession } from '@interfaces/finance/cash-session.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { MoneyPipe } from '@pipes/money.pipe';

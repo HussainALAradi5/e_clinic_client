@@ -3,7 +3,7 @@ import { computed, inject, Injectable, Signal } from '@angular/core';
 import { map, Observable, of, tap } from 'rxjs';
 import { AuthStore } from './auth.store';
 import { ApiEnvelope } from '@interfaces/api/api-envelope.interface';
-import { EffectiveAccess } from '@interfaces/auth/session.interface';
+import { EffectiveAccess } from '@interfaces/auth/effective-access.interface';
 import { evaluatePermissionExpression } from '@utilities/permission-expression';
 
 /**

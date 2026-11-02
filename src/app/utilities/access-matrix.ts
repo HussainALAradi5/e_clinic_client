@@ -1,6 +1,6 @@
 import { AccessFlag } from '@enums/identity/access-flag.enum';
-import { MatrixDiff } from '@interfaces/identity/access-matrix.interface';
-import { AccessRow } from '@interfaces/identity/role.interface';
+import { MatrixDiff } from '@interfaces/identity/matrix-diff.interface';
+import { AccessRow } from '@interfaces/identity/access-row.interface';
 
 /** camelCase row key of each flag. */
 export const FLAG_KEYS: Record<AccessFlag, 'readOwn' | 'readAll' | 'create' | 'write' | 'delete'> =

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { withIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { PaymentMethod } from '@enums/shared/payment-method.enum';
-import { Expense, ExpensePayload } from '@interfaces/finance/expense.interface';
+import { Expense } from '@interfaces/finance/expense.interface';
+import { ExpensePayload } from '@interfaces/finance/expense-payload.interface';
 import { EntityApi } from '@services/api/entity-api.service';
 
 /** Finance › Expenses — submit for approval, approve / reject (someone else), pay (cash from the drawer or bank). */

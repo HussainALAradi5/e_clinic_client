@@ -23,7 +23,7 @@ import { PatientFormDialog } from '@components/clinic/patient-form-dialog/patien
 import { PatientFormDialogData } from '@interfaces/clinic/dialog-data.interface';
 import { HasAccessDirective } from '@directives/has-access.directive';
 import { PersonFormDialog } from '@components/system/users/person-form-dialog/person-form-dialog.component';
-import { PersonFormDialogData } from '@interfaces/system/users/dialog-data.interface';
+import { PersonFormDialogData } from '@interfaces/system/users/person-form-dialog-data.interface';
 import { AppointmentActions } from '@services/clinic/appointment-actions.service';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { AuditHistory } from '@components/common/audit-history/audit-history.component';
@@ -36,7 +36,8 @@ import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { ApiError } from '@interfaces/api/api-error.interface';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
-import { Patient, PatientTimelineEntry } from '@interfaces/clinic/patient.interface';
+import { Patient } from '@interfaces/clinic/patient.interface';
+import { PatientTimelineEntry } from '@interfaces/clinic/patient-timeline-entry.interface';
 import { ConfirmConfig } from '@interfaces/ui/confirm-config.interface';
 import { Fact } from '@interfaces/ui/fact.interface';
 import { ApiClient } from '@services/api/api-client.service';

@@ -9,9 +9,10 @@ import { ErrorState } from '@components/common/error-state/error-state.component
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
-import { Account, AccountMapping } from '@interfaces/accounting/account.interface';
+import { Account } from '@interfaces/accounting/account.interface';
+import { AccountMapping } from '@interfaces/accounting/account-mapping.interface';
 import { ApiError } from '@interfaces/api/api-error.interface';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { AccessService } from '@services/auth/access.service';
 import { AccountApi } from '@services/accounting/account-api.service';

@@ -15,7 +15,7 @@ import { AppButton } from '@components/common/app-button/app-button.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { TIME_FORMAT } from '@constants/app.constants';
 import { ButtonVariant } from '@enums/ui/button.enum';
-import { AttendanceToday } from '@interfaces/hr/attendance.interface';
+import { AttendanceToday } from '@interfaces/hr/attendance-today.interface';
 import { AttendanceApi } from '@services/hr/attendance-api.service';
 
 /** Today at work: the shift, check-in / check-out (clinic network only) and minutes late or over. */

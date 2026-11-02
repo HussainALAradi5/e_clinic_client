@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
-import { Icd10Code } from '@interfaces/clinic/medical-record.interface';
+import { Icd10Code } from '@interfaces/clinic/icd10-code.interface';
 import { MedicalRecordApi } from '@services/clinic/medical-record-api.service';
 
 /** Type a code ("J06") or words in English or Arabic; pick a diagnosis. */

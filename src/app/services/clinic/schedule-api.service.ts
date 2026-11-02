@@ -1,11 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  ReplaceSchedulePayload,
-  ScheduleBlock,
-  ScheduleException,
-  ScheduleExceptionPayload,
-} from '@interfaces/clinic/schedule.interface';
+import { ReplaceSchedulePayload } from '@interfaces/clinic/replace-schedule-payload.interface';
+import { ScheduleBlock } from '@interfaces/clinic/schedule.interface';
+import { ScheduleException } from '@interfaces/clinic/schedule-exception.interface';
+import { ScheduleExceptionPayload } from '@interfaces/clinic/schedule-exception-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /** Clinic › Provider schedules and clinic-wide holidays (one method per endpoint). */

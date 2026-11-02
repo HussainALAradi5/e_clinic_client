@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { firstValueFrom } from 'rxjs';
-import { OrderDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { OrderDialogData } from '@interfaces/clinic/order-dialog-data.interface';
 import { AppointmentActions } from '@services/clinic/appointment-actions.service';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { DATE_FORMAT } from '@constants/app.constants';

@@ -8,17 +8,3 @@ export interface LineDraft {
   discountValue: string;
   taxRate: string;
 }
-
-export interface LineAmounts {
-  gross: bigint;
-  discount: bigint;
-  tax: bigint;
-  total: bigint;
-}
-
-export interface InvoiceAmounts {
-  subtotal: string;
-  discount: string;
-  tax: string;
-  total: string;
-}

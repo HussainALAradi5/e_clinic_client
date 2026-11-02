@@ -12,24 +12,3 @@ export interface FiscalPeriod {
   status: FiscalStatus;
   closedAt: string | null;
 }
-
-/** Mirror of FiscalYearResource. */
-export interface FiscalYear {
-  id: string;
-  code: string;
-  name: string;
-  startDate: string;
-  endDate: string;
-  status: FiscalStatus;
-  closingJournalEntryId: string | null;
-  closedAt: string | null;
-  periods?: FiscalPeriod[];
-  createdAt: string;
-}
-
-export interface FiscalYearPayload {
-  name: string;
-  startDate: string;
-  endDate: string;
-  withAdjustmentPeriod: boolean;
-}

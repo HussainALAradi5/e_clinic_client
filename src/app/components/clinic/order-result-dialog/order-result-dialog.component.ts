@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { OrderDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { OrderDialogData } from '@interfaces/clinic/order-dialog-data.interface';
 import { resultCategory } from '@utilities/clinic/clinical';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { TextField } from '@components/common/text-field/text-field.component';

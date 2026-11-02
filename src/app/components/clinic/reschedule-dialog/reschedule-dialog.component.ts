@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom, startWith } from 'rxjs';
 import { SlotPicker } from '../slot-picker/slot-picker.component';
-import { AppointmentDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { AppointmentDialogData } from '@interfaces/clinic/appointment-dialog-data.interface';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { Appointment } from '@interfaces/clinic/appointment.interface';

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Shift, ShiftPayload } from '@interfaces/hr/shift.interface';
+import { Shift } from '@interfaces/hr/shift.interface';
+import { ShiftPayload } from '@interfaces/hr/shift-payload.interface';
 import { EntityApi } from '@services/api/entity-api.service';
 
 /** HR › Shifts — CRUD and who is on each shift. */

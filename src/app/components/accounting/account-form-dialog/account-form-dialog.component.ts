@@ -9,8 +9,9 @@ import { GenericForm } from '@components/common/generic-form/generic-form.compon
 import { SelectField } from '@components/common/select-field/select-field.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { AccountType } from '@enums/accounting/account-type.enum';
-import { Account, AccountPayload } from '@interfaces/accounting/account.interface';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { Account } from '@interfaces/accounting/account.interface';
+import { AccountPayload } from '@interfaces/accounting/account-payload.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { dirtyPayload } from '@utilities/form-payload';
 
 /** Create (code, type, group flag) or edit an account; the parent must be a group of the same type. */

@@ -1,4 +1,5 @@
-import { SavedView, SavedViewPayload } from './saved-view.interface';
+import { SavedView } from './saved-view.interface';
+import { SavedViewPayload } from '@interfaces/view/saved-view-payload.interface';
 
 /** SaveViewDialog: name / share / default of a new view; closes with the saved view. */
 export interface SaveViewDialogData {

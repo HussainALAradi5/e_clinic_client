@@ -28,7 +28,8 @@ import { AccessService } from '@services/auth/access.service';
 import { ApiClient } from '@services/api/api-client.service';
 import { AppointmentApi } from '@services/clinic/appointment-api.service';
 import { addDays, clinicIsoDate, clinicTime } from '@utilities/clinic-time';
-import { CalendarView, Column } from '@interfaces/clinic/calendar.interface';
+import { CalendarView } from '@interfaces/clinic/calendar.interface';
+import { Column } from '@interfaces/clinic/column.interface';
 
 /** Vertical scale and the visible hours (stretched when bookings fall outside). */
 const PX_PER_MINUTE = 1.6;

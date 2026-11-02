@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { AppointmentActions } from '@services/clinic/appointment-actions.service';
 import { AppButton } from '@components/common/app-button/app-button.component';
-import { ButtonSize } from '@enums/ui/button.enum';
+import { ButtonSize } from '@enums/ui/button-size.enum';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
 
 /** Buttons for every status action the booking allows; emits the updated booking. */

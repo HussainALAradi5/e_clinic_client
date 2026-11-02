@@ -1,5 +1,5 @@
 import { ToastType } from '@enums/ui/toast-type.enum';
-import { ToastStyle } from '@interfaces/ui/toast.interface';
+import { ToastStyle } from '@interfaces/ui/toast-style.interface';
 
 /** One entry per toast type; colours live in styles/_brand.scss under `.toast-<type>`. */
 export const TOAST_STYLES: Record<ToastType, ToastStyle> = {

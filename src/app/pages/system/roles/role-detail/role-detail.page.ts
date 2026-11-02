@@ -27,7 +27,8 @@ import { ErrorState } from '@components/common/error-state/error-state.component
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { ButtonVariant } from '@enums/ui/button.enum';
-import { AccessRow, Role } from '@interfaces/identity/role.interface';
+import { AccessRow } from '@interfaces/identity/access-row.interface';
+import { Role } from '@interfaces/identity/role.interface';
 import { User } from '@interfaces/identity/user.interface';
 import { ConfirmConfig } from '@interfaces/ui/confirm-config.interface';
 import { DialogService } from '@services/ui/dialog.service';

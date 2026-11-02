@@ -3,14 +3,12 @@ import { Observable } from 'rxjs';
 import { withIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { ColleagueRight } from '@enums/pharmacy/colleague-right.enum';
 import { Page } from '@interfaces/api/page.interface';
-import { UserSummary } from '@interfaces/common/summary.interface';
+import { UserSummary } from '@interfaces/common/user-summary.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
-import {
-  AdministerPayload,
-  AppointmentMedicines,
-  Dispensation,
-  DispensePayload,
-} from '@interfaces/pharmacy/dispensation.interface';
+import { AdministerPayload } from '@interfaces/pharmacy/administer-payload.interface';
+import { AppointmentMedicines } from '@interfaces/pharmacy/appointment-medicines.interface';
+import { Dispensation } from '@interfaces/pharmacy/dispensation.interface';
+import { DispensePayload } from '@interfaces/pharmacy/dispense-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /**

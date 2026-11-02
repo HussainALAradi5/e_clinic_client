@@ -1,6 +1,6 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { MENU } from '@constants/menu.constants';
-import { NavGroup } from '@interfaces/ui/nav.interface';
+import { NavGroup } from '@interfaces/ui/nav-group.interface';
 import { AccessService } from '@services/auth/access.service';
 
 /** The menu as the signed-in user may see it: the side menu, the dashboard and every hub page read it from here. */

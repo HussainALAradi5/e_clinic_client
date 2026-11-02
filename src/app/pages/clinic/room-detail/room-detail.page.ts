@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AppointmentRows } from '@components/clinic/appointment-rows/appointment-rows.component';
 import { RoomFormDialog } from '@components/clinic/room-form-dialog/room-form-dialog.component';
-import { RoomFormDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { RoomFormDialogData } from '@interfaces/clinic/room-form-dialog-data.interface';
 import { HasAccessDirective } from '@directives/has-access.directive';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { AuditHistory } from '@components/common/audit-history/audit-history.component';

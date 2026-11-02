@@ -6,7 +6,8 @@ import { CANCELLABLE, PortalActions } from '@services/portal/portal-actions.serv
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { AppointmentStatus } from '@enums/clinic/appointment-status.enum';
-import { ButtonSize, ButtonVariant } from '@enums/ui/button.enum';
+import { ButtonSize } from '@enums/ui/button-size.enum';
+import { ButtonVariant } from '@enums/ui/button.enum';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 

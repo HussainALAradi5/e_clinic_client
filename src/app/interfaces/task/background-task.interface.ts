@@ -1,11 +1,7 @@
 import { GenericStatus } from '@enums/shared/generic-status.enum';
 import { TaskCancelReason } from '@enums/task/task-cancel-reason.enum';
 import { TaskType } from '@enums/task/task-type.enum';
-
-export interface TaskRequester {
-  id: string;
-  fullName: string;
-}
+import { TaskRequester } from '@interfaces/task/task-requester.interface';
 
 /** Mirror of BackgroundTaskResource. */
 export interface BackgroundTask {

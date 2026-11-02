@@ -20,7 +20,7 @@ import { DispensationKind } from '@enums/pharmacy/dispensation-kind.enum';
 import { GenericStatus } from '@enums/shared/generic-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { PatientSummary } from '@interfaces/common/summary.interface';
-import { AppointmentMedicines } from '@interfaces/pharmacy/dispensation.interface';
+import { AppointmentMedicines } from '@interfaces/pharmacy/appointment-medicines.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { DispensationApi } from '@services/pharmacy/dispensation-api.service';

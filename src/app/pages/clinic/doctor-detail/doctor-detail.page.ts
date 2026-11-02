@@ -15,7 +15,7 @@ import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AppointmentRows } from '@components/clinic/appointment-rows/appointment-rows.component';
 import { DoctorFormDialog } from '@components/clinic/doctor-form-dialog/doctor-form-dialog.component';
-import { DoctorFormDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { DoctorFormDialogData } from '@interfaces/clinic/doctor-form-dialog-data.interface';
 import { weekRows } from '@utilities/clinic/schedule';
 import { AppointmentActions } from '@services/clinic/appointment-actions.service';
 import { HasAccessDirective } from '@directives/has-access.directive';

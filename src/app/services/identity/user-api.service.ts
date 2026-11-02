@@ -1,12 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from '@interfaces/api/page.interface';
-import {
-  DuplicateCheckPayload,
-  Person,
-  PersonPayload,
-} from '@interfaces/identity/person.interface';
-import { ChangeUserStatusPayload, User } from '@interfaces/identity/user.interface';
+import { DuplicateCheckPayload } from '@interfaces/identity/duplicate-check-payload.interface';
+import { Person } from '@interfaces/identity/person.interface';
+import { PersonPayload } from '@interfaces/identity/person-payload.interface';
+import { ChangeUserStatusPayload } from '@interfaces/identity/change-user-status-payload.interface';
+import { User } from '@interfaces/identity/user.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
 

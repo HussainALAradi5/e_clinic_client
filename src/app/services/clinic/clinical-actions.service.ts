@@ -7,13 +7,11 @@ import { PriorityDialog } from '@components/clinic/priority-dialog/priority-dial
 import { ReferralLinkDialog } from '@components/clinic/referral-link-dialog/referral-link-dialog.component';
 import { SessionBookingDialog } from '@components/clinic/session-booking-dialog/session-booking-dialog.component';
 import { TreatmentFormDialog } from '@components/clinic/treatment-form-dialog/treatment-form-dialog.component';
-import {
-  ConsentDialogData,
-  OrderDialogData,
-  OrderFormDialogData,
-  TreatmentDialogData,
-  TreatmentFormDialogData,
-} from '@interfaces/clinic/dialog-data.interface';
+import { ConsentDialogData } from '@interfaces/clinic/consent-dialog-data.interface';
+import { OrderDialogData } from '@interfaces/clinic/order-dialog-data.interface';
+import { OrderFormDialogData } from '@interfaces/clinic/order-form-dialog-data.interface';
+import { TreatmentDialogData } from '@interfaces/clinic/treatment-dialog-data.interface';
+import { TreatmentFormDialogData } from '@interfaces/clinic/treatment-form-dialog-data.interface';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
 import { ClinicalOrder } from '@interfaces/clinic/clinical-order.interface';
 import { PatientConsent } from '@interfaces/clinic/consent.interface';

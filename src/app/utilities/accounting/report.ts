@@ -1,7 +1,8 @@
 import { ReportType } from '@enums/accounting/report-type.enum';
-import { ReportRow } from '@interfaces/accounting/report.interface';
+import { ReportRow } from '@interfaces/accounting/report-row.type';
 import { toCamel } from '@utilities/case';
-import { ReportDefinition, ReportInputs } from '@interfaces/accounting/report.interface';
+import { ReportDefinition } from '@interfaces/accounting/report-definition.interface';
+import { ReportInputs } from '@interfaces/accounting/report-inputs.type';
 
 /** The report catalog, in the order an accountant reaches for them. */
 export const REPORTS: readonly ReportDefinition[] = [

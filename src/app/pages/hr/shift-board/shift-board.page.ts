@@ -23,8 +23,9 @@ import { PageHeader } from '@components/common/page-header/page-header.component
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { EmployeeStatus } from '@enums/hr/employee-status.enum';
 import { Employee } from '@interfaces/hr/employee.interface';
-import { Shift, ShiftMember } from '@interfaces/hr/shift.interface';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { Shift } from '@interfaces/hr/shift.interface';
+import { ShiftMember } from '@interfaces/hr/shift-member.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { ApiClient } from '@services/api/api-client.service';
 import { AccessService } from '@services/auth/access.service';
 import { ShiftApi } from '@services/hr/shift-api.service';

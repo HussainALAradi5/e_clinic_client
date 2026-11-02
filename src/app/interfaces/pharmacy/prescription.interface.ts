@@ -1,24 +1,9 @@
-import { MedicationRoute } from '@enums/pharmacy/medication-route.enum';
 import { GenericStatus } from '@enums/shared/generic-status.enum';
 import { GenericEntity } from '@interfaces/common/generic-entity.interface';
-import { PatientSummary, UserSummary } from '@interfaces/common/summary.interface';
+import { PatientSummary } from '@interfaces/common/summary.interface';
+import { UserSummary } from '@interfaces/common/user-summary.interface';
 import { Dispensation } from '@interfaces/pharmacy/dispensation.interface';
-import { MedicationRef } from '@interfaces/pharmacy/medication.interface';
-
-/** A prescribed medicine; `dispensedQuantity` / `remainingQuantity` are computed on the detail view. */
-export interface PrescriptionItem {
-  id: string;
-  medicationId: string;
-  medication: MedicationRef;
-  dose: string;
-  frequency: string;
-  route: MedicationRoute;
-  durationDays: number;
-  quantity: string;
-  dispensedQuantity: string | null;
-  remainingQuantity: string | null;
-  instructions: string | null;
-}
+import { PrescriptionItem } from '@interfaces/pharmacy/prescription-item.interface';
 
 /** Mirror of PrescriptionResource — pending → in_progress (partly dispensed) → completed / cancelled. */
 export interface Prescription extends GenericEntity {
@@ -36,27 +21,4 @@ export interface Prescription extends GenericEntity {
   cancellationReason: string | null;
   items?: PrescriptionItem[];
   dispensations?: Dispensation[];
-}
-
-export interface PrescriptionItemPayload {
-  medicationId: string;
-  dose: string;
-  frequency: string;
-  route: MedicationRoute;
-  durationDays: number;
-  quantity: string;
-  instructions: string | null;
-}
-
-/** Overrides confirm a duplicate-therapy or allergy warning the prescriber has seen. */
-export interface PrescriptionPayload {
-  patientId: string;
-  doctorId?: string | null;
-  appointmentId?: string | null;
-  treatmentId?: string | null;
-  validUntil?: string | null;
-  notes?: string | null;
-  items: PrescriptionItemPayload[];
-  overrideDuplicate?: boolean;
-  overrideAllergy?: boolean;
 }

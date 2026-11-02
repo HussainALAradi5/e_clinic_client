@@ -4,14 +4,14 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { ReceiveStockDialogData } from '@interfaces/pharmacy/dialog-data.interface';
+import { ReceiveStockDialogData } from '@interfaces/pharmacy/receive-stock-dialog-data.interface';
 import { newIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { EntitySelect } from '@components/common/entity-select/entity-select.component';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { MoneyInput } from '@components/common/money-input/money-input.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { CompanyType } from '@enums/reference/company-type.enum';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { MedicationBatch } from '@interfaces/pharmacy/inventory.interface';
 import { Medication } from '@interfaces/pharmacy/medication.interface';
 import { Company } from '@interfaces/reference/company.interface';

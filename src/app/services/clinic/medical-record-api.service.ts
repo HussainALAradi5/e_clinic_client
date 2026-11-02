@@ -1,10 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  Icd10Code,
-  MedicalRecord,
-  MedicalRecordPayload,
-} from '@interfaces/clinic/medical-record.interface';
+import { Icd10Code } from '@interfaces/clinic/icd10-code.interface';
+import { MedicalRecord } from '@interfaces/clinic/medical-record.interface';
+import { MedicalRecordPayload } from '@interfaces/clinic/medical-record-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /** Clinic › Medical records — the note of one visit (same id as the appointment) and ICD-10 search. */

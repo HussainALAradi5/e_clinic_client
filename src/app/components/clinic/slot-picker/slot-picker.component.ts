@@ -14,7 +14,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { firstValueFrom } from 'rxjs';
 import { AppointmentType } from '@enums/clinic/appointment-type.enum';
 import { ApiError } from '@interfaces/api/api-error.interface';
-import { Slot } from '@interfaces/clinic/appointment.interface';
+import { Slot } from '@interfaces/clinic/slot.interface';
 import { AppointmentApi } from '@services/clinic/appointment-api.service';
 
 /**

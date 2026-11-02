@@ -11,8 +11,10 @@ import { EntitySelect } from '@components/common/entity-select/entity-select.com
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { PersonFields } from '@components/common/person-fields/person-fields.component';
 import { ErrorCode } from '@enums/api/error-code.enum';
-import { Patient, RegisterPatientPayload } from '@interfaces/clinic/patient.interface';
-import { DuplicateCandidate, Person } from '@interfaces/identity/person.interface';
+import { Patient } from '@interfaces/clinic/patient.interface';
+import { RegisterPatientPayload } from '@interfaces/clinic/register-patient-payload.interface';
+import { DuplicateCandidate } from '@interfaces/identity/duplicate-candidate.interface';
+import { Person } from '@interfaces/identity/person.interface';
 import { AccessService } from '@services/auth/access.service';
 import { PatientApi } from '@services/clinic/patient-api.service';
 import { isApiError } from '@utilities/guards';

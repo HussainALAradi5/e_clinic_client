@@ -1,3 +1,3 @@
-import { FilterValue } from '@interfaces/list/list-query.interface';
+import { FilterValue } from '@interfaces/list/filter-value.type';
 
 export type Ops = Record<string, FilterValue>;

@@ -7,14 +7,3 @@ export interface GenericEntity {
   isArchived: boolean;
   isDeleted: boolean;
 }
-
-/** Records with optimistic locking (HasVersion) — send `version` back on update. */
-export interface Versioned {
-  version: number;
-}
-
-/** Records with created_by / updated_by (Blameable). */
-export interface Blameable {
-  createdBy?: string;
-  updatedBy?: string;
-}

@@ -1,11 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from '@interfaces/api/page.interface';
-import {
-  AskableDay,
-  StaffRequest,
-  StaffRequestPayload,
-} from '@interfaces/hr/staff-request.interface';
+import { AskableDay } from '@interfaces/hr/askable-day.interface';
+import { StaffRequest } from '@interfaces/hr/staff-request.interface';
+import { StaffRequestPayload } from '@interfaces/hr/staff-request-payload.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
 

@@ -4,7 +4,7 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } fr
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { firstValueFrom, map, startWith } from 'rxjs';
-import { CloseDrawerDialogData } from '@interfaces/billing/dialog-data.interface';
+import { CloseDrawerDialogData } from '@interfaces/billing/close-drawer-dialog-data.interface';
 import { BHD_DENOMINATIONS, countTotal } from '@utilities/billing/denominations';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { MoneyInput } from '@components/common/money-input/money-input.component';

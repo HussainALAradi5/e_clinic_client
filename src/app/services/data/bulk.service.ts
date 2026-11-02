@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom, Observable } from 'rxjs';
 import { BULK_SYNC_LIMIT, TYPE_TO_CONFIRM_THRESHOLD } from '@constants/limits.constants';
-import { BulkActionRequest, BulkResult } from '@interfaces/bulk/bulk.interface';
-import { BulkActionDef } from '@interfaces/list/resource-schema.interface';
+import { BulkActionRequest } from '@interfaces/bulk/bulk.interface';
+import { BulkResult } from '@interfaces/bulk/bulk-result.interface';
+import { BulkActionDef } from '@interfaces/list/bulk-action-def.interface';
 import { ApiClient } from '@services/api/api-client.service';
 import { TaskTracker } from '@services/task/task-tracker.service';
 import { DialogService } from '@services/ui/dialog.service';

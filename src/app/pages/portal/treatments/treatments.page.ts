@@ -7,7 +7,8 @@ import { ProgressMeter } from '@components/common/progress-meter/progress-meter.
 import { EmptyState } from '@components/common/empty-state/empty-state.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { Treatment, TreatmentSession } from '@interfaces/clinic/treatment.interface';
+import { Treatment } from '@interfaces/clinic/treatment.interface';
+import { TreatmentSession } from '@interfaces/clinic/treatment-session.interface';
 import { TreatmentApi } from '@services/clinic/treatment-api.service';
 
 /** `/portal/treatments` — treatment plans with progress and the next session; each opens to its sessions. */

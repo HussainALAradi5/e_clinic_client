@@ -4,12 +4,11 @@ import { concatMap, EMPTY, expand, filter, last, map, Observable, of, switchMap 
 import { UploadQueue } from './upload-queue';
 import { UPLOAD_LIMITS } from '@constants/limits.constants';
 import { ApiEnvelope } from '@interfaces/api/api-envelope.interface';
-import {
-  Attachment,
-  UploadResult,
-  UploadSession,
-} from '@interfaces/attachment/attachment.interface';
-import { UploadItem, UploadQueueOptions } from '@interfaces/upload/upload.interface';
+import { Attachment } from '@interfaces/attachment/attachment.interface';
+import { UploadResult } from '@interfaces/attachment/upload-result.interface';
+import { UploadSession } from '@interfaces/attachment/upload-session.interface';
+import { UploadItem } from '@interfaces/upload/upload.interface';
+import { UploadQueueOptions } from '@interfaces/upload/upload-queue-options.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /**

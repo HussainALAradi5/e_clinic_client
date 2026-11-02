@@ -2,17 +2,15 @@ import { inject, Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { silent } from '@middlewares/interceptors/http-context';
-import { ParticipantRole } from '@enums/communication/chat.enum';
+import { ParticipantRole } from '@enums/communication/participant-role.enum';
 import { Page } from '@interfaces/api/page.interface';
-import {
-  ChatContact,
-  ChatMessage,
-  ChatSettings,
-  Conversation,
-  ConversationQuery,
-  NewChatPayload,
-  SendMessagePayload,
-} from '@interfaces/communication/chat.interface';
+import { ChatContact } from '@interfaces/communication/chat.interface';
+import { ChatMessage } from '@interfaces/communication/chat-message.interface';
+import { ChatSettings } from '@interfaces/communication/chat-settings.interface';
+import { Conversation } from '@interfaces/communication/conversation.interface';
+import { ConversationQuery } from '@interfaces/communication/conversation-query.interface';
+import { NewChatPayload } from '@interfaces/communication/new-chat-payload.interface';
+import { SendMessagePayload } from '@interfaces/communication/send-message-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /** Staff chat — my chats (filtered on the server), messages, reactions, groups and my chat settings. */

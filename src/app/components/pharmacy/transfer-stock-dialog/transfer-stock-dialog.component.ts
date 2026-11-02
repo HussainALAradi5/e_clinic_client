@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { TransferStockDialogData } from '@interfaces/pharmacy/dialog-data.interface';
+import { TransferStockDialogData } from '@interfaces/pharmacy/transfer-stock-dialog-data.interface';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { TextField } from '@components/common/text-field/text-field.component';

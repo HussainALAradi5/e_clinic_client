@@ -12,12 +12,10 @@ import { AccountType } from '@enums/accounting/account-type.enum';
 import { ConsentType } from '@enums/clinic/consent-type.enum';
 import { ServiceCategory } from '@enums/billing/service-category.enum';
 import { Account } from '@interfaces/accounting/account.interface';
-import {
-  BillableService,
-  BillableServicePayload,
-} from '@interfaces/billing/billable-service.interface';
-import { Specialty } from '@interfaces/clinic/doctor.interface';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { BillableService } from '@interfaces/billing/billable-service.interface';
+import { BillableServicePayload } from '@interfaces/billing/billable-service-payload.interface';
+import { Specialty } from '@interfaces/clinic/specialty.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { dirtyPayload } from '@utilities/form-payload';
 
 /** Create or edit a price-list item; a new price applies to new charges only. */

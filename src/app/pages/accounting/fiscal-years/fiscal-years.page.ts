@@ -10,7 +10,8 @@ import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { FiscalStatus } from '@enums/accounting/fiscal-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
-import { FiscalPeriod, FiscalYear } from '@interfaces/accounting/fiscal.interface';
+import { FiscalPeriod } from '@interfaces/accounting/fiscal.interface';
+import { FiscalYear } from '@interfaces/accounting/fiscal-year.interface';
 import { ApiError } from '@interfaces/api/api-error.interface';
 import { FiscalApi } from '@services/accounting/fiscal-api.service';
 

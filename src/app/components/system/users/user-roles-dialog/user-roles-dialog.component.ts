@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { map } from 'rxjs';
-import { UserRolesDialogData } from '@interfaces/system/users/dialog-data.interface';
+import { UserRolesDialogData } from '@interfaces/system/users/user-roles-dialog-data.interface';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { ErrorState } from '@components/common/error-state/error-state.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';

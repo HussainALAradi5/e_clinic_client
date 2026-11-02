@@ -4,7 +4,9 @@ import { firstValueFrom } from 'rxjs';
 import { RoleState } from '@interfaces/system/roles/role-state.interface';
 import { RoleName } from '@enums/identity/role-name.enum';
 import { ApiError } from '@interfaces/api/api-error.interface';
-import { AccessRow, Role, RolePayload } from '@interfaces/identity/role.interface';
+import { AccessRow } from '@interfaces/identity/access-row.interface';
+import { Role } from '@interfaces/identity/role.interface';
+import { RolePayload } from '@interfaces/identity/role-payload.interface';
 import { RoleApi } from '@services/identity/role-api.service';
 
 /** Role detail + access matrix state (route-level) with every role action. */

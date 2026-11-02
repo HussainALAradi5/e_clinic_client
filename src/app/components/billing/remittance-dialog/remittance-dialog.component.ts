@@ -10,7 +10,7 @@ import { TextField } from '@components/common/text-field/text-field.component';
 import { CompanyType } from '@enums/reference/company-type.enum';
 import { ApprovalStatus } from '@enums/shared/approval-status.enum';
 import { InsuranceClaim } from '@interfaces/billing/insurance-claim.interface';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { Company } from '@interfaces/reference/company.interface';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { InsuranceClaimApi } from '@services/billing/insurance-claim-api.service';

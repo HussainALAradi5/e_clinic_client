@@ -2,8 +2,8 @@ import { AttendanceStatus } from '@enums/hr/attendance-status.enum';
 import { StaffRequestType } from '@enums/hr/staff-request-type.enum';
 import { ApprovalStatus } from '@enums/shared/approval-status.enum';
 import { Money } from '@interfaces/common/money.interface';
-import { EmployeeSummary, UserSummary } from '@interfaces/common/summary.interface';
-import { Attendance } from './attendance.interface';
+import { EmployeeSummary } from '@interfaces/common/employee-summary.interface';
+import { UserSummary } from '@interfaces/common/user-summary.interface';
 
 /** Mirror of StaffRequestResource — a late excuse or overtime request about one attendance day. */
 export interface StaffRequest {
@@ -30,16 +30,4 @@ export interface StaffRequest {
   reviewedAt: string | null;
   reviewReason: string | null;
   createdAt: string | null;
-}
-
-/** GET hr/requests/askable — a recent day of mine and the kinds of request it still allows. */
-export interface AskableDay {
-  attendance: Attendance;
-  types: StaffRequestType[];
-}
-
-export interface StaffRequestPayload {
-  type: StaffRequestType;
-  attendanceId: string;
-  reason: string | null;
 }

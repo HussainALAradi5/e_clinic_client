@@ -11,7 +11,7 @@ import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { PORTAL_PATH } from '@constants/app.constants';
 import { AppointmentStatus } from '@enums/clinic/appointment-status.enum';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { AppointmentApi } from '@services/clinic/appointment-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 

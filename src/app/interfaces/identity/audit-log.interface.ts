@@ -1,10 +1,5 @@
 import { AuditAction } from '@enums/identity/audit-action.enum';
-
-export interface AuditActor {
-  id: string;
-  fullName: string;
-  email: string | null;
-}
+import { AuditActor } from '@interfaces/identity/audit-actor.interface';
 
 /** Mirror of AuditLogResource — append-only, values already masked by the server. */
 export interface AuditLog {

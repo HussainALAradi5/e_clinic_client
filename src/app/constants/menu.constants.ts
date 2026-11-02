@@ -1,5 +1,5 @@
 import { AUTHENTICATED } from '@constants/app.constants';
-import { NavGroup } from '@interfaces/ui/nav.interface';
+import { NavGroup } from '@interfaces/ui/nav-group.interface';
 
 /**
  * Side menu (navigation doc). Items are filtered by AccessService with the same expressions as the route guards,

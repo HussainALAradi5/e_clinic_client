@@ -22,9 +22,9 @@ import { StatusChip } from '@components/common/status-chip/status-chip.component
 import { DATE_FORMAT } from '@constants/app.constants';
 import { ApprovalStatus } from '@enums/shared/approval-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
-import { AttendanceSummary } from '@interfaces/hr/attendance.interface';
-import { LeaveRequest } from '@interfaces/hr/leave.interface';
-import { Payslip } from '@interfaces/hr/payroll.interface';
+import { AttendanceSummary } from '@interfaces/hr/attendance-summary.interface';
+import { LeaveRequest } from '@interfaces/hr/leave-request.interface';
+import { Payslip } from '@interfaces/hr/payslip.interface';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { AccessService } from '@services/auth/access.service';

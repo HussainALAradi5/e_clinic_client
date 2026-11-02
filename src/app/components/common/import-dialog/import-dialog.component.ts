@@ -6,11 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { IMPORT_ACCEPT } from '@constants/transfer.constants';
 import { ErrorCode } from '@enums/api/error-code.enum';
-import {
-  ImportDialogData,
-  ImportResult,
-  ImportRowError,
-} from '@interfaces/list/transfer.interface';
+import { ImportDialogData } from '@interfaces/list/import-dialog-data.interface';
+import { ImportResult } from '@interfaces/list/import-result.interface';
+import { ImportRowError } from '@interfaces/list/import-row-error.interface';
 import { TransferApi } from '@services/data/transfer-api.service';
 import { isApiError } from '@utilities/guards';
 

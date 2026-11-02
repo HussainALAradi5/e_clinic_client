@@ -3,13 +3,11 @@ import { Observable } from 'rxjs';
 import { withIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { Page } from '@interfaces/api/page.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
-import {
-  MedicationBatch,
-  ReceiveStockPayload,
-  StockAdjustmentPayload,
-  StockMovement,
-  StockTransferPayload,
-} from '@interfaces/pharmacy/inventory.interface';
+import { MedicationBatch } from '@interfaces/pharmacy/inventory.interface';
+import { ReceiveStockPayload } from '@interfaces/pharmacy/receive-stock-payload.interface';
+import { StockAdjustmentPayload } from '@interfaces/pharmacy/stock-adjustment-payload.interface';
+import { StockMovement } from '@interfaces/pharmacy/stock-movement.interface';
+import { StockTransferPayload } from '@interfaces/pharmacy/stock-transfer-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /** Pharmacy › Inventory — lots, the stock ledger, receipts, count corrections and quarantine. */

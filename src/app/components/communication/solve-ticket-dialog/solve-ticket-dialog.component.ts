@@ -4,10 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {
-  SolveTicketData,
-  TicketSolution,
-} from '@interfaces/communication/solve-ticket-dialog.interface';
+import { SolveTicketData } from '@interfaces/communication/solve-ticket-dialog.interface';
+import { TicketSolution } from '@interfaces/communication/ticket-solution.interface';
 
 const MAX_STEPS = 20;
 

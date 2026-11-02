@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { SpecialtyFormDialog } from '@components/clinic/specialty-form-dialog/specialty-form-dialog.component';
-import { SpecialtyFormDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { SpecialtyFormDialogData } from '@interfaces/clinic/specialty-form-dialog-data.interface';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
-import { Specialty } from '@interfaces/clinic/doctor.interface';
+import { Specialty } from '@interfaces/clinic/specialty.interface';
 import { AccessService } from '@services/auth/access.service';
 import { SpecialtyApi } from '@services/clinic/doctor-api.service';
 import { DialogService } from '@services/ui/dialog.service';

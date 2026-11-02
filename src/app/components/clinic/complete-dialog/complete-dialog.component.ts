@@ -5,13 +5,13 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { firstValueFrom } from 'rxjs';
-import { AppointmentDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { AppointmentDialogData } from '@interfaces/clinic/appointment-dialog-data.interface';
 import { EntitySelect } from '@components/common/entity-select/entity-select.component';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { SelectField } from '@components/common/select-field/select-field.component';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
 import { BillableService } from '@interfaces/billing/billable-service.interface';
-import { EnumOption } from '@interfaces/common/enum-meta.interface';
+import { EnumOption } from '@interfaces/common/enum-option.interface';
 import { AppointmentApi } from '@services/clinic/appointment-api.service';
 import { formatMoney } from '@utilities/money';
 

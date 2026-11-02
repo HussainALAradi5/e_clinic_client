@@ -13,7 +13,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { firstValueFrom, map, startWith } from 'rxjs';
-import { PaymentDialogData } from '@interfaces/billing/dialog-data.interface';
+import { PaymentDialogData } from '@interfaces/billing/payment-dialog-data.interface';
 import { OpenDrawerDialog } from '../open-drawer-dialog/open-drawer-dialog.component';
 import { newIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { AppButton } from '@components/common/app-button/app-button.component';

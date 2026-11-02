@@ -7,11 +7,9 @@ import { ConsentDialog } from '@components/clinic/consent-dialog/consent-dialog.
 import { CompleteDialog } from '@components/clinic/complete-dialog/complete-dialog.component';
 import { RescheduleDialog } from '@components/clinic/reschedule-dialog/reschedule-dialog.component';
 import { AppointmentAction } from '@interfaces/clinic/appointment-action.interface';
-import {
-  AppointmentDialogData,
-  BookingWizardData,
-  ConsentDialogData,
-} from '@interfaces/clinic/dialog-data.interface';
+import { AppointmentDialogData } from '@interfaces/clinic/appointment-dialog-data.interface';
+import { BookingWizardData } from '@interfaces/clinic/booking-wizard-data.interface';
+import { ConsentDialogData } from '@interfaces/clinic/consent-dialog-data.interface';
 import { ErrorCode } from '@enums/api/error-code.enum';
 import { AppointmentStatus } from '@enums/clinic/appointment-status.enum';
 import { ConsentType } from '@enums/clinic/consent-type.enum';

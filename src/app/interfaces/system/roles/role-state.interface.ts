@@ -1,5 +1,6 @@
 import { ApiError } from '@interfaces/api/api-error.interface';
-import { AccessRow, Role } from '@interfaces/identity/role.interface';
+import { AccessRow } from '@interfaces/identity/access-row.interface';
+import { Role } from '@interfaces/identity/role.interface';
 
 /** RoleStore state. */
 export interface RoleState {

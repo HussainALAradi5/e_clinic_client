@@ -13,7 +13,7 @@ import { ErrorState } from '@components/common/error-state/error-state.component
 import { PrintSheet } from '@components/common/print-sheet/print-sheet.component';
 import { DATE_FORMAT } from '@constants/app.constants';
 import { PayrollStatus } from '@enums/hr/payroll-status.enum';
-import { Payslip } from '@interfaces/hr/payroll.interface';
+import { Payslip } from '@interfaces/hr/payslip.interface';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { PayrollApi } from '@services/hr/payroll-api.service';

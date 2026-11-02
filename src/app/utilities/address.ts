@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AddressPayload } from '@interfaces/reference/address.interface';
+import { AddressPayload } from '@interfaces/reference/address-payload.interface';
 import { AddressForm } from '@interfaces/common/address.interface';
 
 export const BAHRAIN = 'BH';

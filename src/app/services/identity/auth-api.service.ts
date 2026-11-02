@@ -1,15 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  ChangePasswordPayload,
-  ForgotPasswordPayload,
-  LoginPayload,
-  ResetPasswordPayload,
-  ResetToken,
-  VerifyResetCodePayload,
-  TwoFactorChallengePayload,
-  TwoFactorSetup,
-} from '@interfaces/auth/auth-payloads.interface';
+import { ChangePasswordPayload } from '@interfaces/auth/change-password-payload.interface';
+import { ForgotPasswordPayload } from '@interfaces/auth/forgot-password-payload.interface';
+import { LoginPayload } from '@interfaces/auth/auth-payloads.interface';
+import { ResetPasswordPayload } from '@interfaces/auth/reset-password-payload.interface';
+import { ResetToken } from '@interfaces/auth/reset-token.interface';
+import { VerifyResetCodePayload } from '@interfaces/auth/verify-reset-code-payload.interface';
+import { TwoFactorChallengePayload } from '@interfaces/auth/two-factor-challenge-payload.interface';
+import { TwoFactorSetup } from '@interfaces/auth/two-factor-setup.interface';
 import { Session } from '@interfaces/auth/session.interface';
 import { ApiClient } from '@services/api/api-client.service';
 

@@ -9,8 +9,3 @@ export interface Country {
   isActive: boolean;
   sortOrder: number;
 }
-
-/** PUT /reference/countries/{code} — only sent keys change. */
-export type CountryPayload = Partial<
-  Pick<Country, 'name' | 'nationality' | 'phoneCode' | 'isActive' | 'sortOrder'>
->;

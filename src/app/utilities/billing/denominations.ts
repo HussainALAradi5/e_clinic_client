@@ -1,4 +1,4 @@
-import { Denomination } from '@interfaces/finance/cash-session.interface';
+import { Denomination } from '@interfaces/finance/denomination.interface';
 import { fromMinor, toMinor } from '@utilities/money';
 
 /** Bahraini notes and coins, largest first (face value in BHD, 3 decimals). */

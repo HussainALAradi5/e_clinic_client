@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { PayExpenseDialogData } from '@interfaces/accounting/dialog-data.interface';
+import { PayExpenseDialogData } from '@interfaces/accounting/pay-expense-dialog-data.interface';
 import { newIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { SelectField } from '@components/common/select-field/select-field.component';

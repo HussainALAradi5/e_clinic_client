@@ -10,13 +10,13 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { BubbleStyle, MessageKind, ParticipantRole } from '@enums/communication/chat.enum';
-import {
-  ChatAttachment,
-  ChatMember,
-  ChatMessage,
-  ChatSettings,
-} from '@interfaces/communication/chat.interface';
+import { BubbleStyle } from '@enums/communication/bubble-style.enum';
+import { MessageKind } from '@enums/communication/message-kind.enum';
+import { ParticipantRole } from '@enums/communication/participant-role.enum';
+import { ChatAttachment } from '@interfaces/communication/chat-attachment.interface';
+import { ChatMember } from '@interfaces/communication/chat-member.interface';
+import { ChatMessage } from '@interfaces/communication/chat-message.interface';
+import { ChatSettings } from '@interfaces/communication/chat-settings.interface';
 import { clinicTime } from '@utilities/clinic-time';
 import { ChatAvatar } from '../chat-avatar/chat-avatar.component';
 import {

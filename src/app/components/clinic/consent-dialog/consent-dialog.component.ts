@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { firstValueFrom, map, startWith } from 'rxjs';
-import { ConsentDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { ConsentDialogData } from '@interfaces/clinic/consent-dialog-data.interface';
 import {
   CONSENT_TEMPLATES,
   PATIENT_WIDE_CONSENTS,

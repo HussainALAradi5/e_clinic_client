@@ -3,7 +3,8 @@ import { filter, map, of, Subscription } from 'rxjs';
 import { UploadService } from './upload.service';
 import { UPLOAD_LIMITS } from '@constants/limits.constants';
 import { UploadStatus } from '@enums/upload/upload-status.enum';
-import { UploadItem, UploadQueueOptions } from '@interfaces/upload/upload.interface';
+import { UploadItem } from '@interfaces/upload/upload.interface';
+import { UploadQueueOptions } from '@interfaces/upload/upload-queue-options.interface';
 import { matchesAccept } from '@utilities/file-accept';
 import { isApiError } from '@utilities/guards';
 

@@ -11,8 +11,3 @@ export interface ConfirmConfig {
   /** For large bulk actions: the user must type this number to confirm. */
   typeToConfirm?: string;
 }
-
-export interface ConfirmAnswer {
-  confirmed: boolean;
-  reason?: string;
-}

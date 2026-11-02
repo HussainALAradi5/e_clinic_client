@@ -1,13 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from '@interfaces/api/page.interface';
-import {
-  LeaveBalance,
-  LeaveRequest,
-  LeaveRequestPayload,
-  LeaveType,
-  LeaveTypePayload,
-} from '@interfaces/hr/leave.interface';
+import { LeaveBalance } from '@interfaces/hr/leave-balance.interface';
+import { LeaveRequest } from '@interfaces/hr/leave-request.interface';
+import { LeaveRequestPayload } from '@interfaces/hr/leave-request-payload.interface';
+import { LeaveType } from '@interfaces/hr/leave.interface';
+import { LeaveTypePayload } from '@interfaces/hr/leave-type-payload.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
 

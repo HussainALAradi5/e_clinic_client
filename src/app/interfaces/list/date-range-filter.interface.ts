@@ -7,9 +7,3 @@ export interface DateRangeValue {
   from?: string;
   to?: string;
 }
-
-/** A date column offered by the filter. */
-export interface DateFieldOption {
-  value: string;
-  label: string;
-}

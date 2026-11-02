@@ -1,8 +1,8 @@
-import { ShiftType } from '@enums/hr/shift-type.enum';
 import { AttendanceSource } from '@enums/hr/attendance-source.enum';
 import { AttendanceStatus } from '@enums/hr/attendance-status.enum';
+import { ShiftType } from '@enums/hr/shift-type.enum';
 import { Money } from '@interfaces/common/money.interface';
-import { EmployeeSummary } from '@interfaces/common/summary.interface';
+import { EmployeeSummary } from '@interfaces/common/employee-summary.interface';
 
 /** Mirror of AttendanceResource — one employee's working day. */
 export interface Attendance {
@@ -34,42 +34,4 @@ export interface Attendance {
   needsReview: boolean;
   isLocked: boolean;
   updatedAt: string | null;
-}
-
-/** The signed-in employee's day and shift (check-in card). */
-export interface AttendanceToday {
-  attendance: Attendance | null;
-  /** Late after `start`; the shift's code / name / type when the employee is on one. */
-  shift: {
-    start: string;
-    end: string;
-    code: string | null;
-    name: string | null;
-    type: ShiftType | null;
-  };
-}
-
-/** One employee's month as payroll sees it. */
-export interface AttendanceSummary {
-  workingDays: number;
-  presentDays: string;
-  absentDays: string;
-  paidLeaveDays: string;
-  unpaidLeaveDays: string;
-  lateMinutes: number;
-  approvedOvertimeMinutes: number;
-  pendingOvertimeMinutes: number;
-  /** Deducted from pay while late excuses are on. */
-  unexcusedLateMinutes: number;
-  approvedOvertimeAmount: Money;
-}
-
-/** HR correction: times (clinic time, HH:mm) or, without a check-in, what the day was. */
-export interface ManualAttendancePayload {
-  employeeId: string;
-  date: string;
-  checkIn: string | null;
-  checkOut: string | null;
-  status: AttendanceStatus | null;
-  reason: string;
 }

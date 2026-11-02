@@ -3,7 +3,8 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 import { CompanyState } from '@interfaces/reference/company-state.interface';
 import { ApiError } from '@interfaces/api/api-error.interface';
-import { Company, CompanyPayload } from '@interfaces/reference/company.interface';
+import { Company } from '@interfaces/reference/company.interface';
+import { CompanyPayload } from '@interfaces/reference/company-payload.interface';
 import { CompanyApi } from '@services/reference/company-api.service';
 
 /** Company detail state (route-level) with every company action. */

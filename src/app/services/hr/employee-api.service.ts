@@ -1,14 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EmployeeStatus } from '@enums/hr/employee-status.enum';
-import {
-  Employee,
-  HireEmployeePayload,
-  SalaryComponent,
-  SalaryComponentPayload,
-  TerminationPayload,
-  UpdateEmployeePayload,
-} from '@interfaces/hr/employee.interface';
+import { Employee } from '@interfaces/hr/employee.interface';
+import { HireEmployeePayload } from '@interfaces/hr/hire-employee-payload.interface';
+import { SalaryComponent } from '@interfaces/hr/salary-component.interface';
+import { SalaryComponentPayload } from '@interfaces/hr/salary-component-payload.interface';
+import { TerminationPayload } from '@interfaces/hr/termination-payload.interface';
+import { UpdateEmployeePayload } from '@interfaces/hr/update-employee-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /** HR › Employees (one method per endpoint). */

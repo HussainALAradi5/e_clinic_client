@@ -1,7 +1,9 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { from, map, Observable, switchMap } from 'rxjs';
-import { ExportOutcome, ExportRequest, ImportResult } from '@interfaces/list/transfer.interface';
+import { ExportOutcome } from '@interfaces/list/export-outcome.type';
+import { ExportRequest } from '@interfaces/list/export-request.interface';
+import { ImportResult } from '@interfaces/list/import-result.interface';
 import { ApiClient } from '@services/api/api-client.service';
 import { blobText, downloadBlob } from '@utilities/download';
 

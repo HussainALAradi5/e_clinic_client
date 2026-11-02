@@ -9,21 +9,20 @@ import { OpenDrawerDialog } from '@components/billing/open-drawer-dialog/open-dr
 import { PaymentDialog } from '@components/billing/payment-dialog/payment-dialog.component';
 import { RefundDialog } from '@components/billing/refund-dialog/refund-dialog.component';
 import { RemittanceDialog } from '@components/billing/remittance-dialog/remittance-dialog.component';
-import {
-  ClaimDecisionDialogData,
-  CloseDrawerDialogData,
-  DepositDialogData,
-  InvoiceEditorDialogData,
-  PaymentDialogData,
-  RefundDialogData,
-} from '@interfaces/billing/dialog-data.interface';
+import { ClaimDecisionDialogData } from '@interfaces/billing/claim-decision-dialog-data.interface';
+import { CloseDrawerDialogData } from '@interfaces/billing/close-drawer-dialog-data.interface';
+import { DepositDialogData } from '@interfaces/billing/deposit-dialog-data.interface';
+import { InvoiceEditorDialogData } from '@interfaces/billing/invoice-editor-dialog-data.interface';
+import { PaymentDialogData } from '@interfaces/billing/payment-dialog-data.interface';
+import { RefundDialogData } from '@interfaces/billing/refund-dialog-data.interface';
 import { newIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { ErrorCode } from '@enums/api/error-code.enum';
 import { CashSessionStatus } from '@enums/finance/cash-session-status.enum';
 import { ApprovalStatus } from '@enums/shared/approval-status.enum';
 import { PaymentMethod } from '@enums/shared/payment-method.enum';
 import { InsuranceClaim } from '@interfaces/billing/insurance-claim.interface';
-import { ChargePayload, Invoice } from '@interfaces/billing/invoice.interface';
+import { ChargePayload } from '@interfaces/billing/charge-payload.interface';
+import { Invoice } from '@interfaces/billing/invoice.interface';
 import { Payment } from '@interfaces/billing/payment.interface';
 import { Refund } from '@interfaces/billing/refund.interface';
 import { CashSession } from '@interfaces/finance/cash-session.interface';

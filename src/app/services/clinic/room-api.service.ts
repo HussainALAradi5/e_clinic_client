@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
-import { Room, RoomPayload, RoomServiceResult } from '@interfaces/clinic/room.interface';
+import { Room } from '@interfaces/clinic/room.interface';
+import { RoomPayload } from '@interfaces/clinic/room-payload.interface';
+import { RoomServiceResult } from '@interfaces/clinic/room-service-result.interface';
 import { EntityApi } from '@services/api/entity-api.service';
 
 /** Clinic › Rooms — CRUD, archive / delete / restore, bulk, service switch and the day's bookings. */

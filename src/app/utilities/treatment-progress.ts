@@ -5,7 +5,7 @@ import {
 } from '@constants/progress-health.constants';
 import { ProgressHealth } from '@enums/clinic/progress-health.enum';
 import { GenericStatus } from '@enums/shared/generic-status.enum';
-import { TreatmentProgress } from '@interfaces/clinic/treatment.interface';
+import { TreatmentProgress } from '@interfaces/clinic/treatment-progress.interface';
 
 /** How a plan is going: done, stopped, at risk (missed twice in a row / low attendance), slipping, not started or on track. */
 export function progressHealth(

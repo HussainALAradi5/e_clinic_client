@@ -21,11 +21,9 @@ import { PageHeader } from '@components/common/page-header/page-header.component
 import { TIME_FORMAT } from '@constants/app.constants';
 import { ScanPurpose } from '@enums/code/scan-purpose.enum';
 import { ApiError } from '@interfaces/api/api-error.interface';
-import {
-  BarcodeDetectorConstructor,
-  BarcodeDetectorLike,
-  ScanHistoryEntry,
-} from '@interfaces/code/barcode-detector.interface';
+import { BarcodeDetectorConstructor } from '@interfaces/code/barcode-detector-constructor.interface';
+import { BarcodeDetectorLike } from '@interfaces/code/barcode-detector-like.interface';
+import { ScanHistoryEntry } from '@interfaces/code/scan-history-entry.interface';
 import { ScanResult } from '@interfaces/code/scan-result.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { AccessService } from '@services/auth/access.service';

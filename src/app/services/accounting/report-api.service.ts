@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ReportType } from '@enums/accounting/report-type.enum';
-import { ReportParams, ReportTable } from '@interfaces/accounting/report.interface';
+import { ReportParams } from '@interfaces/accounting/report-params.interface';
+import { ReportTable } from '@interfaces/accounting/report-table.interface';
 import { ApiClient } from '@services/api/api-client.service';
 import { downloadBlob } from '@utilities/download';
 

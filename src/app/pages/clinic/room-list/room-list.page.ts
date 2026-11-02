@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { RoomFormDialog } from '@components/clinic/room-form-dialog/room-form-dialog.component';
-import { RoomFormDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { RoomFormDialogData } from '@interfaces/clinic/room-form-dialog-data.interface';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';

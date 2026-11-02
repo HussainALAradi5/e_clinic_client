@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { OrderDialogData } from '@interfaces/clinic/dialog-data.interface';
+import { OrderDialogData } from '@interfaces/clinic/order-dialog-data.interface';
 import { orderRoomType } from '@utilities/clinic/clinical';
 import { EntitySelect } from '@components/common/entity-select/entity-select.component';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { ClinicalOrder } from '@interfaces/clinic/clinical-order.interface';
 import { Room } from '@interfaces/clinic/room.interface';
-import { FilterGroup } from '@interfaces/list/list-query.interface';
+import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { ClinicalOrderApi } from '@services/clinic/clinical-order-api.service';
 
 /**

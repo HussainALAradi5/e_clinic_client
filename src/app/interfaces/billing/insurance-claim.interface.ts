@@ -1,15 +1,8 @@
 import { ApprovalStatus } from '@enums/shared/approval-status.enum';
-import { InvoiceItem } from '@interfaces/billing/invoice.interface';
+import { ClaimDiagnosis } from '@interfaces/billing/claim-diagnosis.interface';
+import { InvoiceItem } from '@interfaces/billing/invoice-item.interface';
 import { Money } from '@interfaces/common/money.interface';
 import { PatientSummary } from '@interfaces/common/summary.interface';
-
-/** ICD-10 code of a visit on the claim (claim staff only). */
-export interface ClaimDiagnosis {
-  code: string;
-  title: string;
-  isPrimary: boolean;
-  visit: string;
-}
 
 /** Mirror of InsuranceClaimResource — draft → pending (sent) → approved / rejected → remitted. */
 export interface InsuranceClaim {
@@ -46,20 +39,4 @@ export interface InsuranceClaim {
   diagnoses?: ClaimDiagnosis[];
   createdAt: string;
   updatedAt: string;
-}
-
-/** PATCH /billing/insurance-claims/{id}/decision. */
-export interface ClaimDecisionPayload {
-  approved: boolean;
-  approvedAmount?: string | null;
-  insurerReference?: string | null;
-  rejectionReason?: string | null;
-}
-
-/** POST /billing/insurance-claims/remittances — one insurer transfer for approved claims. */
-export interface RemittancePayload {
-  claimIds: string[];
-  date: string;
-  reference: string;
-  amount: string;
 }

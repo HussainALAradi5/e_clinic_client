@@ -10,18 +10,3 @@ export interface ToastData {
   /** Auto-close after this many ms (drives the countdown line). */
   duration: number;
 }
-
-/** Look and timing of a toast type. */
-export interface ToastStyle {
-  icon: string;
-  title: string;
-  duration: number;
-  politeness: 'polite' | 'assertive';
-}
-
-/** Optional overrides for NotifyService calls. */
-export interface ToastOptions {
-  title?: string;
-  action?: string;
-  duration?: number;
-}

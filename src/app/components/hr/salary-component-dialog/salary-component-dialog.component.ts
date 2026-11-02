@@ -3,13 +3,13 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { EmployeeDialogData } from '@interfaces/hr/dialog-data.interface';
+import { EmployeeDialogData } from '@interfaces/hr/employee-dialog-data.interface';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { MoneyInput } from '@components/common/money-input/money-input.component';
 import { SelectField } from '@components/common/select-field/select-field.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { SalaryComponentType } from '@enums/hr/salary-component-type.enum';
-import { SalaryComponent } from '@interfaces/hr/employee.interface';
+import { SalaryComponent } from '@interfaces/hr/salary-component.interface';
 import { EmployeeApi } from '@services/hr/employee-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 

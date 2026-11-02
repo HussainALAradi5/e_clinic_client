@@ -4,7 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { RoleFormDialogData } from '@interfaces/system/roles/role-form-dialog-data.interface';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { TextField } from '@components/common/text-field/text-field.component';
-import { Role, RolePayload } from '@interfaces/identity/role.interface';
+import { Role } from '@interfaces/identity/role.interface';
+import { RolePayload } from '@interfaces/identity/role-payload.interface';
 
 /** Create a custom role, or edit labels (and the machine name of custom roles). Rights are set in the access matrix. */
 @Component({

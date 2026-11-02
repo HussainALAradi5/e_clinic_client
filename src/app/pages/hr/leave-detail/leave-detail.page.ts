@@ -27,7 +27,7 @@ import { AttachmentCategory } from '@enums/attachment/attachment-category.enum';
 import { ApprovalStatus } from '@enums/shared/approval-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { Attachment } from '@interfaces/attachment/attachment.interface';
-import { LeaveRequest } from '@interfaces/hr/leave.interface';
+import { LeaveRequest } from '@interfaces/hr/leave-request.interface';
 import { Fact } from '@interfaces/ui/fact.interface';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { AccessService } from '@services/auth/access.service';

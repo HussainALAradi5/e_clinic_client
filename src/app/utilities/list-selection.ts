@@ -4,7 +4,7 @@ import { MAX_BULK_IDS } from '@constants/limits.constants';
 import { SelectionMode } from '@enums/list/selection-mode.enum';
 import { BulkActionRequest } from '@interfaces/bulk/bulk.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
-import { ExportRequest } from '@interfaces/list/transfer.interface';
+import { ExportRequest } from '@interfaces/list/export-request.interface';
 
 /**
  * Multi-select state for tables (mirror of the bulk target set):

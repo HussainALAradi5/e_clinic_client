@@ -1,24 +1,7 @@
-import { DepartmentRef } from '@interfaces/hr/department.interface';
-import { ServiceRef } from '@interfaces/billing/billable-service.interface';
 import { EmployeeStatus } from '@enums/hr/employee-status.enum';
 import { Gender } from '@enums/shared/gender.enum';
-import { GenericEntity } from '@interfaces/common/generic-entity.interface';
-
-/** Mirror of SpecialtyResource. */
-export interface Specialty extends GenericEntity {
-  name: string;
-  nameAr: string | null;
-  description: string | null;
-  doctorsCount?: number;
-}
-
-/** POST / PUT /doctors/specialties. */
-export interface SpecialtyPayload {
-  code?: string;
-  name?: string;
-  nameAr?: string | null;
-  description?: string | null;
-}
+import { ServiceRef } from '@interfaces/billing/service-ref.interface';
+import { DepartmentRef } from '@interfaces/hr/department-ref.interface';
 
 /** Mirror of DoctorResource — clinical profile of an employee (same id as employee, user and person). */
 export interface Doctor {
@@ -51,19 +34,4 @@ export interface Doctor {
   bio: string | null;
   createdAt: string;
   updatedAt: string;
-}
-
-/** POST /doctors (`employeeId` on create only) and PUT /doctors/{id}. */
-export interface DoctorPayload {
-  employeeId?: string;
-  specialtyId?: string;
-  licenseNumber?: string;
-  licenseExpiryDate?: string;
-  title?: string | null;
-  consultationServiceId?: string;
-  followUpServiceId?: string;
-  defaultSlotMinutes?: number;
-  maxDailyAppointments?: number | null;
-  defaultRoomId?: string | null;
-  bio?: string | null;
 }

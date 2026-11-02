@@ -2,7 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from '@interfaces/api/page.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
-import { Prescription, PrescriptionPayload } from '@interfaces/pharmacy/prescription.interface';
+import { Prescription } from '@interfaces/pharmacy/prescription.interface';
+import { PrescriptionPayload } from '@interfaces/pharmacy/prescription-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /** Pharmacy › Prescriptions — written by the doctor, queued for the pharmacy until dispensed or cancelled. */

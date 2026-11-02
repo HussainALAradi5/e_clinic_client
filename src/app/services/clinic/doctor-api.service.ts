@@ -1,11 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  Doctor,
-  DoctorPayload,
-  Specialty,
-  SpecialtyPayload,
-} from '@interfaces/clinic/doctor.interface';
+import { Doctor } from '@interfaces/clinic/doctor.interface';
+import { DoctorPayload } from '@interfaces/clinic/doctor-payload.interface';
+import { Specialty } from '@interfaces/clinic/specialty.interface';
+import { SpecialtyPayload } from '@interfaces/clinic/specialty-payload.interface';
 import { Page } from '@interfaces/api/page.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';

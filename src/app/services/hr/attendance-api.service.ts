@@ -1,12 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from '@interfaces/api/page.interface';
-import {
-  Attendance,
-  AttendanceSummary,
-  AttendanceToday,
-  ManualAttendancePayload,
-} from '@interfaces/hr/attendance.interface';
+import { Attendance } from '@interfaces/hr/attendance.interface';
+import { AttendanceSummary } from '@interfaces/hr/attendance-summary.interface';
+import { AttendanceToday } from '@interfaces/hr/attendance-today.interface';
+import { ManualAttendancePayload } from '@interfaces/hr/manual-attendance-payload.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
 

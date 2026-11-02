@@ -29,11 +29,11 @@ import {
   notificationIcon,
   notificationLink,
 } from '@constants/notification-links.constants';
-import { PageMeta } from '@interfaces/api/page.interface';
+import { PageMeta } from '@interfaces/api/page-meta.interface';
 import { DateRangeValue } from '@interfaces/list/date-range-filter.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { AppNotification } from '@interfaces/notification/notification.interface';
-import { PageChange } from '@interfaces/ui/table.interface';
+import { PageChange } from '@interfaces/ui/page-change.interface';
 import { RelativeTimePipe } from '@pipes/relative-time.pipe';
 import { NotificationApi } from '@services/notification/notification-api.service';
 import { NotifyService } from '@services/ui/notify.service';

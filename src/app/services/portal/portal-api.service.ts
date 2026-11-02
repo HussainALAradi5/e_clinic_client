@@ -2,9 +2,11 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { withIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { AppointmentType } from '@enums/clinic/appointment-type.enum';
-import { Appointment, Slot } from '@interfaces/clinic/appointment.interface';
+import { Appointment } from '@interfaces/clinic/appointment.interface';
+import { Slot } from '@interfaces/clinic/slot.interface';
 import { Patient } from '@interfaces/clinic/patient.interface';
-import { PortalBookingPayload, PortalProfilePayload } from '@interfaces/portal/portal.interface';
+import { PortalBookingPayload } from '@interfaces/portal/portal.interface';
+import { PortalProfilePayload } from '@interfaces/portal/portal-profile-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /**

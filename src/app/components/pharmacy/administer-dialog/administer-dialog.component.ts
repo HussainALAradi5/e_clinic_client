@@ -13,7 +13,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { firstValueFrom } from 'rxjs';
-import { AdministerDialogData } from '@interfaces/pharmacy/dialog-data.interface';
+import { AdministerDialogData } from '@interfaces/pharmacy/administer-dialog-data.interface';
 import { newIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { EntitySelect } from '@components/common/entity-select/entity-select.component';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
@@ -21,7 +21,7 @@ import { SelectField } from '@components/common/select-field/select-field.compon
 import { TextField } from '@components/common/text-field/text-field.component';
 import { ColleagueRight } from '@enums/pharmacy/colleague-right.enum';
 import { MedicationRoute } from '@enums/pharmacy/medication-route.enum';
-import { EnumOption } from '@interfaces/common/enum-meta.interface';
+import { EnumOption } from '@interfaces/common/enum-option.interface';
 import { Dispensation } from '@interfaces/pharmacy/dispensation.interface';
 import { Medication } from '@interfaces/pharmacy/medication.interface';
 import { DispensationApi } from '@services/pharmacy/dispensation-api.service';

@@ -2,7 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { withIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { Page } from '@interfaces/api/page.interface';
-import { DailySummary, Payment, PaymentPayload } from '@interfaces/billing/payment.interface';
+import { DailySummary } from '@interfaces/billing/daily-summary.interface';
+import { Payment } from '@interfaces/billing/payment.interface';
+import { PaymentPayload } from '@interfaces/billing/payment-payload.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { ApiClient } from '@services/api/api-client.service';
 

@@ -2,7 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { Page } from '@interfaces/api/page.interface';
-import { SickLeave, SickLeavePayload } from '@interfaces/clinic/sick-leave.interface';
+import { SickLeave } from '@interfaces/clinic/sick-leave.interface';
+import { SickLeavePayload } from '@interfaces/clinic/sick-leave-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /** Sick leave certificates: issued at a visit by its doctor; listed (own / all), printed, cancelled. */

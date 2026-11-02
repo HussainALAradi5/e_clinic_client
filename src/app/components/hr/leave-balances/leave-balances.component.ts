@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
-import { LeaveBalance } from '@interfaces/hr/leave.interface';
+import { LeaveBalance } from '@interfaces/hr/leave-balance.interface';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { LeaveApi } from '@services/hr/leave-api.service';
 

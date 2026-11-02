@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { withIdempotencyKey } from '@middlewares/interceptors/http-context';
-import { ChargePayload, Invoice, InvoicePayload } from '@interfaces/billing/invoice.interface';
+import { ChargePayload } from '@interfaces/billing/charge-payload.interface';
+import { Invoice } from '@interfaces/billing/invoice.interface';
+import { InvoicePayload } from '@interfaces/billing/invoice-payload.interface';
 import { Page } from '@interfaces/api/page.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { EntityApi } from '@services/api/entity-api.service';
