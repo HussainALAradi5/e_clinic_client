@@ -98,6 +98,7 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 | Book visit | ![](docs/screenshots/patient/book-visit-light.png) | ![](docs/screenshots/patient/book-visit-dark.png) |
 | Invoices | ![](docs/screenshots/patient/invoices-light.png) | ![](docs/screenshots/patient/invoices-dark.png) |
 | Portal home | ![](docs/screenshots/patient/portal-home-light.png) | ![](docs/screenshots/patient/portal-home-dark.png) |
+| Portal sick leaves | ![](docs/screenshots/patient/portal-sick-leaves-light.png) | ![](docs/screenshots/patient/portal-sick-leaves-dark.png) |
 | Treatments | ![](docs/screenshots/patient/treatments-light.png) | ![](docs/screenshots/patient/treatments-dark.png) |
 
 ### Receptionist
@@ -118,6 +119,9 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 | Appointments | ![](docs/screenshots/doctor/appointments-light.png) | ![](docs/screenshots/doctor/appointments-dark.png) |
 | Clinical orders | ![](docs/screenshots/doctor/clinical-orders-light.png) | ![](docs/screenshots/doctor/clinical-orders-dark.png) |
 | Dashboard | ![](docs/screenshots/doctor/dashboard-light.png) | ![](docs/screenshots/doctor/dashboard-dark.png) |
+| Dental xray print | ![](docs/screenshots/doctor/dental-xray-print-light.png) | ![](docs/screenshots/doctor/dental-xray-print-dark.png) |
+| Dentist appointments | ![](docs/screenshots/doctor/dentist-appointments-light.png) | ![](docs/screenshots/doctor/dentist-appointments-dark.png) |
+| Dentist patients only | ![](docs/screenshots/doctor/dentist-patients-only-light.png) | ![](docs/screenshots/doctor/dentist-patients-only-dark.png) |
 | Sick leave dialog | ![](docs/screenshots/doctor/sick-leave-dialog-light.png) | ![](docs/screenshots/doctor/sick-leave-dialog-dark.png) |
 | Sick leave print | ![](docs/screenshots/doctor/sick-leave-print-light.png) | ![](docs/screenshots/doctor/sick-leave-print-dark.png) |
 | Visit | ![](docs/screenshots/doctor/visit-light.png) | ![](docs/screenshots/doctor/visit-dark.png) |
