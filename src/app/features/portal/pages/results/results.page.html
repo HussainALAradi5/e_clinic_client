@@ -50,6 +50,14 @@
                   Reported by {{ d.reporter.fullName }}
                 </p>
               }
+              <a
+                matButton="tonal"
+                class="mt-3"
+                [href]="'/print/result/' + r.id"
+                target="_blank"
+                rel="noopener"
+                ><mat-icon>print</mat-icon> Print the report</a
+              >
               @if (d.attachments?.length) {
                 <ul class="m-0 mt-3 list-none p-0">
                   @for (f of d.attachments; track f.id) {

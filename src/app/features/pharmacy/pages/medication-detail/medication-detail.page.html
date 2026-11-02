@@ -96,8 +96,20 @@
           }})
         </p>
       }
+      <div class="mt-3 flex flex-wrap gap-2">
+        <ui-status enum="StockLocation" value="pharmacy" />
+        <span class="tabular-nums text-sm">{{ pharmacyStock() | qty }}</span>
+        <ui-status enum="StockLocation" value="treatment_room" />
+        <span class="tabular-nums text-sm">{{ m.stockTreatmentRoom | qty }}</span>
+      </div>
+      @if (m.nextExpiry) {
+        <p class="m-0 mt-2 text-sm">
+          Next to expire: <span class="font-medium">{{ m.nextExpiry | date: dateFormat }}</span>
+        </p>
+      }
       <p class="m-0 mt-3 text-xs text-on-surface-variant">
-        Expired and quarantined lots are not counted. Lots are used first expiry first.
+        Expired and quarantined lots are not counted. Lots are used first expiry first; given in a
+        session, from the treatment room.
       </p>
     </mat-card>
   </div>
@@ -111,6 +123,7 @@
             <thead>
               <tr class="text-left text-xs text-on-surface-variant">
                 <th class="px-5 py-2 font-medium">Lot</th>
+                <th class="px-3 py-2 font-medium">Where</th>
                 <th class="px-3 py-2 font-medium">Expiry</th>
                 <th class="px-3 py-2 text-right font-medium">On hand</th>
                 <th class="px-3 py-2 text-right font-medium">Cost</th>
@@ -126,6 +139,9 @@
                     <span class="block font-mono text-xs text-on-surface-variant">{{
                       lot.code
                     }}</span>
+                  </td>
+                  <td class="px-3 py-2">
+                    <ui-status enum="StockLocation" [value]="lot.location" />
                   </td>
                   <td class="px-3 py-2">
                     <span class="mr-2 tabular-nums">{{ lot.expiryDate | date: dateFormat }}</span>
@@ -154,6 +170,17 @@
                     }}</span>
                   </td>
                   <td class="whitespace-nowrap px-5 py-2 text-right">
+                    @if (!isEmpty(lot) && !lot.isQuarantined) {
+                      <ui-button
+                        icon="move_down"
+                        [variant]="variants.Text"
+                        access="inventory.write & inventory.adjust"
+                        [action]="transfer.bind(this, lot)"
+                        >{{
+                          lot.location === 'pharmacy' ? 'To treatment room' : 'Back to pharmacy'
+                        }}</ui-button
+                      >
+                    }
                     @if (!isEmpty(lot) || lot.isQuarantined) {
                       <ui-button
                         icon="exposure"

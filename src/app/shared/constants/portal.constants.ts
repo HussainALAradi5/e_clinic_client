@@ -37,6 +37,13 @@ export const PORTAL_MORE: NavItem[] = [
     description: 'Medicines to collect, with the code for the pharmacy',
   },
   {
+    label: 'Sick leaves',
+    icon: 'sick',
+    route: `${PORTAL_PATH}/sick-leaves`,
+    access: AUTHENTICATED,
+    description: 'Your sick leave certificates, ready to print',
+  },
+  {
     label: 'Messages',
     icon: 'notifications',
     route: `${PORTAL_PATH}/notifications`,
@@ -51,6 +58,7 @@ export const PORTAL_RELATED_ROUTES: Record<string, string> = {
   treatment: `${PORTAL_PATH}/treatments`,
   clinical_order: `${PORTAL_PATH}/results`,
   prescription: `${PORTAL_PATH}/prescriptions`,
+  sick_leave: `${PORTAL_PATH}/sick-leaves`,
   invoice: `${PORTAL_PATH}/invoices`,
   payment: `${PORTAL_PATH}/invoices`,
 };

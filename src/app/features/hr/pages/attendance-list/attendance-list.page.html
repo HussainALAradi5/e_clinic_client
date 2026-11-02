@@ -15,6 +15,21 @@
     <span class="font-medium">{{ row.employee?.fullName }}</span>
     <span class="block text-xs text-on-surface-variant">{{ row.employee?.department?.name }}</span>
   </ng-template>
+  <ng-template uiCell="shift" let-row>
+    @if (row.shift) {
+      <span class="font-medium">{{ row.shift.name }}</span>
+      <span class="block text-xs text-on-surface-variant"
+        >{{ row.shift.code }} ·
+        {{
+          row.shift.type === 'flexible'
+            ? 'in by ' + row.shift.arriveBy
+            : row.shift.arriveBy + '–' + row.shift.expectedEnd
+        }}</span
+      >
+    } @else {
+      <span class="text-on-surface-variant">Own hours</span>
+    }
+  </ng-template>
   <ng-template uiCell="check_in_at" let-row
     ><span class="tabular-nums">{{
       row.checkInAt ? (row.checkInAt | date: timeFormat : zone) : '—'

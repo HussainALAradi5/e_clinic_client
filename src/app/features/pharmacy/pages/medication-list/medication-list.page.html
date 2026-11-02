@@ -39,6 +39,19 @@
     }}</span>
     <span class="text-xs text-on-surface-variant"> {{ row.unit | enumLabel: 'DispenseUnit' }}</span>
   </ng-template>
+  <ng-template uiCell="stock_treatment_room" let-row
+    ><span class="tabular-nums">{{ row.stockTreatmentRoom | qty }}</span></ng-template
+  >
+  <ng-template uiCell="next_expiry" let-row>
+    @if (row.nextExpiry) {
+      <span class="tabular-nums">{{ row.nextExpiry | date: dateFormat }}</span>
+    } @else {
+      —
+    }
+  </ng-template>
+  <ng-template uiCell="created_at" let-row
+    ><span class="tabular-nums">{{ row.createdAt | date: dateFormat }}</span></ng-template
+  >
   <ng-template uiCell="reorder_level" let-row
     ><span class="tabular-nums">{{ row.reorderLevel }}</span></ng-template
   >

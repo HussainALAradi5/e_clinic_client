@@ -68,6 +68,14 @@ export const MENU: NavGroup[] = [
         access: 'appointments.read_all | appointments.read_own',
       },
       {
+        label: 'Sick leaves',
+        description:
+          'Certificates issued at visits — print one for a patient; employers verify them by QR.',
+        icon: 'sick',
+        route: '/clinic/sick-leaves',
+        access: 'sick_leaves.read_all | sick_leaves.read_own',
+      },
+      {
         label: 'Treatments',
         description: 'Treatment plans, their sessions and the scheduling queue (urgent first).',
         icon: 'healing',

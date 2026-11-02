@@ -1,4 +1,5 @@
 import { ExpiryStatus } from '@shared/enums/pharmacy/expiry-status.enum';
+import { StockLocation } from '@shared/enums/pharmacy/stock-location.enum';
 import { StockMovementType } from '@shared/enums/pharmacy/stock-movement-type.enum';
 import { ApprovalStatus } from '@shared/enums/shared/approval-status.enum';
 import { GenericEntity } from '@shared/interfaces/common/generic-entity.interface';
@@ -10,6 +11,8 @@ import { MedicationRef } from '@shared/interfaces/pharmacy/medication.interface'
 export interface MedicationBatch extends GenericEntity {
   medicationId: string;
   medication?: MedicationRef;
+  /** Pharmacy or treatment room. */
+  location: StockLocation;
   batchNumber: string;
   expiryDate: string;
   expiryStatus: ExpiryStatus;
@@ -57,4 +60,11 @@ export interface StockAdjustmentPayload {
   quantity: string;
   reason: string;
   approvedBy: string | null;
+}
+
+/** `POST pharmacy/inventory/batches/{id}/transfer` — move units to the other place. */
+export interface StockTransferPayload {
+  quantity: string;
+  to: StockLocation;
+  reason?: string | null;
 }

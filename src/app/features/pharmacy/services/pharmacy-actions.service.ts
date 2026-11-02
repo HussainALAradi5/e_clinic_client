@@ -1,12 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { StockLocation } from '@shared/enums/pharmacy/stock-location.enum';
 import { AdjustStockDialog } from '../components/adjust-stock-dialog/adjust-stock-dialog.component';
+import { TransferStockDialog } from '../components/transfer-stock-dialog/transfer-stock-dialog.component';
 import { AdministerDialog } from '../components/administer-dialog/administer-dialog.component';
 import { MedicationFormDialog } from '../components/medication-form-dialog/medication-form-dialog.component';
 import { PrescriptionFormDialog } from '../components/prescription-form-dialog/prescription-form-dialog.component';
 import { ReceiveStockDialog } from '../components/receive-stock-dialog/receive-stock-dialog.component';
 import {
   AdjustStockDialogData,
+  TransferStockDialogData,
   AdministerDialogData,
   MedicationFormDialogData,
   PrescriptionFormDialogData,
@@ -82,6 +85,16 @@ export class PharmacyActions {
       AdjustStockDialog,
       { batch },
       (m) => `Count corrected by ${formatQty(m.quantity)}.`,
+    );
+  }
+
+  /** Moves units of a lot to the other place: pharmacy → treatment room (ward stock) or back. */
+  transfer(batch: MedicationBatch): Promise<MedicationBatch | undefined> {
+    return this.dialogs.openAction<TransferStockDialog, TransferStockDialogData, MedicationBatch>(
+      TransferStockDialog,
+      { batch },
+      (b) =>
+        `${formatQty(b.qtyOnHand)} of lot ${b.batchNumber} now in the ${b.location === StockLocation.TreatmentRoom ? 'treatment room' : 'pharmacy'}.`,
     );
   }
 

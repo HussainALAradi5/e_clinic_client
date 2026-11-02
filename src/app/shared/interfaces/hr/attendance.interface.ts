@@ -5,6 +5,14 @@ import { EmployeeSummary } from '@shared/interfaces/common/summary.interface';
 
 /** Mirror of AttendanceResource — one employee's working day. */
 export interface Attendance {
+  /** The shift it was measured against (null: the employee's own hours). */
+  shift?: {
+    code: string;
+    name: string;
+    type: ShiftType;
+    arriveBy: string;
+    expectedEnd: string;
+  } | null;
   id: string;
   employeeId: string;
   employee?: EmployeeSummary;

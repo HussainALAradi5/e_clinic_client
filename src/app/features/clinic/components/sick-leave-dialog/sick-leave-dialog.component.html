@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Sick leave for {{ data.patientName }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    submitLabel="Issue sick leave"
+    submitIcon="sick"
+    [compact]="true"
+    [allowPristine]="true"
+    (cancelled)="ref.close()"
+  >
+    <div class="grid grid-cols-2 gap-x-4">
+      <ui-text label="First day" type="date" [control]="form.controls.startDate" />
+      <ui-text label="Last day" type="date" [control]="form.controls.endDate" />
+    </div>
+    <p class="m-0 mb-3 text-sm" [class.text-error]="days() < 1 || days() > maxDays">
+      {{ days() }} {{ days() === 1 ? 'day' : 'days' }} off
+      <span class="text-on-surface-variant"
+        >· up to {{ maxDays }} days, from the visit day or up to 3 days before</span
+      >
+    </p>
+    <ui-text
+      label="Reason"
+      hint="Kept in the file"
+      [multiline]="true"
+      [rows]="2"
+      [control]="form.controls.reason"
+    />
+    <mat-slide-toggle class="mb-3 block" [formControl]="form.controls.showReason">
+      Print the reason on the certificate (the patient agrees)
+    </mat-slide-toggle>
+    <ui-text label="Notes" hint="e.g. light duties after" [control]="form.controls.notes" />
+  </ui-form>
+</mat-dialog-content>

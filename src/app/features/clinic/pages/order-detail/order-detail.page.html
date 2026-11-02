@@ -35,6 +35,10 @@
         <a matButton="outlined" [routerLink]="['/print/referral', o.id]" target="_blank"
           ><mat-icon>print</mat-icon> Letter</a
         >
+      } @else if (o.status === 'completed') {
+        <a matButton="outlined" [routerLink]="['/print/result', o.id]" target="_blank"
+          ><mat-icon>print</mat-icon> Print report</a
+        >
       }
       @if (cancellable()) {
         <ui-button icon="block" [variant]="variants.Danger" access="orders.write" [action]="cancel"

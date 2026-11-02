@@ -14,6 +14,21 @@
     [compact]="true"
     (cancelled)="ref.close()"
   >
+    <p class="m-0 mb-1 text-xs font-medium text-on-surface-variant">Take the stock from</p>
+    <mat-button-toggle-group
+      class="mb-4 w-full"
+      hideSingleSelectionIndicator
+      aria-label="Take the stock from"
+      [formControl]="form.controls.from"
+    >
+      <mat-button-toggle class="flex-1" [value]="places.TreatmentRoom">
+        <mat-icon>medical_services</mat-icon> Treatment room
+      </mat-button-toggle>
+      <mat-button-toggle class="flex-1" [value]="places.Pharmacy">
+        <mat-icon>local_pharmacy</mat-icon> Collected from the pharmacy
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
     <ol class="m-0 list-none p-0" aria-label="Medicines given">
       @for (group of items.controls; track group; let i = $index) {
         <li

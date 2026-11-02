@@ -8,6 +8,7 @@ import {
   ReceiveStockPayload,
   StockAdjustmentPayload,
   StockMovement,
+  StockTransferPayload,
 } from '@shared/interfaces/pharmacy/inventory.interface';
 import { ApiClient } from '@shared/services/api/api-client.service';
 
@@ -37,6 +38,11 @@ export class InventoryApi {
 
   adjust(batchId: string, payload: StockAdjustmentPayload): Observable<StockMovement> {
     return this.api.post<StockMovement>(`${this.path}/batches/${batchId}/adjust`, payload);
+  }
+
+  /** Moves units of a lot to the other place (pharmacy ↔ treatment room); returns the lot there. */
+  transfer(batchId: string, payload: StockTransferPayload): Observable<MedicationBatch> {
+    return this.api.post<MedicationBatch>(`${this.path}/batches/${batchId}/transfer`, payload);
   }
 
   quarantine(batchId: string, quarantined: boolean, reason: string): Observable<MedicationBatch> {

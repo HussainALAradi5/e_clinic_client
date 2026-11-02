@@ -39,6 +39,10 @@ export interface Medication extends GenericEntity {
   reorderLevel: number;
   storageNotes: string | null;
   stockOnHand: string | null;
+  /** Of which in the treatment room (the rest is in the pharmacy). */
+  stockTreatmentRoom: string | null;
+  /** The first usable lot to expire (yyyy-mm-dd). */
+  nextExpiry: string | null;
   isLowStock: boolean;
 }
 

@@ -33,6 +33,12 @@ export const PORTAL_ROUTES: Routes = [
     loadComponent: () => import('./pages/results/results.page').then((m) => m.MyResultsPage),
   },
   {
+    path: 'sick-leaves',
+    title: title('My sick leaves'),
+    loadComponent: () =>
+      import('./pages/sick-leaves/sick-leaves.page').then((m) => m.MySickLeavesPage),
+  },
+  {
     path: 'prescriptions',
     title: title('My prescriptions'),
     loadComponent: () =>

@@ -1,3 +1,4 @@
+import { StockLocation } from '@shared/enums/pharmacy/stock-location.enum';
 import { DispensationKind } from '@shared/enums/pharmacy/dispensation-kind.enum';
 import { MedicationRoute } from '@shared/enums/pharmacy/medication-route.enum';
 import { GenericStatus } from '@shared/enums/shared/generic-status.enum';
@@ -72,6 +73,8 @@ export interface AdministerPayload {
   items: AdministerItemPayload[];
   witnessId?: string | null;
   notes?: string | null;
+  /** Whose stock: the treatment room (default) or the pharmacy. */
+  from?: StockLocation;
 }
 
 /** `GET appointments/{id}/medications` — prescribed there, and given / handed over. */

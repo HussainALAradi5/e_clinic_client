@@ -6,4 +6,9 @@ export enum RoomType {
   SessionRoom = 'session_room',
   Xray = 'xray',
   Laboratory = 'laboratory',
+  Ultrasound = 'ultrasound',
+  Dental = 'dental',
+  Procedure = 'procedure',
+  Vaccination = 'vaccination',
+  Pharmacy = 'pharmacy',
 }

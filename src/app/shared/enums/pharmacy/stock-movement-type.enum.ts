@@ -5,4 +5,6 @@ export enum StockMovementType {
   Return = 'return',
   Adjustment = 'adjustment',
   ExpiryWriteoff = 'expiry_writeoff',
+  /** Moved between the pharmacy and the treatment room. */
+  Transfer = 'transfer',
 }

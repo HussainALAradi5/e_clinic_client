@@ -38,4 +38,10 @@
     ><span class="tabular-nums">{{ row.unitCost | money }}</span></ng-template
   >
   <ng-template uiCell="supplier" let-row>{{ row.supplier?.name ?? '—' }}</ng-template>
+  <ng-template uiCell="location" let-row
+    ><ui-status enum="StockLocation" [value]="row.location"
+  /></ng-template>
+  <ng-template uiCell="received_at" let-row
+    ><span class="tabular-nums">{{ row.receivedAt | date: dateFormat }}</span></ng-template
+  >
 </ui-resource-list>

@@ -139,6 +139,13 @@ export class MedicationDetailPage implements OnInit {
     this.refresh(this.actions.receive(this.record()));
   protected readonly adjust = (lot: MedicationBatch): Promise<void> =>
     this.refresh(this.actions.adjust(lot));
+  protected readonly transfer = (lot: MedicationBatch): Promise<void> =>
+    this.refresh(this.actions.transfer(lot));
+  /** What can be dispensed from the pharmacy (all usable stock minus the treatment room's). */
+  protected readonly pharmacyStock = computed(() => {
+    const m = this.record();
+    return String(Number(m.stockOnHand ?? 0) - Number(m.stockTreatmentRoom ?? 0));
+  });
   protected readonly quarantine = (lot: MedicationBatch): Promise<void> =>
     this.refresh(this.actions.quarantine(lot));
 

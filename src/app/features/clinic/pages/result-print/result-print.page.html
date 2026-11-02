@@ -1,0 +1,61 @@
+@if (error()) {
+  <ui-error class="block p-6" [error]="error()" />
+} @else if (order(); as o) {
+  <app-print-sheet [title]="title()" entity="clinical_order" [recordId]="o.id" [reference]="o.code">
+    <dl class="m-0 mb-6 grid grid-cols-[9rem_1fr] gap-y-1">
+      <dt class="text-black/60">Patient</dt>
+      <dd class="m-0 font-medium">
+        {{ o.patient?.fullName }} · {{ o.patient?.code }} · born
+        {{ o.patient?.dateOfBirth | date: dateFormat }} ·
+        {{ o.patient?.gender | enumLabel: 'Gender' }}
+      </dd>
+      <dt class="text-black/60">Examination</dt>
+      <dd class="m-0">
+        {{ o.type | enumLabel: 'ClinicalOrderType' }}{{ o.bodyPart ? ' — ' + o.bodyPart : '' }}
+      </dd>
+      <dt class="text-black/60">Ordered by</dt>
+      <dd class="m-0">
+        {{ o.orderingDoctor?.fullName ?? '—' }} · {{ o.createdAt | date: dateFormat }}
+      </dd>
+      <dt class="text-black/60">Performed</dt>
+      <dd class="m-0">
+        {{ o.completedAt | date: dateFormat }}{{ o.performer ? ' · ' + o.performer.fullName : '' }}
+      </dd>
+      @if (o.room) {
+        <dt class="text-black/60">Room</dt>
+        <dd class="m-0">{{ o.room.name }}</dd>
+      }
+    </dl>
+    @if (o.clinicalNotes) {
+      <h2 class="m-0 mb-1 text-[12pt] font-semibold">Clinical question</h2>
+      <p class="m-0 mb-4 whitespace-pre-line">{{ o.clinicalNotes }}</p>
+    }
+    <h2 class="m-0 mb-1 text-[12pt] font-semibold">
+      Findings
+      @if (o.isAbnormal) {
+        <span class="ml-2 rounded border border-red-700 px-1.5 text-[10pt] text-red-700"
+          >ABNORMAL</span
+        >
+      }
+    </h2>
+    <p class="m-0 mb-6 whitespace-pre-line rounded border border-black/15 px-4 py-3">
+      {{ o.report || 'Not reported yet.' }}
+    </p>
+    @if (images().length) {
+      <div class="mb-6 grid grid-cols-2 gap-3">
+        @for (img of images(); track img.url) {
+          <figure class="m-0 break-inside-avoid">
+            <img
+              class="block max-h-[90mm] w-full rounded border border-black/15 object-contain"
+              [src]="img.url"
+              [alt]="img.name"
+            />
+            <figcaption class="mt-1 text-[9pt] text-black/60">{{ img.name }}</figcaption>
+          </figure>
+        }
+      </div>
+    }
+    <p class="m-0 mt-8 font-semibold">{{ o.reporter?.fullName ?? o.orderingDoctor?.fullName }}</p>
+    <p class="m-0 text-black/60">Reported · Signature ____________________</p>
+  </app-print-sheet>
+}

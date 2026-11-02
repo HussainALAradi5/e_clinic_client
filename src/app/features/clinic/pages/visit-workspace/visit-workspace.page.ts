@@ -1,3 +1,8 @@
+import {
+  SickLeaveDialog,
+  SickLeaveDialogData,
+} from '../../components/sick-leave-dialog/sick-leave-dialog.component';
+import { SickLeave } from '@shared/interfaces/clinic/sick-leave.interface';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -284,6 +289,22 @@ export class VisitWorkspacePage implements OnInit {
       (await this.clinical.order({ patient: p, appointmentId: a.id, treatmentId: a.treatmentId }))
     )
       await this.loadOrders();
+  };
+
+  /** Issue a sick leave for this visit's patient, then open the certificate to print. */
+  protected readonly sickLeave = async (): Promise<void> => {
+    const a = this.appointment();
+    const p = this.patient();
+    if (!a || !p) return;
+    const leave = await this.dialogs.open<SickLeaveDialog, SickLeaveDialogData, SickLeave>(
+      SickLeaveDialog,
+      { appointmentId: a.id, patientName: p.fullName, visitDate: a.scheduledDate },
+      { width: '520px' },
+    );
+    if (leave) {
+      this.notify.success(`Sick leave ${leave.code} issued — ${leave.days} days.`);
+      window.open(`/print/sick-leave/${leave.id}`, '_blank', 'noopener');
+    }
   };
 
   protected readonly prescribe = async (): Promise<void> => {

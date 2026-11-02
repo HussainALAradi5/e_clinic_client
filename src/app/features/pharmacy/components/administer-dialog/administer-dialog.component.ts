@@ -6,8 +6,10 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
+import { StockLocation } from '@shared/enums/pharmacy/stock-location.enum';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { firstValueFrom } from 'rxjs';
@@ -41,6 +43,7 @@ type GivenGroup = FormGroup<{
   selector: 'app-administer-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    MatButtonToggleModule,
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
@@ -66,11 +69,14 @@ export class AdministerDialog implements OnInit {
   protected readonly medicationDetail = (m: Medication): string =>
     `${m.stockOnHand === null ? '' : formatQty(m.stockOnHand) + ' in stock'}${m.isControlled ? ' · controlled' : ''}`;
 
+  protected readonly places = StockLocation;
   protected readonly items = new FormArray<GivenGroup>([this.line()]);
   protected readonly form = new FormGroup({
     items: this.items,
     witnessId: new FormControl<string | null>(null),
     notes: new FormControl<string | null>(null, [Validators.maxLength(500)]),
+    /** The treatment room's ward stock, or collected from the pharmacy. */
+    from: new FormControl<StockLocation>(StockLocation.TreatmentRoom, { nonNullable: true }),
   });
 
   constructor() {
@@ -114,6 +120,7 @@ export class AdministerDialog implements OnInit {
           })),
           witnessId: this.controlled() ? v.witnessId : null,
           notes: v.notes?.trim() || null,
+          from: v.from,
         },
         this.key,
       ),

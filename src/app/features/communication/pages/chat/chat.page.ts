@@ -424,7 +424,10 @@ export class ChatPage implements OnInit {
     this.menuChat.set(chat);
     // The anchor is placed inside its panel (the glass panel is the containing block, not the window).
     const panel = this.rowAnchor()?.nativeElement.offsetParent?.getBoundingClientRect();
-    this.menuAt.set({ x: event.clientX - (panel?.left ?? 0), y: event.clientY - (panel?.top ?? 0) });
+    this.menuAt.set({
+      x: event.clientX - (panel?.left ?? 0),
+      y: event.clientY - (panel?.top ?? 0),
+    });
     this.rowMenu()?.openMenu();
   }
 

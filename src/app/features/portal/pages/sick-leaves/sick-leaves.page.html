@@ -1,0 +1,38 @@
+<ui-page-header
+  title="My sick leaves"
+  subtitle="Every certificate from your visits. Print one or show its QR code."
+/>
+@if (error()) {
+  <ui-error [error]="error()" />
+} @else if (leaves(); as list) {
+  @for (l of list; track l.id) {
+    <article
+      class="mb-3 flex flex-wrap items-center gap-3 rounded-2xl border border-outline-variant bg-surface px-4 py-3"
+    >
+      <div class="min-w-0 flex-1">
+        <p class="m-0 font-mono text-xs text-on-surface-variant">{{ l.code }}</p>
+        <p class="m-0 text-base font-semibold" [class.line-through]="l.isCancelled">
+          {{ l.days }} {{ l.days === 1 ? 'day' : 'days' }} · {{ l.startDate | date: dateFormat }} –
+          {{ l.endDate | date: dateFormat }}
+        </p>
+        <p class="m-0 text-sm text-on-surface-variant">
+          {{ l.doctor.fullName }}{{ l.reason ? ' · ' + l.reason : '' }}
+        </p>
+        @if (l.isCancelled) {
+          <p class="m-0 text-sm font-medium text-error">Cancelled: {{ l.cancelReason }}</p>
+        }
+      </div>
+      @if (!l.isCancelled) {
+        <a matButton="tonal" [href]="'/print/sick-leave/' + l.id" target="_blank" rel="noopener"
+          ><mat-icon>print</mat-icon> Print</a
+        >
+      }
+    </article>
+  } @empty {
+    <ui-empty
+      icon="sick"
+      title="No sick leaves"
+      message="Certificates your doctor gives you appear here."
+    />
+  }
+}

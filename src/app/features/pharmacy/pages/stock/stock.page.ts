@@ -5,6 +5,7 @@ import { PharmacyActions } from '../../services/pharmacy-actions.service';
 import { ExpiryChip } from '../../components/expiry-chip/expiry-chip.component';
 import { AppButton } from '@shared/components/app-button/app-button.component';
 import { CellDef } from '@shared/components/data-table/cell.directive';
+import { StatusChip } from '@shared/components/status-chip/status-chip.component';
 import { ResourceListPage } from '@shared/components/resource-list/resource-list.component';
 import { DATE_FORMAT } from '@shared/constants/app.constants';
 import { MedicationBatch } from '@shared/interfaces/pharmacy/inventory.interface';
@@ -16,7 +17,16 @@ import { defaultQuery } from '@shared/utils/list-query';
 @Component({
   selector: 'app-stock-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, AppButton, ExpiryChip, MoneyPipe, QtyPipe, DatePipe],
+  imports: [
+    ResourceListPage,
+    CellDef,
+    AppButton,
+    ExpiryChip,
+    StatusChip,
+    MoneyPipe,
+    QtyPipe,
+    DatePipe,
+  ],
   templateUrl: './stock.page.html',
 })
 export class StockPage {

@@ -55,6 +55,13 @@ export const CLINIC_ROUTES: Routes = [
     ],
   },
   {
+    path: 'sick-leaves',
+    title: 'Sick leaves · e-Clinic',
+    canMatch: [accessGuard('sick_leaves.read_all | sick_leaves.read_own')],
+    loadComponent: () =>
+      import('./pages/sick-leave-list/sick-leave-list.page').then((m) => m.SickLeaveListPage),
+  },
+  {
     path: 'treatments',
     canMatch: [accessGuard('treatments.read_all | treatments.read_own')],
     children: [

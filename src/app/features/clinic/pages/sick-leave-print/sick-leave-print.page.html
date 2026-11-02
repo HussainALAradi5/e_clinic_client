@@ -1,0 +1,47 @@
+@if (error()) {
+  <ui-error class="block p-6" [error]="error()" />
+} @else if (leave(); as l) {
+  <app-print-sheet
+    title="Sick leave certificate"
+    entity="sick_leave"
+    [recordId]="l.id"
+    [reference]="l.code"
+    verifyNote="Scan to check this certificate with the clinic (dates only)."
+  >
+    @if (l.isCancelled) {
+      <p class="m-0 mb-4 rounded border border-red-700 px-4 py-2 font-semibold text-red-700">
+        CANCELLED {{ l.cancelledAt | date: dateFormat }} — {{ l.cancelReason }}
+      </p>
+    }
+    <dl class="m-0 mb-6 grid grid-cols-[9rem_1fr] gap-y-1">
+      <dt class="text-black/60">Patient</dt>
+      <dd class="m-0 font-medium">
+        {{ l.patient.fullName }} · {{ l.patient.code }} · born
+        {{ l.patient.dateOfBirth | date: dateFormat }} ·
+        {{ l.patient.gender | enumLabel: 'Gender' }}
+      </dd>
+      <dt class="text-black/60">Issued</dt>
+      <dd class="m-0">{{ l.issuedAt | date: dateFormat }}</dd>
+    </dl>
+    <p class="m-0 mb-4">To whom it may concern,</p>
+    <p class="m-0 mb-4 leading-relaxed">
+      This is to certify that the above patient was seen at the clinic and is unfit for work or
+      school for
+      <strong>{{ l.days }} {{ l.days === 1 ? 'day' : 'days' }}</strong
+      >, from <strong>{{ l.startDate | date: dateFormat }}</strong> to
+      <strong>{{ l.endDate | date: dateFormat }}</strong> inclusive,
+      @if (l.showReason && l.reason) {
+        because of: <strong>{{ l.reason }}</strong
+        >.
+      } @else {
+        for medical reasons.
+      }
+    </p>
+    @if (l.notes) {
+      <p class="m-0 mb-4">{{ l.notes }}</p>
+    }
+    <p class="m-0 mt-12 font-semibold">{{ l.doctor.fullName }}</p>
+    <p class="m-0 text-black/60">{{ l.doctor.jobTitle }}</p>
+    <p class="m-0 mt-6 text-black/60">Signature ____________________ Stamp</p>
+  </app-print-sheet>
+}

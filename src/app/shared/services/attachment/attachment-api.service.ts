@@ -26,6 +26,13 @@ export class AttachmentApi extends EntityApi<Attachment> {
     });
   }
 
+  /** A 5-minute signed link without opening it (printed reports embed the images). */
+  link(id: string, inline = true): Observable<SignedLink> {
+    return this.api.get<SignedLink>(`${this.path}/${id}/download`, {
+      params: inline ? { inline: 1 } : {},
+    });
+  }
+
   /** 5-minute signed link (clean files only; sensitive files need patients.view_medical). */
   download(id: string, inline = false): Observable<SignedLink> {
     return this.api

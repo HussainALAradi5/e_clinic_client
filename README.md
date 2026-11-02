@@ -109,6 +109,7 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 | Dashboard | ![](docs/screenshots/receptionist/dashboard-light.png) | ![](docs/screenshots/receptionist/dashboard-dark.png) |
 | Front desk | ![](docs/screenshots/receptionist/front-desk-light.png) | ![](docs/screenshots/receptionist/front-desk-dark.png) |
 | Patient file | ![](docs/screenshots/receptionist/patient-file-light.png) | ![](docs/screenshots/receptionist/patient-file-dark.png) |
+| Sick leaves | ![](docs/screenshots/receptionist/sick-leaves-light.png) | ![](docs/screenshots/receptionist/sick-leaves-dark.png) |
 
 ### Doctor
 
@@ -117,13 +118,17 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 | Appointments | ![](docs/screenshots/doctor/appointments-light.png) | ![](docs/screenshots/doctor/appointments-dark.png) |
 | Clinical orders | ![](docs/screenshots/doctor/clinical-orders-light.png) | ![](docs/screenshots/doctor/clinical-orders-dark.png) |
 | Dashboard | ![](docs/screenshots/doctor/dashboard-light.png) | ![](docs/screenshots/doctor/dashboard-dark.png) |
+| Sick leave dialog | ![](docs/screenshots/doctor/sick-leave-dialog-light.png) | ![](docs/screenshots/doctor/sick-leave-dialog-dark.png) |
+| Sick leave print | ![](docs/screenshots/doctor/sick-leave-print-light.png) | ![](docs/screenshots/doctor/sick-leave-print-dark.png) |
 | Visit | ![](docs/screenshots/doctor/visit-light.png) | ![](docs/screenshots/doctor/visit-dark.png) |
+| Xray report print | ![](docs/screenshots/doctor/xray-report-print-light.png) | ![](docs/screenshots/doctor/xray-report-print-dark.png) |
 
 ### Nurse
 
 | Screen | Light | Dark |
 |---|---|---|
 | Dashboard | ![](docs/screenshots/nurse/dashboard-light.png) | ![](docs/screenshots/nurse/dashboard-dark.png) |
+| My patients only | ![](docs/screenshots/nurse/my-patients-only-light.png) | ![](docs/screenshots/nurse/my-patients-only-dark.png) |
 | Treatment plan | ![](docs/screenshots/nurse/treatment-plan-light.png) | ![](docs/screenshots/nurse/treatment-plan-dark.png) |
 | Treatments | ![](docs/screenshots/nurse/treatments-light.png) | ![](docs/screenshots/nurse/treatments-dark.png) |
 
@@ -133,7 +138,11 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 |---|---|---|
 | Dispense | ![](docs/screenshots/pharmacist/dispense-light.png) | ![](docs/screenshots/pharmacist/dispense-dark.png) |
 | Medication | ![](docs/screenshots/pharmacist/medication-light.png) | ![](docs/screenshots/pharmacist/medication-dark.png) |
+| Medicine move lot | ![](docs/screenshots/pharmacist/medicine-move-lot-light.png) | ![](docs/screenshots/pharmacist/medicine-move-lot-dark.png) |
+| Medicine places | ![](docs/screenshots/pharmacist/medicine-places-light.png) | ![](docs/screenshots/pharmacist/medicine-places-dark.png) |
+| Medicines expiry added | ![](docs/screenshots/pharmacist/medicines-expiry-added-light.png) | ![](docs/screenshots/pharmacist/medicines-expiry-added-dark.png) |
 | Stock | ![](docs/screenshots/pharmacist/stock-light.png) | ![](docs/screenshots/pharmacist/stock-dark.png) |
+| Stock by place | ![](docs/screenshots/pharmacist/stock-by-place-light.png) | ![](docs/screenshots/pharmacist/stock-by-place-dark.png) |
 
 ### Cashier
 
@@ -156,6 +165,7 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 | Screen | Light | Dark |
 |---|---|---|
 | Attendance | ![](docs/screenshots/hr/attendance-light.png) | ![](docs/screenshots/hr/attendance-dark.png) |
+| Attendance shift | ![](docs/screenshots/hr/attendance-shift-light.png) | ![](docs/screenshots/hr/attendance-shift-dark.png) |
 | Employees | ![](docs/screenshots/hr/employees-light.png) | ![](docs/screenshots/hr/employees-dark.png) |
 | Leaves | ![](docs/screenshots/hr/leaves-light.png) | ![](docs/screenshots/hr/leaves-dark.png) |
 | Payroll run | ![](docs/screenshots/hr/payroll-run-light.png) | ![](docs/screenshots/hr/payroll-run-dark.png) |
