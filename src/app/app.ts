@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterOutlet } from '@angular/router';
-import { PageLoader } from '@shared/components/page-loader/page-loader.component';
-import { LoadingService } from '@shared/services/ui/loading.service';
-import { RouteLoadingService } from '@shared/services/ui/route-loading.service';
+import { PageLoader } from '@components/common/page-loader/page-loader.component';
+import { LoadingService } from '@services/ui/loading.service';
+import { RouteLoadingService } from '@services/ui/route-loading.service';
 
 @Component({
   selector: 'app-root',

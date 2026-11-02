@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { App } from './app';
-import { LoadingService } from '@shared/services/ui/loading.service';
+import { LoadingService } from '@services/ui/loading.service';
 
 describe('App', () => {
   beforeEach(async () => {

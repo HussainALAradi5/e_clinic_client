@@ -15,8 +15,19 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "@core/*": ["./src/app/core/*"],
-      "@shared/*": ["./src/app/shared/*"],
+      "@components/*": ["./src/app/components/*"],
+      "@pages/*": ["./src/app/pages/*"],
+      "@services/*": ["./src/app/services/*"],
+      "@interfaces/*": ["./src/app/interfaces/*"],
+      "@enums/*": ["./src/app/enums/*"],
+      "@constants/*": ["./src/app/constants/*"],
+      "@utilities/*": ["./src/app/utilities/*"],
+      "@validations/*": ["./src/app/validations/*"],
+      "@pipes/*": ["./src/app/pipes/*"],
+      "@directives/*": ["./src/app/directives/*"],
+      "@middlewares/*": ["./src/app/middlewares/*"],
+      "@config/*": ["./src/app/config/*"],
+      "@modules/*": ["./src/app/modules/*"],
       "@env": ["./src/environments/environment"]
     }
   },

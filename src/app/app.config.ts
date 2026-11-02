@@ -14,11 +14,11 @@ import {
   withViewTransitions,
 } from '@angular/router';
 import { routes } from './app.routes';
-import { provideClinicDates } from '@core/date/iso-date-adapter';
-import { API_INTERCEPTORS } from '@core/interceptors/api.interceptors';
+import { provideClinicDates } from '@config/date/iso-date-adapter';
+import { API_INTERCEPTORS } from '@middlewares/interceptors/api.interceptors';
 import { firstValueFrom } from 'rxjs';
-import { SessionService } from '@shared/services/auth/session.service';
-import { ThemeService } from '@shared/services/ui/theme.service';
+import { SessionService } from '@services/auth/session.service';
+import { ThemeService } from '@services/ui/theme.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
