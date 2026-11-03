@@ -2,6 +2,7 @@ import { BloodGroup } from '@enums/clinic/blood-group.enum';
 import { Gender } from '@enums/shared/gender.enum';
 import { Versioned } from '@interfaces/common/versioned.interface';
 import { Person } from '@interfaces/identity/person.interface';
+import { EmergencyContact } from '@interfaces/clinic/emergency-contact.interface';
 
 /** Mirror of PatientResource — the patient file (medical extension of a person, same id; code = MRN). */
 export interface Patient extends Versioned {
@@ -21,9 +22,8 @@ export interface Patient extends Versioned {
   familyHistory?: string | null;
   surgicalHistory?: string | null;
   hasMedicalAlerts: boolean | null;
-  emergencyContactName: string | null;
-  emergencyContactPhone: string | null;
-  emergencyContactRelation: string | null;
+  /** Up to three, all optional. */
+  emergencyContacts: EmergencyContact[];
   insuranceCompanyId: string | null;
   insurer?: { id: string; name: string } | null;
   insurancePolicyNumber: string | null;

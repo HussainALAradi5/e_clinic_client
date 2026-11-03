@@ -16,7 +16,7 @@ export const PATIENT_DETAIL_TEXT = {
   chronicConditions: 'Chronic conditions',
   familyHistory: 'Family history',
   surgicalHistory: 'Surgical history',
-  emergencyContact: 'Emergency contact',
+  emergencyContact: 'Emergency contacts',
   insurer: 'Insurer',
   selfPay: 'Self-pay',
   policy: 'Policy',

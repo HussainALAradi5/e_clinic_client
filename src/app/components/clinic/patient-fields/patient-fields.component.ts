@@ -6,12 +6,13 @@ import { TextField } from '@components/common/text-field/text-field.component';
 import { CompanyType } from '@enums/reference/company-type.enum';
 import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { Company } from '@interfaces/reference/company.interface';
+import { EmergencyContactsField } from '@components/clinic/emergency-contacts-field/emergency-contacts-field.component';
 
 /** Patient-file fields (registration and edit): medical alerts, emergency contact, insurance. */
 @Component({
   selector: 'app-patient-fields',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TextField, SelectField, EntitySelect],
+  imports: [TextField, SelectField, EntitySelect, EmergencyContactsField],
   host: { class: 'block' },
   templateUrl: './patient-fields.component.html',
 })

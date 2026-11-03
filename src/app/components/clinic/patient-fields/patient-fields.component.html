@@ -36,16 +36,7 @@
   </div>
 }
 
-<h3 class="m-0 mb-2 text-sm font-semibold text-on-surface-variant">Emergency contact</h3>
-<div class="grid grid-cols-1 gap-x-4 sm:grid-cols-3">
-  <ui-text label="Name" [control]="form().controls.emergencyContactName" />
-  <ui-text label="Mobile" type="tel" [control]="form().controls.emergencyContactPhone" />
-  <ui-text
-    label="Relation"
-    hint="e.g. Spouse"
-    [control]="form().controls.emergencyContactRelation"
-  />
-</div>
+<app-emergency-contacts-field [form]="form().controls.emergencyContacts" />
 
 <h3 class="m-0 mb-2 text-sm font-semibold text-on-surface-variant">Insurance</h3>
 <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">

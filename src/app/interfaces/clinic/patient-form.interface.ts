@@ -1,5 +1,6 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { BloodGroup } from '@enums/clinic/blood-group.enum';
+import { EmergencyContactsForm } from '@interfaces/clinic/emergency-contact-form.interface';
 
 export type PatientForm = FormGroup<{
   bloodGroup: FormControl<BloodGroup | null>;
@@ -7,9 +8,7 @@ export type PatientForm = FormGroup<{
   chronicConditions: FormControl<string | null>;
   familyHistory: FormControl<string | null>;
   surgicalHistory: FormControl<string | null>;
-  emergencyContactName: FormControl<string | null>;
-  emergencyContactPhone: FormControl<string | null>;
-  emergencyContactRelation: FormControl<string | null>;
+  emergencyContacts: EmergencyContactsForm;
   insuranceCompanyId: FormControl<string | null>;
   insurancePolicyNumber: FormControl<string | null>;
   insuranceExpiryDate: FormControl<string | null>;

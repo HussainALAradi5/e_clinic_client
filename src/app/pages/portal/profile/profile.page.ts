@@ -14,11 +14,12 @@ import { Patient } from '@interfaces/clinic/patient.interface';
 import { Fact } from '@interfaces/ui/fact.interface';
 import { PortalApi } from '@services/portal/portal-api.service';
 import { PROFILE_TEXT } from '@constants/portal/profile.constants';
+import { emergencyContactLine } from '@utilities/clinic/emergency-contacts-form';
 
 const day = (iso: string): string => formatDate(`${iso}T00:00:00`, DATE_FORMAT, CLINIC_LOCALE);
 
 /**
- * `/portal/profile` — the patient's file as the clinic holds it. Contact details and the emergency contact can be
+ * `/portal/profile` — the patient's file as the clinic holds it. Contact details and up to three emergency contacts can be
  * changed here; name, ID and insurance are changed at the front desk (they need documents).
  */
 @Component({
@@ -60,9 +61,7 @@ export class MyProfilePage {
       { label: PROFILE_TEXT.address, value: p.person.address?.formatted },
       {
         label: PROFILE_TEXT.emergencyContact,
-        value: [p.emergencyContactName, p.emergencyContactRelation, p.emergencyContactPhone]
-          .filter(Boolean)
-          .join(' · '),
+        value: p.emergencyContacts.map(emergencyContactLine).join(' · '),
       },
     ];
   });

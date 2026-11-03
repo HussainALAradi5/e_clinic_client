@@ -9,7 +9,7 @@ export const PROFILE_TEXT = {
   mobile: 'Mobile',
   email: 'Email',
   address: 'Address',
-  emergencyContact: 'Emergency contact',
+  emergencyContact: 'Emergency contacts',
   insurer: 'Insurer',
   policyNumber: 'Policy number',
   covers: 'Covers',

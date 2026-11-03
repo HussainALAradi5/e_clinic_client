@@ -1,0 +1,26 @@
+@let contacts = form();
+<h3 class="m-0 mb-1 text-sm font-semibold text-on-surface-variant">{{ text.title }}</h3>
+<p class="m-0 mb-2 text-xs text-on-surface-variant" [attr.data-rows]="rows()">
+  {{ text.optional }}
+</p>
+@for (row of contacts.controls; track row; let i = $index) {
+  <div class="grid grid-cols-1 items-start gap-x-4 sm:grid-cols-[1fr_1fr_1fr_auto]">
+    <ui-text [label]="text.name" [control]="row.controls.name" />
+    <ui-text [label]="text.relation" [hint]="text.relationHint" [control]="row.controls.relation" />
+    <ui-text [label]="text.phone" type="tel" [control]="row.controls.phone" />
+    <button
+      matIconButton
+      type="button"
+      class="mt-2"
+      [attr.aria-label]="text.remove"
+      (click)="remove(i)"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+}
+@if (contacts.length < max) {
+  <button matButton type="button" class="mb-3" (click)="add()">
+    <mat-icon>person_add</mat-icon> {{ text.add }}
+  </button>
+}

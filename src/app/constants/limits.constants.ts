@@ -12,6 +12,9 @@ export const TYPE_TO_CONFIRM_THRESHOLD = 50;
 
 export const REASON_MAX_LENGTH = 500;
 
+/** Emergency / additional contacts of a patient (server: EmergencyContactData::MAX). */
+export const MAX_EMERGENCY_CONTACTS = 3;
+
 /** Password policy (security doc §2) and TOTP code length. */
 export const PASSWORD_MIN_LENGTH = 10;
 export const TOTP_LENGTH = 6;

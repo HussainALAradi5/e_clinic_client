@@ -1,7 +1,8 @@
 import { AddressPayload } from '@interfaces/reference/address-payload.interface';
+import { EmergencyContact } from '@interfaces/clinic/emergency-contact.interface';
 
 /**
- * PUT /portal/profile — how to reach the patient and their emergency contact. `version` locks the patient file and
+ * PUT /portal/profile — how to reach the patient and their emergency contacts. `version` locks the patient file and
  * `personVersion` the person record; only the sent keys change.
  */
 export interface PortalProfilePayload {
@@ -12,7 +13,6 @@ export interface PortalProfilePayload {
   language?: 'en' | 'ar';
   notificationOptOut?: string[];
   address?: AddressPayload | null;
-  emergencyContactName?: string | null;
-  emergencyContactPhone?: string | null;
-  emergencyContactRelation?: string | null;
+  /** Up to three; [] removes them all. */
+  emergencyContacts?: EmergencyContact[];
 }

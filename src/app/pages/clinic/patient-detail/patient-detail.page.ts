@@ -48,6 +48,7 @@ import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 import { PATIENT_DETAIL_TEXT } from '@constants/clinic/patient-detail.constants';
+import { emergencyContactLine } from '@utilities/clinic/emergency-contacts-form';
 
 /** `/clinic/patients/:id` — the patient file: alerts, personal and insurance data, visits, timeline, history. */
 @Component({
@@ -139,9 +140,7 @@ export class PatientDetailPage implements OnInit {
         : []),
       {
         label: PATIENT_DETAIL_TEXT.emergencyContact,
-        value: p.emergencyContactName
-          ? `${p.emergencyContactName} (${p.emergencyContactRelation ?? '—'}) ${p.emergencyContactPhone ?? ''}`
-          : null,
+        value: p.emergencyContacts.map(emergencyContactLine).join(' · ') || null,
       },
       { label: PATIENT_DETAIL_TEXT.insurer, value: p.insurer?.name ?? PATIENT_DETAIL_TEXT.selfPay },
       { label: PATIENT_DETAIL_TEXT.policy, value: p.insurancePolicyNumber, mono: true },

@@ -10,12 +10,24 @@ import { Patient } from '@interfaces/clinic/patient.interface';
 import { PortalApi } from '@services/portal/portal-api.service';
 import { addressForm, toAddressPayload } from '@utilities/address';
 import { AppValidators } from '@validations/validators';
+import {
+  emergencyContactsForm,
+  toEmergencyContacts,
+} from '@utilities/clinic/emergency-contacts-form';
+import { EmergencyContactsField } from '@components/clinic/emergency-contacts-field/emergency-contacts-field.component';
 
-/** The patient's own contact details and emergency contact (name, ID and insurance stay with the front desk). */
+/** The patient's own contact details and emergency contacts (up to three) (name, ID and insurance stay with the front desk). */
 @Component({
   selector: 'app-profile-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatDialogModule, ReactiveFormsModule, GenericForm, TextField, AddressFields],
+  imports: [
+    MatDialogModule,
+    ReactiveFormsModule,
+    GenericForm,
+    TextField,
+    AddressFields,
+    EmergencyContactsField,
+  ],
   templateUrl: './profile-dialog.component.html',
 })
 export class ProfileDialog {
@@ -33,15 +45,7 @@ export class ProfileDialog {
       validators: [Validators.required, Validators.email, Validators.maxLength(255)],
     }),
     address: addressForm(this.patient.person.address ?? null),
-    emergencyContactName: new FormControl(this.patient.emergencyContactName, [
-      Validators.maxLength(150),
-    ]),
-    emergencyContactPhone: new FormControl(this.patient.emergencyContactPhone, [
-      AppValidators.phone,
-    ]),
-    emergencyContactRelation: new FormControl(this.patient.emergencyContactRelation, [
-      Validators.maxLength(50),
-    ]),
+    emergencyContacts: emergencyContactsForm(this.patient.emergencyContacts),
   });
 
   protected readonly submit = async (): Promise<Patient> => {
@@ -53,9 +57,7 @@ export class ProfileDialog {
         phone: v.phone.trim(),
         email: v.email.trim(),
         address: toAddressPayload(this.form.controls.address),
-        emergencyContactName: v.emergencyContactName?.trim() || null,
-        emergencyContactPhone: v.emergencyContactPhone?.trim() || null,
-        emergencyContactRelation: v.emergencyContactRelation?.trim() || null,
+        emergencyContacts: toEmergencyContacts(this.form.controls.emergencyContacts),
       }),
     );
     this.ref.close(saved);
