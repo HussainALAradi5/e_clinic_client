@@ -19,11 +19,7 @@
           class="flex w-full cursor-pointer items-start gap-3 border-0 bg-transparent px-4 py-3 text-left text-on-surface hover:bg-surface-container-low"
           (click)="open(n)"
         >
-          <span
-            class="mt-1.5 size-2 shrink-0 rounded-full"
-            [class.bg-primary]="!n.readAt"
-            [attr.aria-label]="n.readAt ? null : 'Unread'"
-          ></span>
+          <app-notification-kind-icon [template]="n.template" [unread]="!n.readAt" />
           <span class="min-w-0 flex-1">
             @if (n.subject) {
               <span class="block text-sm" [class.font-semibold]="!n.readAt">{{ n.subject }}</span>

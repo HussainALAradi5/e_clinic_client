@@ -9,6 +9,7 @@ import { PORTAL_RELATED_ROUTES } from '@constants/portal.constants';
 import { AppNotification } from '@interfaces/notification/notification.interface';
 import { RelativeTimePipe } from '@pipes/relative-time.pipe';
 import { NotificationApi } from '@services/notification/notification-api.service';
+import { NotificationKindIcon } from '@components/notification/notification-kind-icon/notification-kind-icon.component';
 
 const PAGE_SIZE = 25;
 
@@ -16,7 +17,14 @@ const PAGE_SIZE = 25;
 @Component({
   selector: 'app-portal-notifications-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonModule, MatIconModule, EmptyState, Skeleton, RelativeTimePipe],
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    EmptyState,
+    Skeleton,
+    RelativeTimePipe,
+    NotificationKindIcon,
+  ],
   templateUrl: './notifications.page.html',
 })
 export class PortalNotificationsPage {

@@ -7,14 +7,23 @@ self.addEventListener('push', (event) => {
   } catch {
     message = { body: event.data ? event.data.text() : '' };
   }
+  // Open tabs play the kind's own sound (a notification cannot choose its sound).
+  const tell = self.clients
+    .matchAll({ type: 'window', includeUncontrolled: true })
+    .then((windows) =>
+      windows.forEach((w) => w.postMessage({ type: 'clinic-push', template: message.template })),
+    );
   event.waitUntil(
-    self.registration.showNotification(message.title || 'e-Clinic', {
-      body: message.body || '',
-      tag: message.tag,
-      icon: '/favicon.ico',
-      badge: '/favicon.ico',
-      data: { url: message.url || '/' },
-    }),
+    Promise.all([
+      tell,
+      self.registration.showNotification(message.title || 'e-Clinic', {
+        body: message.body || '',
+        tag: message.tag,
+        icon: '/favicon.ico',
+        badge: '/favicon.ico',
+        data: { url: message.url || '/' },
+      }),
+    ]),
   );
 });
 

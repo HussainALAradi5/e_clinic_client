@@ -16,6 +16,7 @@ import { SessionService } from '@services/auth/session.service';
 import { EnumService } from '@services/data/enum.service';
 import { ThemeService } from '@services/ui/theme.service';
 import { PORTAL_TEXT } from '@constants/layout/portal.constants';
+import { NotificationSoundService } from '@services/notification/notification-sound.service';
 import { PushNotificationService } from '@services/notification/push-notification.service';
 
 /** Activity that keeps a portal session alive. */
@@ -64,6 +65,7 @@ export class PortalLayout {
       .subscribe({ error: () => undefined });
     // A browser that allowed notifications keeps getting them after each sign-in.
     void inject(PushNotificationService).sync();
+    inject(NotificationSoundService).listen();
     this.watchIdle();
   }
 

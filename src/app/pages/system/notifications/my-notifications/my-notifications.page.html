@@ -75,9 +75,7 @@
       (click)="open(n)"
       (keydown.enter)="open(n)"
     >
-      <span class="icon" [class.unread]="!n.readAt"
-        ><mat-icon>{{ icon(n.relatedType) }}</mat-icon></span
-      >
+      <app-notification-kind-icon [template]="n.template" [unread]="!n.readAt" />
       <div class="min-w-0 flex-1">
         <p class="m-0 flex items-center gap-2 text-sm" [class.font-semibold]="!n.readAt">
           @if (!n.readAt) {

@@ -76,22 +76,6 @@
   }
 }
 
-.icon {
-  display: grid;
-  width: 2.4rem;
-  height: 2.4rem;
-  flex-shrink: 0;
-  place-items: center;
-  border-radius: 9999px;
-  background: var(--mat-sys-surface-container-high);
-  color: var(--mat-sys-on-surface-variant);
-
-  &.unread {
-    background: #2563eb;
-    color: #fff;
-  }
-}
-
 .dot {
   width: 0.5rem;
   height: 0.5rem;

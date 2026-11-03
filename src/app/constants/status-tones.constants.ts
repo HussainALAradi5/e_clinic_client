@@ -79,6 +79,19 @@ export const STATUS_TONES: Record<string, Record<string, StatusTone>> = {
     no_show: Red,
     rescheduled: Amber,
   },
+  // One colour per kind of message (inbox icons); urgent is red everywhere. Same as the phone app.
+  NotificationKind: {
+    visit: Blue,
+    treatment: Teal,
+    result: Purple,
+    pharmacy: Green,
+    billing: Amber,
+    hr: Indigo,
+    chat: Cyan,
+    support: Orange,
+    urgent: Red,
+    system: Grey,
+  },
   // Where a visit sits in time: rows and cards carry this colour, the filter shows the same dots.
   VisitTiming: { coming: Blue, today: Orange, past: Grey, missed: Red },
   CashSessionStatus: { open: Blue, closing: Amber, closed: Green },

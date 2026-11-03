@@ -21,6 +21,7 @@ import { EnumService } from '@services/data/enum.service';
 import { AccessService } from '@services/auth/access.service';
 import { NavigationService } from '@services/ui/navigation.service';
 import { ThemeService } from '@services/ui/theme.service';
+import { NotificationSoundService } from '@services/notification/notification-sound.service';
 import { PushNotificationService } from '@services/notification/push-notification.service';
 
 /**
@@ -76,6 +77,7 @@ export class ShellLayout {
       .subscribe({ error: () => undefined });
     // A browser that allowed notifications keeps getting them after each sign-in.
     void inject(PushNotificationService).sync();
+    inject(NotificationSoundService).listen();
   }
 
   protected logout(): void {

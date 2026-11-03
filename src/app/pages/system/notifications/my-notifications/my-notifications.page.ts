@@ -24,11 +24,7 @@ import { PageHeader } from '@components/common/page-header/page-header.component
 import { Paginator } from '@components/common/paginator/paginator.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { DATE_TIME_FORMAT } from '@constants/app.constants';
-import {
-  NOTIFICATION_TOPICS,
-  notificationIcon,
-  notificationLink,
-} from '@constants/notification-links.constants';
+import { NOTIFICATION_TOPICS, notificationLink } from '@constants/notification-links.constants';
 import { PageMeta } from '@interfaces/api/page-meta.interface';
 import { DateRangeValue } from '@interfaces/list/date-range-filter.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
@@ -37,6 +33,7 @@ import { PageChange } from '@interfaces/ui/page-change.interface';
 import { RelativeTimePipe } from '@pipes/relative-time.pipe';
 import { NotificationApi } from '@services/notification/notification-api.service';
 import { NotifyService } from '@services/ui/notify.service';
+import { NotificationKindIcon } from '@components/notification/notification-kind-icon/notification-kind-icon.component';
 import { ReadFilter } from '@interfaces/system/my-notifications.interface';
 import { MY_NOTIFICATIONS_TEXT } from '@constants/system/my-notifications.constants';
 const PAGE_SIZE = 20;
@@ -64,6 +61,7 @@ const PAGE_SIZE = 20;
     Paginator,
     Skeleton,
     RelativeTimePipe,
+    NotificationKindIcon,
   ],
   templateUrl: './my-notifications.page.html',
   styleUrl: './my-notifications.page.scss',
@@ -169,7 +167,6 @@ export class MyNotificationsPage {
     this.dates.set({});
   }
 
-  protected icon = notificationIcon;
   protected link = notificationLink;
 
   protected open(item: AppNotification): void {

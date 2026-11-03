@@ -63,6 +63,3 @@ export function notificationLink(
   return route.replace(':id', n.relatedId ?? '');
 }
 
-export function notificationIcon(relatedType: string | null): string {
-  return NOTIFICATION_TOPICS.find((t) => t.value === relatedType)?.icon ?? 'notifications';
-}
