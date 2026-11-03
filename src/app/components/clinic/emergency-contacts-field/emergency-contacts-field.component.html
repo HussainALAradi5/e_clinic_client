@@ -4,14 +4,23 @@
   {{ text.optional }}
 </p>
 @for (row of contacts.controls; track row; let i = $index) {
-  <div class="grid grid-cols-1 items-start gap-x-4 sm:grid-cols-[1fr_1fr_1fr_auto]">
-    <ui-text [label]="text.name" [control]="row.controls.name" />
-    <ui-text [label]="text.relation" [hint]="text.relationHint" [control]="row.controls.relation" />
-    <ui-text [label]="text.phone" type="tel" [control]="row.controls.phone" />
+  <!-- Columns may shrink below the fields' natural width, so the row fits narrow dialogs. -->
+  <div class="flex min-w-0 items-start gap-2">
+    <div
+      class="grid min-w-0 flex-1 grid-cols-1 gap-x-4 sm:grid-cols-[repeat(3,minmax(0,1fr))] [&>*]:min-w-0"
+    >
+      <ui-text [label]="text.name" [control]="row.controls.name" />
+      <ui-text
+        [label]="text.relation"
+        [hint]="text.relationHint"
+        [control]="row.controls.relation"
+      />
+      <ui-text [label]="text.phone" type="tel" [control]="row.controls.phone" />
+    </div>
     <button
       matIconButton
       type="button"
-      class="mt-2"
+      class="mt-2 shrink-0"
       [attr.aria-label]="text.remove"
       (click)="remove(i)"
     >
