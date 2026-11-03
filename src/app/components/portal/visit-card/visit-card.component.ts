@@ -10,6 +10,8 @@ import { ButtonSize } from '@enums/ui/button-size.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
+import { EnumService } from '@services/data/enum.service';
+import { TONE_STRIPE_CLASSES } from '@constants/status-tones.constants';
 
 /** Statuses for which the check-in code still means something. */
 const CODE_STATUSES = [
@@ -35,6 +37,7 @@ export class VisitCard {
   readonly changed = output<Appointment>();
 
   private readonly actions = inject(PortalActions);
+  private readonly enums = inject(EnumService);
   protected readonly variants = ButtonVariant;
   protected readonly sizes = ButtonSize;
 
@@ -49,6 +52,10 @@ export class VisitCard {
     () => this.upcoming() && CANCELLABLE.includes(this.visit().status),
   );
   protected readonly session = computed(() => this.visit().sessionNumber !== null);
+  /** The coloured left edge of a list row: coming, today, past or missed. */
+  protected readonly stripe = computed(
+    () => TONE_STRIPE_CLASSES[this.enums.tone('VisitTiming', this.visit().timing)],
+  );
 
   protected code(): void {
     this.actions.showVisitCode(this.visit());

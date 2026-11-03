@@ -47,6 +47,8 @@ export class DataTable<T extends { id: string }> {
   readonly selection = input<ListSelection | null>(null);
   /** Templates passed through from a parent (ResourceListPage). */
   readonly cellDefs = input<readonly CellDef<T>[]>([]);
+  /** Extra classes per row, e.g. a coloured edge for the row's state. */
+  readonly rowClass = input<((row: T) => string | null) | null>(null);
 
   readonly sortChange = output<string[]>();
   readonly rowClick = output<T>();

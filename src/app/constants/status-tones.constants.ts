@@ -79,6 +79,8 @@ export const STATUS_TONES: Record<string, Record<string, StatusTone>> = {
     no_show: Red,
     rescheduled: Amber,
   },
+  // Where a visit sits in time: rows and cards carry this colour, the filter shows the same dots.
+  VisitTiming: { coming: Blue, today: Orange, past: Grey, missed: Red },
   CashSessionStatus: { open: Blue, closing: Amber, closed: Green },
   EmployeeStatus: { active: Green, suspended: Amber, terminated: Red },
   ExpiryStatus: { ok: Green, expiring: Amber, expired: Red },
@@ -147,6 +149,38 @@ export const TONE_CLASSES: Record<StatusTone, string> = {
   [Indigo]: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-200',
   [Purple]: 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200',
   [Pink]: 'bg-pink-100 text-pink-800 dark:bg-pink-900/50 dark:text-pink-200',
+};
+
+/** A coloured left edge in a tone (table rows, cards). */
+export const TONE_STRIPE_CLASSES: Record<StatusTone, string> = {
+  [Grey]: 'border-l-4 border-l-zinc-400 dark:border-l-zinc-500',
+  [Blue]: 'border-l-4 border-l-blue-500 dark:border-l-blue-400',
+  [Teal]: 'border-l-4 border-l-teal-500 dark:border-l-teal-400',
+  [Green]: 'border-l-4 border-l-green-500 dark:border-l-green-400',
+  [Amber]: 'border-l-4 border-l-amber-500 dark:border-l-amber-400',
+  [Red]: 'border-l-4 border-l-red-500 dark:border-l-red-400',
+  [RedOutline]: 'border-l-4 border-l-red-400 dark:border-l-red-500',
+  [Orange]: 'border-l-4 border-l-orange-500 dark:border-l-orange-400',
+  [Cyan]: 'border-l-4 border-l-cyan-500 dark:border-l-cyan-400',
+  [Indigo]: 'border-l-4 border-l-indigo-500 dark:border-l-indigo-400',
+  [Purple]: 'border-l-4 border-l-purple-500 dark:border-l-purple-400',
+  [Pink]: 'border-l-4 border-l-pink-500 dark:border-l-pink-400',
+};
+
+/** A small dot in a tone (filter chips, legends). */
+export const TONE_DOT_CLASSES: Record<StatusTone, string> = {
+  [Grey]: 'bg-zinc-400 dark:bg-zinc-500',
+  [Blue]: 'bg-blue-500 dark:bg-blue-400',
+  [Teal]: 'bg-teal-500 dark:bg-teal-400',
+  [Green]: 'bg-green-500 dark:bg-green-400',
+  [Amber]: 'bg-amber-500 dark:bg-amber-400',
+  [Red]: 'bg-red-500 dark:bg-red-400',
+  [RedOutline]: 'bg-red-400 dark:bg-red-500',
+  [Orange]: 'bg-orange-500 dark:bg-orange-400',
+  [Cyan]: 'bg-cyan-500 dark:bg-cyan-400',
+  [Indigo]: 'bg-indigo-500 dark:bg-indigo-400',
+  [Purple]: 'bg-purple-500 dark:bg-purple-400',
+  [Pink]: 'bg-pink-500 dark:bg-pink-400',
 };
 
 /** Colours handed out in option order to enums without a hand-picked map; red and grey stay reserved for meaning. */

@@ -4,11 +4,13 @@ import {
   Component,
   computed,
   contentChildren,
+  effect,
   inject,
   input,
   OnInit,
   output,
   signal,
+  untracked,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -85,6 +87,8 @@ export class ResourceListPage implements OnInit {
   readonly views = input(true);
   /** Fixed endpoint parameters, e.g. `{ role: 'doctor' }` (the users of one role). */
   readonly params = input<Record<string, string>>({});
+  /** Extra classes per row (e.g. a coloured edge for the row's state). */
+  readonly rowClass = input<((row: { id: string }) => string | null) | null>(null);
   /**
    * Inside another page (a tab of a detail page): no page header, saved views or import / export, and the filters
    * stay out of the address bar.
@@ -133,6 +137,19 @@ export class ResourceListPage implements OnInit {
       };
     });
   });
+
+  constructor() {
+    // Changed parameters (a quick filter of the page) reload the list; the first value is used by init().
+    let first = true;
+    effect(() => {
+      const params = this.params();
+      if (first) {
+        first = false;
+        return;
+      }
+      untracked(() => this.store.setParams(params));
+    });
+  }
 
   ngOnInit(): void {
     this.store.init(

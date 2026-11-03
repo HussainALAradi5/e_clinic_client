@@ -1,0 +1,17 @@
+<mat-button-toggle-group
+  hideSingleSelectionIndicator
+  class="max-w-full overflow-x-auto"
+  [attr.aria-label]="text.whichVisits"
+  [ngModel]="value()"
+  (ngModelChange)="value.set($event)"
+>
+  <mat-button-toggle [value]="null">{{ text.all }}</mat-button-toggle>
+  @for (option of options(); track option.value) {
+    <mat-button-toggle [value]="option.value">
+      <span class="inline-flex items-center gap-1.5">
+        <span class="inline-block size-2.5 rounded-full" [class]="option.dot" aria-hidden="true"></span>
+        {{ option.label }}
+      </span>
+    </mat-button-toggle>
+  }
+</mat-button-toggle-group>

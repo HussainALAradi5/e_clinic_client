@@ -95,6 +95,7 @@
       *matRowDef="let row; columns: displayed()"
       (click)="rowClick.emit(row)"
       class="cursor-pointer hover:bg-surface-container"
+      [class]="rowClass()?.(row) ?? ''"
       [class.bg-secondary-container]="selection()?.isSelected(row.id)"
     ></tr>
   </table>

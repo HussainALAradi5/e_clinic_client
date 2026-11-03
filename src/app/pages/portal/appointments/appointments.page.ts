@@ -1,39 +1,41 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+  untracked,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { VisitCard } from '@components/portal/visit-card/visit-card.component';
+import { VisitTimingFilter } from '@components/clinic/visit-timing-filter/visit-timing-filter.component';
 import { EmptyState } from '@components/common/empty-state/empty-state.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { PORTAL_PATH } from '@constants/app.constants';
-import { AppointmentStatus } from '@enums/clinic/appointment-status.enum';
+import { VisitTiming } from '@enums/clinic/visit-timing.enum';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
-import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { AppointmentApi } from '@services/clinic/appointment-api.service';
-import { clinicIsoDate } from '@utilities/clinic-time';
 import { APPOINTMENTS_TEXT } from '@constants/portal/appointments.constants';
 
 const PAGE_SIZE = 20;
-const UPCOMING = [
-  AppointmentStatus.Pending,
-  AppointmentStatus.Confirmed,
-  AppointmentStatus.CheckedIn,
-];
 
-/** `/portal/appointments` — upcoming visits (soonest first) with check-in code and cancel; past ones newest first. */
+/**
+ * `/portal/appointments` — my visits, coloured by timing, with a filter: All · Coming · Today · Past · Missed.
+ * Coming and today run soonest first; all, past and missed newest first.
+ */
 @Component({
   selector: 'app-my-appointments-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    FormsModule,
     RouterLink,
     MatButtonModule,
-    MatButtonToggleModule,
     MatIconModule,
     VisitCard,
+    VisitTimingFilter,
     EmptyState,
     Skeleton,
   ],
@@ -43,41 +45,52 @@ export class MyAppointmentsPage {
   private readonly api = inject(AppointmentApi);
 
   protected readonly bookPath = `${PORTAL_PATH}/appointments/new`;
-  protected readonly view = signal<'upcoming' | 'past'>('upcoming');
+  protected readonly timing = signal<VisitTiming | null>(null);
   protected readonly visits = signal<Appointment[] | null>(null);
   protected readonly more = signal(false);
   private page = 1;
 
-  protected readonly empty = computed(() =>
-    this.view() === 'upcoming'
-      ? { title: APPOINTMENTS_TEXT.noUpcomingVisits, message: APPOINTMENTS_TEXT.bookAVisitAndIt }
-      : { title: APPOINTMENTS_TEXT.noPastVisitsYet, message: null },
-  );
+  protected readonly empty = computed(() => {
+    switch (this.timing()) {
+      case VisitTiming.Coming:
+        return {
+          title: APPOINTMENTS_TEXT.noUpcomingVisits,
+          message: APPOINTMENTS_TEXT.bookAVisitAndIt,
+        };
+      case VisitTiming.Today:
+        return { title: APPOINTMENTS_TEXT.noVisitsToday, message: null };
+      case VisitTiming.Past:
+        return { title: APPOINTMENTS_TEXT.noPastVisitsYet, message: null };
+      case VisitTiming.Missed:
+        return { title: APPOINTMENTS_TEXT.noMissedVisits, message: null };
+      default:
+        return { title: APPOINTMENTS_TEXT.noVisitsYet, message: APPOINTMENTS_TEXT.bookAVisitAndIt };
+    }
+  });
 
   constructor() {
-    void this.load();
-  }
-
-  protected show(view: 'upcoming' | 'past'): void {
-    this.view.set(view);
-    this.visits.set(null);
-    void this.load();
+    effect(() => {
+      this.timing();
+      untracked(() => {
+        this.visits.set(null);
+        void this.load();
+      });
+    });
   }
 
   protected async load(next = false): Promise<void> {
     this.page = next ? this.page + 1 : 1;
-    const today = clinicIsoDate();
-    const upcoming = this.view() === 'upcoming';
-    const filter: FilterGroup = upcoming
-      ? { and: [{ status: { in: UPCOMING } }, { scheduledDate: { gte: today } }] }
-      : { or: [{ status: { nin: UPCOMING } }, { scheduledDate: { lt: today } }] };
+    const timing = this.timing();
+    const soonestFirst = timing === VisitTiming.Coming || timing === VisitTiming.Today;
     const page = await firstValueFrom(
-      this.api.list({
-        page: this.page,
-        perPage: PAGE_SIZE,
-        sort: upcoming ? ['scheduledDate', 'startTime'] : ['-scheduledDate', '-startTime'],
-        filter,
-      }),
+      this.api.list(
+        {
+          page: this.page,
+          perPage: PAGE_SIZE,
+          sort: soonestFirst ? ['scheduledDate', 'startTime'] : ['-scheduledDate', '-startTime'],
+        },
+        timing,
+      ),
     ).catch(() => null);
     const rows = page?.data ?? [];
     this.visits.update((list) => (next ? [...(list ?? []), ...rows] : rows));

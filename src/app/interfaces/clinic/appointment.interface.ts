@@ -2,6 +2,7 @@ import { AppointmentSource } from '@enums/clinic/appointment-source.enum';
 import { AppointmentStatus } from '@enums/clinic/appointment-status.enum';
 import { AppointmentType } from '@enums/clinic/appointment-type.enum';
 import { CancelledBy } from '@enums/clinic/cancelled-by.enum';
+import { VisitTiming } from '@enums/clinic/visit-timing.enum';
 import { Gender } from '@enums/shared/gender.enum';
 import { InvoiceRef } from '@interfaces/billing/invoice-ref.interface';
 import { Versioned } from '@interfaces/common/versioned.interface';
@@ -34,6 +35,8 @@ export interface Appointment extends Versioned {
   room?: { id: string; code: string; name: string } | null;
   billableService?: { id: string; name: string; price: Money } | null;
   status: AppointmentStatus;
+  /** Coming, today, past or missed (worked out by the server from the date and the status). */
+  timing: VisitTiming;
   allowedTransitions: AppointmentStatus[];
   isAttended: boolean;
   source: AppointmentSource;

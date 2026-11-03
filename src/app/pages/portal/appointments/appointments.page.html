@@ -6,16 +6,7 @@
   <a matButton="filled" [routerLink]="bookPath"><mat-icon>add</mat-icon> Book a visit</a>
 </header>
 
-<mat-button-toggle-group
-  class="mb-4"
-  hideSingleSelectionIndicator
-  aria-label="Which visits"
-  [ngModel]="view()"
-  (ngModelChange)="show($event)"
->
-  <mat-button-toggle value="upcoming">Upcoming</mat-button-toggle>
-  <mat-button-toggle value="past">Past</mat-button-toggle>
-</mat-button-toggle-group>
+<app-visit-timing-filter class="mb-4 block" [(value)]="timing" />
 
 @if (visits(); as list) {
   <div class="space-y-2">

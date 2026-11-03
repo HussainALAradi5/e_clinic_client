@@ -78,6 +78,12 @@ export const ResourceListStore = signalStore(
       reload(): void {
         fetch();
       },
+      /** New fixed endpoint parameters (e.g. a quick filter outside the query): back to the first page. */
+      setParams(params: Record<string, string>): void {
+        selection.clear();
+        patchState(store, { params, query: { ...store.query(), page: 1 } });
+        fetch();
+      },
     };
   }),
 );

@@ -30,6 +30,9 @@
   </ui-page-header>
 }
 
+<!-- A page's own quick filter (e.g. coming / today / past / missed), above the generic filters. -->
+<ng-content select="[quick]" />
+
 @if (store.schema(); as schema) {
   <ui-generic-filter
     class="mb-3"
@@ -65,6 +68,7 @@
     [sort]="store.query().sort ?? []"
     [selection]="selectable() ? selection : null"
     [cellDefs]="cells()"
+    [rowClass]="rowClass()"
     (sortChange)="setQuery({ ...store.query(), sort: $event, page: 1 })"
     (rowClick)="open($event)"
     (selectAllMatching)="selection.selectAllMatching(store.query(), store.total())"

@@ -5,7 +5,10 @@
   subtitle="Every booking, past and upcoming. Filter by date, doctor or status; open one to check in, move or cancel it."
   emptyTitle="No appointments found"
   rowLink="/clinic/appointments/:id"
+  [params]="params()"
+  [rowClass]="rowClass"
 >
+  <app-visit-timing-filter quick class="mb-3 block" [(value)]="timing" />
   <ui-button actions icon="event_available" access="appointments.create" [action]="book"
     >Book appointment</ui-button
   >
@@ -23,5 +26,8 @@
     <span class="block text-xs text-on-surface-variant">{{ row.patient?.code }}</span>
   </ng-template>
   <ng-template uiCell="provider" let-row>{{ row.provider?.fullName }}</ng-template>
+  <ng-template uiCell="timing" let-row
+    ><ui-status enum="VisitTiming" [value]="row.timing"
+  /></ng-template>
   <ng-template uiCell="room" let-row>{{ row.room?.code ?? '—' }}</ng-template>
 </ui-resource-list>
