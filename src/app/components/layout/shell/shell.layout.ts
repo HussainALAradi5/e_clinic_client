@@ -21,6 +21,7 @@ import { EnumService } from '@services/data/enum.service';
 import { AccessService } from '@services/auth/access.service';
 import { NavigationService } from '@services/ui/navigation.service';
 import { ThemeService } from '@services/ui/theme.service';
+import { PushNotificationService } from '@services/notification/push-notification.service';
 
 /**
  * Staff app frame: toolbar (menu toggle, notifications, theme, user menu) + side menu filtered by AccessService.
@@ -73,6 +74,8 @@ export class ShellLayout {
     inject(EnumService)
       .load()
       .subscribe({ error: () => undefined });
+    // A browser that allowed notifications keeps getting them after each sign-in.
+    void inject(PushNotificationService).sync();
   }
 
   protected logout(): void {

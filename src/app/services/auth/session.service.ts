@@ -1,6 +1,16 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, finalize, firstValueFrom, map, Observable, of, tap } from 'rxjs';
+import {
+  catchError,
+  finalize,
+  firstValueFrom,
+  from,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { AuthStore } from './auth.store';
 import { TrustedDeviceService } from './trusted-device.service';
 import { DEVICE_NAME, LOGIN_PATH, TWO_FACTOR_PATH } from '@constants/app.constants';
@@ -12,6 +22,7 @@ import { TwoFactorChallenge } from '@interfaces/auth/two-factor-challenge.interf
 import { NotifyService } from '@services/ui/notify.service';
 import { ResourceSchemaService } from '@services/data/resource-schema.service';
 import { AuthApi } from '@services/identity/auth-api.service';
+import { PushNotificationService } from '@services/notification/push-notification.service';
 import { isApiError } from '@utilities/guards';
 
 /**
@@ -26,6 +37,7 @@ export class SessionService {
   private readonly router = inject(Router);
   private readonly notify = inject(NotifyService);
   private readonly trustedDevices = inject(TrustedDeviceService);
+  private readonly push = inject(PushNotificationService);
 
   readonly challenge = signal<TwoFactorChallenge | null>(null);
 
@@ -105,7 +117,8 @@ export class SessionService {
 
   /** Signs out; `farewell` replaces the usual goodbye (e.g. why the session ended). */
   logout(farewell = 'See you next time.'): Observable<void> {
-    return this.api.logout().pipe(
+    return from(this.push.forgetBrowser().catch(() => undefined)).pipe(
+      switchMap(() => this.api.logout()),
       catchError(() => of(undefined)),
       finalize(() => this.end(farewell)),
     );

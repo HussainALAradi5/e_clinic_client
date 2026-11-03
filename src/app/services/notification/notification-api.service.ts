@@ -7,6 +7,7 @@ import { BulkResult } from '@interfaces/bulk/bulk-result.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { DevicePayload } from '@interfaces/notification/device.interface';
 import { AppNotification } from '@interfaces/notification/notification.interface';
+import { NotificationSettings } from '@interfaces/notification/notification-settings.interface';
 import { ApiClient } from '@services/api/api-client.service';
 import { ENDPOINTS } from '@config/endpoints';
 
@@ -52,6 +53,31 @@ export class NotificationApi {
 
   unregisterDevice(token: string): Observable<void> {
     return this.api.delete(`${ENDPOINTS.notifications}/devices/${encodeURIComponent(token)}`);
+  }
+
+  /** My phone and browser notifications switch, and the key a browser subscribes with. */
+  settings(): Observable<NotificationSettings> {
+    return this.api.get<NotificationSettings>(`${ENDPOINTS.notifications}/settings`, {
+      context: silent(),
+    });
+  }
+
+  updateSettings(push: boolean): Observable<NotificationSettings> {
+    return this.api.put<NotificationSettings>(`${ENDPOINTS.notifications}/settings`, { push });
+  }
+
+  /** This browser's PushSubscription (`subscription.toJSON()`). */
+  subscribeWebPush(subscription: PushSubscriptionJSON): Observable<{ id: string }> {
+    return this.api.post<{ id: string }>(`${ENDPOINTS.notifications}/web-push`, subscription, {
+      context: silent(),
+    });
+  }
+
+  unsubscribeWebPush(endpoint: string): Observable<void> {
+    return this.api.delete(`${ENDPOINTS.notifications}/web-push`, {
+      body: { endpoint },
+      context: silent(),
+    });
   }
 
   log(query: ListQuery): Observable<Page<AppNotification>> {

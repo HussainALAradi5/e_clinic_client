@@ -1,0 +1,19 @@
+<mat-card appearance="outlined" class="!p-5">
+  <div class="flex items-start gap-3">
+    <div class="min-w-0 flex-1">
+      <h2 class="m-0 mb-1 text-base font-semibold">{{ text.title }}</h2>
+      <p class="m-0 text-sm text-on-surface-variant">{{ text.explain }}</p>
+    </div>
+    <mat-slide-toggle
+      [attr.aria-label]="text.toggle"
+      [checked]="!!push.enabled()"
+      [disabled]="push.enabled() === null || push.busy()"
+      (change)="toggle($event.checked)"
+    />
+  </div>
+  @if (!push.supported) {
+    <p class="m-0 mt-3 text-sm text-on-surface-variant">{{ text.unsupported }}</p>
+  } @else if (push.enabled() && push.blocked()) {
+    <p class="m-0 mt-3 text-sm text-error">{{ text.blocked }}</p>
+  }
+</mat-card>

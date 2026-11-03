@@ -18,6 +18,7 @@ import { firstValueFrom } from 'rxjs';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
+import { NotificationSettingsCard } from '@components/notification/notification-settings-card/notification-settings-card.component';
 import { PasswordStrength } from '@components/common/password-strength/password-strength.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { TOTP_LENGTH } from '@constants/limits.constants';
@@ -46,6 +47,7 @@ import { ACCOUNT_SECURITY_TEXT } from '@constants/system/account-security.consta
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    NotificationSettingsCard,
   ],
   templateUrl: './account-security.page.html',
 })

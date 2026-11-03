@@ -16,6 +16,7 @@ import { SessionService } from '@services/auth/session.service';
 import { EnumService } from '@services/data/enum.service';
 import { ThemeService } from '@services/ui/theme.service';
 import { PORTAL_TEXT } from '@constants/layout/portal.constants';
+import { PushNotificationService } from '@services/notification/push-notification.service';
 
 /** Activity that keeps a portal session alive. */
 const ACTIVITY_EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'] as const;
@@ -61,6 +62,8 @@ export class PortalLayout {
     inject(EnumService)
       .load()
       .subscribe({ error: () => undefined });
+    // A browser that allowed notifications keeps getting them after each sign-in.
+    void inject(PushNotificationService).sync();
     this.watchIdle();
   }
 
