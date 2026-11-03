@@ -7,76 +7,45 @@
 | Web app (staff and patient portal) | https://e-clinic-web.onrender.com |
 | API | https://e-clinic-api.onrender.com/api/v1 |
 
-Free Render instances sleep when idle: the first visit can take about a minute to wake the API. Demo accounts are
-listed in [DEMO_USERS.md](https://github.com/HussainALAradi5/e_clinic_documentation/blob/main/DEMO_USERS.md)
-(the repositories are private).
+Free Render instances sleep when idle: the first visit can take about a minute to wake the API. Demo accounts
+(one per role: patient, receptionist, doctor, nurse, pharmacist, cashier, accountant, HR, admin) are available on
+request.
 
 **Screenshots:** every role and feature in light and dark — [below](#screenshots)
 (staff chat, support tickets, notifications, front desk, clinic, billing, pharmacy, HR, accounting, admin).
 
 ---
 
-# EClinicClient
+## What it is
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+The web client of **e-Clinic**, a clinic management system: one Angular app with a **staff workspace** (front desk,
+doctors, nurses, pharmacy, cashier, accountant, HR, admin — each sees the pages their role allows) and a **patient
+portal** (visits and booking, results, prescriptions, invoices, messages, profile). It talks to the
+[Laravel API](https://github.com/HussainALAradi5/e_clinic_server); the [Flutter app](https://github.com/HussainALAradi5/e_clinic_mobile)
+uses the same API.
 
-## Development server
+| | |
+|---|---|
+| Framework | Angular 21 (standalone components, signals, OnPush), Angular Material 21, Tailwind CSS 4, NgRx Signals |
+| Structure | Layer first: `components`, `pages`, `services`, `interfaces`, `enums`, `constants`, `utilities`, `validations`, `middlewares`, `config` — each with module folders; one endpoint map (`config/endpoints.ts`), UI text in constants |
+| Lists | One generic list page driven by the server's schema: search, filters, saved views, sorting, paging, bulk actions, Excel import / export — all on the server |
+| Features | Booking with free slots, check-in by QR code, visit workspace, results with images, pharmacy dispensing, invoices with payment state and paid-by filters, cash desk, journal entries, payroll, staff chat (websockets), support tickets, notifications with browser push and a sound per kind, light and dark themes |
+| Quality | Strict TypeScript, unit tests (Vitest), a smoke run over every page for every role |
 
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Run it locally
 
 ```bash
-ng generate --help
+npm install
+npm start          # http://localhost:4200 — expects the API on http://localhost:8000 (see e_clinic_server)
 ```
 
-## Building
-
-To build the project run:
+## Tests and build
 
 ```bash
-ng build
+npx ng test --watch=false
+npx ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-
-<!-- screenshots:start -->
 ## Screenshots
 
 Taken from the running web app (1440 × 900, phone width 390 × 844 where noted) against the local API with the demo data, signed in as each demo user. Every screen is shown in **light** and **dark**. The same images, with notes per feature, are in the [documentation repository](https://github.com/HussainALAradi5/e_clinic_documentation/tree/main/screenshots).
