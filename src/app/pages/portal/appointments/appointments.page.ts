@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { VisitCard } from '@components/portal/visit-card/visit-card.component';
-import { VisitTimingFilter } from '@components/clinic/visit-timing-filter/visit-timing-filter.component';
+import { EnumFilter } from '@components/common/enum-filter/enum-filter.component';
 import { EmptyState } from '@components/common/empty-state/empty-state.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { PORTAL_PATH } from '@constants/app.constants';
@@ -35,7 +35,7 @@ const PAGE_SIZE = 20;
     MatButtonModule,
     MatIconModule,
     VisitCard,
-    VisitTimingFilter,
+    EnumFilter,
     EmptyState,
     Skeleton,
   ],

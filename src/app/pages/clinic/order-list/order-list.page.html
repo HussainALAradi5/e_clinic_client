@@ -5,7 +5,15 @@
   subtitle="Imaging, lab tests, ECGs and referrals. Doctors order them from the visit; results come back here and on the patient file."
   emptyTitle="No orders found"
   rowLink="/clinic/clinical-orders/:id"
+  [params]="params()"
 >
+  <ui-enum-filter
+    quick
+    class="mb-3 block"
+    enum="ClinicalOrderType"
+    label="Kind of order"
+    [(value)]="type"
+  />
   <a actions matButton="filled" routerLink="/clinic/clinical-orders/worklist"
     ><mat-icon>checklist</mat-icon> Work list</a
   >

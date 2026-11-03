@@ -8,7 +8,13 @@
   [params]="params()"
   [rowClass]="rowClass"
 >
-  <app-visit-timing-filter quick class="mb-3 block" [(value)]="timing" />
+  <ui-enum-filter
+    quick
+    class="mb-3 block"
+    enum="VisitTiming"
+    label="Which visits"
+    [(value)]="timing"
+  />
   <ui-button actions icon="event_available" access="appointments.create" [action]="book"
     >Book appointment</ui-button
   >

@@ -116,6 +116,35 @@ export const STATUS_TONES: Record<string, Record<string, StatusTone>> = {
   FileScanStatus: { clean: Green, infected: Red },
   FiscalStatus: { open: Green, closed: Grey, locked: Red },
   JournalEntryStatus: { draft: Grey, posted: Green, reversed: RedOutline },
+  // How an invoice stands with its payments (badges and the filter).
+  InvoicePaymentState: {
+    draft: Grey,
+    unpaid: Orange,
+    overdue: Red,
+    partially_paid: Amber,
+    paid: Green,
+    refunded: Purple,
+    cancelled: RedOutline,
+  },
+  // How money was paid.
+  PaymentMethod: {
+    cash: Green,
+    card: Blue,
+    bank_transfer: Indigo,
+    benefit_pay: Pink,
+    insurance: Purple,
+    cheque: Amber,
+  },
+  // One colour per kind of result / order.
+  ClinicalOrderType: {
+    xray: Indigo,
+    ultrasound: Cyan,
+    ct: Blue,
+    mri: Purple,
+    lab_test: Teal,
+    ecg: Pink,
+    referral: Amber,
+  },
   InvoiceStatus: { issued: Blue, partially_paid: Amber, paid: Green, cancelled: RedOutline },
   NotificationStatus: { sent: Blue, delivered: Green, failed: Red, cancelled: RedOutline },
   PaymentStatus: { completed: Green, voided: Red },

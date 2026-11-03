@@ -21,6 +21,15 @@ export class InvoiceApi extends EntityApi<Invoice, InvoicePayload> {
     return this.api.list<Invoice>(`${this.path}/outstanding`, query);
   }
 
+  /** Invoices narrowed on the server to a payment state (unpaid, overdue …) and / or a way of paying. */
+  listBy(
+    query: ListQuery,
+    paymentState: string | null,
+    method: string | null,
+  ): Observable<Page<Invoice>> {
+    return this.api.list<Invoice>(this.path, query, { payment_state: paymentState, method });
+  }
+
   /** Adds the source's lines to the patient's open draft (created when missing). */
   charge(payload: ChargePayload): Observable<Invoice> {
     return this.api.post<Invoice>(`${this.path}/charge`, payload);

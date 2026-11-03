@@ -13,7 +13,7 @@ import { AppButton } from '@components/common/app-button/app-button.component';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { VisitTimingFilter } from '@components/clinic/visit-timing-filter/visit-timing-filter.component';
+import { EnumFilter } from '@components/common/enum-filter/enum-filter.component';
 import { DATE_FORMAT } from '@constants/app.constants';
 import { TONE_STRIPE_CLASSES } from '@constants/status-tones.constants';
 import { VisitTiming } from '@enums/clinic/visit-timing.enum';
@@ -26,7 +26,7 @@ import { Appointment } from '@interfaces/clinic/appointment.interface';
 @Component({
   selector: 'app-appointment-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, AppButton, DatePipe, StatusChip, VisitTimingFilter],
+  imports: [ResourceListPage, CellDef, AppButton, DatePipe, StatusChip, EnumFilter],
   templateUrl: './appointment-list.page.html',
 })
 export class AppointmentListPage {

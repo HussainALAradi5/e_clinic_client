@@ -1,7 +1,7 @@
 <header class="mb-4">
   <h1 class="m-0 text-2xl font-bold tracking-tight">My invoices</h1>
   <p class="m-0 text-on-surface-variant">
-    @if (due(); as amount) {
+    @if (!filtered() && due(); as amount) {
       <strong class="text-on-surface">{{ amount }}</strong> left to pay — at the clinic's cashier
       desk.
     } @else {
@@ -9,6 +9,16 @@
     }
   </p>
 </header>
+
+<div class="mb-4 flex flex-wrap gap-2">
+  <ui-enum-filter
+    enum="InvoicePaymentState"
+    label="Payment"
+    [values]="['unpaid', 'overdue', 'partially_paid', 'paid', 'refunded']"
+    [(value)]="paymentState"
+  />
+  <ui-enum-filter enum="PaymentMethod" label="Paid by" [(value)]="method" />
+</div>
 
 @if (invoices(); as list) {
   <div class="space-y-2">
@@ -34,7 +44,12 @@
               >
             }
           </span>
-          <ui-status [value]="inv.status" enum="InvoiceStatus" />
+          <span class="flex shrink-0 flex-col items-end gap-1">
+            <ui-status [value]="inv.paymentState" enum="InvoicePaymentState" />
+            @for (m of inv.paymentMethods ?? []; track m) {
+              <ui-status [value]="m" enum="PaymentMethod" />
+            }
+          </span>
         </button>
         @if (open() === inv.id) {
           <div class="border-t border-outline-variant/60 px-4 pt-3 pb-4">

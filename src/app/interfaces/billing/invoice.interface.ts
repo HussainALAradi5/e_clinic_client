@@ -8,6 +8,8 @@ import { Versioned } from '@interfaces/common/versioned.interface';
 import { Money } from '@interfaces/common/money.interface';
 import { PatientSummary } from '@interfaces/common/summary.interface';
 import { UserSummary } from '@interfaces/common/user-summary.interface';
+import { InvoicePaymentState } from '@enums/billing/invoice-payment-state.enum';
+import { PaymentMethod } from '@enums/shared/payment-method.enum';
 
 /** Mirror of InvoiceResource — lines, payments and refunds on the detail. */
 export interface Invoice extends GenericEntity, Versioned {
@@ -25,6 +27,10 @@ export interface Invoice extends GenericEntity, Versioned {
   refundedAmount: Money;
   balanceDue: Money;
   status: InvoiceStatus;
+  /** Unpaid, overdue, partly paid, paid, refunded … (worked out by the server). */
+  paymentState: InvoicePaymentState;
+  /** How it was paid: methods of its completed payments (lists). */
+  paymentMethods?: PaymentMethod[];
   notes: string | null;
   issuedAt: string | null;
   issuedBy?: UserSummary | null;

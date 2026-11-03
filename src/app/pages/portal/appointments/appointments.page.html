@@ -6,7 +6,7 @@
   <a matButton="filled" [routerLink]="bookPath"><mat-icon>add</mat-icon> Book a visit</a>
 </header>
 
-<app-visit-timing-filter class="mb-4 block" [(value)]="timing" />
+<ui-enum-filter class="mb-4 block" enum="VisitTiming" label="Which visits" [(value)]="timing" />
 
 @if (visits(); as list) {
   <div class="space-y-2">

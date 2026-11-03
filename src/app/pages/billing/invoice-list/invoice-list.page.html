@@ -5,7 +5,13 @@
   subtitle="Visits, sessions and orders land on the patient's draft by themselves; review it, issue it and take payment."
   emptyTitle="No invoices found"
   rowLink="/billing/invoices/:id"
+  [params]="params()"
+  [rowClass]="rowClass"
 >
+  <div quick class="mb-3 flex flex-wrap gap-2">
+    <ui-enum-filter enum="InvoicePaymentState" label="Payment" [(value)]="paymentState" />
+    <ui-enum-filter enum="PaymentMethod" label="Paid by" [(value)]="method" />
+  </div>
   <ui-button actions icon="add" access="invoices.create" [action]="create">New invoice</ui-button>
   <ng-template uiCell="invoice_number" let-row>
     <span class="font-mono">{{ row.invoiceNumber ?? 'Draft' }}</span>
@@ -23,6 +29,18 @@
   <ng-template uiCell="total" let-row
     ><span class="tabular-nums">{{ row.total | money }}</span></ng-template
   >
+  <ng-template uiCell="payment_state" let-row
+    ><ui-status enum="InvoicePaymentState" [value]="row.paymentState"
+  /></ng-template>
+  <ng-template uiCell="payment_methods" let-row>
+    <span class="flex flex-wrap gap-1">
+      @for (m of row.paymentMethods ?? []; track m) {
+        <ui-status enum="PaymentMethod" [value]="m" />
+      } @empty {
+        <span class="text-on-surface-variant">—</span>
+      }
+    </span>
+  </ng-template>
   <ng-template uiCell="balance_due" let-row>
     <span class="tabular-nums" [class.font-semibold]="row.balanceDue.amount !== '0.000'">{{
       row.balanceDue | money
