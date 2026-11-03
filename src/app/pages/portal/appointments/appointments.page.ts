@@ -20,6 +20,9 @@ import { VisitTiming } from '@enums/clinic/visit-timing.enum';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
 import { AppointmentApi } from '@services/clinic/appointment-api.service';
 import { APPOINTMENTS_TEXT } from '@constants/portal/appointments.constants';
+import { DateRangeFilter } from '@components/common/date-range-filter/date-range-filter.component';
+import { DateRangeValue } from '@interfaces/list/date-range-filter.interface';
+import { dateRangeQuery } from '@utilities/date-range-query';
 
 const PAGE_SIZE = 20;
 
@@ -38,10 +41,15 @@ const PAGE_SIZE = 20;
     EnumFilter,
     EmptyState,
     Skeleton,
+    DateRangeFilter,
   ],
   templateUrl: './appointments.page.html',
 })
 export class MyAppointmentsPage {
+  /** From / to on the visit date (on the server). */
+  protected readonly dateFields = [{ value: 'scheduled_date', label: 'Visit date' }];
+  protected readonly dates = signal<DateRangeValue>({});
+
   private readonly api = inject(AppointmentApi);
 
   protected readonly bookPath = `${PORTAL_PATH}/appointments/new`;
@@ -71,6 +79,7 @@ export class MyAppointmentsPage {
   constructor() {
     effect(() => {
       this.timing();
+      this.dates();
       untracked(() => {
         this.visits.set(null);
         void this.load();
@@ -88,6 +97,7 @@ export class MyAppointmentsPage {
           page: this.page,
           perPage: PAGE_SIZE,
           sort: soonestFirst ? ['scheduledDate', 'startTime'] : ['-scheduledDate', '-startTime'],
+          ...dateRangeQuery('scheduled_date', this.dates()),
         },
         timing,
       ),

@@ -18,6 +18,12 @@
     [(value)]="paymentState"
   />
   <ui-enum-filter enum="PaymentMethod" label="Paid by" [(value)]="method" />
+  <ui-date-range-filter
+    class="w-64"
+    [fields]="dateFields"
+    [value]="dates()"
+    (valueChange)="dates.set($event)"
+  />
 </div>
 
 @if (invoices(); as list) {

@@ -22,6 +22,9 @@ import { MoneyPipe } from '@pipes/money.pipe';
 import { InvoiceApi } from '@services/billing/invoice-api.service';
 import { formatMoney, fromMinor, money, toMinor } from '@utilities/money';
 import { EnumFilter } from '@components/common/enum-filter/enum-filter.component';
+import { DateRangeFilter } from '@components/common/date-range-filter/date-range-filter.component';
+import { DateRangeValue } from '@interfaces/list/date-range-filter.interface';
+import { dateRangeQuery } from '@utilities/date-range-query';
 
 /**
  * `/portal/invoices` — issued invoices (drafts stay at the desk) with what is left to pay; each opens to its lines
@@ -41,10 +44,15 @@ import { EnumFilter } from '@components/common/enum-filter/enum-filter.component
     EnumLabelPipe,
     MoneyPipe,
     EnumFilter,
+    DateRangeFilter,
   ],
   templateUrl: './invoices.page.html',
 })
 export class MyInvoicesPage {
+  /** From / to on the issued (on the server). */
+  protected readonly dateFields = [{ value: 'issue_date', label: 'Issued' }];
+  protected readonly dates = signal<DateRangeValue>({});
+
   private readonly api = inject(InvoiceApi);
 
   protected readonly dateFormat = DATE_FORMAT;
@@ -65,15 +73,29 @@ export class MyInvoicesPage {
   /** Quick filters (on the server): how it stands with its payments, how it was paid. */
   protected readonly paymentState = signal<string | null>(null);
   protected readonly method = signal<string | null>(null);
-  protected readonly filtered = computed(() => !!this.paymentState() || !!this.method());
+  protected readonly filtered = computed(
+    () =>
+      !!this.paymentState() ||
+      !!this.method() ||
+      !!this.dates().from ||
+      !!this.dates().to ||
+      !!this.dates().preset,
+  );
 
   constructor() {
     effect(() => {
       const state = this.paymentState();
       const method = this.method();
+      const dates = this.dates();
       untracked(() => {
         this.invoices.set(null);
-        firstValueFrom(this.api.listBy({ perPage: 50, sort: ['-issueDate'] }, state, method))
+        firstValueFrom(
+          this.api.listBy(
+            { perPage: 50, sort: ['-issueDate'], ...dateRangeQuery('issue_date', dates) },
+            state,
+            method,
+          ),
+        )
           .then((page) => this.invoices.set(page.data))
           .catch(() => this.invoices.set([]));
       });

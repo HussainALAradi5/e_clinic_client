@@ -6,7 +6,15 @@
   <a matButton="filled" [routerLink]="bookPath"><mat-icon>add</mat-icon> Book a visit</a>
 </header>
 
-<ui-enum-filter class="mb-4 block" enum="VisitTiming" label="Which visits" [(value)]="timing" />
+<div class="mb-4 flex flex-wrap items-start gap-3">
+  <ui-enum-filter enum="VisitTiming" label="Which visits" [(value)]="timing" />
+  <ui-date-range-filter
+    class="w-64"
+    [fields]="dateFields"
+    [value]="dates()"
+    (valueChange)="dates.set($event)"
+  />
+</div>
 
 @if (visits(); as list) {
   <div class="space-y-2">

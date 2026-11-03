@@ -25,6 +25,9 @@ import { ClinicalOrderApi } from '@services/clinic/clinical-order-api.service';
 import { formatBytes } from '@utilities/text';
 import { EnumFilter } from '@components/common/enum-filter/enum-filter.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
+import { DateRangeFilter } from '@components/common/date-range-filter/date-range-filter.component';
+import { DateRangeValue } from '@interfaces/list/date-range-filter.interface';
+import { dateRangeQuery } from '@utilities/date-range-query';
 
 /**
  * `/portal/results` — completed tests and scans, newest first. Opening one shows the report and its images or
@@ -42,10 +45,15 @@ import { StatusChip } from '@components/common/status-chip/status-chip.component
     Skeleton,
     EnumFilter,
     StatusChip,
+    DateRangeFilter,
   ],
   templateUrl: './results.page.html',
 })
 export class MyResultsPage {
+  /** From / to on the result date (on the server). */
+  protected readonly dateFields = [{ value: 'completed_at', label: 'Result date' }];
+  protected readonly dates = signal<DateRangeValue>({});
+
   private readonly api = inject(ClinicalOrderApi);
   private readonly actions = inject(PortalActions);
 
@@ -66,12 +74,14 @@ export class MyResultsPage {
   constructor() {
     effect(() => {
       const type = this.type();
+      const dates = this.dates();
       untracked(() => {
         this.results.set(null);
         firstValueFrom(
           this.api.list({
             perPage: 50,
             sort: ['-completedAt'],
+            ...dateRangeQuery('completed_at', dates),
             filter: {
               and: [
                 { status: { eq: GenericStatus.Completed } },
