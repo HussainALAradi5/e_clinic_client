@@ -29,6 +29,11 @@ const NO_SHOW_AFTER_MS = 15 * 60_000;
  * The status actions of a booking (confirm, check in, start, complete, cancel, reschedule, no-show) with their
  * dialogs and messages — one implementation for the detail page, the front-desk board and the calendar.
  */
+/** Check-in shows from an hour before the start (the server refuses earlier check-ins and other days). */
+function checkInOpen(appointment: Appointment): boolean {
+  return Date.now() >= new Date(appointment.checkInOpensAt).getTime();
+}
+
 @Injectable({ providedIn: 'root' })
 export class AppointmentActions {
   private readonly api = inject(AppointmentApi);
@@ -46,6 +51,7 @@ export class AppointmentActions {
           this.simple(this.api.confirm(appointment.id), 'Appointment confirmed.'),
         ),
       allowed.has(AppointmentStatus.CheckedIn) &&
+        checkInOpen(appointment) &&
         this.action(
           'check-in',
           'Check in',

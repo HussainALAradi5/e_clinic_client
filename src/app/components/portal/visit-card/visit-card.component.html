@@ -33,8 +33,10 @@
         </button>
       }
       <span class="flex-1"></span>
-      @if (cancellable()) {
+      @if (selfCancel()) {
         <button type="button" class="pass-link" (click)="cancel()">Cancel visit</button>
+      } @else if (cancellable()) {
+        <span class="text-xs opacity-80">To cancel now, call reception.</span>
       }
     </div>
   </article>

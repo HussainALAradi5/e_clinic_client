@@ -50,6 +50,10 @@ export interface Appointment extends Versioned {
   cancellationReason: string | null;
   cancelledAt: string | null;
   checkedInAt: string | null;
+  /** Check-in opens at this moment (1 hour before the start, on the visit's day); the desk hides the button before. */
+  checkInOpensAt: string;
+  /** The patient may still cancel / reschedule online (3 days or more before); closer, reception does it. */
+  patientCanChange: boolean;
   startedAt: string | null;
   completedAt: string | null;
   createdAt: string;

@@ -62,7 +62,7 @@ export class PortalActions {
   async cancelVisit(visit: Appointment): Promise<Appointment | undefined> {
     const reason = await this.dialogs.reason({
       title: 'Cancel this visit?',
-      message: `${visitDay(visit.scheduledDate)} at ${visit.startTime} with ${visit.provider?.fullName ?? 'your doctor'}. Online cancellation closes 2 hours before the start.`,
+      message: `${visitDay(visit.scheduledDate)} at ${visit.startTime} with ${visit.provider?.fullName ?? 'your doctor'}. Online cancellation closes 3 days before the start; after that, call reception.`,
       reasonLabel: 'Why are you cancelling?',
       confirmLabel: 'Cancel visit',
       cancelLabel: 'Keep it',

@@ -51,6 +51,10 @@ export class VisitCard {
   protected readonly cancellable = computed(
     () => this.upcoming() && CANCELLABLE.includes(this.visit().status),
   );
+  /** Online changes stop 3 days before; closer, the patient calls reception (who can cancel for them). */
+  protected readonly selfCancel = computed(
+    () => this.cancellable() && this.visit().patientCanChange,
+  );
   protected readonly session = computed(() => this.visit().sessionNumber !== null);
   /** The coloured left edge of a list row: coming, today, past or missed. */
   protected readonly stripe = computed(
