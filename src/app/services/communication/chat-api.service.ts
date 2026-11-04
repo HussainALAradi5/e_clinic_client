@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { silent } from '@middlewares/interceptors/http-context';
 import { ParticipantRole } from '@enums/communication/participant-role.enum';
@@ -84,11 +83,9 @@ export class ChatApi {
       .pipe(map((r) => r.count));
   }
 
-  contacts(search = ''): Observable<ChatContact[]> {
-    return this.api.get<ChatContact[]>(`${this.path}/contacts`, {
-      params: new HttpParams().set('search', search),
-      context: silent(),
-    });
+  /** Colleagues matching the search (name, phone, email or staff no.), one page at a time. */
+  contacts(search = '', page = 1, perPage = 20): Observable<Page<ChatContact>> {
+    return this.api.list<ChatContact>(`${this.path}/contacts`, { search, page, perPage });
   }
 
   rename(id: string, title: string): Observable<Conversation> {

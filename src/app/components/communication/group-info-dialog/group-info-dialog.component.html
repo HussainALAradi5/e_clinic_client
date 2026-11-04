@@ -33,14 +33,34 @@
     @if (adding()) {
       <div class="add">
         <p class="m-0 mb-1 text-xs font-semibold uppercase text-on-surface-variant">Add people</p>
-        @for (c of contacts(); track c.id) {
+        <mat-form-field class="w-full" subscriptSizing="dynamic">
+          <mat-label>{{ searchText.label }}</mat-label>
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput (input)="contacts.search($any($event.target).value)" />
+          <mat-hint>{{ searchText.hint }}</mat-hint>
+        </mat-form-field>
+        @for (c of contacts.shown(); track c.id) {
           <button type="button" class="person" (click)="add(c)">
             <app-chat-avatar [name]="c.fullName" [id]="c.id" [url]="c.avatarUrl" [size]="32" />
             <span class="flex-1 text-left">{{ c.fullName }}</span>
             <mat-icon>person_add</mat-icon>
           </button>
         } @empty {
-          <p class="m-0 py-2 text-sm text-on-surface-variant">Everyone is already here.</p>
+          @if (!contacts.loading()) {
+            <p class="m-0 py-2 text-sm text-on-surface-variant">{{ searchText.none }}</p>
+          }
+        }
+        @if (contacts.hasMore()) {
+          <button
+            matButton
+            type="button"
+            class="w-full"
+            [disabled]="contacts.loading()"
+            (click)="contacts.more()"
+          >
+            {{ searchText.more }} ·
+            {{ searchText.count(contacts.items().length, contacts.total()) }}
+          </button>
         }
       </div>
     } @else {

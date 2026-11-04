@@ -1,3 +1,5 @@
+import { CONTACT_SEARCH } from '@constants/communication/contact-search.constants';
+import { ContactSearchStore } from '@services/communication/contact-search.store';
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,8 +9,6 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { debounceTime, Subject, switchMap } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { ConversationType } from '@enums/communication/chat.enum';
 import { ChatContact } from '@interfaces/communication/chat.interface';
@@ -33,6 +33,7 @@ import { ChatAvatar } from '../chat-avatar/chat-avatar.component';
     EnumLabelPipe,
     ChatAvatar,
   ],
+  providers: [ContactSearchStore],
   template: `
     <h2 mat-dialog-title>New chat</h2>
     <mat-dialog-content class="!pt-1">
@@ -52,13 +53,14 @@ import { ChatAvatar } from '../chat-avatar/chat-avatar.component';
         </mat-form-field>
       }
       <mat-form-field class="w-full" subscriptSizing="dynamic">
-        <mat-label>Find a colleague</mat-label>
+        <mat-label>{{ searchText.label }}</mat-label>
         <mat-icon matPrefix>search</mat-icon>
-        <input matInput (input)="search$.next($any($event.target).value)" />
+        <input matInput (input)="contacts.search($any($event.target).value)" />
+        <mat-hint>{{ searchText.hint }}</mat-hint>
       </mat-form-field>
 
       <ul class="m-0 mt-2 max-h-80 list-none overflow-y-auto p-0">
-        @for (c of contacts(); track c.id) {
+        @for (c of contacts.shown(); track c.id) {
           <li>
             @if (type === types.Group) {
               <mat-checkbox class="w-full" [checked]="picked().has(c.id)" (change)="toggle(c.id)">
@@ -97,6 +99,20 @@ import { ChatAvatar } from '../chat-avatar/chat-avatar.component';
           <li class="py-6 text-center text-sm text-on-surface-variant">No colleagues found.</li>
         }
       </ul>
+      @if (!contacts.loading() && contacts.shown().length === 0) {
+        <p class="m-0 py-4 text-center text-sm text-on-surface-variant">{{ searchText.none }}</p>
+      }
+      @if (contacts.hasMore()) {
+        <button
+          matButton
+          type="button"
+          class="w-full"
+          [disabled]="contacts.loading()"
+          (click)="contacts.more()"
+        >
+          {{ searchText.more }} · {{ searchText.count(contacts.items().length, contacts.total()) }}
+        </button>
+      }
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button matButton mat-dialog-close>Cancel</button>
@@ -120,23 +136,12 @@ export class NewChatDialog implements OnInit {
   protected readonly types = ConversationType;
   protected type = ConversationType.Direct;
   protected title = '';
-  protected readonly contacts = signal<ChatContact[]>([]);
+  protected readonly contacts = inject(ContactSearchStore);
+  protected readonly searchText = CONTACT_SEARCH;
   protected readonly picked = signal(new Set<string>());
   protected readonly busy = signal(false);
-  protected readonly search$ = new Subject<string>();
-
-  constructor() {
-    this.search$
-      .pipe(
-        debounceTime(250),
-        switchMap((q) => this.api.contacts(q)),
-        takeUntilDestroyed(),
-      )
-      .subscribe((list) => this.contacts.set(list));
-  }
-
   ngOnInit(): void {
-    this.search$.next('');
+    void this.contacts.start();
   }
 
   protected toggle(id: string): void {

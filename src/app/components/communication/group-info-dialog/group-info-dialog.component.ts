@@ -1,3 +1,5 @@
+import { CONTACT_SEARCH } from '@constants/communication/contact-search.constants';
+import { ContactSearchStore } from '@services/communication/contact-search.store';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,6 +26,7 @@ import { GROUP_INFO_DIALOG_TEXT } from '@constants/communication/group-info-dial
  * leader or member and removes members; anyone can leave. Closes with the updated chat, or `null` after leaving.
  */
 @Component({
+  providers: [ContactSearchStore],
   selector: 'app-group-info-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -63,7 +66,8 @@ export class GroupInfoDialog {
 
   protected title = this.chat().title;
   protected readonly adding = signal(false);
-  protected readonly contacts = signal<ChatContact[]>([]);
+  protected readonly contacts = inject(ContactSearchStore);
+  protected readonly searchText = CONTACT_SEARCH;
 
   protected rename(): void {
     const title = this.title.trim();
@@ -72,14 +76,12 @@ export class GroupInfoDialog {
 
   protected openAdd(): void {
     this.adding.set(true);
-    this.api.contacts().subscribe((list) => {
-      const inChat = new Set(this.chat().members.map((m) => m.userId));
-      this.contacts.set(list.filter((c) => !inChat.has(c.id)));
-    });
+    this.contacts.exclude.set(new Set(this.chat().members.map((m) => m.userId)));
+    void this.contacts.start();
   }
 
   protected add(contact: ChatContact): void {
-    this.contacts.update((list) => list.filter((c) => c.id !== contact.id));
+    this.contacts.remove(contact.id);
     this.apply(this.api.addMembers(this.chat().id, [contact.id]));
   }
 
