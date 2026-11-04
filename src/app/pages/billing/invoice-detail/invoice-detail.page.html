@@ -170,6 +170,7 @@
         </div>
         @if (inv.invoiceNumber) {
           <app-invoice-paid-bar class="mt-3" [invoice]="inv" [label]="true" />
+          <app-invoice-coverage class="mt-3" [invoice]="inv" />
         }
       </mat-card>
       <mat-card appearance="outlined" class="!p-5"><ui-facts [items]="facts()" /></mat-card>

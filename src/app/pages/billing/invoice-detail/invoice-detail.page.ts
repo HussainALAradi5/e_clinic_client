@@ -43,11 +43,13 @@ const SOURCE_ROUTES: Record<string, string> = {
  * issue a draft, take payment); payments with receipt, void and refund; refunds with their approval; history.
  */
 import { InvoicePaidBar } from '@components/billing/invoice-paid-bar/invoice-paid-bar.component';
+import { InvoiceCoverage } from '@components/billing/invoice-coverage/invoice-coverage.component';
 @Component({
   selector: 'app-invoice-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     InvoicePaidBar,
+    InvoiceCoverage,
     PageHeader,
     AppButton,
     ErrorState,

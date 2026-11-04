@@ -33,6 +33,9 @@ import { fromMinor, toMinor } from '@utilities/money';
 import { AppValidators } from '@validations/validators';
 import { PaymentRow } from '@interfaces/billing/payment-dialog.interface';
 import { PAYMENT_DIALOG_TEXT } from '@constants/billing/payment-dialog.constants';
+import { InvoiceApi } from '@services/billing/invoice-api.service';
+import { Coverage } from '@interfaces/billing/coverage.interface';
+import { CoverageNote } from '@components/billing/coverage-note/coverage-note.component';
 
 /** Desk methods (insurance settles through claims, never at the desk). */
 const METHODS: readonly { value: PaymentMethod; label: string; icon: string }[] = [
@@ -66,6 +69,7 @@ const METHODS: readonly { value: PaymentMethod; label: string; icon: string }[] 
     MoneyInput,
     TextField,
     MoneyPipe,
+    CoverageNote,
   ],
   templateUrl: './payment-dialog.component.html',
 })
@@ -76,6 +80,7 @@ export class PaymentDialog implements OnInit {
   private readonly drawers = inject(CashSessionApi);
   private readonly dialogs = inject(DialogService);
   private readonly access = inject(AccessService);
+  private readonly invoices = inject(InvoiceApi);
 
   protected readonly invoice = this.data.invoice;
   protected readonly methods = METHODS;
@@ -97,10 +102,19 @@ export class PaymentDialog implements OnInit {
     ),
     { requireSync: true },
   );
-  /** Balance still to cover by the rows not yet taken. */
+  /** The insurer / patient split (null until loaded, or for an uninsured patient's failure to load). */
+  protected readonly coverage = signal<Coverage | null>(null);
+  /** The patient pays the insurer's share too. */
+  protected readonly payAll = signal(false);
+  /** What the desk may take: the co-pay on an insured invoice, else the balance. */
+  private readonly limit = computed(() => {
+    const c = this.coverage();
+    return c?.covered && !this.payAll() ? c.patientDue : this.invoice.balanceDue;
+  });
+  /** Still to cover by the rows not yet taken. */
   private readonly balance = computed(() => {
     const paid = this.recorded().reduce((sum, p) => sum + (toMinor(p.amount.amount) ?? 0n), 0n);
-    return (toMinor(this.invoice.balanceDue.amount) ?? 0n) - paid;
+    return (toMinor(this.limit().amount) ?? 0n) - paid;
   });
   protected readonly remaining = computed(() => {
     const entered = this.values().reduce((sum, r) => sum + (toMinor(r.amount) ?? 0n), 0n);
@@ -117,8 +131,27 @@ export class PaymentDialog implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    void this.loadCoverage();
     if (!this.operatesDrawer) return;
     this.drawer.set(await firstValueFrom(this.drawers.current()).catch(() => undefined));
+  }
+
+  /** Starts the first part at the co-pay when the insurer covers part of the invoice. */
+  private async loadCoverage(): Promise<void> {
+    const coverage = await firstValueFrom(this.invoices.coverage(this.invoice.id)).catch(
+      () => null,
+    );
+    this.coverage.set(coverage);
+    if (coverage?.covered && this.rows.length === 1)
+      this.rows.at(0).controls.amount.setValue(coverage.patientDue.amount);
+  }
+
+  /** Ticking "pays it all" moves a single part to the new limit. */
+  protected setPayAll(all: boolean): void {
+    this.payAll.set(all);
+    if (this.rows.length === 1 && !this.recorded().length) {
+      this.rows.at(0).controls.amount.setValue(this.limit().amount);
+    }
   }
 
   protected change(row: PaymentRow): string | null {
@@ -166,6 +199,7 @@ export class PaymentDialog implements OnInit {
             method: v.method,
             referenceNumber: v.referenceNumber?.trim() || null,
             cardLast4: v.cardLast4?.trim() || null,
+            payInsurerShare: this.payAll() || undefined,
           },
           this.key(row),
         ),

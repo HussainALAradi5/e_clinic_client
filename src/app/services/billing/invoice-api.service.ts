@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { withIdempotencyKey } from '@middlewares/interceptors/http-context';
 import { ChargePayload } from '@interfaces/billing/charge-payload.interface';
+import { Coverage } from '@interfaces/billing/coverage.interface';
 import { Invoice } from '@interfaces/billing/invoice.interface';
 import { InvoicePayload } from '@interfaces/billing/invoice-payload.interface';
 import { Page } from '@interfaces/api/page.interface';
@@ -47,5 +48,10 @@ export class InvoiceApi extends EntityApi<Invoice, InvoicePayload> {
 
   cancel(id: string, reason: string): Observable<Invoice> {
     return this.api.post<Invoice>(`${this.path}/${id}/cancel`, { reason });
+  }
+
+  /** The insurer / patient split: what the desk takes now on an insured invoice (the co-pay). */
+  coverage(id: string): Observable<Coverage> {
+    return this.api.get<Coverage>(`${this.path}/${id}/coverage`);
   }
 }

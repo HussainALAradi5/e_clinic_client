@@ -8,4 +8,6 @@ export interface PaymentPayload {
   referenceNumber?: string | null;
   cardLast4?: string | null;
   notes?: string | null;
+  /** The patient pays the insurer's share too (no claim); without it the server limits an insured invoice to the co-pay. */
+  payInsurerShare?: boolean;
 }
