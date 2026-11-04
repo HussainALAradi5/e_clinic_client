@@ -1,3 +1,4 @@
+import { Money } from '@interfaces/common/money.interface';
 import { SortDirection } from '@enums/shared/sort-direction.enum';
 
 /** List meta from ApiResponse::paginated(): page info or cursors + echoed sort / filters / date. */
@@ -13,4 +14,6 @@ export interface PageMeta {
   date?: { field: string; from: string | null; to: string | null; preset: string | null } | null;
   /** GET /notifications/mine: unread in-app notifications (bell badge). */
   unreadCount?: number;
+  /** GET billing/patients/{id}/wallet: the patient's current balance. */
+  balance?: Money;
 }

@@ -134,6 +134,17 @@ export const STATUS_TONES: Record<string, Record<string, StatusTone>> = {
     benefit_pay: Pink,
     insurance: Purple,
     cheque: Amber,
+    patient_balance: Teal,
+  },
+  // Patient balance movements: money in, money used, money out.
+  WalletEntryType: {
+    deposit: Green,
+    invoice_payment: Blue,
+    payment_reversal: Purple,
+    withdrawal: Orange,
+    adjustment_credit: Teal,
+    adjustment_debit: Red,
+    fee: Amber,
   },
   // One colour per kind of result / order.
   ClinicalOrderType: {

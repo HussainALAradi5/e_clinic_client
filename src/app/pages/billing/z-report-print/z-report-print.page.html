@@ -32,6 +32,10 @@
         <dd class="m-0 text-right">−{{ r.cashRefunds.amount }}</dd>
         <dt class="text-black/60">Cash expenses ({{ r.expenses }})</dt>
         <dd class="m-0 text-right">−{{ r.cashExpenses.amount }}</dd>
+        <dt class="text-black/60">{{ walletText.balanceDeposits }}</dt>
+        <dd class="m-0 text-right">+{{ r.balanceDeposits.amount }}</dd>
+        <dt class="text-black/60">{{ walletText.balancePaybacks }}</dt>
+        <dd class="m-0 text-right">−{{ r.balancePaybacks.amount }}</dd>
         <dt class="font-semibold">Expected cash</dt>
         <dd class="m-0 text-right font-semibold">{{ r.expected | money }}</dd>
         @if (s.countedClosing) {

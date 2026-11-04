@@ -45,6 +45,7 @@ import { CASH_SESSION_DETAIL_TEXT } from '@constants/billing/cash-session-detail
  * `/billing/cash-drawers/:id` — one shift: how the expected cash was built, the count note by note, the
  * difference and who accepted it, the deposit, and the payments taken into it.
  */
+import { WALLET_TEXT } from '@constants/billing/wallet.constants';
 @Component({
   selector: 'app-cash-session-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -69,6 +70,7 @@ import { CASH_SESSION_DETAIL_TEXT } from '@constants/billing/cash-session-detail
   templateUrl: './cash-session-detail.page.html',
 })
 export class CashSessionDetailPage implements OnInit {
+  protected readonly walletText = WALLET_TEXT;
   readonly id = input.required<string>();
 
   private readonly api = inject(CashSessionApi);

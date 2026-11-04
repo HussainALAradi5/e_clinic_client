@@ -7,6 +7,10 @@ export interface CashSessionReport {
   cashIn: Money;
   cashRefunds: Money;
   cashExpenses: Money;
+  /** Cash patients left on their balance during the session. */
+  balanceDeposits: Money;
+  /** Cash paid back from patient balances during the session. */
+  balancePaybacks: Money;
   expected: Money;
   byMethod: { method: PaymentMethod; total: Money }[];
   payments: number;

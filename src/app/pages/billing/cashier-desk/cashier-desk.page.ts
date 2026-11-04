@@ -50,6 +50,7 @@ import { defaultQuery } from '@utilities/list-query';
  * waiting to be issued, issued invoices with a balance (search by patient or number, take payment), and today's
  * takings per method.
  */
+import { WALLET_TEXT } from '@constants/billing/wallet.constants';
 @Component({
   selector: 'app-cashier-desk-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -73,6 +74,7 @@ import { defaultQuery } from '@utilities/list-query';
   templateUrl: './cashier-desk.page.html',
 })
 export class CashierDeskPage implements OnInit {
+  protected readonly walletText = WALLET_TEXT;
   private readonly invoices = inject(InvoiceApi);
   private readonly payments = inject(PaymentApi);
   private readonly drawers = inject(CashSessionApi);

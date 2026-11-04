@@ -1,0 +1,67 @@
+@if (wallet(); as w) {
+  <section class="rounded-2xl border border-outline-variant bg-surface p-4">
+    <div class="flex flex-wrap items-center gap-3">
+      <mat-icon class="text-primary">account_balance_wallet</mat-icon>
+      <div class="min-w-0 flex-1">
+        <p class="m-0 text-xs text-on-surface-variant">{{ text.title }}</p>
+        <p class="m-0 text-2xl font-semibold tabular-nums">{{ w.balance | money }}</p>
+        <p class="m-0 text-xs text-on-surface-variant">{{ text.hint }}</p>
+      </div>
+      @if (manage()) {
+        <div class="flex flex-wrap gap-2">
+          <ui-button
+            icon="add_card"
+            [variant]="variants.Tonal"
+            access="wallet.deposit"
+            [action]="move.bind(this, movements.Deposit)"
+            >{{ text.deposit }}</ui-button
+          >
+          @if (hasMoney()) {
+            <ui-button
+              icon="undo"
+              [variant]="variants.Outlined"
+              access="wallet.withdraw"
+              [action]="move.bind(this, movements.Payback)"
+              >{{ text.payback }}</ui-button
+            >
+          }
+          <ui-button
+            icon="tune"
+            [variant]="variants.Text"
+            access="wallet.adjust"
+            [action]="move.bind(this, movements.Adjust)"
+            >{{ text.adjust }}</ui-button
+          >
+        </div>
+      }
+    </div>
+    @if (w.entries.length) {
+      <ul class="m-0 mt-3 list-none border-t border-outline-variant/60 p-0">
+        @for (e of w.entries; track e.id) {
+          <li class="flex flex-wrap items-center gap-3 py-2 text-sm">
+            <ui-status [value]="e.type" enum="WalletEntryType" />
+            <span class="min-w-0 flex-1 truncate text-on-surface-variant">
+              {{ e.createdAt | date: dateFormat }}
+              @if (e.reason) {
+                · {{ e.reason }}
+              }
+            </span>
+            <span
+              class="font-semibold tabular-nums"
+              [class.text-primary]="e.isCredit"
+              [class.text-error]="!e.isCredit"
+              >{{ e.isCredit ? '+' : '−' }}{{ e.amount | money }}</span
+            >
+            <span class="w-24 text-right text-xs text-on-surface-variant tabular-nums">{{
+              e.balanceAfter | money
+            }}</span>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="m-0 mt-3 text-sm text-on-surface-variant">{{ text.empty }}</p>
+    }
+  </section>
+} @else {
+  <p class="m-0 text-sm text-on-surface-variant">{{ text.loading }}</p>
+}

@@ -9,6 +9,12 @@ import { OpenDrawerDialog } from '@components/billing/open-drawer-dialog/open-dr
 import { PaymentDialog } from '@components/billing/payment-dialog/payment-dialog.component';
 import { RefundDialog } from '@components/billing/refund-dialog/refund-dialog.component';
 import { RemittanceDialog } from '@components/billing/remittance-dialog/remittance-dialog.component';
+import { WalletDialog } from '@components/billing/wallet-dialog/wallet-dialog.component';
+import { WALLET_MESSAGES } from '@constants/billing/wallet.constants';
+import { WalletDialogData } from '@interfaces/billing/wallet-dialog-data.interface';
+import { WalletEntry } from '@interfaces/billing/wallet-entry.interface';
+import { Money } from '@interfaces/common/money.interface';
+import { WalletApi } from '@services/billing/wallet-api.service';
 import { ClaimDecisionDialogData } from '@interfaces/billing/claim-decision-dialog-data.interface';
 import { CloseDrawerDialogData } from '@interfaces/billing/close-drawer-dialog-data.interface';
 import { DepositDialogData } from '@interfaces/billing/deposit-dialog-data.interface';
@@ -34,7 +40,7 @@ import { CashSessionApi } from '@services/finance/cash-session-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { isApiError } from '@utilities/guards';
-import { formatMoney } from '@utilities/money';
+import { formatMoney, fromMinor, money, toMinor } from '@utilities/money';
 
 /**
  * Billing and cash-drawer steps with their confirmations and messages — one place for the invoice, cashier desk,
@@ -50,6 +56,7 @@ export class BillingActions {
   private readonly refunds = inject(RefundApi);
   private readonly drawers = inject(CashSessionApi);
   private readonly claims = inject(InsuranceClaimApi);
+  private readonly wallet = inject(WalletApi);
 
   editInvoice(data: InvoiceEditorDialogData): Promise<Invoice | undefined> {
     return this.dialogs.openAction<InvoiceEditorDialog, InvoiceEditorDialogData, Invoice>(
@@ -219,6 +226,34 @@ export class BillingActions {
       { session },
       (s) => `Deposit of ${formatMoney(s.depositAmount)} recorded.`,
     );
+  }
+
+  // Patient balance
+
+  moveWallet(data: WalletDialogData): Promise<WalletEntry | undefined> {
+    return this.dialogs.openAction<WalletDialog, WalletDialogData, WalletEntry>(
+      WalletDialog,
+      data,
+      (e) => WALLET_MESSAGES.saved(e.code, formatMoney(e.balanceAfter)),
+    );
+  }
+
+  /** Pays what is due on the invoice, up to what the balance holds; the server checks both again. */
+  async payFromBalance(invoice: Invoice, balance: Money): Promise<Payment | undefined> {
+    const due = toMinor(invoice.balanceDue.amount) ?? 0n;
+    const held = toMinor(balance.amount) ?? 0n;
+    const amount = money(fromMinor(due < held ? due : held));
+    const ok = await this.dialogs.confirm({
+      title: WALLET_MESSAGES.payTitle(formatMoney(amount)),
+      message: WALLET_MESSAGES.payMessage,
+      confirmLabel: WALLET_MESSAGES.payConfirm,
+    });
+    if (!ok) return undefined;
+    const paid = await firstValueFrom(
+      this.wallet.payInvoice(invoice.id, amount.amount, newIdempotencyKey()),
+    );
+    this.notify.success(WALLET_MESSAGES.paid(paid.code, formatMoney(paid.amount)));
+    return paid;
   }
 
   // Insurance claims

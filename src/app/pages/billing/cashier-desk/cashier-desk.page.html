@@ -37,6 +37,10 @@
               <dd class="m-0 text-right">−{{ r.cashRefunds.amount }}</dd>
               <dt class="text-on-surface-variant">Cash expenses · {{ r.expenses }}</dt>
               <dd class="m-0 text-right">−{{ r.cashExpenses.amount }}</dd>
+              <dt class="text-on-surface-variant">{{ walletText.balanceDeposits }}</dt>
+              <dd class="m-0 text-right">+{{ r.balanceDeposits.amount }}</dd>
+              <dt class="text-on-surface-variant">{{ walletText.balancePaybacks }}</dt>
+              <dd class="m-0 text-right">−{{ r.balancePaybacks.amount }}</dd>
             </dl>
             @if (r.byMethod.length) {
               <p class="m-0 mt-4 text-xs text-on-surface-variant">Taken this shift</p>

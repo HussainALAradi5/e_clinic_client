@@ -1,3 +1,9 @@
+<app-patient-wallet
+  class="mb-4"
+  [patient]="patient()"
+  *hasAccess="'wallet.read_all'"
+  (changed)="load()"
+/>
 @if (invoices(); as list) {
   <div class="mb-3 flex flex-wrap items-center gap-3">
     <div class="flex-1">
@@ -39,6 +45,15 @@
               [action]="pay.bind(this, inv)"
               >Pay</ui-button
             >
+            @if (walletMoney()) {
+              <ui-button
+                icon="account_balance_wallet"
+                [variant]="variants.Outlined"
+                access="payments.create"
+                [action]="payFromBalance.bind(this, inv)"
+                >{{ text.payFromBalance }}</ui-button
+              >
+            }
           }
         </li>
       }

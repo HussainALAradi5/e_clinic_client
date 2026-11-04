@@ -49,6 +49,10 @@
             <dd class="m-0 text-right">−{{ r.cashRefunds.amount }}</dd>
             <dt class="text-on-surface-variant">Cash expenses · {{ r.expenses }}</dt>
             <dd class="m-0 text-right">−{{ r.cashExpenses.amount }}</dd>
+            <dt class="text-on-surface-variant">{{ walletText.balanceDeposits }}</dt>
+            <dd class="m-0 text-right">+{{ r.balanceDeposits.amount }}</dd>
+            <dt class="text-on-surface-variant">{{ walletText.balancePaybacks }}</dt>
+            <dd class="m-0 text-right">−{{ r.balancePaybacks.amount }}</dd>
             <dt class="border-t border-outline-variant pt-1 font-semibold">Expected</dt>
             <dd class="m-0 border-t border-outline-variant pt-1 text-right font-semibold">
               {{ r.expected | money }}

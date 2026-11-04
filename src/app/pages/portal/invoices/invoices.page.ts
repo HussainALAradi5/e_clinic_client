@@ -25,6 +25,9 @@ import { EnumFilter } from '@components/common/enum-filter/enum-filter.component
 import { DateRangeFilter } from '@components/common/date-range-filter/date-range-filter.component';
 import { DateRangeValue } from '@interfaces/list/date-range-filter.interface';
 import { dateRangeQuery } from '@utilities/date-range-query';
+import { PatientWallet } from '@components/billing/patient-wallet/patient-wallet.component';
+import { PatientSummary } from '@interfaces/common/summary.interface';
+import { AuthStore } from '@services/auth/auth.store';
 
 /**
  * `/portal/invoices` — issued invoices (drafts stay at the desk) with what is left to pay; each opens to its lines
@@ -45,6 +48,7 @@ import { dateRangeQuery } from '@utilities/date-range-query';
     MoneyPipe,
     EnumFilter,
     DateRangeFilter,
+    PatientWallet,
   ],
   templateUrl: './invoices.page.html',
 })
@@ -54,6 +58,14 @@ export class MyInvoicesPage {
   protected readonly dates = signal<DateRangeValue>({});
 
   private readonly api = inject(InvoiceApi);
+  /** The signed-in patient (a patient's user id is their patient id) for their balance card. */
+  private readonly auth = inject(AuthStore);
+  protected readonly me = computed<PatientSummary | null>(() => {
+    const user = this.auth.user();
+    return user
+      ? { id: user.id, code: user.code, fullName: user.fullName, phone: user.phone }
+      : null;
+  });
 
   protected readonly dateFormat = DATE_FORMAT;
   protected readonly dateTimeFormat = DATE_TIME_FORMAT;

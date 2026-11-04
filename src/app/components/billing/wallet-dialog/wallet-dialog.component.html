@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>
+  {{ labels.title }}
+  <span class="block text-sm font-normal text-on-surface-variant"
+    >{{ data.patient.fullName }} · {{ text.available }} {{ data.balance | money }}</span
+  >
+</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="labels.submit"
+    [compact]="true"
+    (cancelled)="ref.close()"
+  >
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <ui-money [label]="text.amount" [control]="form.controls.amount" />
+      @if (adjusting) {
+        <ui-select
+          [label]="text.direction"
+          [control]="form.controls.direction"
+          [options]="directions"
+          [required]="true"
+        />
+      } @else {
+        <ui-select
+          [label]="text.method"
+          [control]="form.controls.method"
+          [options]="methods"
+          [required]="true"
+        />
+      }
+    </div>
+    @if (method() === transfer) {
+      <ui-text [label]="text.reference" [control]="form.controls.reference" [maxLength]="100" />
+    }
+    <ui-text
+      [label]="needsReason ? text.reason : text.notes"
+      [control]="form.controls.reason"
+      [multiline]="true"
+      [rows]="2"
+      [maxLength]="500"
+      [hint]="needsReason ? text.reasonHint : null"
+    />
+  </ui-form>
+</mat-dialog-content>

@@ -6,4 +6,5 @@ export enum PaymentMethod {
   BenefitPay = 'benefit_pay',
   Insurance = 'insurance',
   Cheque = 'cheque',
+  PatientBalance = 'patient_balance',
 }

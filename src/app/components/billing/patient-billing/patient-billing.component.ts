@@ -7,6 +7,7 @@ import {
   input,
   OnInit,
   signal,
+  viewChild,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
@@ -23,12 +24,24 @@ import { MoneyPipe } from '@pipes/money.pipe';
 import { InvoiceApi } from '@services/billing/invoice-api.service';
 import { defaultQuery } from '@utilities/list-query';
 import { fromMinor, toMinor } from '@utilities/money';
+import { PatientWallet } from '@components/billing/patient-wallet/patient-wallet.component';
+import { WALLET_TEXT } from '@constants/billing/wallet.constants';
+import { HasAccessDirective } from '@directives/has-access.directive';
 
 /** The patient's invoices on the patient file: what they still owe, the open draft, and paying from here. */
 @Component({
   selector: 'app-patient-billing',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AppButton, StatusChip, MatIconModule, RouterLink, MoneyPipe, DatePipe],
+  imports: [
+    AppButton,
+    StatusChip,
+    MatIconModule,
+    RouterLink,
+    MoneyPipe,
+    DatePipe,
+    PatientWallet,
+    HasAccessDirective,
+  ],
   host: { class: 'block' },
   templateUrl: './patient-billing.component.html',
 })
@@ -40,6 +53,13 @@ export class PatientBilling implements OnInit {
   protected readonly invoices = signal<Invoice[] | null>(null);
   protected readonly variants = ButtonVariant;
   protected readonly dateFormat = DATE_FORMAT;
+  protected readonly text = WALLET_TEXT;
+  private readonly walletCard = viewChild(PatientWallet);
+  /** Balance held for the patient, when the card is shown and it holds money. */
+  protected readonly walletMoney = computed(() => {
+    const balance = this.walletCard()?.wallet()?.balance;
+    return balance && (toMinor(balance.amount) ?? 0n) > 0n ? balance : null;
+  });
 
   protected readonly owed = computed(() =>
     fromMinor(
@@ -83,5 +103,11 @@ export class PatientBilling implements OnInit {
   protected readonly pay = async (invoice: Invoice): Promise<void> => {
     const full = await firstValueFrom(this.api.get(invoice.id));
     if (await this.actions.takePayment(full)) await this.load();
+  };
+
+  protected readonly payFromBalance = async (invoice: Invoice): Promise<void> => {
+    const balance = this.walletMoney();
+    if (!balance || !(await this.actions.payFromBalance(invoice, balance))) return;
+    await Promise.all([this.load(), this.walletCard()?.load()]);
   };
 }

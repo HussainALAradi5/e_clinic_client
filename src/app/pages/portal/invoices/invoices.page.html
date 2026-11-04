@@ -10,6 +10,10 @@
   </p>
 </header>
 
+@if (me(); as patient) {
+  <app-patient-wallet class="mb-4" [patient]="patient" [manage]="false" />
+}
+
 <div class="mb-4 flex flex-wrap gap-2">
   <ui-enum-filter
     enum="InvoicePaymentState"

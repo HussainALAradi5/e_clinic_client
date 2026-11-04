@@ -11,6 +11,7 @@ import { MoneyPipe } from '@pipes/money.pipe';
 import { CashSessionApi } from '@services/finance/cash-session-api.service';
 
 /** `/print/z-report/:id` — shift report of a cash drawer (X-report while open, Z-report once closed). */
+import { WALLET_TEXT } from '@constants/billing/wallet.constants';
 @Component({
   selector: 'app-z-report-print-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,6 +19,7 @@ import { CashSessionApi } from '@services/finance/cash-session-api.service';
   templateUrl: './z-report-print.page.html',
 })
 export class ZReportPrintPage implements OnInit {
+  protected readonly walletText = WALLET_TEXT;
   protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 
