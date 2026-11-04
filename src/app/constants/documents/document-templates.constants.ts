@@ -1,0 +1,30 @@
+/** Text of clinic/document-templates page and documents/template-dialog. */
+export const DOCUMENT_TEMPLATES_TEXT = {
+  title: 'Document templates',
+  subtitle:
+    'Ready-made wording and your own, for reports, certificates, referral notes and letters.',
+  newTemplate: 'New template',
+  all: 'All',
+  readyMade: 'Ready-made',
+  mine: 'Mine',
+  edit: 'Edit',
+  copy: 'Copy to edit',
+  delete: 'Delete',
+  empty: 'No templates here yet.',
+  deleteConfirm: (name: string) => ({
+    title: `Delete "${name}"?`,
+    message: 'Documents already written from it stay as they are.',
+    confirmLabel: 'Delete',
+  }),
+  copied: (name: string) => `"${name}" copied — it is yours to edit.`,
+  deleted: 'Template deleted.',
+  saved: 'Template saved.',
+  dialogNew: 'New template',
+  dialogEdit: 'Edit template',
+  name: 'Name',
+  description: 'Description',
+  descriptionHint: 'When to use it',
+  kind: 'Kind',
+  body: 'Wording',
+  save: 'Save template',
+};

@@ -1,3 +1,8 @@
+import { UserType } from '@enums/identity/user-type.enum';
+import { WriteDocumentDialog } from '@components/documents/write-document-dialog/write-document-dialog.component';
+import { WRITE_DOCUMENT_DIALOG_TEXT } from '@constants/documents/write-document-dialog.constants';
+import { WriteDocumentDialogData } from '@interfaces/documents/write-document-dialog-data.interface';
+import { WrittenDocument } from '@interfaces/documents/written-document.interface';
 import { SickLeaveDialog } from '@components/clinic/sick-leave-dialog/sick-leave-dialog.component';
 import { SickLeaveDialogData } from '@interfaces/clinic/sick-leave-dialog.interface';
 import { SickLeave } from '@interfaces/clinic/sick-leave.interface';
@@ -108,7 +113,8 @@ export class VisitWorkspacePage implements OnInit {
   private readonly dialogs = inject(DialogService);
   private readonly notify = inject(NotifyService);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly me = inject(AuthStore).user()?.id;
+  private readonly auth = inject(AuthStore);
+  private readonly me = this.auth.user()?.id;
   private readonly canWrite = inject(AccessService).can('records.write');
   protected readonly canReadNotes = inject(AccessService).can('patients.view_medical');
 
@@ -280,6 +286,29 @@ export class VisitWorkspacePage implements OnInit {
     if (leave) {
       this.notify.success(VISIT_WORKSPACE_TEXT.sickLeaveIssuedDays(leave.code, leave.days));
       window.open(`/print/sick-leave/${leave.id}`, '_blank', 'noopener');
+    }
+  };
+
+  /** Write a document (report, certificate, referral note, letter) from this session; its PDF opens from the dialog. */
+  protected readonly writeDocument = async (): Promise<void> => {
+    const a = this.appointment();
+    const p = this.patient();
+    if (!a || !p) return;
+    const written = await this.dialogs.open<
+      WriteDocumentDialog,
+      WriteDocumentDialogData,
+      WrittenDocument
+    >(
+      WriteDocumentDialog,
+      {
+        appointmentId: a.id,
+        patientName: p.fullName,
+        nurseOnly: this.auth.user()?.userType === UserType.MedicalStaff,
+      },
+      { width: '920px', disableClose: true },
+    );
+    if (written) {
+      this.notify.success(WRITE_DOCUMENT_DIALOG_TEXT.saved(written.code));
     }
   };
 

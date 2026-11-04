@@ -13,6 +13,12 @@ export function addDays(iso: string, days: number): string {
   return d.toISOString().slice(0, 10);
 }
 
+/** Whole days from one ISO date to another (negative when `to` is earlier; 0 when either is empty). */
+export function daysBetween(from: string, to: string): number {
+  const ms = Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`);
+  return Number.isFinite(ms) ? Math.round(ms / 86_400_000) : 0;
+}
+
 function parts(iso: string): { y: number; m: number; d: number; dow: number } {
   const date = new Date(`${iso}T00:00:00Z`);
   return {

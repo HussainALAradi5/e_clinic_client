@@ -1,34 +1,43 @@
-<h2 mat-dialog-title>Sick leave for {{ data.patientName }}</h2>
+<h2 mat-dialog-title>{{ text.title(data.patientName) }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Issue sick leave"
+    [submitLabel]="text.submit"
     submitIcon="sick"
     [compact]="true"
     [allowPristine]="true"
     (cancelled)="ref.close()"
   >
-    <div class="grid grid-cols-2 gap-x-4">
-      <ui-text label="First day" type="date" [control]="form.controls.startDate" />
-      <ui-text label="Last day" type="date" [control]="form.controls.endDate" />
+    <p class="m-0 mb-2 text-sm font-medium">{{ text.daysOff }}</p>
+    <mat-chip-listbox class="mb-2 block" [attr.aria-label]="text.daysOff">
+      @for (n of dayChoices; track n) {
+        <mat-chip-option [selected]="form.controls.days.value === n" (click)="choose(n)">
+          {{ text.days(n) }}
+        </mat-chip-option>
+      }
+    </mat-chip-listbox>
+    <div class="grid grid-cols-3 gap-x-4">
+      <ui-text [label]="text.daysOff" type="number" [control]="form.controls.days" />
+      <ui-text [label]="text.firstDay" type="date" [control]="form.controls.startDate" />
+      <ui-text [label]="text.lastDay" type="date" [control]="form.controls.endDate" />
     </div>
-    <p class="m-0 mb-3 text-sm" [class.text-error]="days() < 1 || days() > maxDays">
-      {{ days() }} {{ days() === 1 ? 'day' : 'days' }} off
-      <span class="text-on-surface-variant"
-        >· up to {{ maxDays }} days, from the visit day or up to 3 days before</span
-      >
+    <p
+      class="m-0 mb-3 text-xs text-on-surface-variant"
+      [class.text-error]="form.controls.days.invalid"
+    >
+      {{ text.limits(maxDays) }}
     </p>
     <ui-text
-      label="Reason"
-      hint="Kept in the file"
+      [label]="text.reason"
+      [hint]="text.reasonHint"
       [multiline]="true"
       [rows]="2"
       [control]="form.controls.reason"
     />
     <mat-slide-toggle class="mb-3 block" [formControl]="form.controls.showReason">
-      Print the reason on the certificate (the patient agrees)
+      {{ text.showReason }}
     </mat-slide-toggle>
-    <ui-text label="Notes" hint="e.g. light duties after" [control]="form.controls.notes" />
+    <ui-text [label]="text.notes" [hint]="text.notesHint" [control]="form.controls.notes" />
   </ui-form>
 </mat-dialog-content>

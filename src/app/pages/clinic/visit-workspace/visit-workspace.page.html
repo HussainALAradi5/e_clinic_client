@@ -329,6 +329,13 @@
         [action]="sickLeave"
         >Sick leave</ui-button
       >
+      <ui-button
+        icon="edit_document"
+        [variant]="variants.Outlined"
+        access="written_documents.create"
+        [action]="writeDocument"
+        >Write document</ui-button
+      >
     }
     @if (canSign()) {
       <ui-button

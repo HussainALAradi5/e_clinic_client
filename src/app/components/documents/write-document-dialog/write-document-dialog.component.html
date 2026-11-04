@@ -1,0 +1,83 @@
+<h2 mat-dialog-title>{{ text.title(data.patientName) }}</h2>
+<mat-dialog-content>
+  @if (store.saved(); as doc) {
+    <div class="flex flex-col items-center gap-3 py-8 text-center">
+      <mat-icon class="!h-12 !w-12 !text-5xl text-primary">task_alt</mat-icon>
+      <p class="m-0 text-lg font-semibold">{{ text.saved(doc.code) }}</p>
+      <p class="m-0 text-sm text-on-surface-variant">{{ doc.title }}</p>
+      <ui-document-actions [type]="documentType.WrittenDocument" [recordId]="doc.id" />
+      <button matButton type="button" (click)="ref.close(doc)">{{ text.done }}</button>
+    </div>
+  } @else {
+    <ui-form
+      [form]="store.form"
+      [submit]="submit"
+      [submitLabel]="text.save"
+      submitIcon="picture_as_pdf"
+      [compact]="true"
+      [allowPristine]="true"
+      (cancelled)="ref.close()"
+    >
+      <p class="m-0 mb-1 text-sm font-medium">{{ text.kind }}</p>
+      <mat-chip-listbox class="mb-3 block" [attr.aria-label]="text.kind">
+        @for (kind of kinds(); track kind) {
+          <mat-chip-option [selected]="store.kind() === kind" (click)="store.setKind(kind)">
+            {{ kind | enumLabel: 'WrittenDocumentKind' }}
+          </mat-chip-option>
+        }
+      </mat-chip-listbox>
+
+      <p class="m-0 mb-1 text-sm font-medium">{{ text.start }}</p>
+      <div class="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-3">
+        <button
+          type="button"
+          class="rounded-xl border border-dashed p-3 text-left transition hover:bg-surface-container"
+          [class.border-primary]="store.templateId() === null"
+          (click)="store.useTemplate(null)"
+        >
+          <span class="flex items-center gap-2 font-medium"
+            ><mat-icon>note_add</mat-icon> {{ text.blank }}</span
+          >
+        </button>
+        @for (t of store.forKind(); track t.id) {
+          <button
+            type="button"
+            class="rounded-xl border p-3 text-left transition hover:bg-surface-container"
+            [class.border-primary]="store.templateId() === t.id"
+            [class.bg-primary-container]="store.templateId() === t.id"
+            (click)="store.useTemplate(t)"
+          >
+            <span class="block font-medium">{{ t.name }}</span>
+            <span class="block text-xs text-on-surface-variant">
+              {{ t.isSystem ? text.readyMade : text.mine }} · {{ t.code }}
+            </span>
+          </button>
+        }
+      </div>
+
+      <ui-text [label]="text.documentTitle" [control]="store.form.controls.title" />
+
+      <div class="mb-2 flex items-center gap-2">
+        <button
+          matButton="tonal"
+          type="button"
+          [disabled]="store.generating()"
+          (click)="store.generate()"
+        >
+          @if (store.generating()) {
+            <mat-spinner diameter="18" />
+          } @else {
+            <mat-icon>auto_awesome</mat-icon>
+          }
+          {{ text.generate }}
+        </button>
+        <span class="text-xs text-on-surface-variant">{{ text.generateHint }}</span>
+      </div>
+
+      <ui-rich-text-editor
+        [control]="store.form.controls.body"
+        [placeholders]="store.placeholders()"
+      />
+    </ui-form>
+  }
+</mat-dialog-content>

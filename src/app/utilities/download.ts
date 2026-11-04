@@ -16,11 +16,23 @@ export function downloadBlob(response: HttpResponse<Blob> | Blob, fallbackName =
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
-/** Opens a blob (e.g. a PDF) in a new tab with the browser's own viewer. */
-export function openBlob(blob: Blob): void {
+/**
+ * An empty tab opened right on the user's click, to show a file that is still downloading (a tab opened after the
+ * download is blocked as a popup). Null when the browser blocks it anyway.
+ */
+export function openPendingTab(): Window | null {
+  return window.open('', '_blank');
+}
+
+/** Shows a blob (e.g. a PDF) with the browser's own viewer, in the pending tab or else a new one. */
+export function openBlob(blob: Blob, tab: Window | null = null): void {
   const url = URL.createObjectURL(blob);
-  window.open(url, '_blank', 'noopener');
-  // The new tab keeps its own reference; release ours after it has loaded.
+  if (tab && !tab.closed) {
+    tab.location.href = url;
+  } else {
+    window.open(url, '_blank');
+  }
+  // The tab keeps its own reference; release ours after it has loaded.
   setTimeout(() => URL.revokeObjectURL(url), 60_000);
 }
 

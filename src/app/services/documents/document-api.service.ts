@@ -18,11 +18,14 @@ export class DocumentApi {
     return this.api.get<GeneratedDocument>(this.path(type, id));
   }
 
-  /** Opens the PDF in a new tab (the browser's viewer: read, zoom, print). */
-  open(type: DocumentType, id: string): Observable<void> {
+  /**
+   * Shows the PDF in the browser's viewer (read, zoom, print): in `tab` — opened on the click, before the download,
+   * so popup blockers allow it — or in a new tab.
+   */
+  open(type: DocumentType, id: string, tab: Window | null = null): Observable<void> {
     return this.http
       .get(`${this.path(type, id)}/file`, { responseType: 'blob' })
-      .pipe(map((blob) => openBlob(blob)));
+      .pipe(map((blob) => openBlob(blob, tab)));
   }
 
   /** Saves the PDF under its unique file name. */

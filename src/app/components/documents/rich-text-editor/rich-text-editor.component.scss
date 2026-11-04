@@ -1,0 +1,47 @@
+// The written page looks like the printed document (same heading sizes, lists and quote).
+.rich-page {
+  h2 {
+    margin: 0.6em 0 0.35em;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--mat-sys-primary);
+  }
+
+  h3 {
+    margin: 0.6em 0 0.3em;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--mat-sys-primary);
+  }
+
+  p {
+    margin: 0 0 0.6em;
+  }
+
+  ul,
+  ol {
+    margin: 0 0 0.6em 1.4em;
+    padding: 0;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  blockquote {
+    margin: 0.5em 0;
+    padding: 0.4em 0.9em;
+    border-left: 3px solid var(--mat-sys-primary);
+    background: var(--mat-sys-surface-container);
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+
+  &:empty::before {
+    content: attr(data-placeholder);
+    color: var(--mat-sys-on-surface-variant);
+  }
+}

@@ -65,6 +65,15 @@ export const CLINIC_ROUTES: Routes = [
       import('@pages/clinic/sick-leave-list/sick-leave-list.page').then((m) => m.SickLeaveListPage),
   },
   {
+    path: 'document-templates',
+    title: 'Document templates · e-Clinic',
+    canMatch: [accessGuard('templates.read_all | templates.read_own')],
+    loadComponent: () =>
+      import('@pages/clinic/document-templates/document-templates.page').then(
+        (m) => m.DocumentTemplatesPage,
+      ),
+  },
+  {
     path: 'treatments',
     canMatch: [accessGuard('treatments.read_all | treatments.read_own')],
     children: [

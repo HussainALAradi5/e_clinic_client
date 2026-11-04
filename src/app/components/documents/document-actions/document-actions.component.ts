@@ -7,6 +7,7 @@ import { DOCUMENT_ACTIONS_TEXT } from '@constants/documents/document-actions.con
 import { DocumentType } from '@enums/documents/document-type.enum';
 import { GeneratedDocument } from '@interfaces/documents/generated-document.interface';
 import { DocumentApi } from '@services/documents/document-api.service';
+import { openPendingTab } from '@utilities/download';
 
 /**
  * "Open PDF" and "Download" for any record's branded PDF (made on the server). After the first use it shows the
@@ -31,8 +32,12 @@ export class DocumentActions {
   protected readonly failed = signal(false);
   protected readonly info = signal<GeneratedDocument | null>(null);
 
-  protected open(): Promise<void> {
-    return this.run('open', this.documents.open(this.type(), this.recordId()));
+  protected async open(): Promise<void> {
+    const tab = openPendingTab();
+    await this.run('open', this.documents.open(this.type(), this.recordId(), tab));
+    if (this.failed()) {
+      tab?.close();
+    }
   }
 
   protected download(): Promise<void> {

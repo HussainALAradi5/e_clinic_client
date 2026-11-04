@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>{{ data.template ? text.dialogEdit : text.dialogNew }}</h2>
+<mat-dialog-content>
+  <ui-form
+    [form]="form"
+    [submit]="submit"
+    [submitLabel]="text.save"
+    submitIcon="save"
+    [compact]="true"
+    (cancelled)="ref.close()"
+  >
+    <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <ui-text [label]="text.name" [control]="form.controls.name" />
+      <ui-select [label]="text.kind" enum="WrittenDocumentKind" [control]="form.controls.kind" />
+    </div>
+    <ui-text
+      [label]="text.description"
+      [hint]="text.descriptionHint"
+      [control]="form.controls.description"
+    />
+    <ui-rich-text-editor
+      [label]="text.body"
+      [control]="form.controls.body"
+      [placeholders]="data.placeholders"
+    />
+  </ui-form>
+</mat-dialog-content>

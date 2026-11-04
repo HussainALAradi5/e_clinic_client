@@ -1,0 +1,66 @@
+@if (label()) {
+  <p class="m-0 mb-1 text-sm font-medium text-on-surface-variant">{{ label() }}</p>
+}
+<div
+  class="overflow-hidden rounded-xl border border-outline-variant bg-surface focus-within:border-primary"
+>
+  <div
+    class="flex flex-wrap items-center gap-0.5 border-b border-outline-variant bg-surface-container-low px-1 py-1"
+    role="toolbar"
+    [attr.aria-label]="text.toolbar"
+  >
+    @for (group of toolbar; track $index) {
+      @if (!$first) {
+        <span class="mx-1 h-6 w-px bg-outline-variant" aria-hidden="true"></span>
+      }
+      @for (item of group; track item.label) {
+        <button
+          matIconButton
+          type="button"
+          class="!h-9 !w-9"
+          [matTooltip]="item.label"
+          [attr.aria-label]="item.label"
+          (mousedown)="$event.preventDefault()"
+          (click)="run(item)"
+        >
+          <mat-icon class="!text-xl">{{ item.icon }}</mat-icon>
+        </button>
+      }
+    }
+    @if (placeholders().length) {
+      <span class="flex-1"></span>
+      <button
+        matButton
+        type="button"
+        [matMenuTriggerFor]="fields"
+        (mousedown)="$event.preventDefault()"
+      >
+        <mat-icon>data_object</mat-icon> {{ text.insertField }}
+      </button>
+      <mat-menu #fields="matMenu">
+        @for (field of placeholders(); track field.key) {
+          <button
+            mat-menu-item
+            type="button"
+            (mousedown)="$event.preventDefault()"
+            (click)="insert(field)"
+          >
+            <span>{{ field.label }}</span>
+            <span class="ml-2 font-mono text-xs text-on-surface-variant">{{ field.token }}</span>
+          </button>
+        }
+      </mat-menu>
+    }
+  </div>
+  <div
+    #page
+    class="rich-page min-h-64 max-h-[55vh] overflow-y-auto px-5 py-4 text-[15px] leading-relaxed outline-none"
+    contenteditable="true"
+    role="textbox"
+    aria-multiline="true"
+    [attr.aria-label]="label() || text.placeholder"
+    [attr.data-placeholder]="text.placeholder"
+    (input)="read()"
+    (blur)="control().markAsTouched()"
+  ></div>
+</div>

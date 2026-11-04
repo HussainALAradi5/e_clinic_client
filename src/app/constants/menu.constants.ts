@@ -76,6 +76,14 @@ export const MENU: NavGroup[] = [
         access: 'sick_leaves.read_all | sick_leaves.read_own',
       },
       {
+        label: 'Document templates',
+        description:
+          'Ready-made and your own wording for reports, certificates, referral notes and letters.',
+        icon: 'edit_document',
+        route: '/clinic/document-templates',
+        access: 'templates.read_all | templates.read_own',
+      },
+      {
         label: 'Treatments',
         description: 'Treatment plans, their sessions and the scheduling queue (urgent first).',
         icon: 'healing',

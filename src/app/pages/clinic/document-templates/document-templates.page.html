@@ -1,0 +1,61 @@
+<ui-page-header [title]="text.title" [subtitle]="text.subtitle">
+  <button matButton="filled" type="button" (click)="edit(null)">
+    <mat-icon>add</mat-icon> {{ text.newTemplate }}
+  </button>
+</ui-page-header>
+
+<mat-chip-listbox class="mb-4 block px-4" [attr.aria-label]="text.title">
+  <mat-chip-option [selected]="kind() === null" (click)="kind.set(null)">{{
+    text.all
+  }}</mat-chip-option>
+  @for (k of kinds(); track k) {
+    <mat-chip-option [selected]="kind() === k" (click)="kind.set(k)">
+      {{ k | enumLabel: 'WrittenDocumentKind' }}
+    </mat-chip-option>
+  }
+</mat-chip-listbox>
+
+<div class="grid grid-cols-1 gap-4 px-4 pb-6 md:grid-cols-2 xl:grid-cols-3">
+  @for (t of shown(); track t.id) {
+    <article
+      class="flex flex-col rounded-2xl border border-outline-variant bg-surface p-4 shadow-sm"
+    >
+      <div class="mb-1 flex items-start gap-2">
+        <h3 class="m-0 flex-1 text-base font-semibold">{{ t.name }}</h3>
+        <span
+          class="rounded-full px-2 py-0.5 text-xs font-semibold"
+          [class]="
+            t.isSystem
+              ? 'bg-tertiary-container text-on-tertiary-container'
+              : 'bg-primary-container text-on-primary-container'
+          "
+          >{{ t.isSystem ? text.readyMade : text.mine }}</span
+        >
+      </div>
+      <p class="m-0 text-xs text-on-surface-variant">
+        <span class="font-mono">{{ t.code }}</span> ·
+        {{ t.kind | enumLabel: 'WrittenDocumentKind' }}
+      </p>
+      @if (t.description) {
+        <p class="m-0 mt-2 text-sm">{{ t.description }}</p>
+      }
+      <p class="m-0 mt-2 line-clamp-3 flex-1 text-sm text-on-surface-variant">{{ preview(t) }}</p>
+      <div class="mt-3 flex flex-wrap gap-1">
+        @if (t.isEditable) {
+          <button matButton type="button" (click)="edit(t)">
+            <mat-icon>edit</mat-icon> {{ text.edit }}
+          </button>
+          <button matButton type="button" class="!text-error" (click)="remove(t)">
+            <mat-icon>delete</mat-icon> {{ text.delete }}
+          </button>
+        } @else {
+          <button matButton="tonal" type="button" (click)="copy(t)">
+            <mat-icon>content_copy</mat-icon> {{ text.copy }}
+          </button>
+        }
+      </div>
+    </article>
+  } @empty {
+    <p class="col-span-full m-0 py-10 text-center text-on-surface-variant">{{ text.empty }}</p>
+  }
+</div>
