@@ -2,6 +2,7 @@
   <ui-error class="block p-6" [error]="error()" />
 } @else if (order(); as o) {
   <app-print-sheet
+    [document]="documentType.Result"
     title="Referral letter"
     entity="clinical_order"
     [recordId]="o.id"

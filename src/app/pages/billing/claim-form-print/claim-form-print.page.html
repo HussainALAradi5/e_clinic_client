@@ -2,6 +2,8 @@
   <ui-error class="block p-6" [error]="error()" />
 } @else if (claim(); as c) {
   <app-print-sheet
+    [document]="documentType.InsuranceClaim"
+    [documentId]="c.id"
     title="Insurance claim form"
     entity="invoice"
     verifyNote="Scan the code to check the invoice behind this claim is genuine."

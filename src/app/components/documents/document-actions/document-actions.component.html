@@ -1,0 +1,56 @@
+<div class="flex flex-wrap items-center gap-2">
+  @if (compact()) {
+    <button
+      matIconButton
+      type="button"
+      [attr.aria-label]="text.open"
+      [disabled]="busy() !== null"
+      (click)="open()"
+    >
+      @if (busy() === 'open') {
+        <mat-spinner diameter="18" />
+      } @else {
+        <mat-icon>picture_as_pdf</mat-icon>
+      }
+    </button>
+    <button
+      matIconButton
+      type="button"
+      [attr.aria-label]="text.download"
+      [disabled]="busy() !== null"
+      (click)="download()"
+    >
+      @if (busy() === 'download') {
+        <mat-spinner diameter="18" />
+      } @else {
+        <mat-icon>download</mat-icon>
+      }
+    </button>
+  } @else {
+    <button matButton="tonal" type="button" [disabled]="busy() !== null" (click)="open()">
+      @if (busy() === 'open') {
+        <mat-spinner diameter="18" />
+      } @else {
+        <mat-icon>picture_as_pdf</mat-icon>
+      }
+      {{ text.open }}
+    </button>
+    <button matButton="outlined" type="button" [disabled]="busy() !== null" (click)="download()">
+      @if (busy() === 'download') {
+        <mat-spinner diameter="18" />
+      } @else {
+        <mat-icon>download</mat-icon>
+      }
+      {{ text.download }}
+    </button>
+    @if (info(); as doc) {
+      <span class="text-xs text-on-surface-variant">
+        <span class="font-mono font-semibold text-on-surface">{{ doc.code }}</span>
+        · {{ doc.fileName }} · {{ sizeKb(doc.sizeBytes) }}
+      </span>
+    }
+  }
+  @if (failed()) {
+    <span class="text-xs text-error" role="alert">{{ text.failed }}</span>
+  }
+</div>

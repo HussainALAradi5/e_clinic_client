@@ -1,3 +1,4 @@
+import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
@@ -19,6 +20,7 @@ import { PatientApi } from '@services/clinic/patient-api.service';
   templateUrl: './consent-form.page.html',
 })
 export class ConsentFormPage implements OnInit {
+  protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 
   private readonly consents = inject(ConsentApi);

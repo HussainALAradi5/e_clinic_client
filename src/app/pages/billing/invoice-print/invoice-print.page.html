@@ -2,6 +2,7 @@
   <ui-error class="block p-6" [error]="error()" />
 } @else if (invoice(); as inv) {
   <app-print-sheet
+    [document]="documentType.Invoice"
     entity="invoice"
     verifyNote="Scan the code to check this invoice is genuine. It shows amounts only."
     [title]="title()"

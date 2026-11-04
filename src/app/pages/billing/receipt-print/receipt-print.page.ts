@@ -1,3 +1,4 @@
+import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
@@ -18,6 +19,7 @@ import { PaymentApi } from '@services/billing/payment-api.service';
   templateUrl: './receipt-print.page.html',
 })
 export class ReceiptPrintPage implements OnInit {
+  protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 
   private readonly api = inject(PaymentApi);

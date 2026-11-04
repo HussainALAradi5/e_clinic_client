@@ -16,6 +16,14 @@ export function downloadBlob(response: HttpResponse<Blob> | Blob, fallbackName =
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
+/** Opens a blob (e.g. a PDF) in a new tab with the browser's own viewer. */
+export function openBlob(blob: Blob): void {
+  const url = URL.createObjectURL(blob);
+  window.open(url, '_blank', 'noopener');
+  // The new tab keeps its own reference; release ours after it has loaded.
+  setTimeout(() => URL.revokeObjectURL(url), 60_000);
+}
+
 /** Opens a short-lived signed link (task result / attachment); the browser downloads it directly. */
 export function openSignedLink(link: { url: string }, inline = false): void {
   const anchor = Object.assign(document.createElement('a'), {

@@ -2,6 +2,7 @@
   <ui-error class="block p-6" [error]="error()" />
 } @else if (slip(); as s) {
   <app-print-sheet
+    [document]="documentType.Payslip"
     verifyNote="Confidential — for the employee named above. Questions about this payslip go to HR."
     [title]="title()"
     [recordId]="s.id"

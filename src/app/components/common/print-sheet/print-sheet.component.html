@@ -1,7 +1,10 @@
 <div
-  class="mx-auto mb-4 flex justify-end gap-2 px-4 print:hidden"
+  class="mx-auto mb-4 flex flex-wrap items-center justify-end gap-2 px-4 print:hidden"
   [class]="paper() === 'receipt' ? 'max-w-[80mm]' : 'max-w-[210mm]'"
 >
+  @if (document(); as type) {
+    <ui-document-actions [type]="type" [recordId]="documentId() ?? recordId()" />
+  }
   <button matButton="filled" type="button" (click)="print()">
     <mat-icon>print</mat-icon> Print
   </button>

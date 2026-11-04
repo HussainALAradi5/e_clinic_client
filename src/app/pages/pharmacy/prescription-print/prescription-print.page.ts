@@ -1,3 +1,4 @@
+import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe, LowerCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
@@ -18,6 +19,7 @@ import { PrescriptionApi } from '@services/pharmacy/prescription-api.service';
   templateUrl: './prescription-print.page.html',
 })
 export class PrescriptionPrintPage implements OnInit {
+  protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 
   private readonly api = inject(PrescriptionApi);

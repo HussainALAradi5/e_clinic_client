@@ -1,3 +1,4 @@
+import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
@@ -17,6 +18,7 @@ import { CashSessionApi } from '@services/finance/cash-session-api.service';
   templateUrl: './z-report-print.page.html',
 })
 export class ZReportPrintPage implements OnInit {
+  protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 
   private readonly api = inject(CashSessionApi);

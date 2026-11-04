@@ -1,3 +1,4 @@
+import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
@@ -16,6 +17,7 @@ import { InsuranceClaimApi } from '@services/billing/insurance-claim-api.service
   templateUrl: './claim-form-print.page.html',
 })
 export class ClaimFormPrintPage implements OnInit {
+  protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 
   private readonly api = inject(InsuranceClaimApi);

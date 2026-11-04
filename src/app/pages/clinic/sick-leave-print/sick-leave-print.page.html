@@ -2,6 +2,7 @@
   <ui-error class="block p-6" [error]="error()" />
 } @else if (leave(); as l) {
   <app-print-sheet
+    [document]="documentType.SickLeave"
     title="Sick leave certificate"
     entity="sick_leave"
     [recordId]="l.id"

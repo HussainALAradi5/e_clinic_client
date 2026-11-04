@@ -2,6 +2,7 @@
   <ui-error class="block p-6" [error]="error()" />
 } @else if (payment(); as p) {
   <app-print-sheet
+    [document]="documentType.Receipt"
     paper="receipt"
     entity="payment"
     verifyNote="Scan to check this receipt."

@@ -2,6 +2,7 @@
   <ui-error class="block p-6" [error]="error()" />
 } @else if (prescription(); as p) {
   <app-print-sheet
+    [document]="documentType.Prescription"
     entity="prescription"
     verifyNote="Pharmacies: scan to check this prescription is genuine and still open."
     [title]="p.status === cancelled ? 'Prescription — CANCELLED' : 'Prescription'"

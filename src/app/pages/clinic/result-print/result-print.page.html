@@ -1,7 +1,13 @@
 @if (error()) {
   <ui-error class="block p-6" [error]="error()" />
 } @else if (order(); as o) {
-  <app-print-sheet [title]="title()" entity="clinical_order" [recordId]="o.id" [reference]="o.code">
+  <app-print-sheet
+    [document]="documentType.Result"
+    [title]="title()"
+    entity="clinical_order"
+    [recordId]="o.id"
+    [reference]="o.code"
+  >
     <dl class="m-0 mb-6 grid grid-cols-[9rem_1fr] gap-y-1">
       <dt class="text-black/60">Patient</dt>
       <dd class="m-0 font-medium">

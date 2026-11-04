@@ -1,3 +1,4 @@
+import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -30,6 +31,7 @@ import { RESULT_PRINT_TEXT } from '@constants/clinic/result-print.constants';
   templateUrl: './result-print.page.html',
 })
 export class ResultPrintPage implements OnInit {
+  protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
   private readonly orders = inject(ClinicalOrderApi);
   private readonly files = inject(AttachmentApi);

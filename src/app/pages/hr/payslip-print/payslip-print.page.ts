@@ -1,3 +1,4 @@
+import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -27,6 +28,7 @@ import { PAYSLIP_PRINT_TEXT } from '@constants/hr/payslip-print.constants';
   templateUrl: './payslip-print.page.html',
 })
 export class PayslipPrintPage implements OnInit {
+  protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 
   private readonly api = inject(PayrollApi);

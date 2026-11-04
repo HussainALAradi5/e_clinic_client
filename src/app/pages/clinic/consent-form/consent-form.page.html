@@ -2,6 +2,7 @@
   <ui-error class="block p-6" [error]="error()" />
 } @else if (consent(); as c) {
   <app-print-sheet
+    [document]="documentType.Consent"
     [title]="'Consent — ' + (c.type | enumLabel: 'ConsentType')"
     entity="patient_consent"
     [recordId]="c.id"

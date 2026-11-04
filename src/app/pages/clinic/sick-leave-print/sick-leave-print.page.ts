@@ -1,3 +1,4 @@
+import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
@@ -20,6 +21,7 @@ import { SickLeaveApi } from '@services/clinic/sick-leave-api.service';
   templateUrl: './sick-leave-print.page.html',
 })
 export class SickLeavePrintPage implements OnInit {
+  protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
   private readonly api = inject(SickLeaveApi);
   protected readonly leave = signal<SickLeave | null>(null);

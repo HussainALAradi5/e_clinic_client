@@ -1,3 +1,4 @@
+import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
@@ -18,6 +19,7 @@ import { MedicalRecordApi } from '@services/clinic/medical-record-api.service';
   templateUrl: './referral-letter.page.html',
 })
 export class ReferralLetterPage implements OnInit {
+  protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 
   private readonly orders = inject(ClinicalOrderApi);

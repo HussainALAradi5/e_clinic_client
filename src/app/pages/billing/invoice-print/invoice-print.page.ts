@@ -1,3 +1,4 @@
+import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -28,6 +29,7 @@ import { INVOICE_PRINT_TEXT } from '@constants/billing/invoice-print.constants';
   templateUrl: './invoice-print.page.html',
 })
 export class InvoicePrintPage implements OnInit {
+  protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 
   private readonly api = inject(InvoiceApi);
