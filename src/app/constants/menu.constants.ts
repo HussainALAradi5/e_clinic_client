@@ -350,6 +350,13 @@ export const MENU: NavGroup[] = [
     description: 'Reports, the journal, expenses, closing months and the chart of accounts.',
     items: [
       {
+        label: 'Month summary',
+        description: 'The month at a glance next to the month before.',
+        icon: 'insights',
+        route: '/accounting/month-summary',
+        access: 'reports.read_all',
+      },
+      {
         label: 'Financial reports',
         description: 'Income statement, balance sheet, cash flow, ledgers and aging.',
         icon: 'monitoring',

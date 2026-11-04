@@ -13,6 +13,13 @@ export const ACCOUNTING_ROUTES: Routes = [
     data: { hub: '/accounting' },
   },
   {
+    path: 'month-summary',
+    title: 'Month summary · e-Clinic',
+    canMatch: [accessGuard('reports.read_all')],
+    loadComponent: () =>
+      import('@pages/accounting/month-summary/month-summary.page').then((m) => m.MonthSummaryPage),
+  },
+  {
     path: 'reports',
     title: 'Financial reports · e-Clinic',
     canMatch: [accessGuard('reports.read_all | reports.read_own')],

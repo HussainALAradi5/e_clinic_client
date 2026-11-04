@@ -32,6 +32,7 @@ export const ENDPOINTS = {
     accounts: 'accounting/accounts',
     fiscalYears: 'accounting/fiscal-years',
     journalEntries: 'accounting/journal-entries',
+    monthSummary: 'accounting/month-summary',
     reports: 'accounting/reports',
   },
   auth: {

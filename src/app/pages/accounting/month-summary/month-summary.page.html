@@ -1,0 +1,137 @@
+<ui-page-header [title]="text.title" [subtitle]="text.subtitle" />
+
+<div class="mb-4 flex items-center gap-2">
+  <button matIconButton [attr.aria-label]="text.previousMonth" (click)="shift(-1)">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  <span class="min-w-40 text-center font-semibold">{{ start() | date: 'MMMM y' }}</span>
+  <button matIconButton [attr.aria-label]="text.nextMonth" (click)="shift(1)">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>
+
+@if (summary(); as s) {
+  <h2 class="m-0 mb-2 text-sm font-semibold uppercase text-on-surface-variant">{{ text.money }}</h2>
+  <div class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+    <app-summary-tile
+      [label]="text.revenue"
+      [value]="s.current.revenue"
+      [previous]="s.previous.revenue"
+    />
+    <app-summary-tile
+      [label]="text.expenses"
+      [value]="s.current.expenses"
+      [previous]="s.previous.expenses"
+      [lowerIsBetter]="true"
+    />
+    <app-summary-tile
+      [label]="text.netResult"
+      [value]="s.current.netResult"
+      [previous]="s.previous.netResult"
+    />
+    <app-summary-tile
+      [label]="text.collected"
+      [value]="s.current.collected"
+      [previous]="s.previous.collected"
+    />
+    <app-summary-tile
+      [label]="text.refunded"
+      [value]="s.current.refunded"
+      [previous]="s.previous.refunded"
+      [lowerIsBetter]="true"
+    />
+  </div>
+
+  <h2 class="m-0 mb-2 text-sm font-semibold uppercase text-on-surface-variant">{{ text.owed }}</h2>
+  <div class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
+    <app-summary-tile
+      [label]="text.owedByPatients"
+      [value]="s.current.owedByPatients"
+      [previous]="s.previous.owedByPatients"
+      [lowerIsBetter]="true"
+    />
+    <app-summary-tile
+      [label]="text.owedByInsurers"
+      [value]="s.current.owedByInsurers"
+      [previous]="s.previous.owedByInsurers"
+      [lowerIsBetter]="true"
+    />
+    <app-summary-tile
+      [label]="text.patientBalancesHeld"
+      [value]="s.current.patientBalancesHeld"
+      [previous]="s.previous.patientBalancesHeld"
+    />
+    <app-summary-tile
+      [label]="text.unearnedPackages"
+      [value]="s.current.unearnedPackages"
+      [previous]="s.previous.unearnedPackages"
+    />
+  </div>
+
+  <h2 class="m-0 mb-2 text-sm font-semibold uppercase text-on-surface-variant">
+    {{ text.activity }}
+  </h2>
+  <div class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+    <app-summary-tile
+      [label]="text.visitsCompleted"
+      [value]="s.current.visitsCompleted"
+      [previous]="s.previous.visitsCompleted"
+    />
+    <app-summary-tile
+      [label]="text.noShows"
+      [value]="s.current.noShows"
+      [previous]="s.previous.noShows"
+      [lowerIsBetter]="true"
+    />
+    <app-summary-tile
+      [label]="text.cancellations"
+      [value]="s.current.cancellations"
+      [previous]="s.previous.cancellations"
+      [lowerIsBetter]="true"
+    />
+    <app-summary-tile
+      [label]="text.newPatients"
+      [value]="s.current.newPatients"
+      [previous]="s.previous.newPatients"
+    />
+    <app-summary-tile
+      [label]="text.feesCharged"
+      [value]="s.current.feesCharged"
+      [previous]="s.previous.feesCharged"
+    />
+    <app-summary-tile
+      [label]="text.packagesSold"
+      [value]="s.current.packagesSold"
+      [previous]="s.previous.packagesSold"
+    />
+  </div>
+
+  <div class="grid gap-4 lg:grid-cols-2">
+    <section class="rounded-2xl border border-outline-variant bg-surface p-4">
+      <h2 class="m-0 mb-3 text-base font-semibold">{{ text.collectedBy }}</h2>
+      @for (m of methods(); track m.method) {
+        <ui-progress-bar
+          class="mb-3"
+          [value]="m.share"
+          [label]="(m.method | enumLabel: 'PaymentMethod') + ' · ' + (m.total | money)"
+          [showValue]="true"
+        />
+      }
+    </section>
+    <section class="rounded-2xl border border-outline-variant bg-surface p-4">
+      <h2 class="m-0 mb-3 text-base font-semibold">{{ text.topDoctors }}</h2>
+      @for (d of topShare(); track d.doctorId) {
+        <ui-progress-bar
+          class="mb-3"
+          [value]="d.share"
+          tone="green"
+          [label]="d.fullName + ' · ' + (d.revenue | money)"
+        />
+      } @empty {
+        <p class="m-0 text-sm text-on-surface-variant">{{ text.noDoctors }}</p>
+      }
+    </section>
+  </div>
+} @else {
+  <ui-skeleton [rows]="6" [height]="72" />
+}
