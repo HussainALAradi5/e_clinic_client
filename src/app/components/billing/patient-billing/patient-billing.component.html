@@ -4,6 +4,12 @@
   *hasAccess="'wallet.read_all'"
   (changed)="load()"
 />
+<app-patient-packages
+  class="mb-4"
+  [patient]="patient()"
+  *hasAccess="'patient_packages.read_all'"
+  (changed)="load()"
+/>
 @if (invoices(); as list) {
   <div class="mb-3 flex flex-wrap items-center gap-3">
     <div class="flex-1">

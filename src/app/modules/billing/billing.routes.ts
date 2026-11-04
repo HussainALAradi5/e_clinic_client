@@ -52,6 +52,13 @@ export const BILLING_ROUTES: Routes = [
       import('@pages/billing/refund-list/refund-list.page').then((m) => m.RefundListPage),
   },
   {
+    path: 'packages',
+    title: 'Packages · e-Clinic',
+    canMatch: [accessGuard('packages.read_all')],
+    loadComponent: () =>
+      import('@pages/billing/package-list/package-list.page').then((m) => m.PackageListPage),
+  },
+  {
     path: 'fees',
     title: 'Visit fees · e-Clinic',
     canMatch: [accessGuard('appointment_fees.read_all | appointment_fees.read_own')],

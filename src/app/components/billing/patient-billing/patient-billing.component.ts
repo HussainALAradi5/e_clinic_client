@@ -30,6 +30,7 @@ import { HasAccessDirective } from '@directives/has-access.directive';
 
 /** The patient's invoices on the patient file: what they still owe, the open draft, and paying from here. */
 import { InvoicePaidBar } from '@components/billing/invoice-paid-bar/invoice-paid-bar.component';
+import { PatientPackages } from '@components/billing/patient-packages/patient-packages.component';
 @Component({
   selector: 'app-patient-billing',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,6 +44,7 @@ import { InvoicePaidBar } from '@components/billing/invoice-paid-bar/invoice-pai
     DatePipe,
     PatientWallet,
     HasAccessDirective,
+    PatientPackages,
   ],
   host: { class: 'block' },
   templateUrl: './patient-billing.component.html',

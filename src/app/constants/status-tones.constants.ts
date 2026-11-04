@@ -136,6 +136,8 @@ export const STATUS_TONES: Record<string, Record<string, StatusTone>> = {
     cheque: Amber,
     patient_balance: Teal,
   },
+  // Packages a patient bought.
+  PatientPackageStatus: { awaiting_payment: Amber, active: Green, used_up: Blue, expired: Grey, cancelled: RedOutline },
   // Fees for visits that did not happen.
   AppointmentFeeType: { no_show: Red, late_cancel: Orange },
   AppointmentFeeStatus: { charged: Amber, waived: Grey },

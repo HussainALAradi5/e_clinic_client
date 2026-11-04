@@ -37,6 +37,7 @@ import { InvoicePaidBar } from '@components/billing/invoice-paid-bar/invoice-pai
 import { PayOnlineButton } from '@components/portal/pay-online-button/pay-online-button.component';
 import { OnlinePaymentNotice } from '@components/portal/online-payment-notice/online-payment-notice.component';
 import { ONLINE_PAY_TEXT } from '@constants/portal/online-payment.constants';
+import { PatientPackages } from '@components/billing/patient-packages/patient-packages.component';
 @Component({
   selector: 'app-my-invoices-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -54,6 +55,7 @@ import { ONLINE_PAY_TEXT } from '@constants/portal/online-payment.constants';
     EnumFilter,
     DateRangeFilter,
     PatientWallet,
+    PatientPackages,
     PayOnlineButton,
     OnlinePaymentNotice,
   ],

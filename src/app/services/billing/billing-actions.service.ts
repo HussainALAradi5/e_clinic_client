@@ -46,6 +46,12 @@ import { NotifyService } from '@services/ui/notify.service';
 import { isApiError } from '@utilities/guards';
 import { formatMoney, fromMinor, money, toMinor } from '@utilities/money';
 
+import { PackageFormDialog } from '@components/billing/package-form-dialog/package-form-dialog.component';
+import { SellPackageDialog } from '@components/billing/sell-package-dialog/sell-package-dialog.component';
+import { PACKAGE_TEXT } from '@constants/billing/package.constants';
+import { PatientPackage } from '@interfaces/billing/patient-package.interface';
+import { ServicePackage } from '@interfaces/billing/service-package.interface';
+import { PatientSummary } from '@interfaces/common/summary.interface';
 /**
  * Billing and cash-drawer steps with their confirmations and messages — one place for the invoice, cashier desk,
  * patient file and visit pages. Each returns the changed record, or undefined when the user backed out.
@@ -259,6 +265,25 @@ export class BillingActions {
     );
     this.notify.success(WALLET_MESSAGES.paid(paid.code, formatMoney(paid.amount)));
     return paid;
+  }
+
+  // Packages
+
+  editPackage(pkg: ServicePackage | null): Promise<ServicePackage | undefined> {
+    return this.dialogs.openAction<PackageFormDialog, ServicePackage | null, ServicePackage>(
+      PackageFormDialog,
+      pkg,
+      (saved) => PACKAGE_TEXT.saved(saved.code),
+      '640px',
+    );
+  }
+
+  sellPackage(patient: PatientSummary): Promise<PatientPackage | undefined> {
+    return this.dialogs.openAction<SellPackageDialog, PatientSummary, PatientPackage>(
+      SellPackageDialog,
+      patient,
+      (sold) => PACKAGE_TEXT.sold(sold.name),
+    );
   }
 
   // Payment reminders

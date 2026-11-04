@@ -300,6 +300,13 @@ export const MENU: NavGroup[] = [
         access: 'refunds.read_all | refunds.read_own',
       },
       {
+        label: 'Packages',
+        description: 'Prepaid sessions of a service, sold on the invoice and used visit by visit.',
+        icon: 'redeem',
+        route: '/billing/packages',
+        access: 'packages.read_all',
+      },
+      {
         label: 'Visit fees',
         description: 'Missed appointments and late cancellations; waive with a reason.',
         icon: 'event_busy',

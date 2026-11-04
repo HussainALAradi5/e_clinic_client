@@ -53,6 +53,8 @@ export const ENDPOINTS = {
     insuranceClaims: 'billing/insurance-claims',
     invoices: 'billing/invoices',
     onlinePayments: 'billing/online-payments',
+    packages: 'billing/packages',
+    patientPackages: 'billing/patient-packages',
     patients: 'billing/patients',
     payments: 'billing/payments',
     refunds: 'billing/refunds',
