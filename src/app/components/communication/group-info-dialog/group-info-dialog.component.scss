@@ -84,3 +84,31 @@
     background: var(--mat-sys-surface-container-high);
   }
 }
+
+// A colleague's phone and email, tappable; they rise in after the name.
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  margin-top: 0.25rem;
+  animation: motion-rise var(--motion-base, 240ms) var(--motion-ease, ease-out) both;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--mat-sys-primary);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  mat-icon {
+    width: 0.9rem;
+    height: 0.9rem;
+    font-size: 0.9rem;
+  }
+}

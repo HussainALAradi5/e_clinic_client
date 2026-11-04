@@ -177,10 +177,19 @@
                     c.messagesCount
                   }}</span>
                 }
+                @if (c.muted) {
+                  <mat-icon class="!size-4 !text-base text-on-surface-variant" [attr.aria-label]="menuText.muted"
+                    >notifications_off</mat-icon
+                  >
+                }
                 @if (c.unreadCount > 0) {
-                  <span class="badge" [attr.aria-label]="c.unreadCount + ' unread'">{{
-                    c.unreadCount > 99 ? '99+' : c.unreadCount
-                  }}</span>
+                  <span
+                    class="badge"
+                    [class.!bg-surface-container-highest]="c.muted"
+                    [class.!text-on-surface-variant]="c.muted"
+                    [attr.aria-label]="c.unreadCount + ' unread'"
+                    >{{ c.unreadCount > 99 ? '99+' : c.unreadCount }}</span
+                  >
                 }
               </span>
             </span>
@@ -220,7 +229,13 @@
   >
     @if (chat(); as c) {
       <header class="chat-head glass">
-        <button matIconButton class="back" aria-label="Back to chats" (click)="back()">
+        <button
+          matIconButton
+          tapMotion="nudge"
+          class="back"
+          aria-label="Back to chats"
+          (click)="back()"
+        >
           <mat-icon>arrow_back</mat-icon>
         </button>
         <button type="button" class="who" (click)="info()" [attr.aria-label]="'About ' + c.title">
@@ -243,7 +258,12 @@
                 </span>
               }
             </span>
-            <span class="block truncate text-xs text-on-surface-variant">
+            <span class="flex items-center gap-1 truncate text-xs text-on-surface-variant">
+              @if (c.muted) {
+                <mat-icon class="!size-4 !text-base text-on-surface-variant" [attr.aria-label]="menuText.muted"
+                  >notifications_off</mat-icon
+                >
+              }
               {{ isGroup() ? c.members.length + ' members · ' : '' }}{{ subtitle() }}
             </span>
           </span>
@@ -251,12 +271,14 @@
         <span class="flex-1"></span>
         <button
           matIconButton
+          tapMotion
           [matTooltip]="isGroup() ? 'Group info' : 'Chat info'"
           aria-label="Chat info"
           (click)="info()"
         >
           <mat-icon>info</mat-icon>
         </button>
+        <app-chat-menu [chat]="c" (info)="info()" (changed)="chatChanged($event)" />
       </header>
 
       <div #scroller class="messages" (scroll)="scrolled(scroller)">
@@ -282,7 +304,7 @@
             [group]="isGroup()"
             [first]="row.first"
             (react)="react(row.message, $event)"
-            (reply)="replyTo.set(row.message)"
+            (reply)="startReply(row.message)"
             (jump)="jumpTo($event)"
             (loaded)="scrollToEnd(true)"
           />

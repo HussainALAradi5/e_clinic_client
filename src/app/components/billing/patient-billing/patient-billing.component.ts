@@ -29,10 +29,12 @@ import { WALLET_TEXT } from '@constants/billing/wallet.constants';
 import { HasAccessDirective } from '@directives/has-access.directive';
 
 /** The patient's invoices on the patient file: what they still owe, the open draft, and paying from here. */
+import { InvoicePaidBar } from '@components/billing/invoice-paid-bar/invoice-paid-bar.component';
 @Component({
   selector: 'app-patient-billing',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    InvoicePaidBar,
     AppButton,
     StatusChip,
     MatIconModule,

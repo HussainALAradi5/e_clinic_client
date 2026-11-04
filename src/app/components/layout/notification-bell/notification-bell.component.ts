@@ -12,6 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { TapMotionDirective } from '@directives/tap-motion.directive';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
@@ -34,6 +35,7 @@ const INBOX_SIZE = 10;
   selector: 'app-notification-bell',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    TapMotionDirective,
     NgTemplateOutlet,
     RouterLink,
     MatBadgeModule,

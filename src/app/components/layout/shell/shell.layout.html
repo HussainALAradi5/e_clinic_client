@@ -61,6 +61,7 @@
     >
       <button
         matIconButton
+        tapMotion
         aria-label="Toggle menu"
         (click)="handset() ? drawer.toggle() : menuOpen.set(!menuOpen())"
       >
@@ -74,6 +75,7 @@
       <app-notification-bell />
       <button
         matIconButton
+        tapMotion="spin"
         [matTooltip]="theme.dark() ? 'Switch to light mode' : 'Switch to dark mode'"
         [attr.aria-label]="theme.dark() ? 'Switch to light mode' : 'Switch to dark mode'"
         (click)="theme.toggle()"

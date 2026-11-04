@@ -1,10 +1,17 @@
 @if (inboxLink(); as link) {
-  <a matIconButton aria-label="Notifications" matTooltip="Notifications" [routerLink]="link">
+  <a
+    matIconButton
+    tapMotion="ring"
+    aria-label="Notifications"
+    matTooltip="Notifications"
+    [routerLink]="link"
+  >
     <ng-container [ngTemplateOutlet]="icon" />
   </a>
 } @else {
   <button
     matIconButton
+    tapMotion="ring"
     aria-label="Notifications"
     matTooltip="Notifications"
     [matMenuTriggerFor]="inbox"

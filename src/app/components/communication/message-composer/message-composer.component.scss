@@ -131,6 +131,7 @@
 }
 
 .replying {
+  animation: motion-slide-up var(--motion-base, 240ms) var(--motion-spring, ease-out) both;
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -141,6 +142,7 @@
 
   > mat-icon {
     color: var(--mat-sys-primary);
+    animation: motion-nudge 380ms 120ms var(--motion-ease, ease-out);
   }
 
   button {

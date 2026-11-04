@@ -79,6 +79,22 @@
           <span class="block text-xs text-on-surface-variant">{{
             m.userType | enumLabel: 'UserType'
           }}</span>
+          @if (!m.isMe && (m.phone || m.email)) {
+            <span class="contact">
+              @if (m.phone) {
+                <a [href]="'tel:' + m.phone" [attr.aria-label]="contactText.call + ' ' + m.fullName"
+                  ><mat-icon>call</mat-icon>{{ m.phone }}</a
+                >
+              }
+              @if (m.email) {
+                <a
+                  [href]="'mailto:' + m.email"
+                  [attr.aria-label]="contactText.email + ' ' + m.fullName"
+                  ><mat-icon>mail</mat-icon>{{ m.email }}</a
+                >
+              }
+            </span>
+          }
         </span>
         @if (m.isMe) {
           <span class="badge you">You</span>

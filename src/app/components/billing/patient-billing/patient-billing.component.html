@@ -34,6 +34,9 @@
               {{ inv.issueDate ? (inv.issueDate | date: dateFormat) : 'Not issued yet' }} · total
               {{ inv.total | money }}
             </p>
+            @if (inv.invoiceNumber) {
+              <app-invoice-paid-bar class="mt-1.5 max-w-60" [invoice]="inv" />
+            }
           </div>
           <ui-status [value]="inv.status" enum="InvoiceStatus" />
           @if (payable(inv)) {

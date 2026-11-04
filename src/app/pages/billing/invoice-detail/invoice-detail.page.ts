@@ -42,10 +42,12 @@ const SOURCE_ROUTES: Record<string, string> = {
  * `/billing/invoices/:id` — the bill as the patient sees it: lines, totals and balance; the next step (edit and
  * issue a draft, take payment); payments with receipt, void and refund; refunds with their approval; history.
  */
+import { InvoicePaidBar } from '@components/billing/invoice-paid-bar/invoice-paid-bar.component';
 @Component({
   selector: 'app-invoice-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    InvoicePaidBar,
     PageHeader,
     AppButton,
     ErrorState,

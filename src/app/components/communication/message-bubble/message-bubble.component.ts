@@ -37,10 +37,11 @@ const SWIPE_REPLY_PX = 64;
  * One message: my bubbles on the right in my colour, others on the left in theirs, a group leader's in amber.
  * Right-click (or long-press on touch) opens the reaction bar; reactions show under the bubble, mine highlighted.
  */
+import { TapMotionDirective } from '@directives/tap-motion.directive';
 @Component({
   selector: 'app-message-bubble',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatIconModule, MatTooltipModule, ChatAvatar],
+  imports: [TapMotionDirective, MatIconModule, MatTooltipModule, ChatAvatar],
   templateUrl: './message-bubble.component.html',
   styleUrl: './message-bubble.component.scss',
 })

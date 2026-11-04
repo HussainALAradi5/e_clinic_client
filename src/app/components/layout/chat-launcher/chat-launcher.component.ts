@@ -16,6 +16,7 @@ import { RealtimeService } from '@services/communication/realtime.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { poll } from '@utilities/poll';
 import { CHAT_LAUNCHER_TEXT } from '@constants/layout/chat-launcher.constants';
+import { TapMotionDirective } from '@directives/tap-motion.directive';
 
 const POLL_MS = 60_000;
 export const CHAT_PATH = '/chat';
@@ -27,10 +28,18 @@ export const CHAT_PATH = '/chat';
 @Component({
   selector: 'app-chat-launcher',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatBadgeModule, MatButtonModule, MatIconModule, MatTooltipModule, RouterLink],
+  imports: [
+    MatBadgeModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
+    RouterLink,
+    TapMotionDirective,
+  ],
   template: `
     <a
       matIconButton
+      tapMotion="bounce"
       [routerLink]="path"
       [matTooltip]="unread() ? unread() + ' unread messages' : 'Chat'"
       aria-label="Chat"
@@ -44,6 +53,12 @@ export const CHAT_PATH = '/chat';
   `,
 })
 export class ChatLauncher {
+  /** I muted the chat and was not mentioned: stay quiet. */
+  private mutedForMe(message: ChatMessage): boolean {
+    const me = this.auth.user()?.id ?? '';
+    return (message.mutedFor ?? []).includes(me) && !message.mentions.includes(me);
+  }
+
   private readonly api = inject(ChatApi);
   private readonly router = inject(Router);
   private readonly notify = inject(NotifyService);
@@ -95,7 +110,8 @@ export class ChatLauncher {
           'sender' in event &&
           !onChat &&
           event.sender.id !== this.auth.user()?.id &&
-          this.settings().notifyMessages
+          this.settings().notifyMessages &&
+          !this.mutedForMe(event)
         ) {
           const text =
             event.body ?? (event.kind === MessageKind.Voice ? '🎤 Voice note' : '📎 File');

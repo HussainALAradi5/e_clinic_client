@@ -33,10 +33,12 @@ import { AuthStore } from '@services/auth/auth.store';
  * `/portal/invoices` — issued invoices (drafts stay at the desk) with what is left to pay; each opens to its lines
  * and payments, with the printable invoice and receipts.
  */
+import { InvoicePaidBar } from '@components/billing/invoice-paid-bar/invoice-paid-bar.component';
 @Component({
   selector: 'app-my-invoices-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    InvoicePaidBar,
     DatePipe,
     RouterLink,
     MatButtonModule,

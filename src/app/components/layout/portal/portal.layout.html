@@ -50,7 +50,7 @@
           <mat-icon>shield_person</mat-icon>
           <span>Password &amp; security</span>
         </a>
-        <button mat-menu-item (click)="theme.toggle()">
+        <button mat-menu-item tapMotion="spin" (click)="theme.toggle()">
           <mat-icon>{{ theme.dark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
           <span>{{ theme.dark() ? 'Light mode' : 'Dark mode' }}</span>
         </button>

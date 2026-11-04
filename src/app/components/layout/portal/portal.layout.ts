@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject } from
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { TapMotionDirective } from '@directives/tap-motion.directive';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -30,6 +31,7 @@ const ACTIVITY_EVENTS = ['pointerdown', 'keydown', 'scroll', 'touchstart'] as co
   selector: 'app-portal-layout',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    TapMotionDirective,
     RouterOutlet,
     RouterLink,
     RouterLinkActive,

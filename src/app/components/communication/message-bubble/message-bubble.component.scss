@@ -448,3 +448,21 @@
     box-shadow: 0 0 0 4px color-mix(in srgb, var(--mat-sys-primary) 55%, transparent);
   }
 }
+
+// Reply chosen: the message swings toward the composer and glows once.
+:host(.reply-pick) .bubble {
+  animation: reply-pick 520ms var(--motion-spring, ease-out);
+}
+
+@keyframes reply-pick {
+  35% {
+    transform: translateX(10px) scale(1.02);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--mat-sys-primary) 45%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host(.reply-pick) .bubble {
+    animation: none;
+  }
+}

@@ -10,4 +10,7 @@ export interface ChatMember {
   role: ParticipantRole;
   isMe: boolean;
   lastReadAt: string | null;
+  /** Work contact of a colleague (chat info). */
+  phone: string | null;
+  email: string | null;
 }

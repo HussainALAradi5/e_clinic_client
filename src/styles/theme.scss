@@ -3,6 +3,7 @@
 @use '@angular/material' as mat;
 @use './brand';
 @use './flags';
+@use './motion';
 
 html {
   // Light unless the user picked dark (ThemeService / the script in index.html set data-theme).

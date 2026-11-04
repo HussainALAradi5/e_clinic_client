@@ -1,0 +1,165 @@
+// Motion: one set of durations and curves, the press feedback every button shares, the one-shot tap motions the
+// tapMotion directive plays (pop, spin, ring, bounce, nudge), tab and panel entrances, and the progress bar look.
+// Everything here stops when the system asks for reduced motion.
+
+@layer theme, base, components, utilities;
+
+@layer components {
+  :root {
+    --motion-fast: 140ms;
+    --motion-base: 240ms;
+    --motion-slow: 420ms;
+    --motion-ease: cubic-bezier(0.2, 0, 0, 1);
+    --motion-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  // ---- Press feedback: every Material button and tab sinks a little while pressed --------------------
+  .mat-mdc-icon-button,
+  .mat-mdc-button-base,
+  .mat-mdc-tab,
+  .mat-mdc-chip {
+    transition: transform var(--motion-fast) var(--motion-ease);
+
+    &:active:not([disabled]) {
+      transform: scale(0.94);
+    }
+  }
+
+  // ---- One-shot tap motions (TapMotionDirective adds .motion-<name>, removes it when done) -----------
+  .motion-pop {
+    animation: motion-pop var(--motion-slow) var(--motion-spring);
+  }
+
+  .motion-spin .mat-icon,
+  .motion-spin.mat-icon {
+    animation: motion-spin var(--motion-slow) var(--motion-spring);
+  }
+
+  .motion-ring .mat-icon,
+  .motion-ring.mat-icon {
+    transform-origin: 50% 10%;
+    animation: motion-ring 600ms var(--motion-ease);
+  }
+
+  .motion-bounce .mat-icon,
+  .motion-bounce.mat-icon {
+    animation: motion-bounce 500ms var(--motion-spring);
+  }
+
+  .motion-nudge .mat-icon,
+  .motion-nudge.mat-icon {
+    animation: motion-nudge 380ms var(--motion-ease);
+  }
+
+  @keyframes motion-pop {
+    40% {
+      transform: scale(0.86);
+    }
+    70% {
+      transform: scale(1.08);
+    }
+  }
+
+  @keyframes motion-spin {
+    from {
+      transform: rotate(-180deg) scale(0.4);
+      opacity: 0;
+    }
+  }
+
+  @keyframes motion-ring {
+    15% {
+      transform: rotate(14deg);
+    }
+    30% {
+      transform: rotate(-12deg);
+    }
+    45% {
+      transform: rotate(9deg);
+    }
+    60% {
+      transform: rotate(-6deg);
+    }
+    75% {
+      transform: rotate(3deg);
+    }
+  }
+
+  @keyframes motion-bounce {
+    30% {
+      transform: translateY(-5px) scale(1.06);
+    }
+    60% {
+      transform: translateY(1px) scale(0.98);
+    }
+  }
+
+  @keyframes motion-nudge {
+    40% {
+      transform: translateX(-6px);
+    }
+  }
+
+  // ---- Entrances: the open tab's content, menus and dialogs ------------------------------------------
+  .mat-mdc-tab-body-active .mat-mdc-tab-body-content > * {
+    animation: motion-rise var(--motion-base) var(--motion-ease) both;
+  }
+
+  .motion-rise {
+    animation: motion-rise var(--motion-base) var(--motion-ease) both;
+  }
+
+  .motion-slide-up {
+    animation: motion-slide-up var(--motion-base) var(--motion-spring) both;
+  }
+
+  @keyframes motion-rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  @keyframes motion-slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+  }
+
+  // ---- Progress bars ----------------------------------------------------------------------------------
+  // The route loader at the top of the page: brand gradient, thin.
+  .route-progress.mat-mdc-progress-bar {
+    --mat-progress-bar-active-indicator-height: 3px;
+    --mat-progress-bar-track-height: 3px;
+    --mat-progress-bar-track-color: transparent;
+  }
+
+  .route-progress .mdc-linear-progress__bar-inner {
+    border-image: linear-gradient(
+        90deg,
+        var(--mat-sys-primary),
+        var(--color-sun, var(--mat-sys-tertiary))
+      )
+      1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mat-mdc-icon-button,
+    .mat-mdc-button-base,
+    .mat-mdc-tab,
+    .mat-mdc-chip {
+      transition: none;
+
+      &:active:not([disabled]) {
+        transform: none;
+      }
+    }
+
+    [class*='motion-'],
+    [class*='motion-'] .mat-icon,
+    .mat-mdc-tab-body-active .mat-mdc-tab-body-content > * {
+      animation: none !important;
+    }
+  }
+}

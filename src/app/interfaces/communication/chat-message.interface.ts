@@ -15,4 +15,6 @@ export interface ChatMessage {
   attachments: ChatAttachment[];
   reactions: ChatReaction[];
   createdAt: string;
+  /** Live events only: members who muted the chat (their apps show no pop-up unless mentioned). */
+  mutedFor?: string[];
 }

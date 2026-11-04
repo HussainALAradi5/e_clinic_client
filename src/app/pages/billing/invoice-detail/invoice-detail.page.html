@@ -168,6 +168,9 @@
           <p class="m-0 text-xs">Balance due</p>
           <p class="m-0 text-2xl font-semibold tabular-nums">{{ inv.balanceDue | money }}</p>
         </div>
+        @if (inv.invoiceNumber) {
+          <app-invoice-paid-bar class="mt-3" [invoice]="inv" [label]="true" />
+        }
       </mat-card>
       <mat-card appearance="outlined" class="!p-5"><ui-facts [items]="facts()" /></mat-card>
     </div>

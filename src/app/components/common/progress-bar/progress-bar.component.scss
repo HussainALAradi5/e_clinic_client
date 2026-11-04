@@ -1,0 +1,78 @@
+.track {
+  position: relative;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--mat-sys-surface-container-highest);
+}
+
+.fill {
+  --tone: var(--mat-sys-primary);
+  position: relative;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--tone) 70%, white), var(--tone));
+  transform-origin: left center;
+  transition: width var(--motion-slow, 420ms) var(--motion-ease, ease-out);
+  animation: fill-in var(--motion-slow, 420ms) var(--motion-ease, ease-out) both;
+
+  &.active::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 45%), transparent);
+    animation: sheen 1.4s linear infinite;
+  }
+}
+
+.tone-grey {
+  --tone: var(--mat-sys-outline);
+}
+.tone-blue {
+  --tone: var(--color-blue-500);
+}
+.tone-teal,
+.tone-cyan {
+  --tone: var(--color-teal-500);
+}
+.tone-green {
+  --tone: var(--color-green-500);
+}
+.tone-amber,
+.tone-orange {
+  --tone: var(--color-amber-500);
+}
+.tone-red,
+.tone-red-outline,
+.tone-pink {
+  --tone: var(--color-red-500);
+}
+.tone-indigo,
+.tone-purple {
+  --tone: var(--color-violet-500);
+}
+
+@keyframes fill-in {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes sheen {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill {
+    transition: none;
+    animation: none;
+
+    &.active::after {
+      animation: none;
+    }
+  }
+}

@@ -20,6 +20,7 @@ import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { ChatAvatar } from '../chat-avatar/chat-avatar.component';
 import { GROUP_INFO_DIALOG_TEXT } from '@constants/communication/group-info-dialog.constants';
+import { CHAT_MENU_TEXT } from '@constants/communication/chat-menu.constants';
 
 /**
  * Who is in the chat, with Leader / Member / You badges. A leader renames the group, adds people, makes someone
@@ -51,6 +52,7 @@ export class GroupInfoDialog {
 
   protected readonly chat = signal(inject<Conversation>(MAT_DIALOG_DATA));
   protected readonly roles = ParticipantRole;
+  protected readonly contactText = CHAT_MENU_TEXT;
   protected readonly isGroup = computed(() => this.chat().type === ConversationType.Group);
   protected readonly amLeader = computed(() => this.chat().myRole === ParticipantRole.Admin);
   protected readonly me = computed(() => this.chat().members.find((m) => m.isMe));

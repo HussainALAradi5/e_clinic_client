@@ -5,6 +5,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { TapMotionDirective } from '@directives/tap-motion.directive';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -32,6 +33,7 @@ import { PushNotificationService } from '@services/notification/push-notificatio
   selector: 'app-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    TapMotionDirective,
     RouterOutlet,
     RouterLink,
     RouterLinkActive,

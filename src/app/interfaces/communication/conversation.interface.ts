@@ -10,6 +10,10 @@ export interface Conversation {
   partnerId: string | null;
   avatarUrl: string | null;
   myRole: ParticipantRole | null;
+  /** I muted this chat: no pop-ups or badge from it (mentions still notify). */
+  muted: boolean;
+  /** When my mute ends by itself; null = until I unmute. */
+  mutedUntil: string | null;
   members: ChatMember[];
   lastMessage: ChatMessage | null;
   unreadCount: number;

@@ -14,6 +14,7 @@ import { ApiClient } from '@services/api/api-client.service';
 import { ENDPOINTS } from '@config/endpoints';
 
 /** Staff chat — my chats (filtered on the server), messages, reactions, groups and my chat settings. */
+import { MuteDuration } from '@enums/communication/mute-duration.enum';
 @Injectable({ providedIn: 'root' })
 export class ChatApi {
   private readonly api = inject(ApiClient);
@@ -86,6 +87,11 @@ export class ChatApi {
   /** Colleagues matching the search (name, phone, email or staff no.), one page at a time. */
   contacts(search = '', page = 1, perPage = 20): Observable<Page<ChatContact>> {
     return this.api.list<ChatContact>(`${this.path}/contacts`, { search, page, perPage });
+  }
+
+  /** Mutes my copy of the chat for [duration]; null unmutes. */
+  mute(id: string, duration: MuteDuration | null): Observable<Conversation> {
+    return this.api.patch<Conversation>(`${this.path}/conversations/${id}/mute`, { duration });
   }
 
   rename(id: string, title: string): Observable<Conversation> {

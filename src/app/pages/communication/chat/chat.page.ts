@@ -59,10 +59,16 @@ const POLL_CHAT_MS = 8_000;
  * range, all filtered and paged by the server) beside the open chat. Live over the socket; polls without one.
  * Every request names the open chat, and socket events are matched on their chat id, so chats never mix.
  */
+import { ChatMenu } from '@components/communication/chat-menu/chat-menu.component';
+import { TapMotionDirective } from '@directives/tap-motion.directive';
+import { CHAT_MENU_TEXT } from '@constants/communication/chat-menu.constants';
+import { playMotion } from '@utilities/ui/motion';
 @Component({
   selector: 'app-chat-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ChatMenu,
+    TapMotionDirective,
     FormsModule,
     MatBadgeModule,
     MatButtonModule,
@@ -134,6 +140,7 @@ export class ChatPage implements OnInit {
   protected readonly sending = signal(false);
   /** The message being answered in the composer. */
   protected readonly replyTo = signal<ChatMessage | null>(null);
+  protected readonly menuText = CHAT_MENU_TEXT;
   protected readonly dragging = signal(false);
 
   protected readonly dateActive = computed(() => !!this.from() || !!this.to());
@@ -385,9 +392,19 @@ export class ChatPage implements OnInit {
       return;
     }
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    el.classList.remove('flash');
-    void el.offsetWidth;
-    el.classList.add('flash');
+    playMotion(el, 'flash');
+  }
+
+  /** Reply chosen: the message swings toward the composer, whose quote slides up. */
+  protected startReply(message: ChatMessage): void {
+    this.replyTo.set(message);
+    playMotion(document.getElementById(`msg-${message.id}`), 'reply-pick');
+  }
+
+  /** The ⋮ menu changed the chat (e.g. muted it). */
+  protected chatChanged(chat: Conversation): void {
+    this.chat.set(chat);
+    this.chats.update((list) => list.map((c) => (c.id === chat.id ? { ...c, ...chat } : c)));
   }
 
   protected react(message: ChatMessage, emoji: string): void {
