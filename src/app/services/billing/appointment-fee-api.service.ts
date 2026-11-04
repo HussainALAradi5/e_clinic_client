@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ENDPOINTS } from '@config/endpoints';
 import { AppointmentFee } from '@interfaces/billing/appointment-fee.interface';
+import { DocumentFee } from '@interfaces/billing/document-fee.interface';
 import { Money } from '@interfaces/common/money.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
@@ -14,6 +15,11 @@ export class AppointmentFeeApi {
   /** Reason is required (at least 10 characters); only while the fee's invoice is a draft. */
   waive(id: string, reason: string): Observable<AppointmentFee> {
     return this.api.post<AppointmentFee>(`${this.path}/${id}/waive`, { reason });
+  }
+
+  /** Documents that cost money now (by kind); kinds not listed are free. */
+  documentFees(): Observable<DocumentFee[]> {
+    return this.api.get<DocumentFee[]>(ENDPOINTS.billing.documentFees);
   }
 
   /** What the patient would pay for cancelling this visit now; null = free. */

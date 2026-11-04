@@ -8,6 +8,7 @@ import { GenericForm } from '@components/common/generic-form/generic-form.compon
 import { DocumentActions } from '@components/documents/document-actions/document-actions.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { RichTextEditor } from '@components/documents/rich-text-editor/rich-text-editor.component';
+import { DocumentFeeNote } from '@components/documents/document-fee-note/document-fee-note.component';
 import { WRITE_DOCUMENT_DIALOG_TEXT } from '@constants/documents/write-document-dialog.constants';
 import { DocumentType } from '@enums/documents/document-type.enum';
 import { WrittenDocumentKind } from '@enums/documents/written-document-kind.enum';
@@ -36,6 +37,7 @@ import { WriteDocumentStore } from '@services/documents/write-document.store';
     MatProgressSpinnerModule,
     RichTextEditor,
     TextField,
+    DocumentFeeNote,
   ],
   providers: [WriteDocumentStore],
   templateUrl: './write-document-dialog.component.html',

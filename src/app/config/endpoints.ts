@@ -48,6 +48,7 @@ export const ENDPOINTS = {
   },
   billing: {
     appointmentFees: 'billing/appointment-fees',
+    documentFees: 'billing/document-fees',
     appointments: 'billing/appointments',
     insuranceClaims: 'billing/insurance-claims',
     invoices: 'billing/invoices',
