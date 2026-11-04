@@ -23,6 +23,14 @@
         <ui-button icon="point_of_sale" access="payments.create" [action]="pay"
           >Take payment</ui-button
         >
+        <ui-button
+          icon="notifications_active"
+          [variant]="variants.Outlined"
+          access="invoices.write | payments.create"
+          [action]="remind"
+          [attr.title]="remindedNote()"
+          >{{ reminderText.send }}</ui-button
+        >
       }
       @if (claimable()) {
         <ui-button

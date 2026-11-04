@@ -18,6 +18,7 @@ import { WalletApi } from '@services/billing/wallet-api.service';
 import { AppointmentFeeApi } from '@services/billing/appointment-fee-api.service';
 import { AppointmentFee } from '@interfaces/billing/appointment-fee.interface';
 import { FEE_TEXT, FEE_WAIVE_REASON_MIN } from '@constants/billing/appointment-fee.constants';
+import { REMINDER_TEXT } from '@constants/billing/reminder.constants';
 import { ClaimDecisionDialogData } from '@interfaces/billing/claim-decision-dialog-data.interface';
 import { CloseDrawerDialogData } from '@interfaces/billing/close-drawer-dialog-data.interface';
 import { DepositDialogData } from '@interfaces/billing/deposit-dialog-data.interface';
@@ -258,6 +259,20 @@ export class BillingActions {
     );
     this.notify.success(WALLET_MESSAGES.paid(paid.code, formatMoney(paid.amount)));
     return paid;
+  }
+
+  // Payment reminders
+
+  async remind(invoice: Invoice): Promise<Invoice | undefined> {
+    const ok = await this.dialogs.confirm({
+      title: REMINDER_TEXT.title(invoice.patient?.fullName ?? ''),
+      message: REMINDER_TEXT.message,
+      confirmLabel: REMINDER_TEXT.send,
+    });
+    if (!ok) return undefined;
+    const updated = await firstValueFrom(this.invoices.remind(invoice.id));
+    this.notify.success(REMINDER_TEXT.sent);
+    return updated;
   }
 
   // Visit fees

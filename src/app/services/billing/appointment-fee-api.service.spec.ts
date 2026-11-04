@@ -31,7 +31,13 @@ describe('AppointmentFeeApi', () => {
   it('lists the documents that cost money', async () => {
     const fees = firstValueFrom(api.documentFees());
     http.expectOne('billing/document-fees').flush({
-      data: [{ kind: 'medical_report', name: 'Medical report', amount: { amount: '10.000', currency: 'BHD' } }],
+      data: [
+        {
+          kind: 'medical_report',
+          name: 'Medical report',
+          amount: { amount: '10.000', currency: 'BHD' },
+        },
+      ],
     });
     expect((await fees)[0].amount.amount).toBe('10.000');
   });

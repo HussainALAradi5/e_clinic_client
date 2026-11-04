@@ -44,6 +44,7 @@ const SOURCE_ROUTES: Record<string, string> = {
  */
 import { InvoicePaidBar } from '@components/billing/invoice-paid-bar/invoice-paid-bar.component';
 import { InvoiceCoverage } from '@components/billing/invoice-coverage/invoice-coverage.component';
+import { REMINDER_TEXT } from '@constants/billing/reminder.constants';
 @Component({
   selector: 'app-invoice-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -163,6 +164,22 @@ export class InvoiceDetailPage implements OnInit {
   protected readonly edit = async (): Promise<void> => {
     const i = this.detail.record();
     if (i && (await this.actions.editInvoice({ invoice: i }))) await this.reload();
+  };
+
+  protected readonly reminderText = REMINDER_TEXT;
+  /** "2 reminders sent · 03 Nov 2026" for the button's tooltip. */
+  protected readonly remindedNote = computed(() => {
+    const i = this.detail.record();
+    if (!i?.remindersSent) return null;
+    const last = i.lastRemindedAt
+      ? ' · ' + formatDate(i.lastRemindedAt, DATE_TIME_FORMAT, 'en-GB')
+      : '';
+    return REMINDER_TEXT.count(i.remindersSent) + last;
+  });
+
+  protected readonly remind = async (): Promise<void> => {
+    const i = this.detail.record();
+    if (i && (await this.actions.remind(i))) await this.reload();
   };
 
   protected readonly issue = async (): Promise<void> => {

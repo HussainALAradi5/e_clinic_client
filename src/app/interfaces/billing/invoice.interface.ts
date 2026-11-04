@@ -26,6 +26,9 @@ export interface Invoice extends GenericEntity, Versioned {
   paidAmount: Money;
   refundedAmount: Money;
   balanceDue: Money;
+  /** Payment reminders sent to the patient, and when the last one went out. */
+  remindersSent?: number;
+  lastRemindedAt?: string | null;
   status: InvoiceStatus;
   /** Unpaid, overdue, partly paid, paid, refunded … (worked out by the server). */
   paymentState: InvoicePaymentState;

@@ -46,6 +46,11 @@ export class InvoiceApi extends EntityApi<Invoice, InvoicePayload> {
     );
   }
 
+  /** Sends the patient a payment reminder now (their own part owed); not twice within a day. */
+  remind(id: string): Observable<Invoice> {
+    return this.api.post<Invoice>(`${this.path}/${id}/remind`, {});
+  }
+
   cancel(id: string, reason: string): Observable<Invoice> {
     return this.api.post<Invoice>(`${this.path}/${id}/cancel`, { reason });
   }
