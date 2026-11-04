@@ -1,0 +1,36 @@
+<div class="rounded-2xl border border-outline-variant bg-surface p-4">
+  <p class="m-0 mb-2 text-sm font-semibold">{{ text.images[image()].label }}</p>
+  <div
+    class="mb-3 flex h-32 items-center justify-center rounded-xl border border-dashed border-outline-variant bg-white"
+  >
+    @if (url(); as src) {
+      <img
+        [src]="src"
+        [alt]="text.images[image()].label"
+        class="max-h-28 max-w-[90%] object-contain"
+      />
+    } @else {
+      <span class="px-4 text-center text-xs text-neutral-500">{{
+        text.images[image()].empty
+      }}</span>
+    }
+  </div>
+  <p class="m-0 mb-2 text-xs text-on-surface-variant">{{ text.imageHint }}</p>
+  <input #file type="file" accept="image/png,image/jpeg" class="hidden" (change)="pick(file)" />
+  <div class="flex gap-2">
+    <button matButton="tonal" type="button" [disabled]="busy()" (click)="file.click()">
+      <mat-icon>upload</mat-icon> {{ url() ? text.replace : text.upload }}
+    </button>
+    @if (url()) {
+      <button
+        matButton
+        type="button"
+        class="!text-error"
+        [disabled]="busy()"
+        (click)="removed.emit()"
+      >
+        <mat-icon>delete</mat-icon> {{ text.remove }}
+      </button>
+    }
+  </div>
+</div>

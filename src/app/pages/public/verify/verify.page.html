@@ -38,6 +38,16 @@
             </dd>
           }
         </dl>
+        @if (r.document) {
+          <div class="mt-5 border-t border-outline-variant pt-4">
+            @if (signedIn()) {
+              <p class="m-0 mb-2 text-sm text-on-surface-variant">{{ text.openFull }}</p>
+              <ui-document-actions [type]="r.document" [recordId]="r.id" />
+            } @else {
+              <p class="m-0 text-sm text-on-surface-variant">{{ text.signInToOpen }}</p>
+            }
+          </div>
+        }
       </div>
     } @else if (error(); as message) {
       <div

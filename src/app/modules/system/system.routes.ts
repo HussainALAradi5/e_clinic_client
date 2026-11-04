@@ -108,6 +108,13 @@ export const SYSTEM_ROUTES: Routes = [
       ),
   },
   {
+    path: 'clinic-profile',
+    title: 'Clinic profile · e-Clinic',
+    canMatch: [accessGuard('clinic_profile.write')],
+    loadComponent: () =>
+      import('@pages/system/clinic-profile/clinic-profile.page').then((m) => m.ClinicProfilePage),
+  },
+  {
     path: 'scan',
     title: 'Scan station · e-Clinic',
     canMatch: [accessGuard('(codes.read_all | codes.read_own) & codes.scan')],

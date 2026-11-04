@@ -1,3 +1,5 @@
+import { SignatureCard } from '@components/settings/signature-card/signature-card.component';
+import { TimePickerCard } from '@components/settings/time-picker-card/time-picker-card.component';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -48,6 +50,8 @@ import { ACCOUNT_SECURITY_TEXT } from '@constants/system/account-security.consta
     MatButtonModule,
     MatIconModule,
     NotificationSettingsCard,
+    SignatureCard,
+    TimePickerCard,
   ],
   templateUrl: './account-security.page.html',
 })

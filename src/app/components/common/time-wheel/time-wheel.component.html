@@ -1,0 +1,73 @@
+<div class="relative mx-auto flex w-72 select-none justify-center gap-2">
+  <!-- Middle band marking the chosen row. -->
+  <div
+    class="pointer-events-none absolute inset-x-0 top-20 h-10 rounded-xl bg-primary-container/60"
+    aria-hidden="true"
+  ></div>
+
+  <div
+    #column
+    class="relative h-50 w-20 snap-y snap-mandatory overflow-y-auto py-20 [scrollbar-width:none]"
+    role="listbox"
+    [attr.aria-label]="text.hours"
+    (scrollend)="settle('hour', $any($event.target))"
+  >
+    @for (h of hours; track h) {
+      <button
+        type="button"
+        role="option"
+        class="block h-10 w-full snap-center text-center text-xl tabular-nums"
+        [class.font-semibold]="time().hour === h"
+        [class.text-on-surface-variant]="time().hour !== h"
+        [attr.aria-selected]="time().hour === h"
+        (click)="pickHour(h)"
+      >
+        {{ h }}
+      </button>
+    }
+  </div>
+
+  <div
+    #column
+    class="relative h-50 w-20 snap-y snap-mandatory overflow-y-auto py-20 [scrollbar-width:none]"
+    role="listbox"
+    [attr.aria-label]="text.minutes"
+    (scrollend)="settle('minute', $any($event.target))"
+  >
+    @for (m of minutes; track m) {
+      <button
+        type="button"
+        role="option"
+        class="block h-10 w-full snap-center text-center text-xl tabular-nums"
+        [class.font-semibold]="time().minute === m"
+        [class.text-on-surface-variant]="time().minute !== m"
+        [attr.aria-selected]="time().minute === m"
+        (click)="pickMinute(m)"
+      >
+        {{ pad(m) }}
+      </button>
+    }
+  </div>
+
+  <div
+    #column
+    class="relative h-50 w-20 snap-y snap-mandatory overflow-y-auto py-20 [scrollbar-width:none]"
+    role="listbox"
+    aria-label="AM / PM"
+    (scrollend)="settle('pm', $any($event.target))"
+  >
+    @for (p of periods; track p) {
+      <button
+        type="button"
+        role="option"
+        class="block h-10 w-full snap-center text-center text-lg"
+        [class.font-semibold]="time().pm === p"
+        [class.text-on-surface-variant]="time().pm !== p"
+        [attr.aria-selected]="time().pm === p"
+        (click)="pickPeriod(p)"
+      >
+        {{ p ? text.pm : text.am }}
+      </button>
+    }
+  </div>
+</div>

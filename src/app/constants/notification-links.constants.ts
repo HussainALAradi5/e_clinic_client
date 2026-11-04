@@ -62,4 +62,3 @@ export function notificationLink(
   if (!route || (route.includes(':id') && !n.relatedId)) return null;
   return route.replace(':id', n.relatedId ?? '');
 }
-

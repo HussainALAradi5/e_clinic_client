@@ -37,6 +37,7 @@ export const ENDPOINTS = {
   auth: {
     forgotPassword: 'auth/forgot-password',
     login: 'auth/login',
+    signature: 'auth/signature',
     logout: 'auth/logout',
     logoutAll: 'auth/logout-all',
     me: 'auth/me',
@@ -51,6 +52,10 @@ export const ENDPOINTS = {
     payments: 'billing/payments',
     refunds: 'billing/refunds',
     services: 'billing/services',
+  },
+  clinicProfile: {
+    public: 'public/clinic-profile',
+    manage: 'reference/clinic-profile',
   },
   chat: {
     root: 'chat',

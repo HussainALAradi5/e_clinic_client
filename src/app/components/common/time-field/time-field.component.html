@@ -1,0 +1,30 @@
+<mat-form-field class="w-full">
+  <mat-label>{{ label() }}</mat-label>
+  <input
+    matInput
+    readonly
+    class="cursor-pointer"
+    [value]="shown()"
+    [disabled]="control().disabled"
+    [attr.aria-label]="label()"
+    (click)="pick()"
+    (keydown.enter)="pick()"
+    (keydown.space)="$event.preventDefault(); pick()"
+  />
+  <button
+    matIconButton
+    matSuffix
+    type="button"
+    [attr.aria-label]="text.pick"
+    [disabled]="control().disabled"
+    (click)="pick()"
+  >
+    <mat-icon>schedule</mat-icon>
+  </button>
+  @if (hint()) {
+    <mat-hint>{{ hint() }}</mat-hint>
+  }
+  @if (error(); as message) {
+    <mat-error>{{ message }}</mat-error>
+  }
+</mat-form-field>

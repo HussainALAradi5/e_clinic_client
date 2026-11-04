@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>{{ data.label || text.pick }}</h2>
+<mat-dialog-content>
+  @if (style() === styles.Wheel) {
+    <ui-time-wheel [(time)]="time" />
+  } @else {
+    <ui-time-dial [(time)]="time" />
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  @if (data.clearable) {
+    <button matButton type="button" class="mr-auto" (click)="ref.close('')">
+      {{ text.clear }}
+    </button>
+  }
+  <button matButton type="button" (click)="ref.close()">{{ text.cancel }}</button>
+  <button matButton="filled" type="button" (click)="set()">{{ text.set }}</button>
+</mat-dialog-actions>

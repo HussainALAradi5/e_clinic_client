@@ -1,0 +1,84 @@
+<div class="mx-auto flex w-72 flex-col items-center gap-4 select-none">
+  <div class="flex items-center gap-3">
+    <div class="flex items-baseline gap-1 text-5xl font-light tabular-nums">
+      <button
+        type="button"
+        class="rounded-xl px-2 py-1"
+        [class.bg-primary-container]="mode() === 'hour'"
+        [attr.aria-label]="text.hours"
+        (click)="mode.set('hour')"
+      >
+        {{ time().hour }}
+      </button>
+      <span>:</span>
+      <button
+        type="button"
+        class="rounded-xl px-2 py-1"
+        [class.bg-primary-container]="mode() === 'minute'"
+        [attr.aria-label]="text.minutes"
+        (click)="mode.set('minute')"
+      >
+        {{ pad(time().minute) }}
+      </button>
+    </div>
+    <div
+      class="flex flex-col overflow-hidden rounded-xl border border-outline-variant text-sm font-semibold"
+    >
+      <button
+        type="button"
+        class="px-3 py-1.5"
+        [class.bg-secondary-container]="!time().pm"
+        (click)="setPm(false)"
+      >
+        {{ text.am }}
+      </button>
+      <button
+        type="button"
+        class="border-t border-outline-variant px-3 py-1.5"
+        [class.bg-secondary-container]="time().pm"
+        (click)="setPm(true)"
+      >
+        {{ text.pm }}
+      </button>
+    </div>
+  </div>
+
+  <svg
+    viewBox="0 0 240 240"
+    class="h-60 w-60"
+    role="listbox"
+    [attr.aria-label]="mode() === 'hour' ? text.hours : text.minutes"
+  >
+    <circle [attr.cx]="centre" [attr.cy]="centre" r="118" class="fill-surface-container-high" />
+    <line
+      [attr.x1]="centre"
+      [attr.y1]="centre"
+      [attr.x2]="hand().x"
+      [attr.y2]="hand().y"
+      class="stroke-primary"
+      stroke-width="2"
+    />
+    <circle [attr.cx]="centre" [attr.cy]="centre" r="4" class="fill-primary" />
+    <circle [attr.cx]="hand().x" [attr.cy]="hand().y" r="20" class="fill-primary" />
+    @for (m of marks(); track m.value) {
+      <g
+        class="cursor-pointer"
+        role="option"
+        [attr.aria-selected]="isSelected(m.value)"
+        (click)="pick(m.value)"
+      >
+        <circle [attr.cx]="m.x" [attr.cy]="m.y" r="20" fill="transparent" />
+        <text
+          [attr.x]="m.x"
+          [attr.y]="m.y"
+          text-anchor="middle"
+          dominant-baseline="central"
+          font-size="15"
+          [attr.class]="isSelected(m.value) ? 'fill-on-primary font-semibold' : 'fill-on-surface'"
+        >
+          {{ mode() === 'hour' ? m.value : pad(m.value) }}
+        </text>
+      </g>
+    }
+  </svg>
+</div>

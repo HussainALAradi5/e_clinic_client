@@ -407,6 +407,13 @@ export const MENU: NavGroup[] = [
         access: 'audit.read_all | audit.read_own',
       },
       {
+        label: 'Clinic profile',
+        description: 'Name, contacts, logo and stamp printed on every PDF.',
+        icon: 'storefront',
+        route: '/system/clinic-profile',
+        access: 'clinic_profile.write',
+      },
+      {
         label: 'Attachments',
         description: 'Scanned and uploaded files linked to their records.',
         icon: 'attach_file',

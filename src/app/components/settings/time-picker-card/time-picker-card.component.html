@@ -1,0 +1,25 @@
+<section class="rounded-2xl border border-outline-variant bg-surface p-5">
+  <h2 class="m-0 mb-1 text-base font-semibold">{{ text.cardTitle }}</h2>
+  <p class="m-0 mb-4 text-sm text-on-surface-variant">{{ text.cardHint }}</p>
+  <div class="mb-4 grid grid-cols-2 gap-2" role="radiogroup" [attr.aria-label]="text.cardTitle">
+    @for (choice of choices; track choice) {
+      <button
+        type="button"
+        role="radio"
+        class="flex items-center gap-2 rounded-xl border p-3 text-left text-sm font-medium transition"
+        [class.border-primary]="preference.style() === choice"
+        [class.bg-primary-container]="preference.style() === choice"
+        [attr.aria-checked]="preference.style() === choice"
+        (click)="preference.style.set(choice)"
+      >
+        <mat-icon>{{ text.styles[choice].icon }}</mat-icon>
+        {{ text.styles[choice].label }}
+      </button>
+    }
+  </div>
+  @if (preference.style() === styles.Wheel) {
+    <ui-time-wheel [(time)]="preview" />
+  } @else {
+    <ui-time-dial [(time)]="preview" />
+  }
+</section>

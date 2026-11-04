@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { errorMessage } from '@validations/validators';
+import { TimeField } from '@components/common/time-field/time-field.component';
 
 /**
  * `<ui-text label="First name" [control]="form.controls.firstName" />` — label, hint, error and counter wired once.
@@ -24,6 +25,7 @@ import { errorMessage } from '@validations/validators';
   selector: 'ui-text',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    TimeField,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,

@@ -1,55 +1,59 @@
-<mat-form-field class="w-full">
-  <mat-label>{{ label() }}</mat-label>
-  @if (icon()) {
-    <mat-icon matPrefix class="text-on-surface-variant">{{ icon() }}</mat-icon>
-  }
-  @if (multiline()) {
-    <textarea
-      matInput
-      [formControl]="control()"
-      [rows]="rows()"
-      [attr.maxlength]="maxLength()"
-    ></textarea>
-  } @else if (type() === 'date') {
-    <input
-      #field
-      matInput
-      [matDatepicker]="picker"
-      [formControl]="control()"
-      [attr.autocomplete]="'off'"
-      (click)="picker.open()"
-    />
-  } @else {
-    <input
-      #field
-      matInput
-      [type]="inputType()"
-      [formControl]="control()"
-      [attr.maxlength]="maxLength()"
-      [attr.autocomplete]="autocomplete()"
-    />
-  }
-  @if (type() === 'date') {
-    <mat-datepicker-toggle matIconSuffix [for]="picker" />
-  }
-  <mat-datepicker #picker />
-  @if (type() === 'password') {
-    <button
-      matIconButton
-      matSuffix
-      type="button"
-      [attr.aria-label]="revealed() ? 'Hide password' : 'Show password'"
-      [attr.aria-pressed]="revealed()"
-      (click)="revealed.set(!revealed())"
-    >
-      <mat-icon>{{ revealed() ? 'visibility_off' : 'visibility' }}</mat-icon>
-    </button>
-  }
-  @if (hint()) {
-    <mat-hint>{{ hint() }}</mat-hint>
-  }
-  @if (maxLength()) {
-    <mat-hint align="end">{{ length() }} / {{ maxLength() }}</mat-hint>
-  }
-  <mat-error>{{ error() }}</mat-error>
-</mat-form-field>
+@if (type() === 'time') {
+  <ui-time-field [label]="label()" [control]="control()" [hint]="hint()" />
+} @else {
+  <mat-form-field class="w-full">
+    <mat-label>{{ label() }}</mat-label>
+    @if (icon()) {
+      <mat-icon matPrefix class="text-on-surface-variant">{{ icon() }}</mat-icon>
+    }
+    @if (multiline()) {
+      <textarea
+        matInput
+        [formControl]="control()"
+        [rows]="rows()"
+        [attr.maxlength]="maxLength()"
+      ></textarea>
+    } @else if (type() === 'date') {
+      <input
+        #field
+        matInput
+        [matDatepicker]="picker"
+        [formControl]="control()"
+        [attr.autocomplete]="'off'"
+        (click)="picker.open()"
+      />
+    } @else {
+      <input
+        #field
+        matInput
+        [type]="inputType()"
+        [formControl]="control()"
+        [attr.maxlength]="maxLength()"
+        [attr.autocomplete]="autocomplete()"
+      />
+    }
+    @if (type() === 'date') {
+      <mat-datepicker-toggle matIconSuffix [for]="picker" />
+    }
+    <mat-datepicker #picker />
+    @if (type() === 'password') {
+      <button
+        matIconButton
+        matSuffix
+        type="button"
+        [attr.aria-label]="revealed() ? 'Hide password' : 'Show password'"
+        [attr.aria-pressed]="revealed()"
+        (click)="revealed.set(!revealed())"
+      >
+        <mat-icon>{{ revealed() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    }
+    @if (hint()) {
+      <mat-hint>{{ hint() }}</mat-hint>
+    }
+    @if (maxLength()) {
+      <mat-hint align="end">{{ length() }} / {{ maxLength() }}</mat-hint>
+    }
+    <mat-error>{{ error() }}</mat-error>
+  </mat-form-field>
+}

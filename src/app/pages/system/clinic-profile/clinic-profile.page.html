@@ -1,0 +1,29 @@
+<ui-page-header [title]="text.title" [subtitle]="text.subtitle" />
+
+<div class="grid grid-cols-1 gap-4 px-4 pb-6 lg:grid-cols-3">
+  <section class="rounded-2xl border border-outline-variant bg-surface p-5 lg:col-span-2">
+    <h2 class="m-0 mb-3 text-base font-semibold">{{ text.details }}</h2>
+    <ui-form [form]="form" [submit]="submit" [submitLabel]="text.save" submitIcon="save">
+      <ui-text [label]="text.name" [control]="form.controls.name" />
+      <ui-text [label]="text.tagline" [hint]="text.taglineHint" [control]="form.controls.tagline" />
+      <ui-text [label]="text.address" [control]="form.controls.address" />
+      <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-3">
+        <ui-text [label]="text.phone" type="tel" [control]="form.controls.phone" />
+        <ui-text [label]="text.email" type="email" [control]="form.controls.email" />
+        <ui-text [label]="text.website" [control]="form.controls.website" />
+      </div>
+    </ui-form>
+  </section>
+
+  <div class="flex flex-col gap-4">
+    @for (image of images; track image) {
+      <app-clinic-image-field
+        [image]="image"
+        [url]="url(image)"
+        [busy]="busy()"
+        (chosen)="upload(image, $event)"
+        (removed)="remove(image)"
+      />
+    }
+  </div>
+</div>

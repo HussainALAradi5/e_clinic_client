@@ -24,6 +24,8 @@ export const AUTHENTICATED = 'authenticated';
 export const STORAGE_KEYS = {
   token: 'ec.token',
   uiSettings: 'ec.ui',
+  /** How time fields open: iPhone-style wheels or Android-style clock dial. */
+  timePicker: 'ec.time-picker',
   /** Sign-in email → token of a device trusted for two-factor sign-in ("Don't ask again"). */
   trustedDevices: 'ec.trusted-devices',
 } as const;

@@ -1,3 +1,5 @@
+import { DocumentActions } from '@components/documents/document-actions/document-actions.component';
+import { AuthStore } from '@services/auth/auth.store';
 import { DatePipe, KeyValuePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -29,6 +31,7 @@ import { VERIFY_TEXT } from '@constants/public/verify.constants';
     DatePipe,
     KeyValuePipe,
     EnumLabelPipe,
+    DocumentActions,
   ],
   templateUrl: './verify.page.html',
 })
@@ -44,6 +47,8 @@ export class VerifyPage implements OnInit {
   protected readonly error = signal<string | null>(null);
   protected readonly busy = signal(false);
   protected readonly label = humanise;
+  protected readonly signedIn = inject(AuthStore).isAuthenticated;
+  protected readonly text = VERIFY_TEXT;
 
   ngOnInit(): void {
     const code = this.code();
