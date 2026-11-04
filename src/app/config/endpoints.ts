@@ -74,6 +74,7 @@ export const ENDPOINTS = {
   hr: {
     attendance: 'hr/attendance',
     departments: 'hr/departments',
+    doctorEarnings: 'hr/doctor-earnings',
     employees: 'hr/employees',
     leaves: 'hr/leaves',
     payrollRuns: 'hr/payroll-runs',

@@ -36,12 +36,14 @@ import { clinicIsoDate } from '@utilities/clinic-time';
 import { defaultQuery } from '@utilities/list-query';
 
 /** `/hr/me` — the staff member's own corner: today's check-in, this month, leave left and requested, payslips. */
+import { MyEarningsCard } from '@components/hr/my-earnings-card/my-earnings-card.component';
 @Component({
   selector: 'app-my-hr-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     PageHeader,
     CheckInCard,
+    MyEarningsCard,
     LeaveBalances,
     AppButton,
     StatusChip,

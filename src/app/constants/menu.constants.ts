@@ -178,6 +178,13 @@ export const MENU: NavGroup[] = [
         access: 'leaves.read_all',
       },
       {
+        label: 'Doctor earnings',
+        description: "Each doctor's commission for the month, and their terms.",
+        icon: 'trending_up',
+        route: '/hr/doctor-earnings',
+        access: 'payroll.read_all',
+      },
+      {
         label: 'Payroll',
         description: 'Monthly runs: calculate, approve, pay; payslips.',
         icon: 'request_quote',

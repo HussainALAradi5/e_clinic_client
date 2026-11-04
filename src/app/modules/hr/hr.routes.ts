@@ -112,6 +112,13 @@ export const HR_ROUTES: Routes = [
       import('@pages/hr/leave-types/leave-types.page').then((m) => m.LeaveTypesPage),
   },
   {
+    path: 'doctor-earnings',
+    title: 'Doctor earnings · e-Clinic',
+    canMatch: [accessGuard('payroll.read_all')],
+    loadComponent: () =>
+      import('@pages/hr/doctor-earnings/doctor-earnings.page').then((m) => m.DoctorEarningsPage),
+  },
+  {
     path: 'payroll',
     canMatch: [accessGuard('payroll.read_all')],
     children: [

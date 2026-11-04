@@ -7,6 +7,7 @@
 <div class="grid gap-4 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
   @if (canClock()) {
     <app-check-in-card />
+    <app-my-earnings-card class="mt-4 block" />
   }
   <mat-card appearance="outlined" class="!p-5">
     <h2 class="m-0 mb-3 text-base font-semibold">{{ monthLabel }}</h2>
