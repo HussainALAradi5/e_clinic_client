@@ -47,6 +47,8 @@ export const ENDPOINTS = {
     verifyResetCode: 'auth/verify-reset-code',
   },
   billing: {
+    appointmentFees: 'billing/appointment-fees',
+    appointments: 'billing/appointments',
     insuranceClaims: 'billing/insurance-claims',
     invoices: 'billing/invoices',
     patients: 'billing/patients',

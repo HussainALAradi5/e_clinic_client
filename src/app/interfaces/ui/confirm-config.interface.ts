@@ -8,6 +8,8 @@ export interface ConfirmConfig {
   /** Ask for a reason (cancel / reject / void / revoke) — the dialog then resolves to the reason. */
   reason?: boolean;
   reasonLabel?: string;
+  /** Shortest reason accepted (the server's rule, e.g. waiving a fee); a blank-free length. */
+  reasonMinLength?: number;
   /** For large bulk actions: the user must type this number to confirm. */
   typeToConfirm?: string;
 }

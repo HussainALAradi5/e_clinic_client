@@ -40,7 +40,9 @@ export class ConfirmDialog {
       : CONFIRM_DIALOG_TEXT.cancel);
 
   protected canConfirm(): boolean {
-    const reasonOk = !this.data.reason || this.reason.value.trim().length > 0;
+    const reasonOk =
+      !this.data.reason ||
+      this.reason.value.trim().length >= Math.max(1, this.data.reasonMinLength ?? 1);
     const typedOk = !this.data.typeToConfirm || this.typed.value.trim() === this.data.typeToConfirm;
     return reasonOk && typedOk;
   }

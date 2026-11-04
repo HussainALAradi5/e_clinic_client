@@ -21,5 +21,13 @@
       [control]="form.controls.cancelledBy"
     />
     <ui-text label="Reason" [control]="form.controls.reason" />
+    @if (feeWarning(); as warning) {
+      <p
+        class="motion-rise m-0 mb-2 flex items-start gap-2 rounded-xl bg-secondary-container px-3 py-2 text-sm text-on-secondary-container"
+        role="status"
+      >
+        <mat-icon class="shrink-0">payments</mat-icon>{{ warning }}
+      </p>
+    }
   </ui-form>
 </mat-dialog-content>

@@ -300,6 +300,13 @@ export const MENU: NavGroup[] = [
         access: 'refunds.read_all | refunds.read_own',
       },
       {
+        label: 'Visit fees',
+        description: 'Missed appointments and late cancellations; waive with a reason.',
+        icon: 'event_busy',
+        route: '/billing/fees',
+        access: 'appointment_fees.read_all | appointment_fees.read_own',
+      },
+      {
         label: 'Insurance claims',
         description: "The insurer's share: prepare, send, decision and remittance.",
         icon: 'health_and_safety',

@@ -15,6 +15,9 @@ import { WalletDialogData } from '@interfaces/billing/wallet-dialog-data.interfa
 import { WalletEntry } from '@interfaces/billing/wallet-entry.interface';
 import { Money } from '@interfaces/common/money.interface';
 import { WalletApi } from '@services/billing/wallet-api.service';
+import { AppointmentFeeApi } from '@services/billing/appointment-fee-api.service';
+import { AppointmentFee } from '@interfaces/billing/appointment-fee.interface';
+import { FEE_TEXT, FEE_WAIVE_REASON_MIN } from '@constants/billing/appointment-fee.constants';
 import { ClaimDecisionDialogData } from '@interfaces/billing/claim-decision-dialog-data.interface';
 import { CloseDrawerDialogData } from '@interfaces/billing/close-drawer-dialog-data.interface';
 import { DepositDialogData } from '@interfaces/billing/deposit-dialog-data.interface';
@@ -57,6 +60,7 @@ export class BillingActions {
   private readonly drawers = inject(CashSessionApi);
   private readonly claims = inject(InsuranceClaimApi);
   private readonly wallet = inject(WalletApi);
+  private readonly fees = inject(AppointmentFeeApi);
 
   editInvoice(data: InvoiceEditorDialogData): Promise<Invoice | undefined> {
     return this.dialogs.openAction<InvoiceEditorDialog, InvoiceEditorDialogData, Invoice>(
@@ -254,6 +258,22 @@ export class BillingActions {
     );
     this.notify.success(WALLET_MESSAGES.paid(paid.code, formatMoney(paid.amount)));
     return paid;
+  }
+
+  // Visit fees
+
+  async waiveFee(fee: AppointmentFee): Promise<AppointmentFee | undefined> {
+    const reason = await this.dialogs.reason({
+      title: FEE_TEXT.waiveTitle(fee.code, formatMoney(fee.amount)),
+      message: FEE_TEXT.waiveMessage,
+      confirmLabel: FEE_TEXT.waive,
+      reasonLabel: FEE_TEXT.waiveReason,
+      reasonMinLength: FEE_WAIVE_REASON_MIN,
+    });
+    if (!reason) return undefined;
+    const waived = await firstValueFrom(this.fees.waive(fee.id, reason));
+    this.notify.success(FEE_TEXT.waivedDone(waived.code));
+    return waived;
   }
 
   // Insurance claims

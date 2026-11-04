@@ -13,7 +13,11 @@
         [formControl]="reason"
         [maxlength]="maxLength"
       ></textarea>
-      <mat-hint align="end">{{ reason.value.length }} / {{ maxLength }}</mat-hint>
+      <mat-hint align="end"
+        >{{ reason.value.trim().length
+        }}{{ data.reasonMinLength ? ' (min ' + data.reasonMinLength + ')' : '' }} /
+        {{ maxLength }}</mat-hint
+      >
       @if (reason.hasError('required')) {
         <mat-error>A reason is required.</mat-error>
       }

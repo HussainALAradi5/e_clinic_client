@@ -1,0 +1,58 @@
+<ui-resource-list
+  resource="appointment_fees"
+  endpoint="billing/appointment-fees"
+  [title]="text.title"
+  [subtitle]="text.subtitle"
+  [emptyTitle]="text.empty"
+  [defaults]="defaults"
+  [columns]="columns"
+>
+  <ng-template uiCell="code" let-row
+    ><span class="font-mono">{{ row.code }}</span></ng-template
+  >
+  <ng-template uiCell="created_at" let-row>{{ row.createdAt | date: dateTimeFormat }}</ng-template>
+  <ng-template uiCell="patient" let-row>
+    <a class="font-medium hover:underline" [routerLink]="['/clinic/patients', row.patient.id]">{{
+      row.patient.fullName
+    }}</a>
+    <a
+      class="block font-mono text-xs text-primary"
+      [routerLink]="['/clinic/appointments', row.appointment.id]"
+      >{{ row.appointment.code }} · {{ row.appointment.scheduledDate | date: dateFormat }}</a
+    >
+  </ng-template>
+  <ng-template uiCell="type" let-row
+    ><ui-status [value]="row.type" enum="AppointmentFeeType"
+  /></ng-template>
+  <ng-template uiCell="amount" let-row
+    ><span class="tabular-nums">{{ row.amount | money }}</span></ng-template
+  >
+  <ng-template uiCell="invoice" let-row>
+    @if (row.invoice; as inv) {
+      <a class="font-mono text-primary" [routerLink]="['/billing/invoices', inv.id]">{{
+        inv.number ?? text.draft
+      }}</a>
+    } @else {
+      —
+    }
+  </ng-template>
+  <ng-template uiCell="status" let-row>
+    <div class="flex flex-wrap items-center gap-1">
+      <ui-status [value]="row.status" enum="AppointmentFeeStatus" />
+      @if (row.waiverReason) {
+        <span class="line-clamp-2 max-w-60 text-xs text-on-surface-variant"
+          >{{ row.waivedBy }}: {{ row.waiverReason }}</span
+        >
+      }
+      @if (waivable(row)) {
+        <ui-button
+          icon="money_off"
+          [variant]="variants.Text"
+          access="appointment_fees.read_all & appointment_fees.waive"
+          [action]="waive.bind(this, row)"
+          >{{ text.waive }}</ui-button
+        >
+      }
+    </div>
+  </ng-template>
+</ui-resource-list>
