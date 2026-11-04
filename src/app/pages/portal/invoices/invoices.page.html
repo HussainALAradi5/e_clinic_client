@@ -10,6 +10,8 @@
   </p>
 </header>
 
+<app-online-payment-notice class="mb-4" (settled)="reload()" />
+
 @if (me(); as patient) {
   <app-patient-wallet class="mb-4" [patient]="patient" [manage]="false" />
 }
@@ -62,6 +64,12 @@
             }
           </span>
         </button>
+        @if (owing(inv)) {
+          <div class="flex flex-wrap items-center gap-2 px-4 pb-3">
+            <app-pay-online-button [invoice]="inv" />
+            <span class="text-xs text-on-surface-variant">{{ payText.secure }}</span>
+          </div>
+        }
         @if (open() === inv.id) {
           <div class="border-t border-outline-variant/60 px-4 pt-3 pb-4">
             @if (details()[inv.id]; as d) {

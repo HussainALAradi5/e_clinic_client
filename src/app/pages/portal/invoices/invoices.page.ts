@@ -34,6 +34,9 @@ import { AuthStore } from '@services/auth/auth.store';
  * and payments, with the printable invoice and receipts.
  */
 import { InvoicePaidBar } from '@components/billing/invoice-paid-bar/invoice-paid-bar.component';
+import { PayOnlineButton } from '@components/portal/pay-online-button/pay-online-button.component';
+import { OnlinePaymentNotice } from '@components/portal/online-payment-notice/online-payment-notice.component';
+import { ONLINE_PAY_TEXT } from '@constants/portal/online-payment.constants';
 @Component({
   selector: 'app-my-invoices-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,6 +54,8 @@ import { InvoicePaidBar } from '@components/billing/invoice-paid-bar/invoice-pai
     EnumFilter,
     DateRangeFilter,
     PatientWallet,
+    PayOnlineButton,
+    OnlinePaymentNotice,
   ],
   templateUrl: './invoices.page.html',
 })
@@ -96,8 +101,17 @@ export class MyInvoicesPage {
       !!this.dates().preset,
   );
 
+  /** Bumped to load the list again (after an online payment settles). */
+  private readonly version = signal(0);
+  protected readonly payText = ONLINE_PAY_TEXT;
+
+  protected reload(): void {
+    this.version.update((v) => v + 1);
+  }
+
   constructor() {
     effect(() => {
+      this.version();
       const state = this.paymentState();
       const method = this.method();
       const dates = this.dates();
