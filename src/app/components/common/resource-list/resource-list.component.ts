@@ -45,7 +45,7 @@ import { RESOURCE_LIST_TEXT } from '@constants/common/resource-list.constants';
  * and — when the server offers them to this user — Export (Excel / PDF / CSV) and Excel Import.
  * Feature list pages are configuration + cell templates (`[bulk]` content adds page-specific bulk buttons):
  *
- * <ui-resource-list resource="rooms" endpoint="clinic/rooms" title="Rooms" rowLink="/clinic/rooms/:id">
+ * <ui-resource-list resource="rooms" endpoint="rooms" title="Rooms" rowLink="/clinic/rooms/:id">
  *   <ui-button actions …>New room</ui-button>
  *   <ng-template uiCell="type" let-row>…</ng-template>
  * </ui-resource-list>
@@ -73,7 +73,7 @@ import { RESOURCE_LIST_TEXT } from '@constants/common/resource-list.constants';
 export class ResourceListPage implements OnInit {
   /** Permission resource / schema name, e.g. 'rooms'. */
   readonly resource = input.required<string>();
-  /** API path, e.g. 'clinic/rooms' (defaults to the resource name). */
+  /** API path, e.g. 'billing/services' (defaults to the resource name). */
   readonly endpoint = input<string | null>(null);
   readonly title = input.required<string>();
   readonly subtitle = input<string | null>(null);
