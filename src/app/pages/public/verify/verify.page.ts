@@ -1,4 +1,5 @@
 import { DocumentActions } from '@components/documents/document-actions/document-actions.component';
+import { AccessService } from '@services/auth/access.service';
 import { AuthStore } from '@services/auth/auth.store';
 import { DatePipe, KeyValuePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
@@ -7,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ApiError } from '@interfaces/api/api-error.interface';
 import { ScanResult } from '@interfaces/code/scan-result.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
@@ -32,6 +33,7 @@ import { VERIFY_TEXT } from '@constants/public/verify.constants';
     KeyValuePipe,
     EnumLabelPipe,
     DocumentActions,
+    RouterLink,
   ],
   templateUrl: './verify.page.html',
 })
@@ -49,6 +51,10 @@ export class VerifyPage implements OnInit {
   protected readonly label = humanise;
   protected readonly signedIn = inject(AuthStore).isAuthenticated;
   protected readonly text = VERIFY_TEXT;
+  /** Signed-in staff who scan codes (the front desk) get a way to the scan station. */
+  protected readonly canScan = inject(AccessService).can(
+    '(codes.read_all | codes.read_own) & codes.scan',
+  );
 
   ngOnInit(): void {
     const code = this.code();
