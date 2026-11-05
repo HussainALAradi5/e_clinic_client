@@ -41,6 +41,7 @@ import { ChatListFilters } from '@components/communication/chat-list-filters/cha
 import { ChatListRow } from '@components/communication/chat-list-row/chat-list-row.component';
 import { ChatListStates } from '@components/communication/chat-list-states/chat-list-states.component';
 import { ChatTitle } from '@components/communication/chat-title/chat-title.component';
+import { PresenceSwitch } from '@components/communication/presence-switch/presence-switch.component';
 import { ChatSettingsDialog } from '@components/communication/chat-settings-dialog/chat-settings-dialog.component';
 import { GroupInfoDialog } from '@components/communication/group-info-dialog/group-info-dialog.component';
 import { MessageBubble } from '@components/communication/message-bubble/message-bubble.component';
@@ -49,6 +50,11 @@ import { NewChatDialog } from '@components/communication/new-chat-dialog/new-cha
 import { chatStamp, dayLabel } from '@utilities/communication/chat-style';
 import { MessageRow } from '@interfaces/communication/message-row.interface';
 import { CHAT_TEXT } from '@constants/communication/chat.constants';
+import { CHAT_ACTIONS_TEXT, PRESENCE_TEXT } from '@constants/communication/chat-actions.constants';
+import { PresenceStatus } from '@enums/identity/presence-status.enum';
+import { CHAT_MENU_TEXT, MUTE_CHOICES } from '@constants/communication/chat-menu.constants';
+import { MuteDuration } from '@enums/communication/mute-duration.enum';
+import { ChatActions } from '@services/communication/chat-actions.service';
 
 const PAGE_SIZE = 20;
 /** Messages closer than this from the same sender share one avatar / name. */
@@ -81,6 +87,7 @@ import { playMotion } from '@utilities/ui/motion';
     ChatListRow,
     ChatListStates,
     ChatTitle,
+    PresenceSwitch,
     MessageBubble,
     MessageComposer,
   ],
@@ -103,6 +110,10 @@ export class ChatPage implements OnInit {
   private readonly rowAnchor = viewChild<ElementRef<HTMLElement>>('rowAnchor');
   /** Admins (chat.read_all) may switch the list to deleted chats, read them and restore them. */
   protected readonly canSeeDeleted = inject(AccessService).can('chat.read_all');
+  protected readonly actions = inject(ChatActions);
+  protected readonly actionText = CHAT_ACTIONS_TEXT;
+  protected readonly menuText = CHAT_MENU_TEXT;
+  protected readonly muteChoices = MUTE_CHOICES;
   protected readonly showDeleted = signal(false);
   /** The chat a right-click opened the menu for, and where. */
   protected readonly menuChat = signal<Conversation | null>(null);
@@ -112,7 +123,7 @@ export class ChatPage implements OnInit {
   private readonly auth = inject(AuthStore);
   protected readonly me = computed(() => this.auth.user()?.id ?? '');
   protected readonly settings = this.settingsStore.settings;
-  protected readonly live = this.realtime.connected;
+  private readonly live = this.realtime.connected;
 
   // Chat list (server-side search, filters and paging)
   protected readonly filter = signal(ChatFilter.All);
@@ -146,7 +157,12 @@ export class ChatPage implements OnInit {
     if (!chat) return '';
     if (chat.type === ConversationType.Direct) {
       const partner = chat.members.find((m) => !m.isMe);
-      return partner ? this.enums.label('UserType', partner.userType) : '';
+      if (!partner) return '';
+      const status =
+        chat.partnerPresence === PresenceStatus.Online
+          ? PRESENCE_TEXT.isOnline
+          : PRESENCE_TEXT.isOffline;
+      return `${status} · ${this.enums.label('UserType', partner.userType)}`;
     }
     return chat.members.map((m) => (m.isMe ? CHAT_TEXT.you : m.fullName.split(' ')[0])).join(', ');
   });
@@ -429,49 +445,43 @@ export class ChatPage implements OnInit {
   }
 
   /** Either person deletes a one-to-one chat; a group only its leader. */
-  protected canDelete(chat: Conversation): boolean {
-    return (
-      !chat.deletedAt &&
-      (chat.type === ConversationType.Direct || chat.myRole === ParticipantRole.Admin)
-    );
-  }
-
   protected readRow(chat: Conversation): void {
     this.markRead(chat.id);
   }
 
-  protected async deleteChat(chat: Conversation): Promise<void> {
-    const ok = await this.dialogs.confirm({
-      title: CHAT_TEXT.delete(chat.title),
-      message:
-        chat.type === ConversationType.Group
-          ? CHAT_TEXT.theGroupDisappearsForEvery
-          : CHAT_TEXT.theChatDisappearsForBoth,
-      confirmLabel: CHAT_TEXT.deleteChat,
-      danger: true,
-    });
-    if (!ok) return;
-    this.api.remove(chat.id).subscribe({
-      next: () => {
-        this.chats.update((list) => list.filter((c) => c.id !== chat.id));
-        this.total.update((n) => Math.max(0, n - 1));
-        if (this.selectedId() === chat.id) this.back();
-        this.notify.success(CHAT_TEXT.chatDeleted);
-      },
-      error: (e: unknown) => this.notify.error(e),
-    });
+  protected async muteRow(chat: Conversation, duration: MuteDuration | null): Promise<void> {
+    const updated = await this.actions.mute(chat, duration);
+    if (updated) this.applyChat(updated);
   }
 
-  protected restoreChat(chat: Conversation): void {
-    this.api.restore(chat.id).subscribe({
-      next: () => {
-        this.chats.update((list) => list.filter((c) => c.id !== chat.id));
-        this.total.update((n) => Math.max(0, n - 1));
-        if (this.selectedId() === chat.id) this.back();
-        this.notify.success(`"${chat.title}" is back for its members.`);
-      },
-      error: (e: unknown) => this.notify.error(e),
-    });
+  protected async leaveRow(chat: Conversation): Promise<void> {
+    const updated = await this.actions.leave(chat);
+    if (updated) this.applyChat(updated);
+  }
+
+  protected async deleteChat(chat: Conversation): Promise<void> {
+    if (await this.actions.deleteForMe(chat)) this.dropChat(chat);
+  }
+
+  protected async deleteForEveryone(chat: Conversation): Promise<void> {
+    if (await this.actions.deleteForEveryone(chat)) this.dropChat(chat);
+  }
+
+  protected async restoreChat(chat: Conversation): Promise<void> {
+    if (await this.actions.restore(chat)) this.dropChat(chat);
+  }
+
+  /** The chat changed (muted, left …): the list row and, when open, the chat. */
+  private applyChat(chat: Conversation): void {
+    this.chats.update((list) => list.map((c) => (c.id === chat.id ? { ...c, ...chat } : c)));
+    if (this.selectedId() === chat.id) this.chat.set(chat);
+  }
+
+  /** The chat left this list (deleted for me, for everyone, or restored out of the Deleted list). */
+  protected dropChat(chat: Conversation): void {
+    this.chats.update((list) => list.filter((c) => c.id !== chat.id));
+    this.total.update((n) => Math.max(0, n - 1));
+    if (this.selectedId() === chat.id) this.back();
   }
 
   protected async info(): Promise<void> {
@@ -483,8 +493,8 @@ export class ChatPage implements OnInit {
       { width: '440px', autoFocus: false },
     );
     if (result === null) {
-      this.chats.update((list) => list.filter((c) => c.id !== chat.id));
-      this.back();
+      // I left: the group stays on my list, read-only.
+      this.api.conversation(chat.id).subscribe({ next: (left) => this.applyChat(left) });
     } else if (result) {
       this.chat.set(result);
       this.chats.update((list) => list.map((c) => (c.id === result.id ? { ...c, ...result } : c)));
@@ -521,6 +531,7 @@ export class ChatPage implements OnInit {
   // ---- list rows ---------------------------------------------------------------------------------------------
 
   protected preview(chat: Conversation): string {
+    if (chat.left) return CHAT_ACTIONS_TEXT.leftRow;
     const m = chat.lastMessage;
     if (!m)
       return chat.type === ConversationType.Group ? CHAT_TEXT.groupCreated : CHAT_TEXT.sayHello;

@@ -38,6 +38,7 @@ export const ENDPOINTS = {
   auth: {
     forgotPassword: 'auth/forgot-password',
     login: 'auth/login',
+    presence: 'auth/presence',
     signature: 'auth/signature',
     logout: 'auth/logout',
     logoutAll: 'auth/logout-all',

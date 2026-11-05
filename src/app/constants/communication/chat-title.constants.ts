@@ -3,5 +3,5 @@ export const CHAT_TITLE_TEXT = {
   about: (name: string) => `About ${name}`,
   leader: 'Leader',
   member: 'Member',
-  members: (count: number) => `${count} members · `,
+  members: (count: number) => `${count} ${count === 1 ? 'member' : 'members'} · `,
 };

@@ -1,11 +1,13 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ChatAvatar } from '@components/communication/chat-avatar/chat-avatar.component';
+import { PRESENCE_TEXT } from '@constants/communication/chat-actions.constants';
 import { CHAT_LIST_TEXT } from '@constants/communication/chat-list.constants';
 import { CHAT_MENU_TEXT } from '@constants/communication/chat-menu.constants';
 import { ConversationType } from '@enums/communication/chat.enum';
 import { ParticipantRole } from '@enums/communication/participant-role.enum';
+import { PresenceStatus } from '@enums/identity/presence-status.enum';
 import { Conversation } from '@interfaces/communication/conversation.interface';
 import { chatStamp } from '@utilities/communication/chat-style';
 
@@ -32,4 +34,7 @@ export class ChatListRow {
   protected readonly types = ConversationType;
   protected readonly roles = ParticipantRole;
   protected readonly stamp = chatStamp;
+  protected readonly presenceText = PRESENCE_TEXT;
+  /** One-to-one chat whose other person is online. */
+  protected readonly online = computed(() => this.chat().partnerPresence === PresenceStatus.Online);
 }

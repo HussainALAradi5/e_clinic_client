@@ -11,21 +11,33 @@
   <button mat-menu-item (click)="info.emit()">
     <mat-icon>info</mat-icon>{{ isGroup() ? text.groupInfo : text.info }}
   </button>
-  @if (chat().muted) {
-    <button mat-menu-item (click)="mute(null)">
-      <mat-icon>notifications_active</mat-icon>
-      <span>
-        {{ text.unmute }}
-        @if (chat().mutedUntil; as until) {
-          <span class="block text-xs text-on-surface-variant">{{
-            text.mutedUntil((until | date: dateFormat) ?? '')
-          }}</span>
-        }
-      </span>
+  @if (actions.canMute(chat())) {
+    @if (chat().muted) {
+      <button mat-menu-item (click)="mute(null)">
+        <mat-icon>notifications_active</mat-icon>
+        <span>
+          {{ text.unmute }}
+          @if (chat().mutedUntil; as until) {
+            <span class="block text-xs text-on-surface-variant">{{
+              text.mutedUntil((until | date: dateFormat) ?? '')
+            }}</span>
+          }
+        </span>
+      </button>
+    } @else {
+      <button mat-menu-item [matMenuTriggerFor]="durations">
+        <mat-icon>notifications_off</mat-icon>{{ text.mute }}
+      </button>
+    }
+  }
+  @if (actions.canLeave(chat())) {
+    <button mat-menu-item class="danger" (click)="leave()">
+      <mat-icon>logout</mat-icon>{{ actionText.leave }}
     </button>
-  } @else {
-    <button mat-menu-item [matMenuTriggerFor]="durations">
-      <mat-icon>notifications_off</mat-icon>{{ text.mute }}
+  }
+  @if (actions.canDelete(chat())) {
+    <button mat-menu-item class="danger" (click)="remove()">
+      <mat-icon>delete</mat-icon>{{ actionText.deleteChat }}
     </button>
   }
 </mat-menu>

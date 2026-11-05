@@ -7,13 +7,18 @@
   (click)="opened.emit()"
   (contextmenu)="menu.emit($event)"
 >
-  <app-chat-avatar
-    [name]="c.title"
-    [id]="c.partnerId ?? c.id"
-    [url]="c.avatarUrl"
-    [group]="c.type === types.Group"
-    [size]="46"
-  />
+  <span class="avatar">
+    <app-chat-avatar
+      [name]="c.title"
+      [id]="c.partnerId ?? c.id"
+      [url]="c.avatarUrl"
+      [group]="c.type === types.Group"
+      [size]="46"
+    />
+    @if (online()) {
+      <span class="online" [attr.aria-label]="presenceText.isOnline"></span>
+    }
+  </span>
   <span class="min-w-0 flex-1">
     <span class="flex items-center gap-1.5">
       <span class="title truncate">{{ c.title }}</span>

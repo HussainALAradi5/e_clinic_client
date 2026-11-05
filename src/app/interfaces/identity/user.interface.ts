@@ -1,3 +1,4 @@
+import { PresenceStatus } from '@enums/identity/presence-status.enum';
 import { UserStatus } from '@enums/identity/user-status.enum';
 import { UserType } from '@enums/identity/user-type.enum';
 import { Person } from '@interfaces/identity/person.interface';
@@ -17,6 +18,8 @@ export interface User {
   phone: string;
   userType: UserType;
   status: UserStatus;
+  /** Online / Offline in chat (Online on sign-in, switchable). */
+  presence: PresenceStatus;
   emailVerifiedAt: string | null;
   lastLoginAt: string | null;
   lastLoginIp: string | null;

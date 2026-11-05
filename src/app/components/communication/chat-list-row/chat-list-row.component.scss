@@ -95,3 +95,19 @@
     text-decoration: line-through;
   }
 }
+
+.avatar {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.online {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  width: 0.8rem;
+  height: 0.8rem;
+  border: 2px solid var(--mat-sys-surface);
+  border-radius: 9999px;
+  background: #22c55e;
+}

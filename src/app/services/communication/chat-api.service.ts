@@ -108,9 +108,14 @@ export class ChatApi {
     });
   }
 
-  /** Soft delete: the chat leaves its members' lists (either person in a one-to-one chat, a leader in a group). */
+  /** Deletes the chat from my list only (soft); a group must be left first. */
   remove(id: string): Observable<void> {
     return this.api.delete(`${this.path}/conversations/${id}`);
+  }
+
+  /** Admins: the whole chat leaves every member's list (restorable). */
+  removeForEveryone(id: string): Observable<void> {
+    return this.api.delete(`${this.path}/conversations/${id}/everyone`);
   }
 
   /** Admins bring a deleted chat back to its members. */

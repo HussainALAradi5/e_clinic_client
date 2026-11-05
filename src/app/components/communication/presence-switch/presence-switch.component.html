@@ -1,0 +1,12 @@
+<button
+  type="button"
+  class="presence"
+  role="switch"
+  [class.on]="online()"
+  [attr.aria-checked]="online()"
+  [disabled]="busy()"
+  [matTooltip]="online() ? text.goOffline : text.goOnline"
+  (click)="toggle()"
+>
+  <span class="dot"></span>{{ online() ? text.online : text.offline }}
+</button>

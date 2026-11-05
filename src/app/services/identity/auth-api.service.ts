@@ -11,6 +11,7 @@ import { TwoFactorSetup } from '@interfaces/auth/two-factor-setup.interface';
 import { Session } from '@interfaces/auth/session.interface';
 import { ApiClient } from '@services/api/api-client.service';
 import { ENDPOINTS } from '@config/endpoints';
+import { PresenceStatus } from '@enums/identity/presence-status.enum';
 
 /** Identity › Authentication endpoints (one method per endpoint, no state). */
 @Injectable({ providedIn: 'root' })
@@ -31,6 +32,11 @@ export class AuthApi {
 
   logoutAll(): Observable<{ revoked: number }> {
     return this.api.post<{ revoked: number }>(ENDPOINTS.auth.logoutAll);
+  }
+
+  /** My Online / Offline status, switched by hand. */
+  setPresence(status: PresenceStatus): Observable<{ presence: PresenceStatus }> {
+    return this.api.put<{ presence: PresenceStatus }>(ENDPOINTS.auth.presence, { status });
   }
 
   me(): Observable<Session> {

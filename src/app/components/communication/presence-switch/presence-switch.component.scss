@@ -1,0 +1,47 @@
+:host {
+  display: inline-flex;
+}
+
+.presence {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-right: 0.25rem;
+  padding: 0.15rem 0.6rem;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface-variant);
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+
+  &:disabled {
+    cursor: progress;
+    opacity: 0.7;
+  }
+
+  .dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 9999px;
+    background: #9ca3af;
+  }
+
+  &.on {
+    background: #dcfce7;
+    color: #166534;
+
+    .dot {
+      background: #22c55e;
+      box-shadow: 0 0 0 3px rgb(34 197 94 / 0.25);
+    }
+  }
+}
+
+:host-context([data-theme='dark']) .presence.on {
+  background: #14532d;
+  color: #bbf7d0;
+}
