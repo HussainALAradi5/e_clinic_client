@@ -91,7 +91,7 @@ src/app/
 ├── pages/         258 files  ← routed screens (…Page); compose components
 │       accounting · billing · clinic · common · communication · dashboard · dev · hr · pharmacy
 │       portal · public · reference · system
-├── components/    366 files  ← reusable UI, one folder per component (.ts + .html + .scss)
+├── components/    390 files  ← reusable UI, one folder per component (.ts + .html + .scss)
 │       accounting · billing · clinic · common · communication · documents · hr · layout · notification
 │       pharmacy · portal · reference · settings · system
 ├── services/       96 files  ← API calls and state; one ApiClient
@@ -100,7 +100,7 @@ src/app/
 │       task · ui · upload · view
 ├── middlewares/     4 files  ← route guards and HTTP interceptors
 │       guards · interceptors
-├── interfaces/    397 files  ← one type per file (wire DTOs and UI types)
+├── interfaces/    399 files  ← one type per file (wire DTOs and UI types)
 │       accounting · api · attachment · auth · billing · bulk · clinic · code · common · communication
 │       dev · documents · finance · hr · identity · list · notification · pharmacy · portal · public
 │       reference · system · task · ui · upload · view
@@ -108,7 +108,7 @@ src/app/
 │       accounting · api · attachment · auth · billing · clinic · code · communication · documents
 │       finance · hr · identity · list · notification · pharmacy · reference · shared · task · ui
 │       upload
-├── constants/     136 files  ← every UI text, option list and limit
+├── constants/     141 files  ← every UI text, option list and limit
 │       accounting · billing · clinic · common · communication · dashboard · dev · documents · hr
 │       layout · notification · pharmacy · portal · public · reference · settings · system · ui
 ├── utilities/      45 files  ← pure helpers (money, dates, lists)
