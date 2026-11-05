@@ -1,10 +1,5 @@
 /** Text of communication/chat/chat.page (labels, messages, confirmations). */
 export const CHAT_TEXT = {
-  all: 'All',
-  unread: 'Unread',
-  groups: 'Groups',
-  oneToOne: 'One-to-one',
-  read: 'Read',
   you: 'You',
   thatMessageIsFurtherBack: 'That message is further back — scroll up to load it.',
   theGroupDisappearsForEvery:

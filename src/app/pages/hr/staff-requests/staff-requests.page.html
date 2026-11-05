@@ -64,116 +64,14 @@
 
     <div class="list" [class.loading]="loading()" aria-live="polite">
       @for (r of requests(); track r.id) {
-        <article class="card" [class.late]="r.type === types.LateExcuse">
-          <header class="card-head">
-            @if (seesEveryone) {
-              <span class="avatar" aria-hidden="true">{{ initials(r.employee?.fullName) }}</span>
-              <div class="min-w-0 flex-1">
-                <p class="m-0 truncate font-semibold">
-                  {{ r.employee?.fullName }}
-                  @if (r.employeeId === me()) {
-                    <span class="you">you</span>
-                  }
-                </p>
-                <p class="m-0 truncate text-xs text-on-surface-variant">
-                  {{ r.employee?.jobTitle }}
-                  @if (r.employee?.department) {
-                    · {{ r.employee?.department?.name }}
-                  }
-                </p>
-              </div>
-            } @else {
-              <div class="min-w-0 flex-1">
-                <p class="m-0 font-semibold">{{ r.attendance?.date | date: dateFormat }}</p>
-              </div>
-            }
-            <ui-status enum="StaffRequestType" [value]="r.type" />
-            <ui-status enum="ApprovalStatus" [value]="r.status" />
-          </header>
-
-          <div class="facts">
-            @if (seesEveryone) {
-              <div>
-                <span class="label">Day</span>
-                <span>{{ r.attendance?.date | date: dateFormat }}</span>
-              </div>
-            }
-            <div>
-              <span class="label">{{ r.type === types.LateExcuse ? 'Late by' : 'Overtime' }}</span>
-              <span class="big">{{ r.minutes | duration }}</span>
-            </div>
-            <div>
-              <span class="label">In – out</span>
-              <span
-                >{{
-                  r.attendance?.checkInAt
-                    ? (r.attendance?.checkInAt | date: timeFormat : zone)
-                    : '—'
-                }}
-                –
-                {{
-                  r.attendance?.checkOutAt
-                    ? (r.attendance?.checkOutAt | date: timeFormat : zone)
-                    : '—'
-                }}</span
-              >
-            </div>
-            @if (r.details?.amount; as amount) {
-              @let a = amountLabel(r);
-              <div>
-                <span class="label">{{ a.label }}</span>
-                <span [class]="a.tone">{{ a.sign }}{{ amount | money }}</span>
-              </div>
-            }
-            <div class="ml-auto text-right">
-              <span class="label">{{ r.code }}</span>
-              <span class="text-xs text-on-surface-variant">{{
-                r.createdAt | date: dateTimeFormat : zone
-              }}</span>
-            </div>
-          </div>
-
-          <p class="reason" [class.empty]="!r.reason">
-            <mat-icon aria-hidden="true">format_quote</mat-icon>
-            {{ r.reason ?? 'No reason given.' }}
-          </p>
-
-          @if (r.reviewedAt) {
-            <div class="decision" [class.rejected]="r.status === 'rejected'">
-              <mat-icon aria-hidden="true">{{
-                r.status === 'rejected' ? 'cancel' : 'verified'
-              }}</mat-icon>
-              <div class="min-w-0">
-                <p class="m-0 text-sm">
-                  <span class="font-semibold">{{
-                    r.status === 'rejected' ? 'Rejected' : 'Approved'
-                  }}</span>
-                  by {{ r.reviewedBy?.fullName ?? 'HR' }} ·
-                  {{ r.reviewedAt | date: dateTimeFormat : zone }}
-                </p>
-                @if (r.reviewReason) {
-                  <p class="m-0 text-sm">“{{ r.reviewReason }}”</p>
-                }
-              </div>
-            </div>
-          }
-
-          @if (r.status === 'pending') {
-            <footer class="actions">
-              @if (canReview && r.employeeId !== me()) {
-                <button matButton="outlined" class="reject" (click)="review(r, 'reject')">
-                  <mat-icon>close</mat-icon> Reject
-                </button>
-                <button matButton="filled" (click)="review(r, 'approve')">
-                  <mat-icon>check</mat-icon> Approve
-                </button>
-              }
-              @if (r.employeeId === me()) {
-                <button matButton (click)="withdraw(r)"><mat-icon>undo</mat-icon> Withdraw</button>
-              }
-            </footer>
-          }
-        </article>
+        <app-staff-request-card
+          [request]="r"
+          [seesEveryone]="seesEveryone"
+          [canReview]="canReview"
+          [meId]="me()"
+          (reviewed)="review(r, $event)"
+          (withdrawn)="withdraw(r)"
+        />
       } @empty {
         @if (!loading()) {
           <ui-empty

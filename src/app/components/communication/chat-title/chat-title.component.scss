@@ -1,0 +1,48 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.who {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.2rem 0.4rem;
+  border: 0;
+  border-radius: 0.8rem;
+  background: transparent;
+  color: var(--mat-sys-on-surface);
+  font: inherit;
+  cursor: pointer;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 0.45rem;
+  border-radius: 9999px;
+  background: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.64rem;
+  font-weight: 700;
+  line-height: 1.15rem;
+  text-transform: uppercase;
+
+  mat-icon {
+    width: 0.8rem;
+    height: 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  &.leader {
+    background: #fef3c7;
+    color: #92400e;
+  }
+}
+
+:host-context([data-theme='dark']) .pill.leader {
+  background: #78350f;
+  color: #fde68a;
+}

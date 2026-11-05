@@ -37,7 +37,10 @@ import { EnumService } from '@services/data/enum.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { AccessService } from '@services/auth/access.service';
 import { NotifyService } from '@services/ui/notify.service';
-import { ChatAvatar } from '@components/communication/chat-avatar/chat-avatar.component';
+import { ChatListFilters } from '@components/communication/chat-list-filters/chat-list-filters.component';
+import { ChatListRow } from '@components/communication/chat-list-row/chat-list-row.component';
+import { ChatListStates } from '@components/communication/chat-list-states/chat-list-states.component';
+import { ChatTitle } from '@components/communication/chat-title/chat-title.component';
 import { ChatSettingsDialog } from '@components/communication/chat-settings-dialog/chat-settings-dialog.component';
 import { GroupInfoDialog } from '@components/communication/group-info-dialog/group-info-dialog.component';
 import { MessageBubble } from '@components/communication/message-bubble/message-bubble.component';
@@ -61,7 +64,6 @@ const POLL_CHAT_MS = 8_000;
  */
 import { ChatMenu } from '@components/communication/chat-menu/chat-menu.component';
 import { TapMotionDirective } from '@directives/tap-motion.directive';
-import { CHAT_MENU_TEXT } from '@constants/communication/chat-menu.constants';
 import { playMotion } from '@utilities/ui/motion';
 @Component({
   selector: 'app-chat-page',
@@ -75,7 +77,10 @@ import { playMotion } from '@utilities/ui/motion';
     MatIconModule,
     MatMenuModule,
     MatTooltipModule,
-    ChatAvatar,
+    ChatListFilters,
+    ChatListRow,
+    ChatListStates,
+    ChatTitle,
     MessageBubble,
     MessageComposer,
   ],
@@ -108,16 +113,6 @@ export class ChatPage implements OnInit {
   protected readonly me = computed(() => this.auth.user()?.id ?? '');
   protected readonly settings = this.settingsStore.settings;
   protected readonly live = this.realtime.connected;
-  protected readonly filters = ChatFilter;
-  protected readonly roles = ParticipantRole;
-  protected readonly types = ConversationType;
-  protected readonly chips = [
-    { value: ChatFilter.All, label: CHAT_TEXT.all, icon: 'forum' },
-    { value: ChatFilter.Unread, label: CHAT_TEXT.unread, icon: 'mark_chat_unread' },
-    { value: ChatFilter.Groups, label: CHAT_TEXT.groups, icon: 'groups' },
-    { value: ChatFilter.Direct, label: CHAT_TEXT.oneToOne, icon: 'person' },
-    { value: ChatFilter.Read, label: CHAT_TEXT.read, icon: 'done_all' },
-  ];
 
   // Chat list (server-side search, filters and paging)
   protected readonly filter = signal(ChatFilter.All);
@@ -140,10 +135,8 @@ export class ChatPage implements OnInit {
   protected readonly sending = signal(false);
   /** The message being answered in the composer. */
   protected readonly replyTo = signal<ChatMessage | null>(null);
-  protected readonly menuText = CHAT_MENU_TEXT;
   protected readonly dragging = signal(false);
 
-  protected readonly dateActive = computed(() => !!this.from() || !!this.to());
   protected readonly isGroup = computed(() => this.chat()?.type === ConversationType.Group);
   protected readonly leaderCount = computed(
     () => this.chat()?.members.filter((m) => m.role === ParticipantRole.Admin).length ?? 0,
@@ -266,11 +259,6 @@ export class ChatPage implements OnInit {
 
   protected more(): void {
     this.loadChats(this.page() + 1);
-  }
-
-  protected clearDates(): void {
-    this.from.set('');
-    this.to.set('');
   }
 
   private query(page: number): ConversationQuery {

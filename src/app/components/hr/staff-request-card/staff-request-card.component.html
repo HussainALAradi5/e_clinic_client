@@ -1,0 +1,111 @@
+@let r = request();
+<article class="card" [class.late]="r.type === types.LateExcuse">
+  <header class="card-head">
+    @if (seesEveryone()) {
+      <span class="avatar" aria-hidden="true">{{ initials() }}</span>
+      <div class="min-w-0 flex-1">
+        <p class="m-0 truncate font-semibold">
+          {{ r.employee?.fullName }}
+          @if (mine()) {
+            <span class="you">{{ text.you }}</span>
+          }
+        </p>
+        <p class="m-0 truncate text-xs text-on-surface-variant">
+          {{ r.employee?.jobTitle }}
+          @if (r.employee?.department) {
+            · {{ r.employee?.department?.name }}
+          }
+        </p>
+      </div>
+    } @else {
+      <div class="min-w-0 flex-1">
+        <p class="m-0 font-semibold">{{ r.attendance?.date | date: dateFormat }}</p>
+      </div>
+    }
+    <ui-status enum="StaffRequestType" [value]="r.type" />
+    <ui-status enum="ApprovalStatus" [value]="r.status" />
+  </header>
+
+  <div class="facts">
+    @if (seesEveryone()) {
+      <div>
+        <span class="label">{{ text.day }}</span>
+        <span>{{ r.attendance?.date | date: dateFormat }}</span>
+      </div>
+    }
+    <div>
+      <span class="label">{{ r.type === types.LateExcuse ? text.lateBy : text.overtime }}</span>
+      <span class="big">{{ r.minutes | duration }}</span>
+    </div>
+    <div>
+      <span class="label">{{ text.inOut }}</span>
+      <span
+        >{{
+          r.attendance?.checkInAt ? (r.attendance?.checkInAt | date: timeFormat : zone) : text.none
+        }}
+        –
+        {{
+          r.attendance?.checkOutAt
+            ? (r.attendance?.checkOutAt | date: timeFormat : zone)
+            : text.none
+        }}</span
+      >
+    </div>
+    @if (r.details?.amount; as money) {
+      @let a = amount();
+      <div>
+        <span class="label">{{ a.label }}</span>
+        <span [class]="a.tone">{{ a.sign }}{{ money | money }}</span>
+      </div>
+    }
+    <div class="ml-auto text-right">
+      <span class="label">{{ r.code }}</span>
+      <span class="text-xs text-on-surface-variant">{{
+        r.createdAt | date: dateTimeFormat : zone
+      }}</span>
+    </div>
+  </div>
+
+  <p class="reason" [class.empty]="!r.reason">
+    <mat-icon aria-hidden="true">format_quote</mat-icon>
+    {{ r.reason ?? text.noReason }}
+  </p>
+
+  @if (r.reviewedAt) {
+    <div class="decision" [class.rejected]="r.status === statuses.Rejected">
+      <mat-icon aria-hidden="true">{{
+        r.status === statuses.Rejected ? 'cancel' : 'verified'
+      }}</mat-icon>
+      <div class="min-w-0">
+        <p class="m-0 text-sm">
+          <span class="font-semibold">{{
+            r.status === statuses.Rejected ? text.rejected : text.approved
+          }}</span>
+          {{ text.by(r.reviewedBy?.fullName) }}
+          {{ r.reviewedAt | date: dateTimeFormat : zone }}
+        </p>
+        @if (r.reviewReason) {
+          <p class="m-0 text-sm">“{{ r.reviewReason }}”</p>
+        }
+      </div>
+    </div>
+  }
+
+  @if (r.status === statuses.Pending) {
+    <footer class="actions">
+      @if (canReview() && !mine()) {
+        <button matButton="outlined" class="reject" (click)="reviewed.emit('reject')">
+          <mat-icon>close</mat-icon> {{ text.reject }}
+        </button>
+        <button matButton="filled" (click)="reviewed.emit('approve')">
+          <mat-icon>check</mat-icon> {{ text.approve }}
+        </button>
+      }
+      @if (mine()) {
+        <button matButton (click)="withdrawn.emit()">
+          <mat-icon>undo</mat-icon> {{ text.withdraw }}
+        </button>
+      }
+    </footer>
+  }
+</article>

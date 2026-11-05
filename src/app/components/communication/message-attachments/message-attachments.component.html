@@ -1,0 +1,41 @@
+@if (images().length) {
+  <div class="images" [class.grid]="images().length > 1">
+    @for (img of images(); track img.id) {
+      @if (img.url) {
+        <a [href]="img.url" target="_blank" rel="noopener">
+          <img [src]="img.url" [alt]="img.name" (load)="loaded.emit()" />
+        </a>
+      } @else {
+        <div class="pending"><mat-icon>hourglass_top</mat-icon>{{ text.checkingFile }}</div>
+      }
+    }
+  </div>
+}
+
+@for (video of videos(); track video.id) {
+  @if (video.url) {
+    <video class="video" [src]="video.url" controls preload="metadata"></video>
+  }
+}
+
+@for (clip of audio(); track clip.id) {
+  <div class="voice">
+    <mat-icon>{{ message().kind === kinds.Voice ? 'mic' : 'audio_file' }}</mat-icon>
+    @if (clip.url) {
+      <audio [src]="clip.url" controls preload="metadata"></audio>
+    } @else {
+      <span class="text-xs opacity-80">{{ text.checkingFile }}</span>
+    }
+  </div>
+}
+
+@for (doc of documents(); track doc.id) {
+  <a class="doc" [attr.href]="doc.url" target="_blank" rel="noopener">
+    <mat-icon>description</mat-icon>
+    <span class="min-w-0">
+      <span class="block truncate font-medium">{{ doc.name }}</span>
+      <span class="block text-xs opacity-80">{{ size(doc.sizeBytes) }}</span>
+    </span>
+    <mat-icon class="ml-auto">download</mat-icon>
+  </a>
+}

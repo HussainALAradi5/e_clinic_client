@@ -1,0 +1,63 @@
+<div class="quick">
+  <button
+    type="button"
+    role="menuitem"
+    class="tool"
+    tapMotion="nudge"
+    [attr.aria-label]="text.reply"
+    (click)="reply.emit()"
+  >
+    <mat-icon>reply</mat-icon>
+  </button>
+  @for (emoji of quick(); track emoji) {
+    <button
+      type="button"
+      role="menuitem"
+      [class.chosen]="emoji === chosen()"
+      [attr.aria-pressed]="emoji === chosen()"
+      [attr.aria-label]="text.emoji(emoji, emoji === chosen())"
+      (click)="picked.emit(emoji)"
+    >
+      {{ emoji }}
+    </button>
+  }
+  @if (extra().length) {
+    <button
+      type="button"
+      role="menuitem"
+      class="tool"
+      [attr.aria-expanded]="more()"
+      [attr.aria-label]="more() ? text.fewer : text.more"
+      (click)="more.set(!more())"
+    >
+      <mat-icon>{{ more() ? 'expand_less' : 'add' }}</mat-icon>
+    </button>
+  }
+  @if (canCopy()) {
+    <button
+      type="button"
+      role="menuitem"
+      class="tool"
+      [attr.aria-label]="text.copy"
+      (click)="copy.emit()"
+    >
+      <mat-icon>content_copy</mat-icon>
+    </button>
+  }
+</div>
+@if (more()) {
+  <div class="grid">
+    @for (emoji of extra(); track emoji) {
+      <button
+        type="button"
+        role="menuitem"
+        [class.chosen]="emoji === chosen()"
+        [attr.aria-pressed]="emoji === chosen()"
+        [attr.aria-label]="text.emoji(emoji, emoji === chosen())"
+        (click)="picked.emit(emoji)"
+      >
+        {{ emoji }}
+      </button>
+    }
+  </div>
+}

@@ -1,0 +1,59 @@
+@let c = chat();
+<button
+  type="button"
+  class="row"
+  [class.active]="active()"
+  [class.deleted]="!!c.deletedAt"
+  (click)="opened.emit()"
+  (contextmenu)="menu.emit($event)"
+>
+  <app-chat-avatar
+    [name]="c.title"
+    [id]="c.partnerId ?? c.id"
+    [url]="c.avatarUrl"
+    [group]="c.type === types.Group"
+    [size]="46"
+  />
+  <span class="min-w-0 flex-1">
+    <span class="flex items-center gap-1.5">
+      <span class="title truncate">{{ c.title }}</span>
+      @if (c.type === types.Group && c.myRole === roles.Admin) {
+        <mat-icon class="lead" [matTooltip]="text.youLead">star</mat-icon>
+      }
+      <span class="flex-1"></span>
+      <span class="time" [class.unread]="c.unreadCount > 0">{{
+        stamp(c.lastMessageAt ?? c.createdAt)
+      }}</span>
+    </span>
+    <span class="flex items-center gap-1.5">
+      @if (mine()) {
+        <mat-icon class="tick">done_all</mat-icon>
+      }
+      <span class="preview truncate">{{
+        c.deletedAt ? text.deletedBy(c.deletedBy, stamp(c.deletedAt)) : preview()
+      }}</span>
+      <span class="flex-1"></span>
+      @if (c.messagesCount) {
+        <span class="total" [matTooltip]="text.messages(c.messagesCount)">{{
+          c.messagesCount
+        }}</span>
+      }
+      @if (c.muted) {
+        <mat-icon
+          class="!size-4 !text-base text-on-surface-variant"
+          [attr.aria-label]="menuText.muted"
+          >notifications_off</mat-icon
+        >
+      }
+      @if (c.unreadCount > 0) {
+        <span
+          class="badge"
+          [class.!bg-surface-container-highest]="c.muted"
+          [class.!text-on-surface-variant]="c.muted"
+          [attr.aria-label]="text.unread(c.unreadCount)"
+          >{{ text.unreadShown(c.unreadCount) }}</span
+        >
+      }
+    </span>
+  </span>
+</button>

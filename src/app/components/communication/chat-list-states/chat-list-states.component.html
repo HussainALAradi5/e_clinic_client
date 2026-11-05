@@ -1,0 +1,13 @@
+@if (loading()) {
+  @for (i of rows; track i) {
+    <li class="skeleton">
+      <span class="s-avatar"></span><span class="s-lines"><span></span><span></span></span>
+    </li>
+  }
+} @else if (empty()) {
+  <li class="empty">
+    <mat-icon>forum</mat-icon>
+    <p class="m-0 font-medium">{{ text.noChats }}</p>
+    <p class="m-0 text-sm">{{ text.noChatsHint }}</p>
+  </li>
+}

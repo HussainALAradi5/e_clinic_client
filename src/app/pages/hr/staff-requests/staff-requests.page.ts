@@ -18,8 +18,7 @@ import { StaffRequestDialogData } from '@interfaces/hr/staff-request-dialog.inte
 import { EmptyState } from '@components/common/empty-state/empty-state.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Paginator } from '@components/common/paginator/paginator.component';
-import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from '@constants/app.constants';
+import { TIME_FORMAT } from '@constants/app.constants';
 import { StaffRequestType } from '@enums/hr/staff-request-type.enum';
 import { ApprovalStatus } from '@enums/shared/approval-status.enum';
 import { PageMeta } from '@interfaces/api/page-meta.interface';
@@ -30,13 +29,14 @@ import { FilterCondition } from '@interfaces/list/filter-condition.type';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { PageChange } from '@interfaces/ui/page-change.interface';
 import { DurationPipe } from '@pipes/duration.pipe';
-import { MoneyPipe } from '@pipes/money.pipe';
 import { AccessService } from '@services/auth/access.service';
 import { AuthStore } from '@services/auth/auth.store';
 import { StaffRequestApi } from '@services/hr/staff-request-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { StatusTab } from '@interfaces/hr/staff-requests.interface';
+import { ReviewDecision } from '@interfaces/hr/review-decision.type';
+import { StaffRequestCard } from '@components/hr/staff-request-card/staff-request-card.component';
 import { STAFF_REQUESTS_TEXT } from '@constants/hr/staff-requests.constants';
 
 const TABS: { value: StatusTab; label: string; icon: string }[] = [
@@ -60,11 +60,10 @@ const TABS: { value: StatusTab; label: string; icon: string }[] = [
     MatIconModule,
     MatTooltipModule,
     DurationPipe,
-    MoneyPipe,
     EmptyState,
     PageHeader,
     Paginator,
-    StatusChip,
+    StaffRequestCard,
   ],
   templateUrl: './staff-requests.page.html',
   styleUrl: './staff-requests.page.scss',
@@ -78,8 +77,6 @@ export class StaffRequestsPage implements OnInit {
 
   protected readonly tabs = TABS;
   protected readonly types = StaffRequestType;
-  protected readonly dateFormat = DATE_FORMAT;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
   protected readonly timeFormat = TIME_FORMAT;
   protected readonly zone = '+0300';
   /** HR: everyone's requests and the decision buttons. */
@@ -137,35 +134,8 @@ export class StaffRequestsPage implements OnInit {
   }
 
   /** What the amount means now: a late excuse saves a deduction, overtime adds pay — once decided, what happened. */
-  protected amountLabel(r: StaffRequest): { label: string; sign: string; tone: string } {
-    const late = r.type === StaffRequestType.LateExcuse;
-    switch (r.status) {
-      case ApprovalStatus.Approved:
-        return late
-          ? { label: STAFF_REQUESTS_TEXT.excused, sign: '', tone: 'struck' }
-          : { label: STAFF_REQUESTS_TEXT.paid, sign: '+', tone: 'plus' };
-      case ApprovalStatus.Rejected:
-        return late
-          ? { label: STAFF_REQUESTS_TEXT.deducted, sign: '−', tone: 'minus' }
-          : { label: STAFF_REQUESTS_TEXT.notPaid, sign: '', tone: 'struck' };
-      default:
-        return late
-          ? { label: STAFF_REQUESTS_TEXT.ifNotExcused, sign: '−', tone: 'minus' }
-          : { label: STAFF_REQUESTS_TEXT.toPay, sign: '+', tone: 'plus' };
-    }
-  }
-
   protected minutesOf(day: Attendance, type: StaffRequestType): number {
     return type === StaffRequestType.LateExcuse ? day.lateMinutes : day.overtimeMinutes;
-  }
-
-  protected initials(name: string | undefined): string {
-    return (name ?? '?')
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((w) => w[0]?.toUpperCase())
-      .join('');
   }
 
   protected async ask(day: Attendance, type: StaffRequestType): Promise<void> {
@@ -181,7 +151,7 @@ export class StaffRequestsPage implements OnInit {
     }
   }
 
-  protected async review(request: StaffRequest, decision: 'approve' | 'reject'): Promise<void> {
+  protected async review(request: StaffRequest, decision: ReviewDecision): Promise<void> {
     const decided = await this.dialogs.open<
       ReviewRequestDialog,
       ReviewRequestDialogData,

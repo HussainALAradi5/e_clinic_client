@@ -31,73 +31,14 @@
     </header>
 
     <div class="px-3">
-      <label class="search">
-        <mat-icon>search</mat-icon>
-        <input
-          type="search"
-          placeholder="Search chats or people"
-          aria-label="Search chats"
-          [ngModel]="search()"
-          (ngModelChange)="search.set($event)"
-        />
-      </label>
-
-      <div class="chips" role="tablist" aria-label="Show">
-        @for (chip of chips; track chip.value) {
-          <button
-            type="button"
-            role="tab"
-            class="chip"
-            [class.on]="filter() === chip.value"
-            [attr.aria-selected]="filter() === chip.value"
-            (click)="filter.set(chip.value)"
-          >
-            {{ chip.label }}
-          </button>
-        }
-        @if (canSeeDeleted) {
-          <button
-            type="button"
-            class="chip deleted"
-            role="switch"
-            [class.on]="showDeleted()"
-            [attr.aria-checked]="showDeleted()"
-            matTooltip="Admins: show deleted chats (read-only, restorable)"
-            (click)="showDeleted.set(!showDeleted())"
-          >
-            <mat-icon class="!size-4 !text-base">delete_sweep</mat-icon> Deleted
-          </button>
-        }
-        <button
-          type="button"
-          class="chip"
-          [class.on]="dateActive()"
-          [matMenuTriggerFor]="dates"
-          aria-label="Filter by date"
-        >
-          <mat-icon class="!size-4 !text-base">event</mat-icon>
-          {{ dateActive() ? (from() || '…') + ' → ' + (to() || '…') : 'Date' }}
-        </button>
-        <mat-menu #dates="matMenu" class="!rounded-2xl">
-          <div
-            class="flex flex-col gap-2 p-3"
-            (click)="$event.stopPropagation()"
-            (keydown)="$event.stopPropagation()"
-          >
-            <span class="text-xs font-semibold uppercase text-on-surface-variant"
-              >Last activity</span
-            >
-            <label class="date"
-              >From <input type="date" [ngModel]="from()" (ngModelChange)="from.set($event)"
-            /></label>
-            <label class="date"
-              >To
-              <input type="date" [ngModel]="to()" [min]="from()" (ngModelChange)="to.set($event)"
-            /></label>
-            <button matButton (click)="clearDates()" [disabled]="!dateActive()">Clear dates</button>
-          </div>
-        </mat-menu>
-      </div>
+      <app-chat-list-filters
+        [(search)]="search"
+        [(filter)]="filter"
+        [(showDeleted)]="showDeleted"
+        [(from)]="from"
+        [(to)]="to"
+        [canSeeDeleted]="canSeeDeleted"
+      />
     </div>
 
     <p class="count">{{ total() }} {{ total() === 1 ? 'chat' : 'chats' }}</p>
@@ -136,81 +77,17 @@
     <ul class="rows" aria-label="Chat list">
       @for (c of chats(); track c.id) {
         <li>
-          <button
-            type="button"
-            class="row"
-            [class.active]="c.id === selectedId()"
-            [class.deleted]="!!c.deletedAt"
-            (click)="select(c)"
-            (contextmenu)="openRowMenu($event, c)"
-          >
-            <app-chat-avatar
-              [name]="c.title"
-              [id]="c.partnerId ?? c.id"
-              [url]="c.avatarUrl"
-              [group]="c.type === types.Group"
-              [size]="46"
-            />
-            <span class="min-w-0 flex-1">
-              <span class="flex items-center gap-1.5">
-                <span class="title truncate">{{ c.title }}</span>
-                @if (c.type === types.Group && c.myRole === roles.Admin) {
-                  <mat-icon class="lead" matTooltip="You lead this group">star</mat-icon>
-                }
-                <span class="flex-1"></span>
-                <span class="time" [class.unread]="c.unreadCount > 0">{{
-                  stamp(c.lastMessageAt ?? c.createdAt)
-                }}</span>
-              </span>
-              <span class="flex items-center gap-1.5">
-                @if (lastMine(c)) {
-                  <mat-icon class="tick">done_all</mat-icon>
-                }
-                <span class="preview truncate">{{
-                  c.deletedAt
-                    ? 'Deleted by ' + (c.deletedBy ?? 'someone') + ' · ' + stamp(c.deletedAt)
-                    : preview(c)
-                }}</span>
-                <span class="flex-1"></span>
-                @if (c.messagesCount) {
-                  <span class="total" [matTooltip]="c.messagesCount + ' messages'">{{
-                    c.messagesCount
-                  }}</span>
-                }
-                @if (c.muted) {
-                  <mat-icon class="!size-4 !text-base text-on-surface-variant" [attr.aria-label]="menuText.muted"
-                    >notifications_off</mat-icon
-                  >
-                }
-                @if (c.unreadCount > 0) {
-                  <span
-                    class="badge"
-                    [class.!bg-surface-container-highest]="c.muted"
-                    [class.!text-on-surface-variant]="c.muted"
-                    [attr.aria-label]="c.unreadCount + ' unread'"
-                    >{{ c.unreadCount > 99 ? '99+' : c.unreadCount }}</span
-                  >
-                }
-              </span>
-            </span>
-          </button>
+          <app-chat-list-row
+            [chat]="c"
+            [active]="c.id === selectedId()"
+            [mine]="lastMine(c)"
+            [preview]="preview(c)"
+            (opened)="select(c)"
+            (menu)="openRowMenu($event, c)"
+          />
         </li>
-      } @empty {
-        @if (!listLoading()) {
-          <li class="empty">
-            <mat-icon>forum</mat-icon>
-            <p class="m-0 font-medium">No chats here</p>
-            <p class="m-0 text-sm">Try another filter, or start a new chat.</p>
-          </li>
-        }
       }
-      @if (listLoading()) {
-        @for (i of [1, 2, 3, 4, 5]; track i) {
-          <li class="skeleton">
-            <span class="s-avatar"></span><span class="s-lines"><span></span><span></span></span>
-          </li>
-        }
-      }
+      <app-chat-list-states [loading]="listLoading()" [empty]="!listLoading() && !chats().length" />
       @if (page() < lastPage() && !listLoading()) {
         <li class="p-3">
           <button matButton class="w-full" (click)="more()">Load more chats</button>
@@ -238,36 +115,7 @@
         >
           <mat-icon>arrow_back</mat-icon>
         </button>
-        <button type="button" class="who" (click)="info()" [attr.aria-label]="'About ' + c.title">
-          <app-chat-avatar
-            [name]="c.title"
-            [id]="c.partnerId ?? c.id"
-            [url]="c.avatarUrl"
-            [group]="isGroup()"
-            [size]="42"
-          />
-          <span class="min-w-0 text-left">
-            <span class="flex items-center gap-2">
-              <span class="truncate text-base font-semibold">{{ c.title }}</span>
-              @if (isGroup() && c.myRole) {
-                <span class="pill" [class.leader]="c.myRole === roles.Admin">
-                  @if (c.myRole === roles.Admin) {
-                    <mat-icon>star</mat-icon>
-                  }
-                  {{ c.myRole === roles.Admin ? 'Leader' : 'Member' }}
-                </span>
-              }
-            </span>
-            <span class="flex items-center gap-1 truncate text-xs text-on-surface-variant">
-              @if (c.muted) {
-                <mat-icon class="!size-4 !text-base text-on-surface-variant" [attr.aria-label]="menuText.muted"
-                  >notifications_off</mat-icon
-                >
-              }
-              {{ isGroup() ? c.members.length + ' members · ' : '' }}{{ subtitle() }}
-            </span>
-          </span>
-        </button>
+        <app-chat-title [chat]="c" [subtitle]="subtitle()" (opened)="info()" />
         <span class="flex-1"></span>
         <button
           matIconButton

@@ -1,0 +1,33 @@
+@let c = chat();
+<button type="button" class="who" (click)="opened.emit()" [attr.aria-label]="text.about(c.title)">
+  <app-chat-avatar
+    [name]="c.title"
+    [id]="c.partnerId ?? c.id"
+    [url]="c.avatarUrl"
+    [group]="isGroup()"
+    [size]="42"
+  />
+  <span class="min-w-0 text-left">
+    <span class="flex items-center gap-2">
+      <span class="truncate text-base font-semibold">{{ c.title }}</span>
+      @if (isGroup() && c.myRole) {
+        <span class="pill" [class.leader]="c.myRole === roles.Admin">
+          @if (c.myRole === roles.Admin) {
+            <mat-icon>star</mat-icon>
+          }
+          {{ c.myRole === roles.Admin ? text.leader : text.member }}
+        </span>
+      }
+    </span>
+    <span class="flex items-center gap-1 truncate text-xs text-on-surface-variant">
+      @if (c.muted) {
+        <mat-icon
+          class="!size-4 !text-base text-on-surface-variant"
+          [attr.aria-label]="menuText.muted"
+          >notifications_off</mat-icon
+        >
+      }
+      {{ isGroup() ? text.members(c.members.length) : '' }}{{ subtitle() }}
+    </span>
+  </span>
+</button>

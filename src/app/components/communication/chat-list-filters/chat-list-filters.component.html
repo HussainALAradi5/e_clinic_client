@@ -1,0 +1,69 @@
+<label class="search">
+  <mat-icon>search</mat-icon>
+  <input
+    type="search"
+    [placeholder]="text.searchPlaceholder"
+    [attr.aria-label]="text.searchLabel"
+    [ngModel]="search()"
+    (ngModelChange)="search.set($event)"
+  />
+</label>
+
+<div class="chips" role="tablist" [attr.aria-label]="text.showLabel">
+  @for (chip of chips; track chip.value) {
+    <button
+      type="button"
+      role="tab"
+      class="chip"
+      [class.on]="filter() === chip.value"
+      [attr.aria-selected]="filter() === chip.value"
+      (click)="filter.set(chip.value)"
+    >
+      {{ chip.label }}
+    </button>
+  }
+  @if (canSeeDeleted()) {
+    <button
+      type="button"
+      class="chip deleted"
+      role="switch"
+      [class.on]="showDeleted()"
+      [attr.aria-checked]="showDeleted()"
+      [matTooltip]="text.deletedHint"
+      (click)="showDeleted.set(!showDeleted())"
+    >
+      <mat-icon class="!size-4 !text-base">delete_sweep</mat-icon> {{ text.deleted }}
+    </button>
+  }
+  <button
+    type="button"
+    class="chip"
+    [class.on]="dateActive()"
+    [matMenuTriggerFor]="dates"
+    [attr.aria-label]="text.dateLabel"
+  >
+    <mat-icon class="!size-4 !text-base">event</mat-icon>
+    {{ dateActive() ? text.dateRange(from(), to()) : text.date }}
+  </button>
+  <mat-menu #dates="matMenu" class="!rounded-2xl">
+    <div
+      class="flex flex-col gap-2 p-3"
+      (click)="$event.stopPropagation()"
+      (keydown)="$event.stopPropagation()"
+    >
+      <span class="text-xs font-semibold uppercase text-on-surface-variant">{{
+        text.lastActivity
+      }}</span>
+      <label class="date"
+        >{{ text.from }} <input type="date" [ngModel]="from()" (ngModelChange)="from.set($event)"
+      /></label>
+      <label class="date"
+        >{{ text.to }}
+        <input type="date" [ngModel]="to()" [min]="from()" (ngModelChange)="to.set($event)"
+      /></label>
+      <button matButton (click)="clearDates()" [disabled]="!dateActive()">
+        {{ text.clearDates }}
+      </button>
+    </div>
+  </mat-menu>
+</div>

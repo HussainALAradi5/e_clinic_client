@@ -1,0 +1,22 @@
+@let q = quote();
+<button
+  type="button"
+  class="quote"
+  [attr.aria-label]="text.showOriginal(q.senderName)"
+  (click)="jump.emit(q.id)"
+>
+  <span class="quote-name">{{ q.senderId === meId() ? text.you : q.senderName }}</span>
+  <span class="quote-text">
+    @switch (q.kind) {
+      @case (kinds.Voice) {
+        <mat-icon>mic</mat-icon> {{ text.voiceNote }}
+      }
+      @case (kinds.Media) {
+        <mat-icon>attach_file</mat-icon> {{ q.excerpt || q.fileName || text.file }}
+      }
+      @default {
+        {{ q.excerpt }}
+      }
+    }
+  </span>
+</button>

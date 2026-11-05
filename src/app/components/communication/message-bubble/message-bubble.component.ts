@@ -19,12 +19,10 @@ import { ChatMessage } from '@interfaces/communication/chat-message.interface';
 import { ChatSettings } from '@interfaces/communication/chat-settings.interface';
 import { clinicTime } from '@utilities/clinic-time';
 import { ChatAvatar } from '../chat-avatar/chat-avatar.component';
-import {
-  BUBBLE_COLORS,
-  fileSize,
-  LEADER_BUBBLE,
-  tintFor,
-} from '@utilities/communication/chat-style';
+import { MessageAttachments } from '../message-attachments/message-attachments.component';
+import { MessageQuote } from '../message-quote/message-quote.component';
+import { ReactionPicker } from '../reaction-picker/reaction-picker.component';
+import { BUBBLE_COLORS, LEADER_BUBBLE, tintFor } from '@utilities/communication/chat-style';
 import { Segment } from '@interfaces/communication/message-bubble.interface';
 
 const LONG_PRESS_MS = 450;
@@ -37,11 +35,17 @@ const SWIPE_REPLY_PX = 64;
  * One message: my bubbles on the right in my colour, others on the left in theirs, a group leader's in amber.
  * Right-click (or long-press on touch) opens the reaction bar; reactions show under the bubble, mine highlighted.
  */
-import { TapMotionDirective } from '@directives/tap-motion.directive';
 @Component({
   selector: 'app-message-bubble',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TapMotionDirective, MatIconModule, MatTooltipModule, ChatAvatar],
+  imports: [
+    MatIconModule,
+    MatTooltipModule,
+    ChatAvatar,
+    MessageAttachments,
+    MessageQuote,
+    ReactionPicker,
+  ],
   templateUrl: './message-bubble.component.html',
   styleUrl: './message-bubble.component.scss',
 })
@@ -70,8 +74,6 @@ export class MessageBubble {
   protected readonly swipe = signal(0);
   protected readonly swipeReady = computed(() => this.swipe() >= SWIPE_REPLY_PX);
   private swipeFrom: { x: number; y: number } | null = null;
-  /** The full emoji grid behind "+". */
-  protected readonly more = signal(false);
   /** My current reaction, ringed in the bar (picking it again takes it back). */
   protected readonly myReaction = computed(
     () => this.message().reactions.find((r) => r.userIds.includes(this.meId()))?.emoji ?? null,
@@ -96,24 +98,6 @@ export class MessageBubble {
   });
 
   protected readonly shape = computed(() => this.settings().bubbleStyle ?? BubbleStyle.Rounded);
-
-  protected readonly images = computed(() =>
-    this.message().attachments.filter((a) => a.mimeType.startsWith('image/')),
-  );
-  protected readonly videos = computed(() =>
-    this.message().attachments.filter(
-      (a) => a.mimeType.startsWith('video/') && this.message().kind !== MessageKind.Voice,
-    ),
-  );
-  protected readonly audio = computed(() =>
-    this.message().kind === MessageKind.Voice
-      ? this.message().attachments
-      : this.message().attachments.filter((a) => a.mimeType.startsWith('audio/')),
-  );
-  protected readonly documents = computed(() => {
-    const shown = new Set([...this.images(), ...this.videos(), ...this.audio()]);
-    return this.message().attachments.filter((a) => !shown.has(a));
-  });
 
   /** The text with the @names of mentioned members highlighted. */
   protected readonly segments = computed<Segment[]>(() => {
@@ -143,8 +127,6 @@ export class MessageBubble {
 
   protected readonly time = computed(() => clinicTime(new Date(this.message().createdAt)));
 
-  protected size = fileSize;
-
   protected reactedByMe(userIds: string[]): boolean {
     return userIds.includes(this.meId());
   }
@@ -152,7 +134,6 @@ export class MessageBubble {
   protected openPicker(event: Event): void {
     event.preventDefault();
     this.placePicker(event.currentTarget);
-    this.more.set(false);
     this.picking.set(true);
   }
 
@@ -165,7 +146,6 @@ export class MessageBubble {
 
   protected close(): void {
     this.picking.set(false);
-    this.more.set(false);
   }
 
   protected answer(): void {
@@ -190,7 +170,6 @@ export class MessageBubble {
     const bubble = event.currentTarget;
     this.pressTimer = setTimeout(() => {
       this.placePicker(bubble);
-      this.more.set(false);
       this.picking.set(true);
       navigator.vibrate?.(12);
     }, LONG_PRESS_MS);

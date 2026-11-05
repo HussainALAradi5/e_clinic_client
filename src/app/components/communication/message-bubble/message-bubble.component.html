@@ -46,70 +46,10 @@
       }
 
       @if (message().replyTo; as q) {
-        <button
-          type="button"
-          class="quote"
-          [attr.aria-label]="'Show the message from ' + q.senderName"
-          (click)="jump.emit(q.id)"
-        >
-          <span class="quote-name">{{ q.senderId === meId() ? 'You' : q.senderName }}</span>
-          <span class="quote-text">
-            @switch (q.kind) {
-              @case (kinds.Voice) {
-                <mat-icon>mic</mat-icon> Voice note
-              }
-              @case (kinds.Media) {
-                <mat-icon>attach_file</mat-icon> {{ q.excerpt || q.fileName || 'File' }}
-              }
-              @default {
-                {{ q.excerpt }}
-              }
-            }
-          </span>
-        </button>
+        <app-message-quote [quote]="q" [meId]="meId()" (jump)="jump.emit($event)" />
       }
 
-      @if (images().length) {
-        <div class="images" [class.grid]="images().length > 1">
-          @for (img of images(); track img.id) {
-            @if (img.url) {
-              <a [href]="img.url" target="_blank" rel="noopener">
-                <img [src]="img.url" [alt]="img.name" (load)="loaded.emit()" />
-              </a>
-            } @else {
-              <div class="pending"><mat-icon>hourglass_top</mat-icon>Checking file…</div>
-            }
-          }
-        </div>
-      }
-
-      @for (video of videos(); track video.id) {
-        @if (video.url) {
-          <video class="video" [src]="video.url" controls preload="metadata"></video>
-        }
-      }
-
-      @for (clip of audio(); track clip.id) {
-        <div class="voice">
-          <mat-icon>{{ message().kind === kinds.Voice ? 'mic' : 'audio_file' }}</mat-icon>
-          @if (clip.url) {
-            <audio [src]="clip.url" controls preload="metadata"></audio>
-          } @else {
-            <span class="text-xs opacity-80">Checking file…</span>
-          }
-        </div>
-      }
-
-      @for (doc of documents(); track doc.id) {
-        <a class="doc" [attr.href]="doc.url" target="_blank" rel="noopener">
-          <mat-icon>description</mat-icon>
-          <span class="min-w-0">
-            <span class="block truncate font-medium">{{ doc.name }}</span>
-            <span class="block text-xs opacity-80">{{ size(doc.sizeBytes) }}</span>
-          </span>
-          <mat-icon class="ml-auto">download</mat-icon>
-        </a>
-      }
+      <app-message-attachments [message]="message()" (loaded)="loaded.emit()" />
 
       @if (message().body) {
         <p class="body">
@@ -136,73 +76,16 @@
       </span>
 
       @if (picking()) {
-        <div class="picker glass" [class.below]="below()" role="menu" aria-label="React">
-          <div class="quick">
-            <button
-              type="button"
-              role="menuitem"
-              class="tool"
-              tapMotion="nudge"
-              aria-label="Reply"
-              (click)="answer()"
-            >
-              <mat-icon>reply</mat-icon>
-            </button>
-            @for (emoji of settings().reactions; track emoji) {
-              <button
-                type="button"
-                role="menuitem"
-                [class.chosen]="emoji === myReaction()"
-                [attr.aria-pressed]="emoji === myReaction()"
-                (click)="pick(emoji)"
-                [attr.aria-label]="(emoji === myReaction() ? 'Remove reaction ' : 'React ') + emoji"
-              >
-                {{ emoji }}
-              </button>
-            }
-            @if (extra().length) {
-              <button
-                type="button"
-                role="menuitem"
-                class="tool"
-                [attr.aria-expanded]="more()"
-                [attr.aria-label]="more() ? 'Fewer emojis' : 'More emojis'"
-                (click)="more.set(!more())"
-              >
-                <mat-icon>{{ more() ? 'expand_less' : 'add' }}</mat-icon>
-              </button>
-            }
-            @if (message().body) {
-              <button
-                type="button"
-                role="menuitem"
-                class="tool"
-                aria-label="Copy text"
-                (click)="copy()"
-              >
-                <mat-icon>content_copy</mat-icon>
-              </button>
-            }
-          </div>
-          @if (more()) {
-            <div class="grid">
-              @for (emoji of extra(); track emoji) {
-                <button
-                  type="button"
-                  role="menuitem"
-                  [class.chosen]="emoji === myReaction()"
-                  [attr.aria-pressed]="emoji === myReaction()"
-                  (click)="pick(emoji)"
-                  [attr.aria-label]="
-                    (emoji === myReaction() ? 'Remove reaction ' : 'React ') + emoji
-                  "
-                >
-                  {{ emoji }}
-                </button>
-              }
-            </div>
-          }
-        </div>
+        <app-reaction-picker
+          [quick]="settings().reactions"
+          [extra]="extra()"
+          [chosen]="myReaction()"
+          [below]="below()"
+          [canCopy]="!!message().body"
+          (reply)="answer()"
+          (picked)="pick($event)"
+          (copy)="copy()"
+        />
       }
     </div>
 
