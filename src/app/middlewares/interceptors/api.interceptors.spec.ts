@@ -38,13 +38,13 @@ describe('API interceptors', () => {
     backend.verify();
   });
 
-  it('prefixes /api/v1, adds auth + request id, and converts case both ways', () => {
+  it('prefixes the API origin, adds auth + request id, and converts case both ways', () => {
     let body: unknown;
     http
       .post('billing/invoices', { patientId: 'p1' }, { context: withIdempotencyKey('key-1') })
       .subscribe((res) => (body = res));
 
-    const req = backend.expectOne((r) => r.url.endsWith('/api/v1/billing/invoices'));
+    const req = backend.expectOne((r) => r.url.endsWith('/billing/invoices'));
     expect(req.request.headers.get('Authorization')).toBe('Bearer token-1');
     expect(req.request.headers.get('X-Request-Id')).toMatch(/^[0-9a-f-]{36}$/);
     expect(req.request.headers.get('Idempotency-Key')).toBe('key-1');
@@ -62,7 +62,7 @@ describe('API interceptors', () => {
     http.post('rooms', {}).subscribe({ error: (e: ApiError) => (error = e) });
 
     backend
-      .expectOne((r) => r.url.endsWith('/api/v1/rooms'))
+      .expectOne((r) => r.url.endsWith('/rooms'))
       .flush(
         {
           success: false,
@@ -90,7 +90,7 @@ describe('API interceptors', () => {
     const navigate = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
     http.get('meta/enums').subscribe({ error: () => undefined });
     backend
-      .expectOne((r) => r.url.endsWith('/api/v1/meta/enums'))
+      .expectOne((r) => r.url.endsWith('/meta/enums'))
       .flush({ error_code: 'UNAUTHENTICATED' }, { status: 401, statusText: 'Unauthorized' });
 
     expect(TestBed.inject(AuthStore).isAuthenticated()).toBe(false);

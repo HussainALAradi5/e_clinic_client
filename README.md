@@ -5,7 +5,7 @@
 | | Address |
 |---|---|
 | Web app (staff and patient portal) | https://e-clinic-web.onrender.com |
-| API | https://e-clinic-api.onrender.com/api/v1 |
+| API | https://e-clinic-api.onrender.com |
 
 Free Render instances sleep when idle: the first visit can take about a minute to wake the API. Demo accounts
 (one per role: patient, receptionist, doctor, nurse, pharmacist, cashier, accountant, HR, admin) are available on
@@ -72,7 +72,7 @@ flowchart LR
     comp --> svc
     svc --> api["services/api/api-client.service.ts<br/>(one HttpClient)"]
     api --> mw["middlewares/interceptors<br/>url · auth · request id · idempotency · case · loading · errors"]
-    mw --> server[("Laravel API /api/v1")]
+    mw --> server[("Laravel API")]
     page -. text, options .-> const["constants/"]
     comp -. types .-> ifc["interfaces/ · enums/"]
     svc -. paths .-> cfg["config/endpoints.ts"]

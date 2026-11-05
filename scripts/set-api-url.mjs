@@ -1,5 +1,5 @@
 // Points the production build at the API when it lives on another origin (e.g. Render: API_URL=https://api.example.com).
-// Without API_URL the build keeps `apiUrl: ''` (API served from the same origin behind a reverse proxy).
+// Without API_URL the build keeps `apiUrl: ''` (same origin), which only works when a proxy keeps API and page paths apart.
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const raw = process.env.API_URL?.trim();

@@ -1,5 +1,5 @@
 /**
- * API endpoints — resource paths under `/api/v1/`, matching the server routes (`routes/api.php` of each
+ * API endpoints — resource paths at the API root, matching the server routes (`routes/api.php` of each
  * server module). Services build sub-paths from these: `${ENDPOINTS.hr.requests}/${id}/approve`.
  */
 export const ENDPOINTS = {

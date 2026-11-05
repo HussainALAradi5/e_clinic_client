@@ -1,6 +1,10 @@
 import { ReverbConfig } from './environment.development';
 
-/** Production: the API is served from the same origin (reverse proxy) — override at deploy time if not. */
+/**
+ * Production: the API origin, set at deploy time (`scripts/set-api-url.mjs`, e.g. https://api.example.com). The API
+ * paths have no prefix, so the API needs its own origin: on the site's origin `/patients` would be both a page and
+ * an API path.
+ */
 export const environment = {
   production: true,
   apiUrl: '',
