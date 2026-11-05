@@ -16,32 +16,32 @@
           [variant]="variants.Outlined"
           access="expenses.create"
           [action]="edit"
-          >Edit</ui-button
+          >{{ text.edit }}</ui-button
         >
-        <ui-button icon="send" access="expenses.create" [action]="submit"
-          >Submit for approval</ui-button
-        >
+        <ui-button icon="send" access="expenses.create" [action]="submit">{{
+          text.submitForApproval
+        }}</ui-button>
       }
       @if (isPending()) {
-        <ui-button icon="check" access="expenses.write & expenses.approve" [action]="approve"
-          >Approve</ui-button
-        >
+        <ui-button icon="check" access="expenses.write & expenses.approve" [action]="approve">{{
+          text.approve
+        }}</ui-button>
         <ui-button
           icon="close"
           [variant]="variants.Outlined"
           access="expenses.write & expenses.approve"
           [action]="reject"
-          >Reject</ui-button
+          >{{ text.reject }}</ui-button
         >
       }
       @if (toPay()) {
-        <ui-button icon="payments" access="expenses.write & expenses.pay" [action]="pay"
-          >Pay</ui-button
-        >
+        <ui-button icon="payments" access="expenses.write & expenses.pay" [action]="pay">{{
+          text.pay
+        }}</ui-button>
       }
       @if (e.journalEntryId) {
         <a matButton="outlined" [routerLink]="['/accounting/journal', e.journalEntryId]"
-          ><mat-icon>menu_book</mat-icon> Journal entry</a
+          ><mat-icon>menu_book</mat-icon> {{ text.journalEntry }}</a
         >
       }
       @if (cancellable()) {
@@ -50,7 +50,7 @@
           [variant]="variants.Danger"
           access="expenses.create"
           [action]="cancel"
-          >Cancel</ui-button
+          >{{ text.cancel }}</ui-button
         >
       }
       @if (deletable()) {
@@ -59,8 +59,8 @@
           [variant]="variants.Text"
           access="expenses.create"
           [action]="remove"
-          [confirm]="{ title: 'Delete this expense?', confirmLabel: 'Delete', danger: true }"
-          >Delete</ui-button
+          [confirm]="{ title: text.deleteThisExpense, confirmLabel: text.delete, danger: true }"
+          >{{ text.delete }}</ui-button
         >
       }
     </ng-container>
@@ -71,7 +71,7 @@
       ><ui-facts [items]="facts()"
     /></mat-card>
     <mat-card appearance="outlined" class="self-start !p-5">
-      <h2 class="m-0 mb-3 text-base font-semibold">Vendor invoice</h2>
+      <h2 class="m-0 mb-3 text-base font-semibold">{{ text.vendorInvoice }}</h2>
       @if (scans().length) {
         <ul class="m-0 mb-3 list-none p-0">
           @for (f of scans(); track f.id) {
@@ -83,19 +83,19 @@
               }}</mat-icon>
               <span class="flex-1 truncate">{{ f.originalName }}</span>
               <span class="text-xs text-on-surface-variant"
-                >{{ f.sizeBytes / 1024 | number: '1.0-0' }} KB</span
+                >{{ f.sizeBytes / 1024 | number: '1.0-0' }} {{ text.kb }}</span
               >
               <ui-button
                 icon="open_in_new"
                 [variant]="variants.Text"
                 [action]="openScan.bind(this, f)"
-                >View</ui-button
+                >{{ text.view }}</ui-button
               >
             </li>
           }
         </ul>
       } @else {
-        <p class="m-0 mb-3 text-sm text-on-surface-variant">No scan yet.</p>
+        <p class="m-0 mb-3 text-sm text-on-surface-variant">{{ text.noScanYet }}</p>
       }
       <ui-upload-zone
         *hasAccess="'expenses.create | expenses.write'"
@@ -112,7 +112,7 @@
     mat-stretch-tabs="false"
     animationDuration="0ms"
   >
-    <mat-tab label="History">
+    <mat-tab [label]="text.history">
       <ng-template matTabContent
         ><ui-audit-history class="block pt-4" type="expense" [id]="e.id"
       /></ng-template>

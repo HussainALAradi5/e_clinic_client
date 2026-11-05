@@ -1,16 +1,14 @@
 <ui-resource-list
   resource="tickets"
   endpoint="support/tickets"
-  title="Support tickets"
-  [subtitle]="
-    desk()
-      ? 'Every ticket from the staff. Take one, reply, and mark it solved with what was done.'
-      : 'Problems you reported to the support team, and where they stand.'
-  "
-  emptyTitle="No tickets found"
+  [title]="text.supportTickets"
+  [subtitle]="desk() ? text.everyTicketFromThe : text.problemsYouReportedTo"
+  [emptyTitle]="text.noTicketsFound"
   rowLink="/support/tickets/:id"
 >
-  <ui-button actions icon="add" access="tickets.create" [action]="openNew">New ticket</ui-button>
+  <ui-button actions icon="add" access="tickets.create" [action]="openNew">{{
+    text.newTicket
+  }}</ui-button>
 
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template
@@ -28,7 +26,7 @@
     @if (row.assignee) {
       {{ row.assignee.fullName }}
     } @else {
-      <span class="text-on-surface-variant">Not taken yet</span>
+      <span class="text-on-surface-variant">{{ text.notTakenYet }}</span>
     }
   </ng-template>
   <ng-template uiCell="created_at" let-row>{{ row.createdAt | date: dateTimeFormat }}</ng-template>

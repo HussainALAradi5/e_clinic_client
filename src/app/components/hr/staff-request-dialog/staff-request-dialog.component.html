@@ -1,11 +1,13 @@
-<h2 mat-dialog-title>{{ isLate ? 'Excuse my late arrival' : 'Pay my overtime' }}</h2>
+<h2 mat-dialog-title>{{ isLate ? text.excuseMyLateArrival : text.payMyOvertime }}</h2>
 <mat-dialog-content>
   <div class="day" [class.late]="isLate">
     <mat-icon aria-hidden="true">{{ isLate ? 'running_with_errors' : 'more_time' }}</mat-icon>
     <div class="min-w-0 flex-1">
       <p class="m-0 font-semibold">{{ data.day.date | date: dateFormat }}</p>
       <p class="m-0 text-sm text-on-surface-variant">
-        In {{ data.day.checkInAt ? (data.day.checkInAt | date: timeFormat : zone) : '—' }} · Out
+        {{ text.in }}
+        {{ data.day.checkInAt ? (data.day.checkInAt | date: timeFormat : zone) : '—' }}
+        {{ text.out }}
         {{ data.day.checkOutAt ? (data.day.checkOutAt | date: timeFormat : zone) : '—' }}
         @if (data.day.shift; as s) {
           · {{ s.name }} ({{ s.arriveBy }}–{{ s.expectedEnd }})
@@ -19,31 +21,27 @@
   </div>
   <p class="m-0 mb-4 mt-3 text-sm text-on-surface-variant">
     @if (isLate) {
-      Late minutes are deducted from your pay unless HR accepts your excuse.
+      {{ text.lateMinutesAreDeducted }}
     } @else {
-      Overtime is paid once HR approves it, at the clinic's overtime rate per hour.
+      {{ text.overtimeIsPaidOnce }}
     }
   </p>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Send to HR"
+    [submitLabel]="text.sendToHr"
     submitIcon="send"
     [compact]="true"
     [allowPristine]="true"
     (cancelled)="ref.close()"
   >
     <ui-text
-      label="Reason (optional)"
+      [label]="text.reasonOptional"
       [control]="form.controls.reason"
       [multiline]="true"
       [rows]="3"
       [maxLength]="1000"
-      [hint]="
-        isLate
-          ? 'e.g. traffic, a sick child, a hospital appointment'
-          : 'e.g. an emergency patient, covering a colleague'
-      "
+      [hint]="isLate ? text.eGTrafficA : text.eGAnEmergency"
     />
   </ui-form>
 </mat-dialog-content>

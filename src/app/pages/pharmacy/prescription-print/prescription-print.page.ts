@@ -10,6 +10,7 @@ import { Prescription } from '@interfaces/pharmacy/prescription.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { PrescriptionApi } from '@services/pharmacy/prescription-api.service';
+import { PRESCRIPTION_PRINT_TEXT } from '@constants/pharmacy/prescription-print.constants';
 
 /** `/print/prescription/:id` — the prescription on A4 with its QR for the pharmacy (and any pharmacy to verify). */
 @Component({
@@ -19,6 +20,8 @@ import { PrescriptionApi } from '@services/pharmacy/prescription-api.service';
   templateUrl: './prescription-print.page.html',
 })
 export class PrescriptionPrintPage implements OnInit {
+  protected readonly text = PRESCRIPTION_PRINT_TEXT;
+
   protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 

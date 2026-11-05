@@ -39,6 +39,8 @@ const ADULT_AGE = 18;
   templateUrl: './consent-dialog.component.html',
 })
 export class ConsentDialog {
+  protected readonly text = CONSENT_DIALOG_TEXT;
+
   protected readonly data = inject<ConsentDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<ConsentDialog, PatientConsent>);
   private readonly api = inject(ConsentApi);

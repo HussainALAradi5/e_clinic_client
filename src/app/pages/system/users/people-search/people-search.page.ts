@@ -46,6 +46,8 @@ export class PeopleSearchPage {
   private readonly access = inject(AccessService);
   private readonly dialogs = inject(DialogService);
   private readonly notify = inject(NotifyService);
+
+  protected readonly text = PEOPLE_SEARCH_TEXT;
   private readonly list = viewChild.required(ResourceListPage);
 
   protected readonly dateFormat = DATE_FORMAT;

@@ -1,20 +1,20 @@
-<h2 mat-dialog-title>New fiscal year</h2>
+<h2 mat-dialog-title>{{ text.newFiscalYear }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Create year"
+    [submitLabel]="text.createYear"
     [compact]="true"
     [allowPristine]="true"
     (cancelled)="ref.close()"
   >
-    <ui-text label="Name" [control]="form.controls.name" />
+    <ui-text [label]="text.name" [control]="form.controls.name" />
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
-      <ui-text label="First day" type="date" [control]="form.controls.startDate" />
-      <ui-text label="Last day" type="date" [control]="form.controls.endDate" />
+      <ui-text [label]="text.firstDay" type="date" [control]="form.controls.startDate" />
+      <ui-text [label]="text.lastDay" type="date" [control]="form.controls.endDate" />
     </div>
-    <mat-checkbox class="-ml-2 block" [formControl]="form.controls.withAdjustmentPeriod"
-      >Add a year-end adjustment period (for audit entries)</mat-checkbox
-    >
+    <mat-checkbox class="-ml-2 block" [formControl]="form.controls.withAdjustmentPeriod">{{
+      text.addAYearEnd
+    }}</mat-checkbox>
   </ui-form>
 </mat-dialog-content>

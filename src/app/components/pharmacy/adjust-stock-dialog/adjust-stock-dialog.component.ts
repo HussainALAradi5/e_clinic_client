@@ -24,6 +24,7 @@ import { DispensationApi } from '@services/pharmacy/dispensation-api.service';
 import { InventoryApi } from '@services/pharmacy/inventory-api.service';
 import { compareQty } from '@utilities/quantity';
 import { AppValidators } from '@validations/validators';
+import { ADJUST_STOCK_DIALOG_TEXT } from '@constants/pharmacy/adjust-stock-dialog.constants';
 
 /**
  * Stock-count correction of one lot: units missing / damaged or found, and why. Large corrections and controlled
@@ -44,6 +45,8 @@ import { AppValidators } from '@validations/validators';
   templateUrl: './adjust-stock-dialog.component.html',
 })
 export class AdjustStockDialog implements OnInit {
+  protected readonly text = ADJUST_STOCK_DIALOG_TEXT;
+
   protected readonly data = inject<AdjustStockDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<AdjustStockDialog, StockMovement>);
   private readonly api = inject(InventoryApi);

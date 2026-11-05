@@ -2,8 +2,8 @@
   <ui-error [error]="error()" (retry)="load()" />
 } @else if (prescription(); as p) {
   <ui-page-header
-    [title]="'Prescription ' + p.code"
-    [subtitle]="(p.patient?.fullName ?? '') + ' · Dr ' + (p.doctor?.fullName ?? '')"
+    [title]="text.prescription + p.code"
+    [subtitle]="(p.patient?.fullName ?? '') + text.dr + (p.doctor?.fullName ?? '')"
   >
     <ui-status status [value]="p.status" enum="GenericStatus" />
     <ng-container actions>
@@ -13,11 +13,11 @@
           matButton="filled"
           routerLink="/pharmacy/dispense"
           [queryParams]="{ rx: p.id }"
-          ><mat-icon>local_pharmacy</mat-icon> Dispense</a
+          ><mat-icon>local_pharmacy</mat-icon> {{ text.dispense }}</a
         >
       }
       <a matButton="outlined" target="_blank" [routerLink]="['/print/prescription', p.id]"
-        ><mat-icon>print</mat-icon> Print</a
+        ><mat-icon>print</mat-icon> {{ text.print }}</a
       >
       @if (editable()) {
         <ui-button
@@ -25,7 +25,7 @@
           [variant]="variants.Outlined"
           access="prescriptions.write"
           [action]="edit"
-          >Edit</ui-button
+          >{{ text.edit }}</ui-button
         >
       }
       @if (cancellable()) {
@@ -34,7 +34,7 @@
           [variant]="variants.Danger"
           access="prescriptions.write"
           [action]="cancel"
-          >Cancel</ui-button
+          >{{ text.cancel }}</ui-button
         >
       }
     </ng-container>
@@ -42,7 +42,7 @@
 
   <div class="grid gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
     <mat-card appearance="outlined" class="self-start !p-0">
-      <h2 class="m-0 px-5 pb-1 pt-4 text-base font-semibold">Medicines</h2>
+      <h2 class="m-0 px-5 pb-1 pt-4 text-base font-semibold">{{ text.medicines }}</h2>
       <ul class="m-0 list-none p-0">
         @for (item of p.items; track item.id) {
           <li class="border-t border-outline-variant/60 px-5 py-3 first:border-0">
@@ -51,7 +51,7 @@
               @if (item.medication.isControlled) {
                 <span
                   class="rounded bg-red-100 px-1.5 py-0.5 text-[11px] font-semibold text-red-800 dark:bg-red-900/50 dark:text-red-200"
-                  >CD</span
+                  >{{ text.cd }}</span
                 >
               }
               <span class="ml-auto tabular-nums text-sm">
@@ -61,7 +61,7 @@
               </span>
             </div>
             <p class="m-0 text-sm text-on-surface-variant">
-              {{ item.dose }} · {{ item.frequency }} · {{ item.durationDays }} days ·
+              {{ item.dose }} · {{ item.frequency }} · {{ item.durationDays }} {{ text.days }}
               {{ item.route | enumLabel: 'MedicationRoute'
               }}{{ item.instructions ? ' · ' + item.instructions : '' }}
             </p>
@@ -84,7 +84,7 @@
   </div>
 
   <mat-card appearance="outlined" class="mt-4 !p-5">
-    <h2 class="m-0 mb-2 text-base font-semibold">Handed over</h2>
+    <h2 class="m-0 mb-2 text-base font-semibold">{{ text.handedOver }}</h2>
     @for (d of p.dispensations ?? []; track d.id) {
       <div
         class="flex flex-wrap items-center gap-3 border-b border-outline-variant/60 py-2 text-sm last:border-0"
@@ -106,7 +106,7 @@
         <ui-status [value]="d.status" enum="GenericStatus" />
       </div>
     } @empty {
-      <p class="m-0 text-sm text-on-surface-variant">Nothing handed over yet.</p>
+      <p class="m-0 text-sm text-on-surface-variant">{{ text.nothingHandedOverYet }}</p>
     }
   </mat-card>
 
@@ -116,7 +116,7 @@
     mat-stretch-tabs="false"
     animationDuration="0ms"
   >
-    <mat-tab label="History">
+    <mat-tab [label]="text.history">
       <ng-template matTabContent
         ><ui-audit-history class="block pt-4" type="prescription" [id]="p.id"
       /></ng-template>

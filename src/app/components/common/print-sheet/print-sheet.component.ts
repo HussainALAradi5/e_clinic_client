@@ -28,6 +28,8 @@ import { PRINT_SHEET_TEXT } from '@constants/common/print-sheet.constants';
   templateUrl: './print-sheet.component.html',
 })
 export class PrintSheet {
+  protected readonly text = PRINT_SHEET_TEXT;
+
   readonly title = input.required<string>();
   /** Code entity alias and id of the QR (e.g. `clinical_order`); null prints no QR (e.g. a payslip). */
   readonly entity = input<string | null>(null);

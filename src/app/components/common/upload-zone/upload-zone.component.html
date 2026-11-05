@@ -7,7 +7,7 @@
   "
   tabindex="0"
   role="button"
-  [attr.aria-label]="'Upload files: drop here or press Enter to browse'"
+  [attr.aria-label]="text.uploadFilesDropHere"
   (click)="input.click()"
   (keydown.enter)="input.click()"
   (dragover)="onDrag($event, true)"
@@ -16,11 +16,11 @@
 >
   <mat-icon class="text-primary">cloud_upload</mat-icon>
   <p class="m-0 text-sm text-on-surface">
-    <span class="font-semibold text-primary">Choose files</span> or drag them here
+    <span class="font-semibold text-primary">{{ text.chooseFiles }}</span> {{ text.orDragThemHere }}
   </p>
   <p class="m-0 text-xs text-on-surface-variant">
-    Up to {{ maxFiles() }} files{{ accept() ? ' · ' + accept() : '' }} · large files resume
-    automatically
+    {{ text.upTo }} {{ maxFiles() }} {{ text.files }}{{ accept() ? ' · ' + accept() : '' }}
+    {{ text.largeFilesResumeAutomatically }}
   </p>
   <input
     #input
@@ -49,7 +49,7 @@
           <div class="flex items-center gap-2 text-sm">
             <span class="truncate font-medium">{{ item.file.name }}</span>
             <span class="shrink-0 text-xs text-on-surface-variant"
-              >{{ item.file.size / 1048576 | number: '1.1-1' }} MB</span
+              >{{ item.file.size / 1048576 | number: '1.1-1' }} {{ text.mb }}</span
             >
           </div>
           @if (
@@ -66,7 +66,9 @@
             <p class="m-0 text-xs text-error">{{ item.error }}</p>
           } @else if (item.status === status.Done) {
             <p class="m-0 text-xs text-on-surface-variant">
-              {{ item.attachment?.scanStatus === scan.Clean ? 'Uploaded' : 'Uploaded · scanning…' }}
+              {{
+                item.attachment?.scanStatus === scan.Clean ? text.uploaded : text.uploadedScanning
+              }}
             </p>
           }
         </div>
@@ -75,18 +77,18 @@
             @if (item.resumable) {
               <button
                 matIconButton
-                matTooltip="Pause"
+                [matTooltip]="text.pause"
                 (click)="queue!.pause(item.key)"
-                aria-label="Pause"
+                [attr.aria-label]="text.pause"
               >
                 <mat-icon>pause</mat-icon>
               </button>
             }
             <button
               matIconButton
-              matTooltip="Cancel"
+              [matTooltip]="text.cancel"
               (click)="queue!.cancel(item.key)"
-              aria-label="Cancel"
+              [attr.aria-label]="text.cancel"
             >
               <mat-icon>close</mat-icon>
             </button>
@@ -94,9 +96,9 @@
           @case (status.Paused) {
             <button
               matIconButton
-              matTooltip="Resume"
+              [matTooltip]="text.resume"
               (click)="queue!.resume(item.key)"
-              aria-label="Resume"
+              [attr.aria-label]="text.resume"
             >
               <mat-icon>play_arrow</mat-icon>
             </button>
@@ -104,9 +106,9 @@
           @case (status.Failed) {
             <button
               matIconButton
-              matTooltip="Retry"
+              [matTooltip]="text.retry"
               (click)="queue!.retry(item.key)"
-              aria-label="Retry"
+              [attr.aria-label]="text.retry"
             >
               <mat-icon>refresh</mat-icon>
             </button>
@@ -118,9 +120,9 @@
         @if (item.status !== status.Uploading) {
           <button
             matIconButton
-            matTooltip="Remove"
+            [matTooltip]="text.remove"
             (click)="queue!.remove(item.key)"
-            aria-label="Remove"
+            [attr.aria-label]="text.remove"
           >
             <mat-icon>delete</mat-icon>
           </button>

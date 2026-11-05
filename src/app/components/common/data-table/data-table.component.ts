@@ -17,6 +17,7 @@ import { Page } from '@interfaces/api/page.interface';
 import { TableColumn } from '@interfaces/ui/table.interface';
 import { ListSelection } from '@utilities/list-selection';
 import { readPath } from '@utilities/read-path';
+import { DATA_TABLE_TEXT } from '@constants/common/data-table.constants';
 
 const SELECT = '__select';
 
@@ -39,6 +40,8 @@ const SELECT = '__select';
   templateUrl: './data-table.component.html',
 })
 export class DataTable<T extends { id: string }> {
+  protected readonly text = DATA_TABLE_TEXT;
+
   readonly columns = input.required<TableColumn[]>();
   readonly page = input<Page<T> | null>(null);
   readonly loading = input(false);

@@ -15,6 +15,7 @@ import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { MedicationApi } from '@services/pharmacy/medication-api.service';
 import { percentOf } from '@utilities/quantity';
+import { LOW_STOCK_TEXT } from '@constants/pharmacy/low-stock.constants';
 
 /** `/pharmacy/low-stock` — medicines at or below their reorder level, to reorder or receive. */
 @Component({
@@ -37,6 +38,8 @@ import { percentOf } from '@utilities/quantity';
 export class LowStockPage implements OnInit {
   private readonly api = inject(MedicationApi);
   private readonly actions = inject(PharmacyActions);
+
+  protected readonly text = LOW_STOCK_TEXT;
   protected readonly medications = signal<Medication[] | null>(null);
   protected readonly error = signal<unknown>(null);
   protected readonly variants = ButtonVariant;

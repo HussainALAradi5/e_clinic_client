@@ -61,6 +61,8 @@ export class ScanStationPage {
   private readonly codes = inject(CodeApi);
   private readonly access = inject(AccessService);
   private readonly destroyRef = inject(DestroyRef);
+
+  protected readonly text = SCAN_STATION_TEXT;
   private readonly video = viewChild<ElementRef<HTMLVideoElement>>('video');
 
   protected readonly purposes = Object.values(ScanPurpose);

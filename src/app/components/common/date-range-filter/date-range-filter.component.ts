@@ -38,6 +38,8 @@ import { DATE_RANGE_FILTER_TEXT } from '@constants/common/date-range-filter.cons
   templateUrl: './date-range-filter.component.html',
 })
 export class DateRangeFilter implements DateRangeHost {
+  protected readonly text = DATE_RANGE_FILTER_TEXT;
+
   readonly fields = input.required<DateFieldOption[]>();
   readonly value = input<DateRangeValue>({});
   readonly valueChange = output<DateRangeValue>();

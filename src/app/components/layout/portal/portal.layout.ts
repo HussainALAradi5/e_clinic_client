@@ -52,6 +52,7 @@ export class PortalLayout {
   protected readonly theme = inject(ThemeService);
   private readonly session = inject(SessionService);
 
+  protected readonly text = PORTAL_TEXT;
   protected readonly tabs = PORTAL_TABS;
   protected readonly more = PORTAL_MORE;
   protected readonly home = PORTAL_PATH;

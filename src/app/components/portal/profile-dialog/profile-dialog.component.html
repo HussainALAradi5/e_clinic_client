@@ -1,19 +1,19 @@
-<h2 mat-dialog-title>Contact details</h2>
+<h2 mat-dialog-title>{{ text.contactDetails }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Save details"
+    [submitLabel]="text.saveDetails"
     [compact]="true"
     (cancelled)="ref.close()"
   >
     <div class="grid gap-x-4 sm:grid-cols-2">
-      <ui-text label="Mobile" type="tel" icon="call" [control]="form.controls.phone" />
+      <ui-text [label]="text.mobile" type="tel" icon="call" [control]="form.controls.phone" />
       <ui-text
-        label="Email"
+        [label]="text.email"
         type="email"
         icon="mail"
-        hint="You sign in with this address"
+        [hint]="text.youSignInWith"
         [control]="form.controls.email"
       />
     </div>

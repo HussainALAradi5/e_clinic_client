@@ -15,6 +15,7 @@ import { Patient } from '@interfaces/clinic/patient.interface';
 import { Treatment } from '@interfaces/clinic/treatment.interface';
 import { ClinicalOrderApi } from '@services/clinic/clinical-order-api.service';
 import { TreatmentApi } from '@services/clinic/treatment-api.service';
+import { PATIENT_CARE_TEXT } from '@constants/clinic/patient-care.constants';
 
 /** Patient file tab: the patient's treatment plans with progress and their orders / results, newest first. */
 @Component({
@@ -33,6 +34,8 @@ import { TreatmentApi } from '@services/clinic/treatment-api.service';
   templateUrl: './patient-care.component.html',
 })
 export class PatientCare implements OnInit {
+  protected readonly text = PATIENT_CARE_TEXT;
+
   readonly patient = input.required<Patient>();
 
   private readonly treatmentsApi = inject(TreatmentApi);

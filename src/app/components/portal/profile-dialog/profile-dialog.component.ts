@@ -15,6 +15,7 @@ import {
   toEmergencyContacts,
 } from '@utilities/clinic/emergency-contacts-form';
 import { EmergencyContactsField } from '@components/clinic/emergency-contacts-field/emergency-contacts-field.component';
+import { PROFILE_DIALOG_TEXT } from '@constants/portal/profile-dialog.constants';
 
 /** The patient's own contact details and emergency contacts (up to three) (name, ID and insurance stay with the front desk). */
 @Component({
@@ -31,6 +32,8 @@ import { EmergencyContactsField } from '@components/clinic/emergency-contacts-fi
   templateUrl: './profile-dialog.component.html',
 })
 export class ProfileDialog {
+  protected readonly text = PROFILE_DIALOG_TEXT;
+
   private readonly patient = inject<ProfileDialogData>(MAT_DIALOG_DATA).patient;
   protected readonly ref = inject(MatDialogRef<ProfileDialog, Patient>);
   private readonly api = inject(PortalApi);

@@ -10,6 +10,7 @@ import { ClinicalOrder } from '@interfaces/clinic/clinical-order.interface';
 import { Room } from '@interfaces/clinic/room.interface';
 import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { ClinicalOrderApi } from '@services/clinic/clinical-order-api.service';
+import { ORDER_START_DIALOG_TEXT } from '@constants/clinic/order-start-dialog.constants';
 
 /**
  * Start an order: the patient is identified (wristband / card QR + order barcode) and the room is chosen. Outside
@@ -22,6 +23,8 @@ import { ClinicalOrderApi } from '@services/clinic/clinical-order-api.service';
   templateUrl: './order-start-dialog.component.html',
 })
 export class OrderStartDialog {
+  protected readonly text = ORDER_START_DIALOG_TEXT;
+
   protected readonly data = inject<OrderDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<OrderStartDialog, ClinicalOrder>);
   private readonly api = inject(ClinicalOrderApi);

@@ -1,7 +1,7 @@
 <mat-card appearance="outlined" class="!p-5">
   <div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
     <ui-entity-select
-      label="Patient"
+      [label]="text.patient"
       endpoint="patients"
       icon="person_search"
       [display]="patientName"
@@ -9,19 +9,19 @@
       [control]="patientId"
     />
     <ui-text
-      label="Scan a pack"
+      [label]="text.scanAPack"
       icon="barcode_scanner"
-      hint="Adds the medicine, or one more unit"
+      [hint]="text.addsTheMedicineOr"
       [control]="scan"
       (keydown.enter)="$event.preventDefault(); scanned()"
     />
   </div>
 
-  <ol class="m-0 list-none p-0" aria-label="Medicines">
+  <ol class="m-0 list-none p-0" [attr.aria-label]="text.medicines">
     @for (line of lines.controls; track line; let i = $index) {
       <li class="grid grid-cols-[minmax(0,1fr)_7rem_auto] items-start gap-x-3" [formGroup]="line">
         <ui-entity-select
-          label="Medicine (no prescription needed)"
+          [label]="text.medicineNoPrescriptionNeeded"
           endpoint="pharmacy/medications"
           icon="medication"
           [display]="medicationName"
@@ -31,12 +31,12 @@
           [control]="line.controls.medicationId"
           (picked)="pick(i, $any($event))"
         />
-        <ui-text label="Qty" type="number" [control]="line.controls.quantity" />
+        <ui-text [label]="text.qty" type="number" [control]="line.controls.quantity" />
         <button
           class="mt-1"
           matIconButton
           type="button"
-          aria-label="Remove"
+          [attr.aria-label]="text.remove"
           [disabled]="lines.length <= 1"
           (click)="remove(i)"
         >
@@ -46,10 +46,12 @@
     }
   </ol>
   <div class="flex flex-wrap items-center gap-3">
-    <button matButton type="button" (click)="add(null)"><mat-icon>add</mat-icon> Medicine</button>
+    <button matButton type="button" (click)="add(null)">
+      <mat-icon>add</mat-icon> {{ text.medicine }}
+    </button>
     <span class="flex-1"></span>
-    <span class="text-sm text-on-surface-variant">To pay</span>
+    <span class="text-sm text-on-surface-variant">{{ text.toPay }}</span>
     <span class="text-xl font-semibold tabular-nums">{{ total() }}</span>
-    <ui-button icon="shopping_bag" [action]="sell">Hand over</ui-button>
+    <ui-button icon="shopping_bag" [action]="sell">{{ text.handOver }}</ui-button>
   </div>
 </mat-card>

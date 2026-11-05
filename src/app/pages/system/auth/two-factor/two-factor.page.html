@@ -1,12 +1,12 @@
 <span class="icon-badge mb-6" aria-hidden="true"
   ><span class="material-symbols-outlined">verified_user</span></span
 >
-<h1 class="m-0 text-3xl font-bold tracking-tight">Two-factor verification</h1>
+<h1 class="m-0 text-3xl font-bold tracking-tight">{{ text.twoFactorVerification }}</h1>
 <p class="mt-2 mb-8 text-on-surface-variant">
   @if (useRecoveryCode()) {
-    Enter one of your recovery codes. Each code works once.
+    {{ text.enterOneOfYour }}
   } @else {
-    Enter the 6-digit code from your authenticator app for
+    {{ text.enterThe6Digit }}
     <strong class="font-semibold text-on-surface">{{ session.challenge()?.email }}</strong
     >.
   }
@@ -15,35 +15,35 @@
 <ui-form
   [form]="form"
   [submit]="submit"
-  submitLabel="Verify"
+  [submitLabel]="text.verify"
   submitIcon="check_circle"
   [cancelLabel]="null"
   [block]="true"
 >
   @if (useRecoveryCode()) {
     <ui-text
-      label="Recovery code"
+      [label]="text.recoveryCode"
       icon="key"
       autocomplete="off"
       [autofocus]="true"
       [control]="form.controls.code"
     />
   } @else {
-    <ui-otp-input [control]="form.controls.code" label="6-digit code" />
+    <ui-otp-input [control]="form.controls.code" [label]="text.n6DigitCode" />
   }
   <mat-checkbox
     class="-ml-2 block"
     [checked]="rememberDevice()"
     (change)="rememberDevice.set($event.checked)"
   >
-    Don't ask again on this device for {{ trustedDays }} days
+    {{ text.dontAskAgainOn }} {{ trustedDays }} {{ text.days }}
   </mat-checkbox>
 </ui-form>
 
 <div class="mt-4 flex items-center justify-between text-sm">
   <button matButton type="button" (click)="toggleMode()">
     <mat-icon>{{ useRecoveryCode() ? 'pin' : 'key' }}</mat-icon>
-    {{ useRecoveryCode() ? 'Use the authenticator code' : 'Use a recovery code' }}
+    {{ useRecoveryCode() ? text.useTheAuthenticatorCode : text.useARecoveryCode }}
   </button>
-  <a matButton routerLink="/login"><mat-icon>arrow_back</mat-icon> Back to sign in</a>
+  <a matButton routerLink="/login"><mat-icon>arrow_back</mat-icon> {{ text.backToSignIn }}</a>
 </div>

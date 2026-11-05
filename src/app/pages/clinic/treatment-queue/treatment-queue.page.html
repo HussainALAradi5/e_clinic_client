@@ -1,9 +1,6 @@
-<ui-page-header
-  title="Scheduling queue"
-  subtitle="Open treatments with no next session booked — urgent first, then oldest. Book one and it leaves the list."
->
+<ui-page-header [title]="text.schedulingQueue" [subtitle]="text.openTreatmentsWithNo">
   <a actions matButton="outlined" routerLink="/clinic/treatments"
-    ><mat-icon>list</mat-icon> All treatments</a
+    ><mat-icon>list</mat-icon> {{ text.allTreatments }}</a
   >
 </ui-page-header>
 
@@ -19,11 +16,11 @@
               @if ((t.progress?.consecutiveAbsences ?? 0) >= 2) {
                 <span class="flex items-center gap-1 text-xs font-medium text-error"
                   ><mat-icon class="!size-4 !text-base">warning</mat-icon>
-                  {{ t.progress?.consecutiveAbsences }} missed in a row</span
+                  {{ t.progress?.consecutiveAbsences }} {{ text.missedInARow }}</span
                 >
               }
               <span class="ml-auto text-xs text-on-surface-variant"
-                >since {{ t.createdAt | date: dateFormat }}</span
+                >{{ text.since }} {{ t.createdAt | date: dateFormat }}</span
               >
             </div>
             <a
@@ -39,22 +36,22 @@
             icon="event_available"
             access="appointments.create"
             [action]="book.bind(this, t)"
-            >Book</ui-button
+            >{{ text.book }}</ui-button
           >
         </div>
         @if (t.progress; as p) {
           <ui-progress-meter class="mt-3" [progress]="p" [status]="t.status" [compact]="true" />
           <p class="m-0 mt-1 text-xs text-on-surface-variant">
-            {{ t.sessionDurationMinutes }} min sessions
+            {{ t.sessionDurationMinutes }} {{ text.minSessions }}
           </p>
         }
       </mat-card>
     } @empty {
       <p class="text-sm text-on-surface-variant">
-        Every open treatment has its next session booked.
+        {{ text.everyOpenTreatmentHas }}
       </p>
     }
   </div>
 } @else {
-  <p class="text-sm text-on-surface-variant">Loading the queue…</p>
+  <p class="text-sm text-on-surface-variant">{{ text.loadingTheQueue }}</p>
 }

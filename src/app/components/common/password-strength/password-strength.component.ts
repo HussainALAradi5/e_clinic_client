@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { passwordChecks, passwordScore } from '@utilities/password';
+import { PASSWORD_STRENGTH_TEXT } from '@constants/common/password-strength.constants';
 
 const BAR_CLASSES = [
   'bg-outline-variant',
@@ -19,6 +20,8 @@ const BAR_CLASSES = [
   templateUrl: './password-strength.component.html',
 })
 export class PasswordStrength {
+  protected readonly text = PASSWORD_STRENGTH_TEXT;
+
   readonly value = input<string | null | undefined>('');
 
   protected readonly checks = computed(() => passwordChecks(this.value() ?? ''));

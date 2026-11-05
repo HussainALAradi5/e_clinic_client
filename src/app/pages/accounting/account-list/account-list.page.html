@@ -1,17 +1,19 @@
 <ui-resource-list
   resource="accounts"
   endpoint="accounting/accounts"
-  title="Chart of accounts"
-  subtitle="Group and posting accounts. Prices post to revenue accounts; automatic postings use the mapped accounts."
-  emptyTitle="No accounts found"
+  [title]="text.chartOfAccounts"
+  [subtitle]="text.groupAndPostingAccounts"
+  [emptyTitle]="text.noAccountsFound"
   rowLink="/accounting/chart-of-accounts/:id"
 >
   <ng-container actions>
-    <a matButton="outlined" routerLink="tree"><mat-icon>account_tree</mat-icon> Tree</a>
+    <a matButton="outlined" routerLink="tree"><mat-icon>account_tree</mat-icon> {{ text.tree }}</a>
     <a matButton="outlined" routerLink="mappings"
-      ><mat-icon>alt_route</mat-icon> Posting accounts</a
+      ><mat-icon>alt_route</mat-icon> {{ text.postingAccounts }}</a
     >
-    <ui-button icon="add" access="accounts.create" [action]="create">New account</ui-button>
+    <ui-button icon="add" access="accounts.create" [action]="create">{{
+      text.newAccount
+    }}</ui-button>
   </ng-container>
 
   <ng-template uiCell="code" let-row>
@@ -25,5 +27,5 @@
   <ng-template uiCell="parent" let-row>{{
     row.parent ? row.parent.code + ' ' + row.parent.name : '—'
   }}</ng-template>
-  <ng-template uiCell="is_group" let-row>{{ row.isGroup ? 'Group' : 'Posting' }}</ng-template>
+  <ng-template uiCell="is_group" let-row>{{ row.isGroup ? text.group : text.posting }}</ng-template>
 </ui-resource-list>

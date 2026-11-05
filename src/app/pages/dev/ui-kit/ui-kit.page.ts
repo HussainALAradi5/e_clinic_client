@@ -129,6 +129,7 @@ export class UiKitPage {
   private readonly notify = inject(NotifyService);
   private readonly dialogs = inject(DialogService);
 
+  protected readonly text = UI_KIT_TEXT;
   protected readonly statuses = STATUSES;
   protected readonly toastTypes = Object.values(ToastType);
   protected readonly rows = ROWS;

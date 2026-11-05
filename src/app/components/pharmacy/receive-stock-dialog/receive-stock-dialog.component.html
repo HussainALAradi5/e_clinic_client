@@ -1,14 +1,14 @@
-<h2 mat-dialog-title>Receive stock</h2>
+<h2 mat-dialog-title>{{ text.receiveStock }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Receive"
+    [submitLabel]="text.receive"
     [compact]="true"
     (cancelled)="ref.close()"
   >
     <ui-entity-select
-      label="Medication"
+      [label]="text.medication"
       endpoint="pharmacy/medications"
       icon="medication"
       [display]="medicationName"
@@ -20,26 +20,26 @@
     />
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
       <ui-text
-        label="Lot / batch number"
-        hint="As printed on the pack"
+        [label]="text.lotBatchNumber"
+        [hint]="text.asPrintedOnThe"
         [control]="form.controls.batchNumber"
       />
       <ui-text
-        label="Expiry date"
+        [label]="text.expiryDate"
         type="date"
-        hint="Must be after today"
+        [hint]="text.mustBeAfterToday"
         [control]="form.controls.expiryDate"
       />
       <ui-text
-        label="Quantity"
+        [label]="text.quantity"
         type="number"
         [hint]="unitHint()"
         [control]="form.controls.quantity"
       />
-      <ui-money label="Cost per unit" [control]="form.controls.unitCost" />
+      <ui-money [label]="text.costPerUnit" [control]="form.controls.unitCost" />
       <ui-entity-select
         class="sm:col-span-2"
-        label="Supplier"
+        [label]="text.supplier"
         endpoint="reference/companies"
         icon="local_shipping"
         [display]="companyName"
@@ -49,16 +49,16 @@
     </div>
 
     <div class="mb-3 flex flex-wrap items-center gap-4 rounded-xl bg-surface-container px-4 py-3">
-      <mat-checkbox class="-ml-2 flex-1" [formControl]="form.controls.createExpense"
-        >Book the purchase for finance to approve and pay</mat-checkbox
-      >
+      <mat-checkbox class="-ml-2 flex-1" [formControl]="form.controls.createExpense">{{
+        text.bookThePurchaseFor
+      }}</mat-checkbox>
       <div class="text-right">
-        <p class="m-0 text-xs text-on-surface-variant">Delivery value</p>
+        <p class="m-0 text-xs text-on-surface-variant">{{ text.deliveryValue }}</p>
         <p class="m-0 text-lg font-semibold tabular-nums">{{ total() ?? '—' }}</p>
       </div>
     </div>
     @if (form.controls.createExpense.value) {
-      <ui-text label="Supplier invoice number" [control]="form.controls.vendorInvoiceNumber" />
+      <ui-text [label]="text.supplierInvoiceNumber" [control]="form.controls.vendorInvoiceNumber" />
     }
   </ui-form>
 </mat-dialog-content>

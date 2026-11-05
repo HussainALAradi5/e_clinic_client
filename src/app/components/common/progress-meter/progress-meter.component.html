@@ -7,7 +7,7 @@
   <span class="shrink-0 tabular-nums text-on-surface-variant">
     {{ p.attendedSessions }}/{{ p.plannedSessions }}
     @if (!compact()) {
-      attended
+      {{ text.attended }}
     }
   </span>
 </div>
@@ -18,13 +18,13 @@
     health().label +
     ': ' +
     p.attendedSessions +
-    ' of ' +
+    text.of +
     p.plannedSessions +
-    ' sessions attended, ' +
+    text.sessionsAttendedPrefix +
     p.absentSessions +
-    ' missed, ' +
+    text.missedSuffix +
     p.upcomingSessions +
-    ' booked'
+    text.bookedSuffix
   "
 >
   @for (cell of cells(); track $index) {
@@ -34,29 +34,29 @@
 @if (!compact()) {
   <dl class="m-0 mt-3 grid grid-cols-3 gap-2 text-sm sm:grid-cols-6">
     <div>
-      <dt class="text-xs text-on-surface-variant">Attended</dt>
+      <dt class="text-xs text-on-surface-variant">{{ text.attendedLabel }}</dt>
       <dd class="m-0 text-lg font-semibold tabular-nums">{{ p.attendedSessions }}</dd>
     </div>
     <div>
-      <dt class="text-xs text-on-surface-variant">Booked</dt>
+      <dt class="text-xs text-on-surface-variant">{{ text.booked }}</dt>
       <dd class="m-0 text-lg font-semibold tabular-nums">{{ p.upcomingSessions }}</dd>
     </div>
     <div>
-      <dt class="text-xs text-on-surface-variant">Remaining</dt>
+      <dt class="text-xs text-on-surface-variant">{{ text.remaining }}</dt>
       <dd class="m-0 text-lg font-semibold tabular-nums">{{ p.remainingSessions }}</dd>
     </div>
     <div>
-      <dt class="text-xs text-on-surface-variant">Missed</dt>
+      <dt class="text-xs text-on-surface-variant">{{ text.missed }}</dt>
       <dd class="m-0 text-lg font-semibold tabular-nums" [class.text-error]="p.absentSessions > 0">
         {{ p.absentSessions }}
       </dd>
     </div>
     <div>
-      <dt class="text-xs text-on-surface-variant">Cancelled</dt>
+      <dt class="text-xs text-on-surface-variant">{{ text.cancelled }}</dt>
       <dd class="m-0 text-lg font-semibold tabular-nums">{{ p.cancelledSessions }}</dd>
     </div>
     <div>
-      <dt class="text-xs text-on-surface-variant">Attendance</dt>
+      <dt class="text-xs text-on-surface-variant">{{ text.attendance }}</dt>
       <dd class="m-0 text-lg font-semibold tabular-nums">
         {{ p.attendanceRate === null ? '—' : p.attendanceRate + ' %' }}
       </dd>

@@ -46,6 +46,7 @@ export class OrderWorklistPage {
   private readonly api = inject(ClinicalOrderApi);
   private readonly actions = inject(ClinicalActions);
 
+  protected readonly text = ORDER_WORKLIST_TEXT;
   protected readonly desks = ORDER_DESKS;
   protected readonly desk = signal(0);
   protected readonly orders = signal<ClinicalOrder[] | null>(null);

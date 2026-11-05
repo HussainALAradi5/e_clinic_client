@@ -17,6 +17,7 @@ import { Country } from '@interfaces/reference/country.interface';
 import { CountryApi } from '@services/reference/country-api.service';
 import { errorMessage } from '@validations/validators';
 import { Flag } from '@components/common/flag/flag.component';
+import { COUNTRY_SELECT_TEXT } from '@constants/common/country-select.constants';
 
 const MAX_SHOWN = 50;
 
@@ -33,6 +34,8 @@ const MAX_SHOWN = 50;
   templateUrl: './country-select.component.html',
 })
 export class CountrySelect implements OnInit {
+  protected readonly text = COUNTRY_SELECT_TEXT;
+
   readonly label = input.required<string>();
   readonly control = input.required<FormControl<string | null> | FormControl<string>>();
   /** `country` shows names, `nationality` shows nationality labels. */

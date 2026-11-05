@@ -11,6 +11,7 @@ import { Gender } from '@enums/shared/gender.enum';
 import { PersonPayload } from '@interfaces/identity/person-payload.interface';
 import { addressForm, toAddressPayload } from '@utilities/address';
 import { AppValidators } from '@validations/validators';
+import { PERSON_FORM_DIALOG_TEXT } from '@constants/system/person-form-dialog.constants';
 
 /**
  * Edits personal data (with nationality and the person's own address) once for every role of the person (patient file, HR, account). Sends only changed fields
@@ -23,6 +24,8 @@ import { AppValidators } from '@validations/validators';
   templateUrl: './person-form-dialog.component.html',
 })
 export class PersonFormDialog {
+  protected readonly text = PERSON_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<PersonFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<PersonFormDialog>);
 

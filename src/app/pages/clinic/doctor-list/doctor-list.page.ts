@@ -11,6 +11,7 @@ import { Doctor } from '@interfaces/clinic/doctor.interface';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { DOCTOR_LIST_TEXT } from '@constants/clinic/doctor-list.constants';
 
 /** `/clinic/doctors` — doctors with specialty, licence expiry and booking switch. */
 @Component({
@@ -23,6 +24,8 @@ export class DoctorListPage {
   private readonly dialogs = inject(DialogService);
   private readonly notify = inject(NotifyService);
   private readonly router = inject(Router);
+
+  protected readonly text = DOCTOR_LIST_TEXT;
   protected readonly dateFormat = DATE_FORMAT;
   protected readonly today = clinicIsoDate();
 

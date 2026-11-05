@@ -9,6 +9,7 @@ import { DateRangePreset } from '@enums/shared/date-range-preset.enum';
 import { AuditLog } from '@interfaces/identity/audit-log.interface';
 import { DialogService } from '@services/ui/dialog.service';
 import { defaultQuery } from '@utilities/list-query';
+import { AUDIT_LOG_LIST_TEXT } from '@constants/system/audit-log-list.constants';
 
 /** `/system/audit-logs` — append-only trail; a date range (≤ 93 days) is always applied, newest first; Export menu (Excel / PDF / CSV) from the list. */
 @Component({
@@ -18,6 +19,8 @@ import { defaultQuery } from '@utilities/list-query';
   templateUrl: './audit-log-list.page.html',
 })
 export class AuditLogListPage {
+  protected readonly text = AUDIT_LOG_LIST_TEXT;
+
   /** Record types arrive as aliases (`clinical_order`); shown as words. */
   protected readonly humanise = humanise;
   private readonly dialogs = inject(DialogService);

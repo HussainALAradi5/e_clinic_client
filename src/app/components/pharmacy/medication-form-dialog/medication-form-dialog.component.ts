@@ -19,6 +19,7 @@ import { MedicationPayload } from '@interfaces/pharmacy/medication-payload.inter
 import { Company } from '@interfaces/reference/company.interface';
 import { MedicationApi } from '@services/pharmacy/medication-api.service';
 import { AppValidators } from '@validations/validators';
+import { MEDICATION_FORM_DIALOG_TEXT } from '@constants/pharmacy/medication-form-dialog.constants';
 
 /**
  * Medication card: names, form and strength, the unit it is counted in, its barcode and maker, the price (kept on its
@@ -41,6 +42,8 @@ import { AppValidators } from '@validations/validators';
   templateUrl: './medication-form-dialog.component.html',
 })
 export class MedicationFormDialog {
+  protected readonly text = MEDICATION_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<MedicationFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<MedicationFormDialog, Medication>);
   private readonly api = inject(MedicationApi);

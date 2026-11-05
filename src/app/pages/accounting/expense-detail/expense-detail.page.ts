@@ -65,6 +65,8 @@ import { EXPENSE_DETAIL_TEXT } from '@constants/accounting/expense-detail.consta
   templateUrl: './expense-detail.page.html',
 })
 export class ExpenseDetailPage implements OnInit {
+  protected readonly text = EXPENSE_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(ExpenseApi);

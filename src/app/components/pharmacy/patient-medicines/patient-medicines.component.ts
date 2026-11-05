@@ -12,6 +12,7 @@ import { PatientSummary } from '@interfaces/common/summary.interface';
 import { Prescription } from '@interfaces/pharmacy/prescription.interface';
 import { PrescriptionApi } from '@services/pharmacy/prescription-api.service';
 import { defaultQuery } from '@utilities/list-query';
+import { PATIENT_MEDICINES_TEXT } from '@constants/pharmacy/patient-medicines.constants';
 
 /** The patient's prescriptions on the patient file, newest first, with Prescribe. */
 @Component({
@@ -22,6 +23,8 @@ import { defaultQuery } from '@utilities/list-query';
   templateUrl: './patient-medicines.component.html',
 })
 export class PatientMedicines implements OnInit {
+  protected readonly text = PATIENT_MEDICINES_TEXT;
+
   readonly patient = input.required<PatientSummary>();
 
   private readonly api = inject(PrescriptionApi);

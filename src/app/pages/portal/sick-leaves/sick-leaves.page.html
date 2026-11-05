@@ -1,7 +1,4 @@
-<ui-page-header
-  title="My sick leaves"
-  subtitle="Every certificate from your visits. Print one or show its QR code."
-/>
+<ui-page-header [title]="text.mySickLeaves" [subtitle]="text.everyCertificateFromYour" />
 @if (error()) {
   <ui-error [error]="error()" />
 } @else if (leaves(); as list) {
@@ -19,20 +16,22 @@
           {{ l.doctor.fullName }}{{ l.reason ? ' · ' + l.reason : '' }}
         </p>
         @if (l.isCancelled) {
-          <p class="m-0 text-sm font-medium text-error">Cancelled: {{ l.cancelReason }}</p>
+          <p class="m-0 text-sm font-medium text-error">
+            {{ text.cancelled }} {{ l.cancelReason }}
+          </p>
         }
       </div>
       @if (!l.isCancelled) {
         <a matButton="tonal" [href]="'/print/sick-leave/' + l.id" target="_blank" rel="noopener"
-          ><mat-icon>print</mat-icon> Print</a
+          ><mat-icon>print</mat-icon> {{ text.print }}</a
         >
       }
     </article>
   } @empty {
     <ui-empty
       icon="sick"
-      title="No sick leaves"
-      message="Certificates your doctor gives you appear here."
+      [title]="text.noSickLeaves"
+      [message]="text.certificatesYourDoctorGives"
     />
   }
 }

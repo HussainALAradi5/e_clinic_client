@@ -10,6 +10,7 @@ import { RecordDiagnosis } from '@interfaces/clinic/record-diagnosis.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { ClinicalOrderApi } from '@services/clinic/clinical-order-api.service';
 import { MedicalRecordApi } from '@services/clinic/medical-record-api.service';
+import { REFERRAL_LETTER_TEXT } from '@constants/clinic/referral-letter.constants';
 
 /** `/print/referral/:id` — referral letter with reason, diagnoses of the visit, priority and a verification QR. */
 @Component({
@@ -19,6 +20,8 @@ import { MedicalRecordApi } from '@services/clinic/medical-record-api.service';
   templateUrl: './referral-letter.page.html',
 })
 export class ReferralLetterPage implements OnInit {
+  protected readonly text = REFERRAL_LETTER_TEXT;
+
   protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 

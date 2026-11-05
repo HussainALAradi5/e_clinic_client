@@ -1,58 +1,60 @@
-<h2 mat-dialog-title>Hire employee</h2>
+<h2 mat-dialog-title>{{ text.hireEmployee }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Hire"
+    [submitLabel]="text.hire"
     [compact]="true"
     (saved)="close()"
     (cancelled)="ref.close()"
   >
-    <h3 class="m-0 mb-2 text-sm font-semibold text-on-surface-variant">Person</h3>
+    <h3 class="m-0 mb-2 text-sm font-semibold text-on-surface-variant">{{ text.person }}</h3>
     <mat-button-toggle-group
       class="mb-3"
       hideSingleSelectionIndicator
       [value]="mode()"
       (change)="setMode($event.value)"
-      aria-label="Person"
+      [attr.aria-label]="text.person"
     >
-      <mat-button-toggle value="new">New person</mat-button-toggle>
-      <mat-button-toggle value="existing">Already on file</mat-button-toggle>
+      <mat-button-toggle value="new">{{ text.newPerson }}</mat-button-toggle>
+      <mat-button-toggle value="existing">{{ text.alreadyOnFile }}</mat-button-toggle>
     </mat-button-toggle-group>
     @if (isNew()) {
       <ui-person-fields [form]="person" />
     } @else {
       <ui-entity-select
-        label="Person"
+        [label]="text.person"
         endpoint="people"
         icon="person_search"
-        hint="Search by name, file number or mobile — e.g. a patient joining the staff"
+        [hint]="text.searchByNameFile"
         [display]="personName"
         [detail]="personDetail"
         [control]="existing"
       />
     }
 
-    <h3 class="m-0 mb-2 mt-2 text-sm font-semibold text-on-surface-variant">Employment</h3>
+    <h3 class="m-0 mb-2 mt-2 text-sm font-semibold text-on-surface-variant">
+      {{ text.employment }}
+    </h3>
     <app-employment-fields [form]="employment" />
 
-    <h3 class="m-0 mb-2 mt-2 text-sm font-semibold text-on-surface-variant">Account</h3>
+    <h3 class="m-0 mb-2 mt-2 text-sm font-semibold text-on-surface-variant">{{ text.account }}</h3>
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
       <ui-select
-        label="Account type"
+        [label]="text.accountType"
         [required]="true"
         [options]="userTypes"
         [control]="account.controls.userType"
       />
       <ui-select
-        label="Roles"
+        [label]="text.roles"
         [multiple]="true"
         [options]="roles"
         [control]="account.controls.roles"
       />
     </div>
     <mat-checkbox class="-ml-2 block" [formControl]="account.controls.canLogin">
-      Signs in to e-Clinic — an email with a link to set the password is sent
+      {{ text.signsInToE }}
     </mat-checkbox>
   </ui-form>
 </mat-dialog-content>

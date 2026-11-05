@@ -6,7 +6,7 @@
     <ui-document-actions [type]="type" [recordId]="documentId() ?? recordId()" />
   }
   <button matButton="filled" type="button" (click)="print()">
-    <mat-icon>print</mat-icon> Print
+    <mat-icon>print</mat-icon> {{ text.print }}
   </button>
 </div>
 @if (paper() === 'receipt') {
@@ -16,7 +16,7 @@
     <header class="mb-3 border-b border-dashed border-black/40 pb-2 text-center">
       <ui-brand-mark class="inline-block" tone="dark" />
       <p class="m-0 mt-1 font-semibold">{{ reference() }}</p>
-      <p class="m-0 text-black/70">Printed {{ today }}</p>
+      <p class="m-0 text-black/70">{{ text.printed }} {{ today }}</p>
     </header>
     <h1 class="m-0 mb-3 text-center text-[11pt] font-semibold">{{ title() }}</h1>
     <ng-container [ngTemplateOutlet]="body" />
@@ -29,7 +29,7 @@
           [entity]="code"
           [recordId]="recordId()"
           [pixels]="160"
-          label="Verification code"
+          [label]="text.verificationCode"
         />
       }
       <p class="m-0">{{ verifyNote() }}</p>
@@ -43,7 +43,7 @@
       <ui-brand-mark tone="dark" />
       <div class="text-right text-[9pt] text-black/70">
         <p class="m-0 font-semibold text-black">{{ reference() }}</p>
-        <p class="m-0">Printed {{ today }}</p>
+        <p class="m-0">{{ text.printed }} {{ today }}</p>
       </div>
     </header>
     <h1 class="m-0 mb-6 text-[16pt] font-semibold">{{ title() }}</h1>
@@ -57,7 +57,7 @@
           [entity]="code"
           [recordId]="recordId()"
           [pixels]="220"
-          label="Verification code"
+          [label]="text.verificationCode"
         />
       }
       <p class="m-0">{{ verifyNote() }}</p>

@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  Pay {{ expense.amount | money }}
+  {{ text.pay }} {{ expense.amount | money }}
   <span class="block text-sm font-normal text-on-surface-variant"
     >{{ expense.code }} · {{ expense.payeeName }}</span
   >
@@ -8,23 +8,23 @@
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Mark as paid"
+    [submitLabel]="text.markAsPaid"
     [compact]="true"
     [allowPristine]="true"
     (cancelled)="ref.close()"
   >
     <ui-select
-      label="Paid by"
+      [label]="text.paidBy"
       [options]="methods"
       [required]="true"
       [control]="form.controls.method"
     />
     @if (form.controls.method.value === cash) {
       <p class="m-0 mb-4 text-sm text-on-surface-variant">
-        The cash comes out of your open drawer.
+        {{ text.theCashComesOut }}
       </p>
     } @else {
-      <ui-text label="Bank or cheque reference" [control]="form.controls.reference" />
+      <ui-text [label]="text.bankOrChequeReference" [control]="form.controls.reference" />
     }
   </ui-form>
 </mat-dialog-content>

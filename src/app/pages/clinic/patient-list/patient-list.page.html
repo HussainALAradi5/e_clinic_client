@@ -1,18 +1,18 @@
 <ui-resource-list
   resource="patients"
   endpoint="patients"
-  title="Patients"
-  subtitle="Search before registering a new patient — the patient number is printed on cards and wristbands."
-  emptyTitle="No patients found"
+  [title]="text.patients"
+  [subtitle]="text.searchBeforeRegisteringA"
+  [emptyTitle]="text.noPatientsFound"
   rowLink="/clinic/patients/:id"
 >
-  <ui-button actions icon="person_add" access="patients.create" [action]="register"
-    >Register patient</ui-button
-  >
+  <ui-button actions icon="person_add" access="patients.create" [action]="register">{{
+    text.registerPatient
+  }}</ui-button>
   @if (canBreakGlass()) {
-    <ui-button actions icon="emergency" [variant]="variants.Outlined" [action]="emergency"
-      >Emergency access</ui-button
-    >
+    <ui-button actions icon="emergency" [variant]="variants.Outlined" [action]="emergency">{{
+      text.emergencyAccess
+    }}</ui-button>
   }
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template
@@ -22,7 +22,7 @@
     @if (row.hasMedicalAlerts) {
       <span
         class="ml-2 rounded-full bg-error-container px-2 py-0.5 text-[11px] font-medium text-on-error-container"
-        >Allergy</span
+        >{{ text.allergy }}</span
       >
     }
   </ng-template>
@@ -30,6 +30,6 @@
     >{{ row.dateOfBirth | date: dateFormat }}
     <span class="text-on-surface-variant">({{ row.age }})</span></ng-template
   >
-  <ng-template uiCell="insurer" let-row>{{ row.insurer?.name ?? 'Self-pay' }}</ng-template>
+  <ng-template uiCell="insurer" let-row>{{ row.insurer?.name ?? text.selfPay }}</ng-template>
   <ng-template uiCell="created_at" let-row>{{ row.createdAt | date: dateFormat }}</ng-template>
 </ui-resource-list>

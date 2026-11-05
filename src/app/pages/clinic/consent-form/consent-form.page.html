@@ -3,27 +3,27 @@
 } @else if (consent(); as c) {
   <app-print-sheet
     [document]="documentType.Consent"
-    [title]="'Consent — ' + (c.type | enumLabel: 'ConsentType')"
+    [title]="text.consent + (c.type | enumLabel: 'ConsentType')"
     entity="patient_consent"
     [recordId]="c.id"
     [reference]="c.code"
   >
     <dl class="m-0 mb-6 grid grid-cols-[9rem_1fr] gap-y-1">
-      <dt class="text-black/60">Patient</dt>
+      <dt class="text-black/60">{{ text.patient }}</dt>
       <dd class="m-0">
-        {{ patient()?.fullName }} · {{ patient()?.code }} · born
+        {{ patient()?.fullName }} · {{ patient()?.code }} {{ text.born }}
         {{ patient()?.dateOfBirth | date: dateFormat }}
       </dd>
-      <dt class="text-black/60">Covers</dt>
-      <dd class="m-0">{{ c.scope ? c.scope.code : 'The whole patient file' }}</dd>
-      <dt class="text-black/60">Valid</dt>
+      <dt class="text-black/60">{{ text.covers }}</dt>
+      <dd class="m-0">{{ c.scope ? c.scope.code : text.theWholePatientFile }}</dd>
+      <dt class="text-black/60">{{ text.valid }}</dt>
       <dd class="m-0">
         {{
           c.revokedAt
-            ? 'Revoked ' + (c.revokedAt | date: dateFormat)
+            ? text.revokedPrefix + (c.revokedAt | date: dateFormat)
             : c.validUntil
-              ? 'Until ' + (c.validUntil | date: dateFormat)
-              : 'Until revoked'
+              ? text.until + (c.validUntil | date: dateFormat)
+              : text.untilRevoked
         }}
       </dd>
     </dl>
@@ -31,8 +31,7 @@
       {{ c.description }}
     </p>
     <p class="m-0 mb-8">
-      I confirm that this was explained to me, that I could ask questions, and that I may withdraw
-      this consent at any time.
+      {{ text.iConfirmThatThis }}
     </p>
     <div class="grid grid-cols-2 gap-8">
       <div>
@@ -40,14 +39,14 @@
         <p class="m-0 text-black/60">
           {{ relationship(c.signerRelationship) }} · {{ c.signedAt | date: dateTimeFormat }}
         </p>
-        <p class="m-0 mt-8 border-t border-black/40 pt-1 text-black/60">Signature</p>
+        <p class="m-0 mt-8 border-t border-black/40 pt-1 text-black/60">{{ text.signature }}</p>
       </div>
       <div>
         <p class="m-0 font-semibold">{{ c.explainedBy?.fullName }}</p>
         <p class="m-0 text-black/60">
-          Explained by{{ c.witness ? ' · witness ' + c.witness.fullName : '' }}
+          {{ text.explainedBy }}{{ c.witness ? text.witness + c.witness.fullName : '' }}
         </p>
-        <p class="m-0 mt-8 border-t border-black/40 pt-1 text-black/60">Signature</p>
+        <p class="m-0 mt-8 border-t border-black/40 pt-1 text-black/60">{{ text.signature }}</p>
       </div>
     </div>
   </app-print-sheet>

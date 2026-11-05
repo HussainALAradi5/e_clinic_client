@@ -1,11 +1,11 @@
 <h2 mat-dialog-title>
-  {{ editing ? 'Edit prescription ' + editing.code : 'Prescribe medicines' }}
+  {{ editing ? text.editPrescription + editing.code : text.prescribeMedicines }}
 </h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    [submitLabel]="editing ? 'Save' : 'Send to pharmacy'"
+    [submitLabel]="editing ? text.save : text.sendToPharmacy"
     submitIcon="prescriptions"
     [compact]="true"
     (cancelled)="ref.close()"
@@ -22,7 +22,7 @@
       @if (!data.patient && !editing) {
         <ui-entity-select
           class="sm:col-span-2"
-          label="Patient"
+          [label]="text.patient"
           endpoint="patients"
           icon="person_search"
           [display]="patientName"
@@ -34,7 +34,7 @@
       @if (!isDoctor && !editing) {
         <ui-entity-select
           class="sm:col-span-2"
-          label="Prescribing doctor"
+          [label]="text.prescribingDoctor"
           endpoint="doctors"
           icon="stethoscope"
           [display]="doctorName"
@@ -43,17 +43,19 @@
       }
     </div>
 
-    @if (allergies(); as text) {
+    @if (allergies(); as allergyList) {
       <p
         class="m-0 mb-4 flex items-start gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-900 dark:bg-red-950/40 dark:text-red-200"
         role="note"
       >
         <mat-icon class="!text-lg">warning</mat-icon>
-        <span><span class="font-semibold">Recorded allergies:</span> {{ text }}</span>
+        <span
+          ><span class="font-semibold">{{ text.recordedAllergies }}</span> {{ allergyList }}</span
+        >
       </p>
     }
 
-    <ol class="m-0 list-none p-0" aria-label="Medicines">
+    <ol class="m-0 list-none p-0" [attr.aria-label]="text.medicines">
       @for (group of items.controls; track group; let i = $index) {
         <li
           class="mb-3 grid grid-cols-2 gap-x-3 rounded-xl border border-outline-variant/70 px-4 pt-4 sm:grid-cols-6"
@@ -61,7 +63,7 @@
         >
           <ui-entity-select
             class="col-span-2 sm:col-span-5"
-            label="Medicine"
+            [label]="text.medicine"
             endpoint="pharmacy/medications"
             icon="medication"
             [display]="medicationName"
@@ -73,7 +75,7 @@
             <button
               matIconButton
               type="button"
-              aria-label="Remove medicine"
+              [attr.aria-label]="text.removeMedicine"
               [disabled]="items.length <= 1"
               (click)="remove(i)"
             >
@@ -82,51 +84,51 @@
           </div>
           <ui-text
             class="sm:col-span-2"
-            label="Dose"
-            hint="e.g. 1 tablet, 5 ml"
+            [label]="text.dose"
+            [hint]="text.eG1Tablet"
             [control]="group.controls.dose"
           />
           <ui-text
             class="sm:col-span-2"
-            label="How often"
-            hint="e.g. 3 times daily"
+            [label]="text.howOften"
+            [hint]="text.eG3Times"
             [control]="group.controls.frequency"
           />
           <ui-select
             class="col-span-2 sm:col-span-2"
-            label="Route"
+            [label]="text.route"
             enum="MedicationRoute"
             [required]="true"
             [control]="group.controls.route"
           />
-          <ui-text label="Days" type="number" [control]="group.controls.durationDays" />
+          <ui-text [label]="text.days" type="number" [control]="group.controls.durationDays" />
           <ui-text
-            label="Total to hand over"
+            [label]="text.totalToHandOver"
             type="number"
-            hint="In the medicine's unit"
+            [hint]="text.inTheMedicinesUnit"
             [control]="group.controls.quantity"
           />
           <ui-text
             class="col-span-2 sm:col-span-4"
-            label="Instructions for the patient"
-            hint="e.g. after meals"
+            [label]="text.instructionsForThePatient"
+            [hint]="text.eGAfterMeals"
             [control]="group.controls.instructions"
           />
         </li>
       }
     </ol>
     <button class="mb-4" matButton type="button" (click)="add()">
-      <mat-icon>add</mat-icon> Medicine
+      <mat-icon>add</mat-icon> {{ text.medicine }}
     </button>
 
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-[12rem_minmax(0,1fr)]">
       <ui-text
-        label="Valid until"
+        [label]="text.validUntil"
         type="date"
-        [hint]="'Default ' + defaultValidity"
+        [hint]="text.default + defaultValidity"
         [control]="form.controls.validUntil"
       />
-      <ui-text label="Note to the pharmacist" [control]="form.controls.notes" />
+      <ui-text [label]="text.noteToThePharmacist" [control]="form.controls.notes" />
     </div>
   </ui-form>
 </mat-dialog-content>

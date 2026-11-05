@@ -8,14 +8,14 @@
     <ui-status status [value]="d.status" enum="GenericStatus" />
     <ng-container actions>
       <a matButton="filled" target="_blank" [routerLink]="['/print/medicine-label', d.id]"
-        ><mat-icon>label</mat-icon> Print label</a
+        ><mat-icon>label</mat-icon> {{ text.printLabel }}</a
       >
       @if (d.invoice; as inv) {
         <a
           *hasAccess="'invoices.read_all | invoices.read_own'"
           matButton="outlined"
           [routerLink]="['/billing/invoices', inv.id]"
-          ><mat-icon>receipt_long</mat-icon> {{ inv.invoiceNumber ?? 'Draft invoice' }}</a
+          ><mat-icon>receipt_long</mat-icon> {{ inv.invoiceNumber ?? text.draftInvoice }}</a
         >
       }
       @if (d.prescription; as rx) {
@@ -33,7 +33,7 @@
           *hasAccess="'journal.read_all | journal.read_own'"
           matButton="outlined"
           [routerLink]="['/accounting/journal', d.journalEntryId]"
-          ><mat-icon>menu_book</mat-icon> Cost entry</a
+          ><mat-icon>menu_book</mat-icon> {{ text.costEntry }}</a
         >
       }
       @if (returnable()) {
@@ -42,7 +42,7 @@
           [variant]="variants.Danger"
           access="dispensing.write & dispensing.dispense"
           [action]="giveBack"
-          >Return to stock</ui-button
+          >{{ text.returnToStock }}</ui-button
         >
       }
     </ng-container>
@@ -54,10 +54,10 @@
         <table class="w-full border-collapse text-sm">
           <thead>
             <tr class="text-left text-xs text-on-surface-variant">
-              <th class="px-5 py-3 font-medium">Medicine</th>
-              <th class="px-3 py-3 font-medium">Lot</th>
-              <th class="px-3 py-3 text-right font-medium">Qty</th>
-              <th class="px-5 py-3 text-right font-medium">Amount</th>
+              <th class="px-5 py-3 font-medium">{{ text.medicine }}</th>
+              <th class="px-3 py-3 font-medium">{{ text.lot }}</th>
+              <th class="px-3 py-3 text-right font-medium">{{ text.qty }}</th>
+              <th class="px-5 py-3 text-right font-medium">{{ text.amount }}</th>
             </tr>
           </thead>
           <tbody>
@@ -75,14 +75,14 @@
                 <td class="px-3 py-2">
                   <span class="block font-mono">{{ item.batch?.batchNumber }}</span>
                   <span class="block text-xs text-on-surface-variant"
-                    >exp. {{ item.batch?.expiryDate | date: dateFormat }}</span
+                    >{{ text.exp }} {{ item.batch?.expiryDate | date: dateFormat }}</span
                   >
                 </td>
                 <td class="px-3 py-2 text-right tabular-nums">{{ item.quantity | qty }}</td>
                 <td class="px-5 py-2 text-right tabular-nums">
                   {{ item.lineTotal | money }}
                   <span class="block text-xs text-on-surface-variant"
-                    >{{ item.unitPrice | money }} each</span
+                    >{{ item.unitPrice | money }} {{ text.each }}</span
                   >
                 </td>
               </tr>
@@ -90,7 +90,7 @@
           </tbody>
           <tfoot>
             <tr class="border-t border-outline-variant">
-              <td class="px-5 py-3 font-semibold" colspan="3">Charged to the patient</td>
+              <td class="px-5 py-3 font-semibold" colspan="3">{{ text.chargedToThePatient }}</td>
               <td class="px-5 py-3 text-right font-semibold tabular-nums">{{ total() | money }}</td>
             </tr>
           </tfoot>
@@ -108,7 +108,7 @@
     mat-stretch-tabs="false"
     animationDuration="0ms"
   >
-    <mat-tab label="History">
+    <mat-tab [label]="text.history">
       <ng-template matTabContent
         ><ui-audit-history class="block pt-4" type="dispensation" [id]="d.id"
       /></ng-template>

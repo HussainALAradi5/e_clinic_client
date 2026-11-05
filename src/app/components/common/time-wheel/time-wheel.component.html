@@ -53,7 +53,7 @@
     #column
     class="relative h-50 w-20 snap-y snap-mandatory overflow-y-auto py-20 [scrollbar-width:none]"
     role="listbox"
-    aria-label="AM / PM"
+    [attr.aria-label]="labels.amPm"
     (scrollend)="settle('pm', $any($event.target))"
   >
     @for (p of periods; track p) {

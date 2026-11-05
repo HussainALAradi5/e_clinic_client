@@ -1,26 +1,26 @@
-<h2 mat-dialog-title>Cancel appointment {{ data.appointment.code }}</h2>
+<h2 mat-dialog-title>{{ text.cancelAppointment }} {{ data.appointment.code }}</h2>
 <mat-dialog-content>
   <p class="mt-0 text-sm text-on-surface-variant">
-    {{ data.appointment.patient?.fullName }} with {{ data.appointment.provider?.fullName }} on
-    {{ data.appointment.scheduledDate }} at {{ data.appointment.startTime }}. The patient gets a
-    message.
+    {{ data.appointment.patient?.fullName }} {{ text.with }}
+    {{ data.appointment.provider?.fullName }} {{ text.on }} {{ data.appointment.scheduledDate }}
+    {{ text.at }} {{ data.appointment.startTime }}{{ text.thePatientGetsA }}
   </p>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Cancel appointment"
-    cancelLabel="Keep it"
+    [submitLabel]="text.cancelAppointment"
+    [cancelLabel]="text.keepIt"
     [compact]="true"
     (saved)="close()"
     (cancelled)="ref.close()"
   >
     <ui-select
-      label="Requested by"
+      [label]="text.requestedBy"
       [required]="true"
       [options]="who"
       [control]="form.controls.cancelledBy"
     />
-    <ui-text label="Reason" [control]="form.controls.reason" />
+    <ui-text [label]="text.reason" [control]="form.controls.reason" />
     @if (feeWarning(); as warning) {
       <p
         class="motion-rise m-0 mb-2 flex items-start gap-2 rounded-xl bg-secondary-container px-3 py-2 text-sm text-on-secondary-container"

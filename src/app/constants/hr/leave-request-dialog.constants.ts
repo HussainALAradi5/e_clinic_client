@@ -1,0 +1,23 @@
+/** Text of hr/leave-request-dialog/leave-request-dialog.component (headings, labels, hints, empty states). */
+export const LEAVE_REQUEST_DIALOG_TEXT = {
+  attachTheCertificate: 'Attach the certificate',
+  needsASupportingDocument: 'needs a supporting document (e.g. a medical certificate) before',
+  canGoForApproval: 'can go for approval. It is saved as a draft until then.',
+  later: 'Later',
+  sendForApproval: 'Send for approval',
+  daysAYear: 'days a year.',
+  notPaidDeductedFrom: 'Not paid — deducted from the salary.',
+  askAtLeast: 'Ask at least',
+  daySAhead: 'day(s) ahead.',
+  aCertificateIsNeeded: 'A certificate is needed.',
+  halfDay: 'Half day',
+  weeklyDaysOffAnd: 'Weekly days off and clinic holidays are not counted.',
+  typeOfLeave: 'Type of leave',
+  from: 'From',
+  toInclusive: 'To (inclusive)',
+  reasonOptional: 'Reason (optional)',
+  recordLeave: 'Record leave',
+  requestLeave: 'Request leave',
+  record: 'Record',
+  sendRequest: 'Send request',
+};

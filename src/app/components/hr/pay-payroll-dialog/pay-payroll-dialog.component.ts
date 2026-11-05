@@ -9,6 +9,7 @@ import { PayrollRun } from '@interfaces/hr/payroll-run.interface';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { PayrollApi } from '@services/hr/payroll-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { PAY_PAYROLL_DIALOG_TEXT } from '@constants/hr/pay-payroll-dialog.constants';
 
 /** Record the bank transfer of an approved payroll (posts Dr salaries payable / Cr bank). */
 @Component({
@@ -18,6 +19,8 @@ import { clinicIsoDate } from '@utilities/clinic-time';
   templateUrl: './pay-payroll-dialog.component.html',
 })
 export class PayPayrollDialog {
+  protected readonly text = PAY_PAYROLL_DIALOG_TEXT;
+
   protected readonly data = inject<PayPayrollDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<PayPayrollDialog, PayrollRun>);
   private readonly api = inject(PayrollApi);

@@ -1,37 +1,39 @@
-<h2 mat-dialog-title class="flex items-center gap-2"><mat-icon>tune</mat-icon> Chat settings</h2>
+<h2 mat-dialog-title class="flex items-center gap-2">
+  <mat-icon>tune</mat-icon> {{ text.chatSettings }}
+</h2>
 <mat-dialog-content class="!pt-1">
   <section class="card">
-    <h3>Notifications</h3>
+    <h3>{{ text.notifications }}</h3>
     <div class="switch">
       <span>
-        <span class="block font-medium">Pop up new messages</span>
-        <span class="hint">A toast when a message arrives and the chat isn't open.</span>
+        <span class="block font-medium">{{ text.popUpNewMessages }}</span>
+        <span class="hint">{{ text.aToastWhenA }}</span>
       </span>
       <mat-slide-toggle
-        aria-label="Pop up new messages"
+        [aria-label]="text.popUpNewMessages"
         [checked]="settings().notifyMessages"
         (change)="set({ notifyMessages: $event.checked })"
       />
     </div>
     <div class="switch">
       <span>
-        <span class="block font-medium">Count messages in the badge</span>
-        <span class="hint">Show the unread number on the chat button in the top bar.</span>
+        <span class="block font-medium">{{ text.countMessagesInThe }}</span>
+        <span class="hint">{{ text.showTheUnreadNumber }}</span>
       </span>
       <mat-slide-toggle
-        aria-label="Count messages in the badge"
+        [aria-label]="text.countMessagesInThe"
         [checked]="settings().countInBadge"
         (change)="set({ countInBadge: $event.checked })"
       />
     </div>
     <p class="hint !mt-2">
       <mat-icon class="!size-4 !text-base align-middle">info</mat-icon>
-      Mentions and group changes always reach your notification bell.
+      {{ text.mentionsAndGroupChanges }}
     </p>
   </section>
 
   <section class="card">
-    <h3>Bubble style</h3>
+    <h3>{{ text.bubbleStyle }}</h3>
     <div class="styles">
       @for (s of styles; track s.value) {
         <button
@@ -47,7 +49,7 @@
       }
     </div>
 
-    <h3 class="!mt-4">My messages</h3>
+    <h3 class="!mt-4">{{ text.myMessages }}</h3>
     <div class="swatches">
       @for (c of colors; track c.value) {
         <button
@@ -56,7 +58,7 @@
           [style.background]="c.bg"
           [class.on]="settings().myColor === c.value"
           [matTooltip]="c.label"
-          [attr.aria-label]="'My colour ' + c.label"
+          [attr.aria-label]="text.myColour + c.label"
           [attr.aria-pressed]="settings().myColor === c.value"
           (click)="set({ myColor: c.value })"
         >
@@ -67,7 +69,7 @@
       }
     </div>
 
-    <h3 class="!mt-4">Others' messages</h3>
+    <h3 class="!mt-4">{{ text.othersMessages }}</h3>
     <div class="swatches">
       @for (c of colors; track c.value) {
         <button
@@ -76,7 +78,7 @@
           [style.background]="c.bg"
           [class.on]="settings().othersColor === c.value"
           [matTooltip]="c.label"
-          [attr.aria-label]="'Others colour ' + c.label"
+          [attr.aria-label]="text.othersColour + c.label"
           [attr.aria-pressed]="settings().othersColor === c.value"
           (click)="set({ othersColor: c.value })"
         >
@@ -88,14 +90,14 @@
     </div>
 
     <div class="preview" [attr.data-shape]="settings().bubbleStyle">
-      <span class="b left" [style.background]="others().bg">Morning — rounds at 9?</span>
+      <span class="b left" [style.background]="others().bg">{{ text.morningRoundsAt9 }}</span>
       <span class="b left" [style.background]="leader.bg"
-        ><strong>Leader</strong> · Yes, ward 3 first.</span
+        ><strong>{{ text.leader }}</strong> {{ text.yesWard3First }}</span
       >
-      <span class="b right" [style.background]="mine().bg">On my way 👍</span>
+      <span class="b right" [style.background]="mine().bg">{{ text.onMyWay }}</span>
     </div>
   </section>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button matButton="filled" mat-dialog-close>Done</button>
+  <button matButton="filled" mat-dialog-close>{{ text.done }}</button>
 </mat-dialog-actions>

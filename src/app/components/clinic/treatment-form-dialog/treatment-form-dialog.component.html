@@ -1,9 +1,9 @@
-<h2 mat-dialog-title>{{ editing ? 'Edit ' + editing.code : 'Prescribe treatment' }}</h2>
+<h2 mat-dialog-title>{{ editing ? text.edit + editing.code : text.prescribeTreatment }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    [submitLabel]="editing ? 'Save' : 'Prescribe'"
+    [submitLabel]="editing ? text.save : text.prescribe"
     [compact]="true"
     (cancelled)="ref.close()"
   >
@@ -11,7 +11,7 @@
       @if (!data.patient && !editing) {
         <ui-entity-select
           class="sm:col-span-2"
-          label="Patient"
+          [label]="text.patient"
           endpoint="patients"
           icon="person_search"
           [display]="patientName"
@@ -21,34 +21,38 @@
       }
       <ui-text
         class="sm:col-span-2"
-        label="Treatment"
-        hint="e.g. Knee physiotherapy"
+        [label]="text.treatment"
+        [hint]="text.eGKneePhysiotherapy"
         [control]="form.controls.title"
       />
       <ui-select
-        label="Type"
+        [label]="text.type"
         enum="TreatmentType"
         [required]="true"
         [control]="form.controls.type"
       />
       <ui-select
-        label="Priority"
+        [label]="text.priority"
         enum="TreatmentPriority"
         [required]="true"
-        hint="Urgent: first session within 24 h · High: 72 h"
+        [hint]="text.urgentFirstSessionWithin"
         [control]="form.controls.priority"
       />
-      <ui-text label="Planned sessions" type="number" [control]="form.controls.plannedSessions" />
       <ui-text
-        label="Session length (min)"
+        [label]="text.plannedSessions"
         type="number"
-        hint="Blank = usual length for the type"
+        [control]="form.controls.plannedSessions"
+      />
+      <ui-text
+        [label]="text.sessionLengthMin"
+        type="number"
+        [hint]="text.blankUsualLengthFor"
         [control]="form.controls.sessionDurationMinutes"
       />
       @if (!editing && !data.doctorId) {
         <ui-entity-select
           class="sm:col-span-2"
-          label="Responsible doctor"
+          [label]="text.responsibleDoctor"
           endpoint="doctors"
           icon="stethoscope"
           [display]="doctorName"
@@ -57,7 +61,7 @@
       }
       <ui-entity-select
         class="sm:col-span-2"
-        label="Billed per session (optional)"
+        [label]="text.billedPerSessionOptional"
         endpoint="billing/services"
         [display]="serviceName"
         [filter]="procedures"
@@ -65,14 +69,14 @@
       />
       <ui-text
         class="sm:col-span-2"
-        label="Diagnosis"
+        [label]="text.diagnosis"
         [multiline]="true"
         [rows]="2"
         [control]="form.controls.diagnosis"
       />
       <ui-text
         class="sm:col-span-2"
-        label="Plan and instructions"
+        [label]="text.planAndInstructions"
         [multiline]="true"
         [rows]="3"
         [control]="form.controls.plan"

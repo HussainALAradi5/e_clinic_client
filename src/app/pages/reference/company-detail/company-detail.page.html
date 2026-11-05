@@ -6,8 +6,10 @@
     [subtitle]="company.code + ' · ' + (company.type | enumLabel: 'CompanyType')"
   >
     @if (company.isArchived) {
-      <span status class="rounded-full bg-surface-container-high px-2.5 py-0.5 text-xs font-medium"
-        >Archived</span
+      <span
+        status
+        class="rounded-full bg-surface-container-high px-2.5 py-0.5 text-xs font-medium"
+        >{{ text.archived }}</span
       >
     }
     <ng-container actions>
@@ -15,20 +17,20 @@
         <span
           status
           class="rounded-full bg-error-container px-2.5 py-0.5 text-xs font-medium text-on-error-container"
-          >Deleted</span
+          >{{ text.deleted }}</span
         >
-        <ui-button icon="restore_from_trash" access="companies.delete" [action]="restore"
-          >Restore</ui-button
-        >
+        <ui-button icon="restore_from_trash" access="companies.delete" [action]="restore">{{
+          text.restore
+        }}</ui-button>
       } @else {
-        <ui-button icon="edit" access="companies.write" [action]="edit">Edit</ui-button>
+        <ui-button icon="edit" access="companies.write" [action]="edit">{{ text.edit }}</ui-button>
         @if (company.isArchived) {
           <ui-button
             icon="unarchive"
             [variant]="variants.Outlined"
             access="companies.write"
             [action]="unarchive"
-            >Unarchive</ui-button
+            >{{ text.unarchive }}</ui-button
           >
         } @else {
           <ui-button
@@ -36,7 +38,7 @@
             [variant]="variants.Outlined"
             access="companies.write"
             [action]="archive"
-            >Archive</ui-button
+            >{{ text.archive }}</ui-button
           >
         }
         <ui-button
@@ -46,28 +48,28 @@
           [disabled]="inUse()"
           [confirm]="deleteConfirm"
           [action]="remove"
-          >Delete</ui-button
+          >{{ text.delete }}</ui-button
         >
       }
     </ng-container>
   </ui-page-header>
 
   <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
-    <mat-tab label="Details">
+    <mat-tab [label]="text.details">
       <div class="grid gap-4 pt-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <mat-card appearance="outlined">
           <mat-card-content>
             <dl class="m-0 grid grid-cols-[max-content_1fr] gap-x-6 gap-y-2 text-sm">
-              <dt class="text-on-surface-variant">Country</dt>
+              <dt class="text-on-surface-variant">{{ text.country }}</dt>
               <dd class="m-0">
                 <ui-flag [code]="company.countryCode" />
                 {{ company.country?.name }}
               </dd>
-              <dt class="text-on-surface-variant">Address</dt>
+              <dt class="text-on-surface-variant">{{ text.address }}</dt>
               <dd class="m-0">{{ company.address?.formatted ?? '—' }}</dd>
-              <dt class="text-on-surface-variant">Contact person</dt>
+              <dt class="text-on-surface-variant">{{ text.contactPerson }}</dt>
               <dd class="m-0">{{ company.contactPerson ?? '—' }}</dd>
-              <dt class="text-on-surface-variant">Phone</dt>
+              <dt class="text-on-surface-variant">{{ text.phone }}</dt>
               <dd class="m-0">
                 @if (company.phone) {
                   <a class="text-primary" [href]="'tel:' + company.phone">{{ company.phone }}</a>
@@ -75,7 +77,7 @@
                   —
                 }
               </dd>
-              <dt class="text-on-surface-variant">Email</dt>
+              <dt class="text-on-surface-variant">{{ text.email }}</dt>
               <dd class="m-0">
                 @if (company.email) {
                   <a class="text-primary" [href]="'mailto:' + company.email">{{ company.email }}</a>
@@ -83,7 +85,7 @@
                   —
                 }
               </dd>
-              <dt class="text-on-surface-variant">Website</dt>
+              <dt class="text-on-surface-variant">{{ text.website }}</dt>
               <dd class="m-0 break-all">
                 @if (company.website) {
                   <a
@@ -97,9 +99,9 @@
                   —
                 }
               </dd>
-              <dt class="text-on-surface-variant">VAT number</dt>
+              <dt class="text-on-surface-variant">{{ text.vatNumber }}</dt>
               <dd class="m-0 tabular-nums">{{ company.vatNumber ?? '—' }}</dd>
-              <dt class="text-on-surface-variant">Commercial registration</dt>
+              <dt class="text-on-surface-variant">{{ text.commercialRegistration }}</dt>
               <dd class="m-0 tabular-nums">{{ company.crNumber ?? '—' }}</dd>
             </dl>
             @if (company.description) {
@@ -110,7 +112,7 @@
 
         <mat-card appearance="outlined">
           <mat-card-header
-            ><mat-card-title class="!text-base">Used by</mat-card-title></mat-card-header
+            ><mat-card-title class="!text-base">{{ text.usedBy }}</mat-card-title></mat-card-header
           >
           <mat-card-content>
             @for (entry of usage(); track entry[0]) {
@@ -120,20 +122,19 @@
               </div>
             } @empty {
               <p class="m-0 text-sm text-on-surface-variant">
-                Nothing links to this company yet. Medications, stock batches, insured patients and
-                expenses will appear here once those modules are in use.
+                {{ text.nothingLinksToThis }}
               </p>
             }
             @if (inUse()) {
               <p class="mb-0 mt-2 text-xs text-on-surface-variant">
-                A company in use cannot be deleted — archive it instead.
+                {{ text.aCompanyInUse }}
               </p>
             }
           </mat-card-content>
         </mat-card>
       </div>
     </mat-tab>
-    <mat-tab label="History">
+    <mat-tab [label]="text.history">
       <ui-audit-history class="block pt-4" type="company" [id]="company.id" />
     </mat-tab>
   </mat-tab-group>

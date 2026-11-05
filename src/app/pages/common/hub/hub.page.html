@@ -3,7 +3,7 @@
     <a
       [routerLink]="homePath"
       class="inline-flex items-center gap-1 text-sm text-white/65 no-underline hover:text-white"
-      ><mat-icon class="!size-4 !text-base">arrow_back</mat-icon> Dashboard</a
+      ><mat-icon class="!size-4 !text-base">arrow_back</mat-icon> {{ text.dashboard }}</a
     >
     <div class="mt-4 flex items-center gap-4">
       @if (group.icon) {
@@ -22,11 +22,7 @@
 
   <ui-hub-nav class="mt-8" [groups]="[group]" [headings]="false" layout="card" [columns]="3" />
 } @else {
-  <ui-empty
-    icon="lock"
-    title="Nothing here for your roles"
-    message="Ask an administrator if you need access."
-  >
-    <a matButton="tonal" [routerLink]="homePath">Go to your workspace</a>
+  <ui-empty icon="lock" [title]="text.nothingHereForYour" [message]="text.askAnAdministratorIf">
+    <a matButton="tonal" [routerLink]="homePath">{{ text.goToYourWorkspace }}</a>
   </ui-empty>
 }

@@ -42,6 +42,8 @@ import { SERVICE_DETAIL_TEXT } from '@constants/billing/service-detail.constants
   templateUrl: './service-detail.page.html',
 })
 export class ServiceDetailPage implements OnInit {
+  protected readonly text = SERVICE_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   protected readonly detail = new EntityDetail(inject(BillableServiceApi));

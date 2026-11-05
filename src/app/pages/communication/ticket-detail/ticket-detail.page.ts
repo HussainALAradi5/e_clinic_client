@@ -69,6 +69,8 @@ import { TICKET_DETAIL_TEXT } from '@constants/communication/ticket-detail.const
   styleUrl: './ticket-detail.page.scss',
 })
 export class TicketDetailPage implements OnInit {
+  protected readonly text = TICKET_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(TicketApi);

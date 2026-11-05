@@ -1,15 +1,12 @@
-<ui-page-header
-  title="Cashier desk"
-  subtitle="Issue the patient's bill, take payment, and keep your drawer balanced."
->
+<ui-page-header [title]="text.cashierDesk" [subtitle]="text.issueThePatientsBill">
   <a actions matButton="outlined" routerLink="/billing/invoices"
-    ><mat-icon>receipt_long</mat-icon> All invoices</a
+    ><mat-icon>receipt_long</mat-icon> {{ text.allInvoices }}</a
   >
 </ui-page-header>
 
 <div class="grid gap-4 xl:grid-cols-[22rem_minmax(0,1fr)]">
   <!-- Drawer -->
-  <aside class="flex flex-col gap-4" aria-label="Cash drawer">
+  <aside class="flex flex-col gap-4" [attr.aria-label]="text.cashDrawer">
     @if (operatesDrawer) {
       @if (drawer() === undefined) {
         <ui-skeleton [rows]="4" />
@@ -18,9 +15,9 @@
           <div class="flex items-start justify-between gap-2">
             <div>
               <p class="m-0 text-xs text-on-surface-variant">
-                {{ d.code }} · since {{ d.openedAt | date: timeFormat }}
+                {{ d.code }} {{ text.since }} {{ d.openedAt | date: timeFormat }}
               </p>
-              <p class="m-0 text-sm text-on-surface-variant">Cash expected in the drawer</p>
+              <p class="m-0 text-sm text-on-surface-variant">{{ text.cashExpectedInThe }}</p>
             </div>
             <ui-status [value]="d.status" enum="CashSessionStatus" />
           </div>
@@ -29,13 +26,13 @@
           </p>
           @if (d.report; as r) {
             <dl class="m-0 mt-4 grid grid-cols-[1fr_auto] gap-y-1 text-sm tabular-nums">
-              <dt class="text-on-surface-variant">Opening float</dt>
+              <dt class="text-on-surface-variant">{{ text.openingFloat }}</dt>
               <dd class="m-0 text-right">{{ r.openingFloat.amount }}</dd>
-              <dt class="text-on-surface-variant">Cash taken · {{ r.payments }}</dt>
+              <dt class="text-on-surface-variant">{{ text.cashTaken }} {{ r.payments }}</dt>
               <dd class="m-0 text-right">+{{ r.cashIn.amount }}</dd>
-              <dt class="text-on-surface-variant">Cash refunds · {{ r.refunds }}</dt>
+              <dt class="text-on-surface-variant">{{ text.cashRefunds }} {{ r.refunds }}</dt>
               <dd class="m-0 text-right">−{{ r.cashRefunds.amount }}</dd>
-              <dt class="text-on-surface-variant">Cash expenses · {{ r.expenses }}</dt>
+              <dt class="text-on-surface-variant">{{ text.cashExpenses }} {{ r.expenses }}</dt>
               <dd class="m-0 text-right">−{{ r.cashExpenses.amount }}</dd>
               <dt class="text-on-surface-variant">{{ walletText.balanceDeposits }}</dt>
               <dd class="m-0 text-right">+{{ r.balanceDeposits.amount }}</dd>
@@ -43,7 +40,7 @@
               <dd class="m-0 text-right">−{{ r.balancePaybacks.amount }}</dd>
             </dl>
             @if (r.byMethod.length) {
-              <p class="m-0 mt-4 text-xs text-on-surface-variant">Taken this shift</p>
+              <p class="m-0 mt-4 text-xs text-on-surface-variant">{{ text.takenThisShift }}</p>
               <ul class="m-0 mt-1 flex list-none flex-wrap gap-2 p-0">
                 @for (m of r.byMethod; track m.method) {
                   <li class="rounded-full bg-surface-container px-3 py-1 text-xs tabular-nums">
@@ -55,12 +52,12 @@
           }
           @if (d.status === drawerStates.Open) {
             <div class="mt-4 flex gap-2">
-              <ui-button class="flex-1" icon="calculate" [block]="true" [action]="closeDrawer"
-                >Count and close</ui-button
-              >
+              <ui-button class="flex-1" icon="calculate" [block]="true" [action]="closeDrawer">{{
+                text.countAndClose
+              }}</ui-button>
               <a
                 matIconButton
-                aria-label="Print shift report"
+                [attr.aria-label]="text.printShiftReport"
                 [routerLink]="['/print/z-report', d.id]"
                 target="_blank"
                 ><mat-icon>print</mat-icon></a
@@ -70,8 +67,8 @@
             <p
               class="m-0 mt-4 rounded-xl bg-tertiary-container px-3 py-2 text-sm text-on-tertiary-container"
             >
-              Counted {{ d.countedClosing | money }} — the difference of
-              {{ d.difference | money }} waits for a supervisor.
+              {{ text.counted }} {{ d.countedClosing | money }} {{ text.theDifferenceOf }}
+              {{ d.difference | money }} {{ text.waitsForASupervisor }}
             </p>
           }
         </mat-card>
@@ -83,39 +80,39 @@
               ><mat-icon>lock</mat-icon></span
             >
             <div>
-              <p class="m-0 font-semibold">Drawer closed</p>
+              <p class="m-0 font-semibold">{{ text.drawerClosed }}</p>
               <p class="m-0 text-sm text-on-surface-variant">
-                Open it with your float before taking cash.
+                {{ text.openItWithYour }}
               </p>
             </div>
           </div>
-          <ui-button class="mt-4 block" icon="lock_open" [block]="true" [action]="openDrawer"
-            >Open drawer</ui-button
-          >
+          <ui-button class="mt-4 block" icon="lock_open" [block]="true" [action]="openDrawer">{{
+            text.openDrawer
+          }}</ui-button>
         </mat-card>
       }
     }
 
     @if (takings(); as t) {
       <mat-card appearance="outlined" class="!p-5">
-        <h2 class="m-0 mb-2 text-sm font-semibold">Taken today</h2>
+        <h2 class="m-0 mb-2 text-sm font-semibold">{{ text.takenToday }}</h2>
         @if (t.totals.length) {
           <dl class="m-0 grid grid-cols-[1fr_auto] gap-y-1 text-sm tabular-nums">
             @for (row of t.totals; track row.method) {
               <dt class="text-on-surface-variant">{{ row.method | enumLabel: 'PaymentMethod' }}</dt>
               <dd class="m-0 text-right">{{ row.total }}</dd>
             }
-            <dt class="border-t border-outline-variant pt-1 font-semibold">Total</dt>
+            <dt class="border-t border-outline-variant pt-1 font-semibold">{{ text.total }}</dt>
             <dd class="m-0 border-t border-outline-variant pt-1 text-right font-semibold">
               {{ t.grandTotal | money }}
             </dd>
             @if (t.refunds !== '0.000') {
-              <dt class="text-on-surface-variant">Refunded</dt>
+              <dt class="text-on-surface-variant">{{ text.refunded }}</dt>
               <dd class="m-0 text-right">{{ t.refunds }}</dd>
             }
           </dl>
         } @else {
-          <p class="m-0 text-sm text-on-surface-variant">No payments yet today.</p>
+          <p class="m-0 text-sm text-on-surface-variant">{{ text.noPaymentsYetToday }}</p>
         }
       </mat-card>
     }
@@ -127,7 +124,7 @@
       @if (list.length) {
         <section aria-labelledby="drafts-title">
           <h2 id="drafts-title" class="m-0 mb-2 text-base font-semibold">
-            Drafts to issue
+            {{ text.draftsToIssue }}
             <span class="font-normal text-on-surface-variant">· {{ list.length }}</span>
           </h2>
           <mat-card appearance="outlined" class="!p-0">
@@ -152,7 +149,7 @@
                     [variant]="variants.Tonal"
                     access="invoices.write & invoices.issue"
                     [action]="issue.bind(this, inv)"
-                    >Issue</ui-button
+                    >{{ text.issue }}</ui-button
                   >
                 </li>
               }
@@ -166,14 +163,14 @@
     <section aria-labelledby="outstanding-title">
       <div class="mb-2 flex flex-wrap items-center gap-3">
         <h2 id="outstanding-title" class="m-0 flex-1 text-base font-semibold">
-          Waiting for payment
+          {{ text.waitingForPayment }}
         </h2>
         <mat-form-field class="w-full sm:w-80" subscriptSizing="dynamic">
           <mat-icon matPrefix>search</mat-icon>
           <input
             matInput
-            placeholder="Patient name, file or invoice number"
-            aria-label="Search unpaid invoices"
+            [placeholder]="text.patientNameFileOr"
+            [attr.aria-label]="text.searchUnpaidInvoices"
             [formControl]="search"
           />
         </mat-form-field>
@@ -196,7 +193,8 @@
                       <span class="font-mono">{{ inv.invoiceNumber }}</span> ·
                       {{ inv.issueDate | date: dateFormat }}
                       @if (inv.status === invoiceStates.PartiallyPaid) {
-                        · paid {{ inv.paidAmount.amount }} of {{ inv.total.amount }}
+                        {{ text.paid }} {{ inv.paidAmount.amount }} {{ text.of }}
+                        {{ inv.total.amount }}
                       }
                     </p>
                   </div>
@@ -207,7 +205,7 @@
                     icon="point_of_sale"
                     access="payments.create"
                     [action]="pay.bind(this, inv)"
-                    >Take payment</ui-button
+                    >{{ text.takePayment }}</ui-button
                   >
                 </li>
               }
@@ -216,12 +214,8 @@
         } @else {
           <ui-empty
             icon="task_alt"
-            title="Nothing waiting"
-            [message]="
-              search.value
-                ? 'No unpaid invoice matches the search.'
-                : 'Every issued invoice is paid.'
-            "
+            [title]="text.nothingWaiting"
+            [message]="search.value ? text.noUnpaidInvoiceMatches : text.everyIssuedInvoiceIs"
           />
         }
       } @else {

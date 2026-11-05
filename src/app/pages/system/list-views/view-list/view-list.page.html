@@ -1,15 +1,15 @@
 <ui-resource-list
   resource="list_views"
   endpoint="views"
-  title="Saved views"
-  subtitle="Filters, sort and columns saved from any list. Shared views are visible to everyone who can read that list."
-  emptyTitle="No saved views — use the Views menu on any list to save one"
+  [title]="text.savedViews"
+  [subtitle]="text.filtersSortAndColumns"
+  [emptyTitle]="text.noSavedViewsUse"
   [views]="false"
 >
   <ng-template uiCell="name" let-row>
     <span class="font-medium">{{ row.name }}</span>
     @if (!row.isMine) {
-      <span class="ml-1 text-xs text-on-surface-variant">(shared with you)</span>
+      <span class="ml-1 text-xs text-on-surface-variant">{{ text.sharedWithYou }}</span>
     }
   </ng-template>
   <ng-template uiCell="resource" let-row>{{ label(row.resource) }}</ng-template>
@@ -29,17 +29,27 @@
       @if (!row.isDefault) {
         <button
           matIconButton
-          aria-label="Make default"
-          matTooltip="Make default"
+          [attr.aria-label]="text.makeDefault"
+          [matTooltip]="text.makeDefault"
           (click)="makeDefault(row, $event)"
         >
           <mat-icon>star_outline</mat-icon>
         </button>
       }
-      <button matIconButton aria-label="Rename" matTooltip="Rename" (click)="rename(row, $event)">
+      <button
+        matIconButton
+        [attr.aria-label]="text.rename"
+        [matTooltip]="text.rename"
+        (click)="rename(row, $event)"
+      >
         <mat-icon>edit</mat-icon>
       </button>
-      <button matIconButton aria-label="Delete" matTooltip="Delete" (click)="remove(row, $event)">
+      <button
+        matIconButton
+        [attr.aria-label]="text.delete"
+        [matTooltip]="text.delete"
+        (click)="remove(row, $event)"
+      >
         <mat-icon>delete</mat-icon>
       </button>
     }

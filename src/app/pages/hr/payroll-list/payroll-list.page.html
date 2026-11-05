@@ -1,13 +1,15 @@
 <ui-resource-list
   resource="payroll_runs"
   endpoint="hr/payroll-runs"
-  title="Payroll"
-  subtitle="One run a month: HR calculates it after the month ends, finance approves it (salary cost posted) and records the bank transfer."
-  emptyTitle="No payroll yet"
+  [title]="text.payroll"
+  [subtitle]="text.oneRunAMonth"
+  [emptyTitle]="text.noPayrollYet"
   rowLink="/hr/payroll/:id"
   [views]="false"
 >
-  <ui-button actions icon="add" access="payroll.create" [action]="create">New payroll</ui-button>
+  <ui-button actions icon="add" access="payroll.create" [action]="create">{{
+    text.newPayroll
+  }}</ui-button>
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template
   >

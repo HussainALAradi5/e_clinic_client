@@ -29,6 +29,8 @@ export class EmergencyAccessDialog {
   protected readonly ref = inject(MatDialogRef<EmergencyAccessDialog, string>);
   private readonly api = inject(PatientApi);
   private readonly notify = inject(NotifyService);
+
+  protected readonly text = EMERGENCY_ACCESS_DIALOG_TEXT;
   protected readonly variants = ButtonVariant;
 
   protected readonly found = signal<PatientLookup | null>(null);

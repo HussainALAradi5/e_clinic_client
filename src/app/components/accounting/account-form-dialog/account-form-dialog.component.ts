@@ -13,6 +13,7 @@ import { Account } from '@interfaces/accounting/account.interface';
 import { AccountPayload } from '@interfaces/accounting/account-payload.interface';
 import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { dirtyPayload } from '@utilities/form-payload';
+import { ACCOUNT_FORM_DIALOG_TEXT } from '@constants/accounting/account-form-dialog.constants';
 
 /** Create (code, type, group flag) or edit an account; the parent must be a group of the same type. */
 @Component({
@@ -30,6 +31,8 @@ import { dirtyPayload } from '@utilities/form-payload';
   templateUrl: './account-form-dialog.component.html',
 })
 export class AccountFormDialog {
+  protected readonly text = ACCOUNT_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<AccountFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<AccountFormDialog, Account>);
   protected readonly account = this.data.account;

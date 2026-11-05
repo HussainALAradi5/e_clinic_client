@@ -3,32 +3,32 @@
 } @else if (patient(); as patient) {
   <ui-page-header
     [title]="patient.fullName"
-    [subtitle]="patient.code + ' · ' + patient.age + ' y · ' + patient.phone"
+    [subtitle]="patient.code + ' · ' + patient.age + text.y + patient.phone"
   >
     <ng-container actions>
-      <ui-button icon="event_available" access="appointments.create" [action]="book"
-        >Book appointment</ui-button
-      >
+      <ui-button icon="event_available" access="appointments.create" [action]="book">{{
+        text.bookAppointment
+      }}</ui-button>
       <ui-button
         icon="edit_note"
         [variant]="variants.Tonal"
         access="patients.write"
         [action]="editFile"
-        >Edit file</ui-button
+        >{{ text.editFile }}</ui-button
       >
       <ui-button
         icon="medical_information"
         [variant]="variants.Tonal"
         access="records.write & patients.view_medical"
         [action]="editHistory"
-        >Medical history</ui-button
+        >{{ text.medicalHistory }}</ui-button
       >
       <ui-button
         icon="badge"
         [variant]="variants.Outlined"
         access="people.write"
         [action]="editPerson"
-        >Personal data</ui-button
+        >{{ text.personalData }}</ui-button
       >
       @if (patient.hasPortalAccount === false && patient.email) {
         <ui-button
@@ -37,7 +37,7 @@
           access="patients.create"
           [confirm]="portalConfirm"
           [action]="createPortal"
-          >Portal account</ui-button
+          >{{ text.portalAccount }}</ui-button
         >
       }
     </ng-container>
@@ -49,57 +49,59 @@
       role="alert"
     >
       <mat-icon>warning</mat-icon>
-      <span><strong>Allergies:</strong> {{ patient.allergies }}</span>
+      <span
+        ><strong>{{ text.allergies }}</strong> {{ patient.allergies }}</span
+      >
     </div>
   }
 
   <mat-tab-group
     mat-stretch-tabs="false"
     animationDuration="0ms"
-    (selectedTabChange)="$event.tab.textLabel === 'Timeline' && loadTimeline()"
+    (selectedTabChange)="$event.tab.textLabel === text.timeline && loadTimeline()"
   >
-    <mat-tab label="Overview">
+    <mat-tab [label]="text.overview">
       <div class="grid gap-4 pt-4 xl:grid-cols-2">
         <mat-card appearance="outlined" class="!p-5">
-          <h2 class="m-0 mb-3 text-base font-semibold">Personal data</h2>
+          <h2 class="m-0 mb-3 text-base font-semibold">{{ text.personalData }}</h2>
           <ui-facts [items]="personal()" />
         </mat-card>
         <div class="flex flex-col gap-4">
           <mat-card appearance="outlined" class="!p-5">
-            <h2 class="m-0 mb-3 text-base font-semibold">Patient file</h2>
+            <h2 class="m-0 mb-3 text-base font-semibold">{{ text.patientFile }}</h2>
             <ui-facts [items]="file()" />
           </mat-card>
           <mat-card appearance="outlined" class="!p-5">
-            <h2 class="m-0 mb-2 text-base font-semibold">Upcoming</h2>
+            <h2 class="m-0 mb-2 text-base font-semibold">{{ text.upcoming }}</h2>
             <app-appointment-rows
               show="provider"
-              empty="Nothing booked."
+              [empty]="text.nothingBooked"
               [appointments]="upcoming()"
             />
           </mat-card>
         </div>
       </div>
     </mat-tab>
-    <mat-tab [label]="'Visits (' + past().length + ')'">
+    <mat-tab [label]="text.visits + past().length + ')'">
       <app-appointment-rows
         class="pt-4"
         show="provider"
-        empty="No past visits."
+        [empty]="text.noPastVisits"
         [appointments]="past()"
       />
     </mat-tab>
     <mat-tab
-      label="Care"
+      [label]="text.care"
       *hasAccess="'treatments.read_all | treatments.read_own | orders.read_all | orders.read_own'"
     >
       <ng-template matTabContent><app-patient-care class="pt-4" [patient]="patient" /></ng-template>
     </mat-tab>
-    <mat-tab label="Consents" *hasAccess="'consents.read_all | consents.read_own'">
+    <mat-tab [label]="text.consents" *hasAccess="'consents.read_all | consents.read_own'">
       <ng-template matTabContent
         ><app-consents-panel class="pt-4" [context]="{ patient }"
       /></ng-template>
     </mat-tab>
-    <mat-tab label="Billing" *hasAccess="'invoices.read_all | invoices.read_own'">
+    <mat-tab [label]="text.billing" *hasAccess="'invoices.read_all | invoices.read_own'">
       <ng-template matTabContent
         ><app-patient-billing
           class="pt-4"
@@ -111,7 +113,10 @@
           }"
       /></ng-template>
     </mat-tab>
-    <mat-tab label="Medicines" *hasAccess="'prescriptions.read_all | prescriptions.read_own'">
+    <mat-tab
+      [label]="text.medicines"
+      *hasAccess="'prescriptions.read_all | prescriptions.read_own'"
+    >
       <ng-template matTabContent
         ><app-patient-medicines
           class="pt-4"
@@ -123,7 +128,7 @@
           }"
       /></ng-template>
     </mat-tab>
-    <mat-tab label="Timeline">
+    <mat-tab [label]="text.timeline">
       <div class="pt-4">
         @if (timeline(); as entries) {
           <ol class="m-0 list-none border-l border-outline-variant p-0 pl-5">
@@ -153,7 +158,7 @@
                 </a>
               </li>
             } @empty {
-              <p class="m-0 text-sm text-on-surface-variant">Nothing on the timeline yet.</p>
+              <p class="m-0 text-sm text-on-surface-variant">{{ text.nothingOnTheTimeline }}</p>
             }
           </ol>
         } @else {
@@ -161,11 +166,13 @@
         }
       </div>
     </mat-tab>
-    <mat-tab label="History" *hasAccess="'audit.read_all | audit.read_own'">
+    <mat-tab [label]="text.history" *hasAccess="'audit.read_all | audit.read_own'">
       <ng-template matTabContent>
         <div class="pt-4">
           <ui-audit-history type="patient" [id]="patient.id" />
-          <h3 class="mb-2 mt-6 text-sm font-semibold text-on-surface-variant">Personal data</h3>
+          <h3 class="mb-2 mt-6 text-sm font-semibold text-on-surface-variant">
+            {{ text.personalData }}
+          </h3>
           <ui-audit-history type="person" [id]="patient.id" />
         </div>
       </ng-template>

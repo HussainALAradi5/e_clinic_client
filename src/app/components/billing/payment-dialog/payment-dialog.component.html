@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  Take payment
+  {{ text.takePayment }}
   <span class="block text-sm font-normal text-on-surface-variant"
     >{{ invoice.invoiceNumber ?? invoice.code }} · {{ invoice.patient?.fullName }}</span
   >
@@ -7,12 +7,12 @@
 <mat-dialog-content>
   <div class="mb-4 flex items-end justify-between gap-4 rounded-xl bg-surface-container px-4 py-3">
     <div>
-      <p class="m-0 text-xs text-on-surface-variant">Balance due</p>
+      <p class="m-0 text-xs text-on-surface-variant">{{ text.balanceDue }}</p>
       <p class="m-0 text-2xl font-semibold tabular-nums">{{ invoice.balanceDue | money }}</p>
     </div>
     @if (recorded().length) {
       <p class="m-0 text-right text-sm text-on-surface-variant">
-        Taken: {{ recorded().length }} part(s)
+        {{ text.taken }} {{ recorded().length }} {{ text.partS }}
       </p>
     }
   </div>
@@ -32,17 +32,17 @@
       role="status"
     >
       <mat-icon>point_of_sale</mat-icon>
-      <span class="flex-1">Cash goes into your drawer — open it first.</span>
-      <ui-button icon="lock_open" [variant]="variants.Tonal" [action]="openDrawer"
-        >Open drawer</ui-button
-      >
+      <span class="flex-1">{{ text.cashGoesIntoYour }}</span>
+      <ui-button icon="lock_open" [variant]="variants.Tonal" [action]="openDrawer">{{
+        text.openDrawer
+      }}</ui-button>
     </div>
   }
 
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Take payment"
+    [submitLabel]="text.takePayment"
     submitIcon="check"
     [compact]="true"
     [allowPristine]="true"
@@ -52,12 +52,12 @@
     @for (row of rows.controls; track row; let i = $index) {
       <fieldset class="m-0 mb-3 rounded-xl border border-outline-variant p-3" [formGroup]="row">
         <legend class="px-1 text-sm text-on-surface-variant">
-          {{ rows.length > 1 ? 'Part ' + (i + 1) : 'Paid by' }}
+          {{ rows.length > 1 ? text.part + (i + 1) : text.paidBy }}
         </legend>
         <mat-button-toggle-group
           class="mb-3 flex-wrap"
           hideSingleSelectionIndicator
-          aria-label="Payment method"
+          [attr.aria-label]="text.paymentMethod"
           [formControl]="row.controls.method"
         >
           @for (m of methods; track m.value) {
@@ -68,31 +68,31 @@
           }
         </mat-button-toggle-group>
         <div class="grid grid-cols-1 gap-x-3 sm:grid-cols-2">
-          <ui-money label="Amount" [control]="row.controls.amount" />
+          <ui-money [label]="text.amount" [control]="row.controls.amount" />
           @switch (row.controls.method.value) {
             @case (cash) {
               <ui-money
-                label="Cash received"
-                hint="Optional — shows the change"
+                [label]="text.cashReceived"
+                [hint]="text.optionalShowsTheChange"
                 [control]="row.controls.tendered"
               />
             }
             @case (card) {
-              <ui-text label="Card last 4 digits" [control]="row.controls.cardLast4" />
+              <ui-text [label]="text.cardLast4Digits" [control]="row.controls.cardLast4" />
             }
             @default {
-              <ui-text label="Reference" [control]="row.controls.referenceNumber" />
+              <ui-text [label]="text.reference" [control]="row.controls.referenceNumber" />
             }
           }
         </div>
         @if (change(row); as giveBack) {
           <p class="m-0 mb-2 text-sm font-medium text-primary">
-            Change to give back: {{ giveBack | money }}
+            {{ text.changeToGiveBack }} {{ giveBack | money }}
           </p>
         }
         @if (rows.length > 1) {
           <button matButton type="button" (click)="removeRow(i)">
-            <mat-icon>remove_circle_outline</mat-icon> Remove part
+            <mat-icon>remove_circle_outline</mat-icon> {{ text.removePart }}
           </button>
         }
       </fieldset>
@@ -100,16 +100,17 @@
 
     <div class="mb-2 flex flex-wrap items-center gap-2">
       <button matButton type="button" (click)="split()">
-        <mat-icon>call_split</mat-icon> Split with another method
+        <mat-icon>call_split</mat-icon> {{ text.splitWithAnotherMethod }}
       </button>
       <span class="flex-1"></span>
       @if (overpaid()) {
         <span class="text-sm font-medium text-error" role="alert"
-          >The parts are {{ remaining().replace('-', '') | money }} more than the balance.</span
+          >{{ text.thePartsAre }} {{ remaining().replace('-', '') | money }}
+          {{ text.moreThanTheBalance }}</span
         >
       } @else if (remaining() !== '0.000') {
         <span class="text-sm text-on-surface-variant"
-          >Left on the invoice: {{ remaining() | money }}</span
+          >{{ text.leftOnTheInvoice }} {{ remaining() | money }}</span
         >
       }
     </div>

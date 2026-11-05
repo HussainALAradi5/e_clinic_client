@@ -7,22 +7,22 @@
           <p class="m-0 mt-1">
             <span class="text-2xl font-semibold tabular-nums">{{ b.remainingDays | qty }}</span>
             <span class="text-sm text-on-surface-variant">
-              of {{ b.entitledDays | qty }}
+              {{ text.of }} {{ b.entitledDays | qty }}
               @if (b.carriedForwardDays !== '0.0') {
-                + {{ b.carriedForwardDays | qty }} carried
+                + {{ b.carriedForwardDays | qty }} {{ text.carried }}
               }
-              left</span
+              {{ text.left }}</span
             >
           </p>
         } @else {
           <p class="m-0 mt-1 text-sm text-on-surface-variant">
-            {{ b.leaveType.isPaid ? 'No yearly limit' : 'Unpaid — deducted from salary' }}
+            {{ b.leaveType.isPaid ? text.noYearlyLimit : text.unpaidDeductedFromSalary }}
           </p>
         }
         <p class="m-0 mt-1 text-xs text-on-surface-variant">
-          {{ b.usedDays | qty }} taken
+          {{ b.usedDays | qty }} {{ text.taken }}
           @if (b.pendingDays !== '0.0') {
-            · {{ b.pendingDays | qty }} waiting for approval
+            · {{ b.pendingDays | qty }} {{ text.waitingForApproval }}
           }
         </p>
       </li>

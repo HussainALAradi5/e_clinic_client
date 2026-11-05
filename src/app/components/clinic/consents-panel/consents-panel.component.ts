@@ -24,6 +24,8 @@ import { CONSENTS_PANEL_TEXT } from '@constants/clinic/consents-panel.constants'
   templateUrl: './consents-panel.component.html',
 })
 export class ConsentsPanel implements OnInit {
+  protected readonly text = CONSENTS_PANEL_TEXT;
+
   /** Patient and the visit / treatment / order a new consent may cover. */
   readonly context = input.required<ConsentDialogData>();
 

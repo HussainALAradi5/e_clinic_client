@@ -22,6 +22,7 @@ import { AttachmentOwner } from '@interfaces/attachment/attachment-owner.interfa
 import { UploadItem } from '@interfaces/upload/upload.interface';
 import { UploadQueue } from '@services/upload/upload-queue';
 import { UploadService } from '@services/upload/upload.service';
+import { UPLOAD_ZONE_TEXT } from '@constants/common/upload-zone.constants';
 
 /**
  * Multiple-file upload: drag & drop, browse, paste (Ctrl+V screenshots) or camera on mobile; files are checked
@@ -35,6 +36,8 @@ import { UploadService } from '@services/upload/upload.service';
   templateUrl: './upload-zone.component.html',
 })
 export class UploadZone implements OnInit, OnDestroy {
+  protected readonly text = UPLOAD_ZONE_TEXT;
+
   readonly category = input.required<AttachmentCategory | `${AttachmentCategory}`>();
   readonly owner = input.required<AttachmentOwner>();
   readonly multiple = input(true);

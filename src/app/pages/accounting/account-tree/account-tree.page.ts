@@ -13,6 +13,7 @@ import { Account } from '@interfaces/accounting/account.interface';
 import { ApiError } from '@interfaces/api/api-error.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { AccountApi } from '@services/accounting/account-api.service';
+import { ACCOUNT_TREE_TEXT } from '@constants/accounting/account-tree.constants';
 
 /** `/accounting/chart-of-accounts/tree` — the chart as an outline, filterable by type; groups fold. */
 @Component({
@@ -34,6 +35,7 @@ import { AccountApi } from '@services/accounting/account-api.service';
 export class AccountTreePage {
   private readonly api = inject(AccountApi);
 
+  protected readonly text = ACCOUNT_TREE_TEXT;
   protected readonly types = Object.values(AccountType);
   protected readonly type = signal<AccountType | null>(null);
   protected readonly tree = signal<Account[] | null>(null);

@@ -1,12 +1,14 @@
 <ui-resource-list
   resource="services"
   endpoint="billing/services"
-  title="Service catalog"
-  subtitle="The single price list. Doctors' consultation fees and every invoice line come from here."
-  emptyTitle="No services found"
+  [title]="text.serviceCatalog"
+  [subtitle]="text.theSinglePriceList"
+  [emptyTitle]="text.noServicesFound"
   rowLink="/billing/service-catalog/:id"
 >
-  <ui-button actions icon="add" access="services.create" [action]="create">New service</ui-button>
+  <ui-button actions icon="add" access="services.create" [action]="create">{{
+    text.newService
+  }}</ui-button>
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template
   >
@@ -20,5 +22,7 @@
     ><span class="tabular-nums">{{ +row.taxRate }}%</span></ng-template
   >
   <ng-template uiCell="specialty" let-row>{{ row.specialty?.name ?? '—' }}</ng-template>
-  <ng-template uiCell="is_insurable" let-row>{{ row.isInsurable ? 'Yes' : 'No' }}</ng-template>
+  <ng-template uiCell="is_insurable" let-row>{{
+    row.isInsurable ? text.yes : text.no
+  }}</ng-template>
 </ui-resource-list>

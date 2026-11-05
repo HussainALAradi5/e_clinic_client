@@ -8,7 +8,7 @@
     [class.ui-sm]="size() === sizes.Small"
     [class.ui-busy]="lock.busy()"
     [class.w-full]="block()"
-    [matTooltip]="allowed() ? '' : 'You don\'t have permission'"
+    [matTooltip]="allowed() ? '' : text.youDontHavePermission"
     (click)="run($event)"
   >
     @if (lock.state() === states.Success || lock.state() === states.Locked) {
@@ -23,7 +23,7 @@
         diameter="20"
         mode="indeterminate"
         class="ui-spinner"
-        aria-label="Working"
+        [attr.aria-label]="text.working"
       />
     }
   </button>

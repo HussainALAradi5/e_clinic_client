@@ -19,6 +19,7 @@ import { EnumService } from '@services/data/enum.service';
 import { EmployeeApi } from '@services/hr/employee-api.service';
 import { dirtyPayload } from '@utilities/form-payload';
 import { newPersonForm, toNewPerson } from '@utilities/person';
+import { HIRE_DIALOG_TEXT } from '@constants/hr/hire-dialog.constants';
 
 /**
  * Hire: a new person or one already on file (e.g. a former patient) → account (type, roles, invitation) →
@@ -45,6 +46,7 @@ export class HireDialog {
   private readonly api = inject(EmployeeApi);
   private readonly enums = inject(EnumService);
 
+  protected readonly text = HIRE_DIALOG_TEXT;
   protected readonly mode = signal<'new' | 'existing'>('new');
   protected readonly person = newPersonForm(true);
   protected readonly existing = new FormControl<string | null>(null);

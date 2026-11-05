@@ -1,11 +1,10 @@
-<h2 mat-dialog-title>Add people to {{ data.role.displayName }}</h2>
+<h2 mat-dialog-title>{{ text.addPeopleTo }} {{ data.role.displayName }}</h2>
 <mat-dialog-content>
   <p class="mb-5 mt-0 text-sm text-on-surface-variant">
-    They keep their other roles. Their open sessions end, so the new rights apply when they sign in
-    again.
+    {{ text.theyKeepTheirOther }}
   </p>
   <ui-entity-select
-    label="Find a person"
+    [label]="text.findAPerson"
     icon="person_search"
     endpoint="users"
     subscript="dynamic"
@@ -19,7 +18,10 @@
   />
 
   @if (picked().length) {
-    <ul class="m-0 mt-4 list-none divide-y divide-outline-variant p-0" aria-label="People to add">
+    <ul
+      class="m-0 mt-4 list-none divide-y divide-outline-variant p-0"
+      [attr.aria-label]="text.peopleToAdd"
+    >
       @for (user of picked(); track user.id) {
         <li class="flex items-center gap-3 py-2">
           <span
@@ -37,7 +39,7 @@
           <button
             matIconButton
             type="button"
-            [attr.aria-label]="'Remove ' + user.fullName + ' from the list'"
+            [attr.aria-label]="text.remove + user.fullName + text.fromTheList"
             (click)="drop(user)"
           >
             <mat-icon>close</mat-icon>
@@ -47,13 +49,17 @@
     </ul>
   } @else {
     <p class="mb-0 mt-4 text-sm text-on-surface-variant">
-      Nobody picked yet — search above and choose one or more people.
+      {{ text.nobodyPickedYetSearch }}
     </p>
   }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button matButton type="button" (click)="ref.close()">Cancel</button>
+  <button matButton type="button" (click)="ref.close()">{{ text.cancel }}</button>
   <ui-button icon="group_add" [disabled]="!picked().length" [action]="save">
-    {{ picked().length === 1 ? 'Add 1 person' : 'Add ' + (picked().length || '') + ' people' }}
+    {{
+      picked().length === 1
+        ? text.add1Person
+        : text.addPrefix + (picked().length || '') + text.people
+    }}
   </ui-button>
 </mat-dialog-actions>

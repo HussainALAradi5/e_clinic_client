@@ -1,21 +1,21 @@
-<h2 mat-dialog-title>{{ department ? 'Edit department' : 'New department' }}</h2>
+<h2 mat-dialog-title>{{ department ? text.editDepartment : text.newDepartment }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    [submitLabel]="department ? 'Save' : 'Create department'"
+    [submitLabel]="department ? text.save : text.createDepartment"
     [compact]="true"
     (saved)="close()"
     (cancelled)="ref.close()"
   >
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-[10rem_1fr]">
-      <ui-text label="Code" hint="e.g. PHYSIO" [control]="form.controls.code" />
-      <ui-text label="Name" [control]="form.controls.name" />
+      <ui-text [label]="text.code" [hint]="text.eGPhysio" [control]="form.controls.code" />
+      <ui-text [label]="text.name" [control]="form.controls.name" />
     </div>
     <ui-entity-select
-      label="Part of"
+      [label]="text.partOf"
       endpoint="hr/departments"
-      hint="Empty = top level"
+      [hint]="text.emptyTopLevel"
       [display]="departmentName"
       [detail]="departmentCode"
       [filter]="notSelf"
@@ -23,7 +23,7 @@
       [control]="form.controls.parentId"
     />
     <ui-entity-select
-      label="Manager"
+      [label]="text.manager"
       endpoint="hr/employees"
       [display]="employeeName"
       [detail]="employeeTitle"
@@ -32,8 +32,8 @@
       [control]="form.controls.managerId"
     />
     <ui-text
-      label="Cost center"
-      hint="Tags salary postings"
+      [label]="text.costCenter"
+      [hint]="text.tagsSalaryPostings"
       [control]="form.controls.costCenterCode"
     />
   </ui-form>

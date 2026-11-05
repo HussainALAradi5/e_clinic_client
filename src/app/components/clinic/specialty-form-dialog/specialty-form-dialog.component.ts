@@ -7,6 +7,7 @@ import { TextField } from '@components/common/text-field/text-field.component';
 import { Specialty } from '@interfaces/clinic/specialty.interface';
 import { SpecialtyPayload } from '@interfaces/clinic/specialty-payload.interface';
 import { dirtyPayload } from '@utilities/form-payload';
+import { SPECIALTY_FORM_DIALOG_TEXT } from '@constants/clinic/specialty-form-dialog.constants';
 
 /** Create or edit a specialty (unique short code). */
 @Component({
@@ -16,6 +17,8 @@ import { dirtyPayload } from '@utilities/form-payload';
   templateUrl: './specialty-form-dialog.component.html',
 })
 export class SpecialtyFormDialog {
+  protected readonly text = SPECIALTY_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<SpecialtyFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<SpecialtyFormDialog, Specialty>);
   protected readonly specialty = this.data.specialty;

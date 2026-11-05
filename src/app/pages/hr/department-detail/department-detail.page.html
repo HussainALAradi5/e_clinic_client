@@ -17,18 +17,18 @@
   </ui-page-header>
 
   <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
-    <mat-tab label="Details">
+    <mat-tab [label]="text.details">
       <div class="grid gap-4 pt-4 lg:grid-cols-[minmax(0,1fr)_340px]">
         <mat-card appearance="outlined" class="!p-5"><ui-facts [items]="facts()" /></mat-card>
         <mat-card appearance="outlined" class="!p-5">
           <div class="mb-2 flex items-center">
-            <h2 class="m-0 flex-1 text-base font-semibold">Sub-departments</h2>
+            <h2 class="m-0 flex-1 text-base font-semibold">{{ text.subDepartments }}</h2>
             <ui-button
               icon="add"
               [variant]="variants.Text"
               access="departments.create"
               [action]="addChild"
-              >Add</ui-button
+              >{{ text.add }}</ui-button
             >
           </div>
           @for (child of department.children ?? []; track child.id) {
@@ -42,12 +42,12 @@
               }}</span>
             </a>
           } @empty {
-            <p class="m-0 text-sm text-on-surface-variant">None.</p>
+            <p class="m-0 text-sm text-on-surface-variant">{{ text.none }}</p>
           }
         </mat-card>
       </div>
     </mat-tab>
-    <mat-tab [label]="'Staff (' + staff().length + ')'">
+    <mat-tab [label]="text.staff + staff().length + ')'">
       <div class="pt-4">
         @for (employee of staff(); track employee.id) {
           <a
@@ -59,16 +59,16 @@
             <ui-status [value]="employee.status" enum="EmployeeStatus" />
           </a>
         } @empty {
-          <p class="text-sm text-on-surface-variant">Nobody works in this department yet.</p>
+          <p class="text-sm text-on-surface-variant">{{ text.nobodyWorksInThis }}</p>
         }
         @if (staff().length) {
           <p class="mt-2 text-xs text-on-surface-variant">
-            A department with staff cannot be deleted — move them or archive it.
+            {{ text.aDepartmentWithStaff }}
           </p>
         }
       </div>
     </mat-tab>
-    <mat-tab label="History" *hasAccess="'audit.read_all | audit.read_own'">
+    <mat-tab [label]="text.history" *hasAccess="'audit.read_all | audit.read_own'">
       <ng-template matTabContent>
         <ui-audit-history class="block pt-4" type="department" [id]="department.id" />
       </ng-template>

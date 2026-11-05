@@ -1,6 +1,10 @@
-<ui-page-header title="My HR" subtitle="Your day, your month, your leave and your payslips.">
-  <ui-button actions icon="beach_access" access="leaves.create & leaves.request" [action]="request"
-    >Request leave</ui-button
+<ui-page-header [title]="text.myHr" [subtitle]="text.yourDayYourMonth">
+  <ui-button
+    actions
+    icon="beach_access"
+    access="leaves.create & leaves.request"
+    [action]="request"
+    >{{ text.requestLeave }}</ui-button
   >
 </ui-page-header>
 
@@ -14,43 +18,43 @@
     @if (summary(); as s) {
       <dl class="m-0 grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-4">
         <div>
-          <dt class="text-on-surface-variant">Days worked</dt>
+          <dt class="text-on-surface-variant">{{ text.daysWorked }}</dt>
           <dd class="m-0 text-xl font-semibold tabular-nums">
             {{ s.presentDays | qty }}
             <span class="text-sm font-normal text-on-surface-variant">/ {{ s.workingDays }}</span>
           </dd>
         </div>
         <div>
-          <dt class="text-on-surface-variant">Absent</dt>
+          <dt class="text-on-surface-variant">{{ text.absent }}</dt>
           <dd class="m-0 text-xl font-semibold tabular-nums">{{ s.absentDays | qty }}</dd>
         </div>
         <div>
-          <dt class="text-on-surface-variant">On leave</dt>
+          <dt class="text-on-surface-variant">{{ text.onLeave }}</dt>
           <dd class="m-0 text-xl font-semibold tabular-nums">
             {{ +s.paidLeaveDays + +s.unpaidLeaveDays }}
           </dd>
         </div>
         <div>
-          <dt class="text-on-surface-variant">Late</dt>
-          <dd class="m-0 text-xl font-semibold tabular-nums">{{ s.lateMinutes }} min</dd>
+          <dt class="text-on-surface-variant">{{ text.late }}</dt>
+          <dd class="m-0 text-xl font-semibold tabular-nums">{{ s.lateMinutes }} {{ text.min }}</dd>
         </div>
         <div class="col-span-2">
-          <dt class="text-on-surface-variant">Overtime approved</dt>
+          <dt class="text-on-surface-variant">{{ text.overtimeApproved }}</dt>
           <dd class="m-0 font-medium">{{ hours(s.approvedOvertimeMinutes) }}</dd>
         </div>
         <div class="col-span-2">
-          <dt class="text-on-surface-variant">Overtime waiting for approval</dt>
+          <dt class="text-on-surface-variant">{{ text.overtimeWaitingForApproval }}</dt>
           <dd class="m-0 font-medium">{{ hours(s.pendingOvertimeMinutes) }}</dd>
         </div>
       </dl>
     } @else {
-      <p class="m-0 text-sm text-on-surface-variant">No attendance recorded this month.</p>
+      <p class="m-0 text-sm text-on-surface-variant">{{ text.noAttendanceRecordedThis }}</p>
     }
   </mat-card>
 </div>
 
 <section class="mt-6">
-  <h2 class="m-0 mb-3 text-base font-semibold">Leave this year</h2>
+  <h2 class="m-0 mb-3 text-base font-semibold">{{ text.leaveThisYear }}</h2>
   @if (me) {
     <app-leave-balances [employeeId]="me" [version]="version()" />
   }
@@ -58,12 +62,12 @@
 
 <div class="mt-6 grid gap-4 lg:grid-cols-2">
   <mat-card appearance="outlined" class="!p-5">
-    <h2 class="m-0 mb-3 text-base font-semibold">My leave requests</h2>
+    <h2 class="m-0 mb-3 text-base font-semibold">{{ text.myLeaveRequests }}</h2>
     @for (r of requests(); track r.id) {
       <div class="flex items-center gap-3 border-b border-outline-variant/60 py-2 last:border-0">
         <div class="min-w-0 flex-1">
           <p class="m-0 text-sm font-medium">
-            {{ r.leaveType?.name }} · {{ r.totalDays | qty }} day(s)
+            {{ r.leaveType?.name }} · {{ r.totalDays | qty }} {{ text.dayS }}
           </p>
           <p class="m-0 text-xs text-on-surface-variant">
             {{ r.startDate | date: dateFormat }} – {{ r.endDate | date: dateFormat }}
@@ -79,17 +83,17 @@
             [variant]="variants.Text"
             access="leaves.write & leaves.request"
             [action]="cancel.bind(this, r)"
-            >Cancel</ui-button
+            >{{ text.cancel }}</ui-button
           >
         }
       </div>
     } @empty {
-      <p class="m-0 text-sm text-on-surface-variant">No leave requested yet.</p>
+      <p class="m-0 text-sm text-on-surface-variant">{{ text.noLeaveRequestedYet }}</p>
     }
   </mat-card>
 
   <mat-card appearance="outlined" class="!p-5" *hasAccess="'payroll.read_own | payroll.read_all'">
-    <h2 class="m-0 mb-3 text-base font-semibold">My payslips</h2>
+    <h2 class="m-0 mb-3 text-base font-semibold">{{ text.myPayslips }}</h2>
     @for (p of payslips(); track p.id) {
       <a
         class="flex items-center gap-3 border-b border-outline-variant/60 py-2 text-inherit no-underline last:border-0 hover:bg-surface-container-low"
@@ -103,7 +107,7 @@
       </a>
     } @empty {
       <p class="m-0 text-sm text-on-surface-variant">
-        Payslips appear here once a month's payroll is approved.
+        {{ text.payslipsAppearHereOnce }}
       </p>
     }
   </mat-card>

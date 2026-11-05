@@ -1,9 +1,9 @@
 <ui-resource-list
   resource="background_tasks"
   endpoint="tasks"
-  title="Background tasks"
-  subtitle="Exports, ZIP downloads and large bulk actions. Result files are kept for 7 days."
-  emptyTitle="No background tasks"
+  [title]="text.backgroundTasks"
+  [subtitle]="text.exportsZipDownloadsAnd"
+  [emptyTitle]="text.noBackgroundTasks"
   rowLink="/system/background-tasks/:id"
 >
   <ng-template uiCell="created_at" let-row>

@@ -28,6 +28,7 @@ export class NewTicketDialog {
   protected readonly ref = inject(MatDialogRef<NewTicketDialog, SupportTicket>);
   private readonly api = inject(TicketApi);
 
+  protected readonly text = NEW_TICKET_DIALOG_TEXT;
   protected readonly form = new FormGroup({
     subject: new FormControl('', {
       nonNullable: true,

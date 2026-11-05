@@ -1,14 +1,14 @@
 <ui-resource-list
   resource="prescriptions"
   endpoint="pharmacy/prescriptions"
-  title="Prescriptions"
-  subtitle="Written by the doctors and collected at the pharmacy — pending, partly handed over or completed."
-  emptyTitle="No prescriptions found"
+  [title]="text.prescriptions"
+  [subtitle]="text.writtenByTheDoctors"
+  [emptyTitle]="text.noPrescriptionsFound"
   rowLink="/pharmacy/prescriptions/:id"
 >
-  <ui-button actions icon="prescriptions" access="prescriptions.create" [action]="create"
-    >Prescribe</ui-button
-  >
+  <ui-button actions icon="prescriptions" access="prescriptions.create" [action]="create">{{
+    text.prescribe
+  }}</ui-button>
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template
   >

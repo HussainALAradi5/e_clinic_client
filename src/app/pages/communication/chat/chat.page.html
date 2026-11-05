@@ -1,14 +1,14 @@
 <div class="chat-shell" [class.has-chat]="!!selectedId()">
   <!-- Chat list -->
-  <aside class="list glass" aria-label="Chats">
+  <aside class="list glass" [attr.aria-label]="text.chats">
     <header class="list-head">
-      <h1 class="m-0 text-xl font-semibold">Chats</h1>
+      <h1 class="m-0 text-xl font-semibold">{{ text.chats }}</h1>
       <span class="flex-1"></span>
       <app-presence-switch />
       <button
         matIconButton
-        matTooltip="Chat settings"
-        aria-label="Chat settings"
+        [matTooltip]="text.chatSettings"
+        [attr.aria-label]="text.chatSettings"
         (click)="openSettings()"
       >
         <mat-icon>tune</mat-icon>
@@ -16,8 +16,8 @@
       <button
         matIconButton
         class="new"
-        matTooltip="New chat"
-        aria-label="New chat"
+        [matTooltip]="text.newChat"
+        [attr.aria-label]="text.newChat"
         (click)="newChat()"
       >
         <mat-icon>edit_square</mat-icon>
@@ -98,7 +98,7 @@
       }
     </mat-menu>
 
-    <ul class="rows" aria-label="Chat list">
+    <ul class="rows" [attr.aria-label]="text.chatList">
       @for (c of chats(); track c.id) {
         <li>
           <app-chat-list-row
@@ -114,7 +114,7 @@
       <app-chat-list-states [loading]="listLoading()" [empty]="!listLoading() && !chats().length" />
       @if (page() < lastPage() && !listLoading()) {
         <li class="p-3">
-          <button matButton class="w-full" (click)="more()">Load more chats</button>
+          <button matButton class="w-full" (click)="more()">{{ text.loadMoreChats }}</button>
         </li>
       }
     </ul>
@@ -123,7 +123,7 @@
   <!-- Open chat -->
   <section
     class="pane"
-    aria-label="Conversation"
+    [attr.aria-label]="text.conversation"
     (dragover)="dragOver($event)"
     (dragleave)="dragLeave($event)"
     (drop)="drop($event)"
@@ -134,7 +134,7 @@
           matIconButton
           tapMotion="nudge"
           class="back"
-          aria-label="Back to chats"
+          [attr.aria-label]="text.backToChats"
           (click)="back()"
         >
           <mat-icon>arrow_back</mat-icon>
@@ -144,8 +144,8 @@
         <button
           matIconButton
           tapMotion
-          [matTooltip]="isGroup() ? 'Group info' : 'Chat info'"
-          aria-label="Chat info"
+          [matTooltip]="isGroup() ? text.groupInfo : text.chatInfo"
+          [attr.aria-label]="text.chatInfo"
           (click)="info()"
         >
           <mat-icon>info</mat-icon>
@@ -162,7 +162,7 @@
         @if (hasMore()) {
           <div class="py-2 text-center">
             <button matButton (click)="older()" [disabled]="loadingMessages()">
-              Load older messages
+              {{ text.loadOlderMessages }}
             </button>
           </div>
         }
@@ -189,8 +189,8 @@
           @if (!loadingMessages()) {
             <div class="hello glass">
               <mat-icon>waving_hand</mat-icon>
-              <p class="m-0 font-medium">No messages yet</p>
-              <p class="m-0 text-sm">Say hello — right-click a message later to react.</p>
+              <p class="m-0 font-medium">{{ text.noMessagesYet }}</p>
+              <p class="m-0 text-sm">{{ text.sayHelloRightClick }}</p>
             </div>
           }
         }
@@ -200,11 +200,12 @@
         <div class="deleted-bar glass" role="status">
           <mat-icon>delete_sweep</mat-icon>
           <span class="flex-1"
-            >Deleted by {{ c.deletedBy ?? 'someone' }} · {{ stamp(c.deletedAt) }} — read-only.</span
+            >{{ text.deletedBy }} {{ c.deletedBy ?? 'someone' }} · {{ stamp(c.deletedAt) }}
+            {{ text.readOnly }}</span
           >
           @if (canSeeDeleted) {
             <button matButton="tonal" (click)="restoreChat(c)">
-              <mat-icon>restore</mat-icon>Restore
+              <mat-icon>restore</mat-icon>{{ text.restore }}
             </button>
           }
         </div>
@@ -231,9 +232,9 @@
       @if (dragging()) {
         <div class="drop glass" aria-hidden="true">
           <mat-icon>upload_file</mat-icon>
-          <p class="m-0 text-lg font-semibold">Drop files to send to {{ c.title }}</p>
+          <p class="m-0 text-lg font-semibold">{{ text.dropFilesToSend }} {{ c.title }}</p>
           <p class="m-0 text-sm opacity-80">
-            Photos, videos, PDF, Word or Excel — up to 20 MB each
+            {{ text.photosVideosPdfWord }}
           </p>
         </div>
       }
@@ -241,12 +242,12 @@
       <div class="welcome">
         <div class="glass card">
           <mat-icon>forum</mat-icon>
-          <h2 class="m-0 text-xl font-semibold">e-Clinic chat</h2>
+          <h2 class="m-0 text-xl font-semibold">{{ text.eClinicChat }}</h2>
           <p class="m-0 text-sm text-on-surface-variant">
-            Message a colleague or a team. Messages are only seen by the people in the chat.
+            {{ text.messageAColleagueOr }}
           </p>
           <button matButton="filled" (click)="newChat()">
-            <mat-icon>edit_square</mat-icon> New chat
+            <mat-icon>edit_square</mat-icon> {{ text.newChat }}
           </button>
         </div>
       </div>

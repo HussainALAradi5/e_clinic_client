@@ -1,5 +1,5 @@
 @if (host.fields().length > 1) {
-  <div class="seg" role="radiogroup" aria-label="Date to filter on">
+  <div class="seg" role="radiogroup" [attr.aria-label]="text.dateToFilterOn">
     @for (f of host.fields(); track f.value) {
       <button
         type="button"

@@ -71,6 +71,7 @@ export class MyNotificationsPage {
   private readonly router = inject(Router);
   private readonly notify = inject(NotifyService);
 
+  protected readonly text = MY_NOTIFICATIONS_TEXT;
   protected readonly topics = NOTIFICATION_TOPICS;
   protected readonly dateTimeFormat = DATE_TIME_FORMAT;
   protected readonly dateFields = [{ value: 'created_at', label: MY_NOTIFICATIONS_TEXT.received }];

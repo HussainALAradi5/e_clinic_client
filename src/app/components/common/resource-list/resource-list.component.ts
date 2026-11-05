@@ -71,6 +71,8 @@ import { RESOURCE_LIST_TEXT } from '@constants/common/resource-list.constants';
   templateUrl: './resource-list.component.html',
 })
 export class ResourceListPage implements OnInit {
+  protected readonly text = RESOURCE_LIST_TEXT;
+
   /** Permission resource / schema name, e.g. 'rooms'. */
   readonly resource = input.required<string>();
   /** API path, e.g. 'billing/services' (defaults to the resource name). */

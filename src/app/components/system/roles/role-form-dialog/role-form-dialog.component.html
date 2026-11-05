@@ -1,24 +1,24 @@
-<h2 mat-dialog-title>{{ data.role ? 'Edit role' : 'New role' }}</h2>
+<h2 mat-dialog-title>{{ data.role ? text.editRole : text.newRole }}</h2>
 <mat-dialog-content>
   @if (data.role?.isSystem) {
     <p class="mt-0 text-sm text-on-surface-variant">
-      System role — only the labels and description can change.
+      {{ text.systemRoleOnlyThe }}
     </p>
   }
   <ui-form
     [form]="form"
     [submit]="submit"
-    [submitLabel]="data.role ? 'Save' : 'Create role'"
+    [submitLabel]="data.role ? text.save : text.createRole"
     [compact]="true"
     (saved)="close()"
     (cancelled)="ref.close()"
   >
     <ui-text
-      label="System name"
-      hint="Lower case, no spaces — used in settings, e.g. lab_technician"
+      [label]="text.systemName"
+      [hint]="text.lowerCaseNoSpaces"
       [control]="form.controls.name"
     />
-    <ui-text label="Name" [control]="form.controls.displayName" />
-    <ui-text label="Description" [multiline]="true" [control]="form.controls.description" />
+    <ui-text [label]="text.name" [control]="form.controls.displayName" />
+    <ui-text [label]="text.description" [multiline]="true" [control]="form.controls.description" />
   </ui-form>
 </mat-dialog-content>

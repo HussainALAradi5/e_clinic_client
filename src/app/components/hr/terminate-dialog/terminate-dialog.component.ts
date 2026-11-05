@@ -10,6 +10,7 @@ import { TerminationReason } from '@enums/hr/termination-reason.enum';
 import { Employee } from '@interfaces/hr/employee.interface';
 import { EmployeeApi } from '@services/hr/employee-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { TERMINATE_DIALOG_TEXT } from '@constants/hr/terminate-dialog.constants';
 
 /** Ends employment: last working day and reason; the account is deactivated and a doctor stops taking bookings. */
 @Component({
@@ -19,6 +20,8 @@ import { clinicIsoDate } from '@utilities/clinic-time';
   templateUrl: './terminate-dialog.component.html',
 })
 export class TerminateDialog {
+  protected readonly text = TERMINATE_DIALOG_TEXT;
+
   protected readonly data = inject<EmployeeDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<TerminateDialog, Employee>);
   private readonly api = inject(EmployeeApi);

@@ -24,7 +24,7 @@
         (changed)="visitChanged($event)"
       />
       <a matButton="outlined" [routerLink]="['/clinic/patients', p.id]"
-        ><mat-icon>folder_shared</mat-icon> Patient file</a
+        ><mat-icon>folder_shared</mat-icon> {{ text.patientFile }}</a
       >
     </ng-container>
   </ui-page-header>
@@ -34,53 +34,61 @@
       <mat-card appearance="outlined" class="!p-4 text-sm">
         <p class="m-0 font-semibold">{{ p.code }}</p>
         <p class="m-0 text-on-surface-variant">
-          {{ p.gender | enumLabel: 'Gender' }} · {{ p.age }} years · {{ p.phone }}
+          {{ p.gender | enumLabel: 'Gender' }} · {{ p.age }} {{ text.years }} {{ p.phone }}
         </p>
         @if (p.bloodGroup) {
           <p class="m-0 mt-2">
-            <span class="text-on-surface-variant">Blood group</span>
+            <span class="text-on-surface-variant">{{ text.bloodGroup }}</span>
             {{ p.bloodGroup | enumLabel: 'BloodGroup' }}
           </p>
         }
         @if (p.allergies) {
           <p class="m-0 mt-2 rounded-lg bg-error-container px-2 py-1.5 text-on-error-container">
-            <strong>Allergies:</strong> {{ p.allergies }}
+            <strong>{{ text.allergies }}</strong> {{ p.allergies }}
           </p>
         }
         @if (p.chronicConditions) {
           <p
             class="m-0 mt-2 rounded-lg bg-amber-50 px-2 py-1.5 text-amber-900 dark:bg-amber-950/40 dark:text-amber-200"
           >
-            <strong>Chronic:</strong> {{ p.chronicConditions }}
+            <strong>{{ text.chronic }}</strong> {{ p.chronicConditions }}
           </p>
         }
         @if (a.reason) {
           <p class="m-0 mt-2">
-            <span class="text-on-surface-variant">Booked for</span> {{ a.reason }}
+            <span class="text-on-surface-variant">{{ text.bookedFor }}</span> {{ a.reason }}
           </p>
         }
         @if (a.treatmentId) {
           <a
             class="mt-2 block text-primary underline"
             [routerLink]="['/clinic/treatments', a.treatmentId]"
-            >Session {{ a.sessionNumber }} of its treatment plan</a
+            >{{ text.session }} {{ a.sessionNumber }} {{ text.ofItsTreatmentPlan }}</a
           >
         }
       </mat-card>
       <mat-card appearance="outlined" class="!p-4 text-sm">
-        <h2 class="m-0 mb-2 text-sm font-semibold">Vitals</h2>
+        <h2 class="m-0 mb-2 text-sm font-semibold">{{ text.vitals }}</h2>
         <div class="grid grid-cols-2 gap-x-3">
-          <ui-text label="Temp °C" type="number" [control]="vitals.controls.temperatureC" />
-          <ui-text label="Pulse /min" type="number" [control]="vitals.controls.pulseBpm" />
-          <ui-text label="BP systolic" type="number" [control]="vitals.controls.systolicBp" />
-          <ui-text label="BP diastolic" type="number" [control]="vitals.controls.diastolicBp" />
-          <ui-text label="Resp. /min" type="number" [control]="vitals.controls.respiratoryRate" />
-          <ui-text label="SpO₂ %" type="number" [control]="vitals.controls.spo2Percent" />
-          <ui-text label="Weight kg" type="number" [control]="vitals.controls.weightKg" />
-          <ui-text label="Height cm" type="number" [control]="vitals.controls.heightCm" />
+          <ui-text [label]="text.tempC" type="number" [control]="vitals.controls.temperatureC" />
+          <ui-text [label]="text.pulseMin" type="number" [control]="vitals.controls.pulseBpm" />
+          <ui-text [label]="text.bpSystolic" type="number" [control]="vitals.controls.systolicBp" />
+          <ui-text
+            [label]="text.bpDiastolic"
+            type="number"
+            [control]="vitals.controls.diastolicBp"
+          />
+          <ui-text
+            [label]="text.respMin"
+            type="number"
+            [control]="vitals.controls.respiratoryRate"
+          />
+          <ui-text [label]="text.spo" type="number" [control]="vitals.controls.spo2Percent" />
+          <ui-text [label]="text.weightKg" type="number" [control]="vitals.controls.weightKg" />
+          <ui-text [label]="text.heightCm" type="number" [control]="vitals.controls.heightCm" />
         </div>
         <p class="m-0 text-on-surface-variant">
-          BMI <strong class="text-on-surface">{{ bmi() ?? '—' }}</strong>
+          {{ text.bmi }} <strong class="text-on-surface">{{ bmi() ?? '—' }}</strong>
         </p>
       </mat-card>
     </aside>
@@ -92,58 +100,58 @@
         >
           <mat-icon class="text-primary">verified</mat-icon>
           <span class="flex-1"
-            >Signed by {{ r.signedBy?.fullName }} on {{ r.signedAt | date: dateTimeFormat }} —
-            read-only.</span
+            >{{ text.signedBy }} {{ r.signedBy?.fullName }} {{ text.on }}
+            {{ r.signedAt | date: dateTimeFormat }} {{ text.readOnly }}</span
           >
           <ui-button
             icon="post_add"
             [variant]="variants.Tonal"
             access="records.write"
             [action]="addAddendum"
-            >Add addendum</ui-button
+            >{{ text.addAddendum }}</ui-button
           >
         </div>
       }
 
       <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
-        <mat-tab label="Notes">
+        <mat-tab [label]="text.notes">
           @if (canReadNotes) {
             <div class="grid gap-x-4 pt-4 lg:grid-cols-2">
               <ui-text
-                label="S — Chief complaint"
-                hint="In the patient's words"
+                [label]="text.sChiefComplaint"
+                [hint]="text.inThePatientsWords"
                 [multiline]="true"
                 [rows]="2"
                 [control]="notes.controls.chiefComplaint"
               />
               <ui-text
-                label="S — History of present illness"
+                [label]="text.sHistoryOfPresent"
                 [multiline]="true"
                 [rows]="2"
                 [control]="notes.controls.history"
               />
               <ui-text
                 class="lg:col-span-2"
-                label="O — Examination"
+                [label]="text.oExamination"
                 [multiline]="true"
                 [rows]="4"
                 [control]="notes.controls.examination"
               />
               <ui-text
-                label="A — Assessment"
+                [label]="text.aAssessment"
                 [multiline]="true"
                 [rows]="4"
                 [control]="notes.controls.assessment"
               />
               <ui-text
-                label="P — Plan, advice, follow-up"
+                [label]="text.pPlanAdviceFollow"
                 [multiline]="true"
                 [rows]="4"
                 [control]="notes.controls.plan"
               />
             </div>
             @if (r.addenda?.length) {
-              <h3 class="mb-2 mt-2 text-sm font-semibold">Addenda</h3>
+              <h3 class="mb-2 mt-2 text-sm font-semibold">{{ text.addenda }}</h3>
               @for (ad of r.addenda; track ad.id) {
                 <p
                   class="m-0 mb-2 rounded-lg border-l-4 border-primary bg-surface-container-low px-3 py-2 text-sm"
@@ -157,12 +165,12 @@
             }
           } @else {
             <p class="pt-4 text-sm text-on-surface-variant">
-              Clinical notes need the "view medical data" right.
+              {{ text.clinicalNotesNeedThe }}
             </p>
           }
         </mat-tab>
 
-        <mat-tab [label]="'Diagnoses (' + diagnoses().length + ')'">
+        <mat-tab [label]="text.diagnoses + diagnoses().length + ')'">
           <div class="pt-4">
             @if (editable()) {
               <app-icd10-picker class="mb-3" (picked)="addDiagnosis($event)" />
@@ -173,7 +181,7 @@
                   [checked]="d.isPrimary"
                   [disabled]="!editable()"
                   (change)="makePrimary(d)"
-                  [attr.aria-label]="'Primary: ' + d.code"
+                  [attr.aria-label]="text.primaryPrefix + d.code"
                 />
                 <span class="w-20 font-mono font-semibold">{{ d.code }}</span>
                 <span class="flex-1">
@@ -187,14 +195,14 @@
                 @if (d.isPrimary) {
                   <span
                     class="rounded-full bg-primary-container px-2 py-0.5 text-[11px] font-medium text-on-primary-container"
-                    >Primary</span
+                    >{{ text.primary }}</span
                   >
                 }
                 @if (editable()) {
                   <button
                     matIconButton
                     type="button"
-                    [attr.aria-label]="'Remove ' + d.code"
+                    [attr.aria-label]="text.remove + d.code"
                     (click)="removeDiagnosis(d)"
                   >
                     <mat-icon>close</mat-icon>
@@ -203,24 +211,24 @@
               </div>
             } @empty {
               <p class="m-0 text-sm text-on-surface-variant">
-                No diagnosis yet — search by code or words above.
+                {{ text.noDiagnosisYetSearch }}
               </p>
             }
           </div>
         </mat-tab>
 
-        <mat-tab [label]="'Orders (' + orders().length + ')'">
+        <mat-tab [label]="text.orders + orders().length + ')'">
           <div class="pt-4">
             <div class="mb-2 flex items-center">
               <p class="m-0 flex-1 text-sm text-on-surface-variant">
-                Imaging, lab tests, ECG and referrals from this visit.
+                {{ text.imagingLabTestsEcg }}
               </p>
               <ui-button
                 icon="add"
                 [variant]="variants.Tonal"
                 access="orders.create"
                 [action]="newOrder"
-                >New order</ui-button
+                >{{ text.newOrder }}</ui-button
               >
             </div>
             @for (o of orders(); track o.id) {
@@ -233,30 +241,30 @@
                 @if (o.isAbnormal) {
                   <span
                     class="rounded-full bg-error-container px-2 py-0.5 text-[11px] font-medium text-on-error-container"
-                    >Abnormal</span
+                    >{{ text.abnormal }}</span
                   >
                 }
                 <ui-status [value]="o.priority" enum="TreatmentPriority" />
                 <ui-status [value]="o.status" enum="GenericStatus" />
               </a>
             } @empty {
-              <p class="m-0 text-sm text-on-surface-variant">Nothing ordered in this visit.</p>
+              <p class="m-0 text-sm text-on-surface-variant">{{ text.nothingOrderedInThis }}</p>
             }
           </div>
         </mat-tab>
 
-        <mat-tab label="Treatment">
+        <mat-tab [label]="text.treatment">
           <div class="pt-4">
             <div class="mb-2 flex items-center">
               <p class="m-0 flex-1 text-sm text-on-surface-variant">
-                Open treatment plans of {{ p.fullName }}.
+                {{ text.openTreatmentPlansOf }} {{ p.fullName }}.
               </p>
               <ui-button
                 icon="add"
                 [variant]="variants.Tonal"
                 access="treatments.create"
                 [action]="prescribe"
-                >Prescribe</ui-button
+                >{{ text.prescribe }}</ui-button
               >
             </div>
             @for (t of plans(); track t.id) {
@@ -279,12 +287,12 @@
                 }
               </a>
             } @empty {
-              <p class="m-0 text-sm text-on-surface-variant">No open treatment plan.</p>
+              <p class="m-0 text-sm text-on-surface-variant">{{ text.noOpenTreatmentPlan }}</p>
             }
           </div>
         </mat-tab>
 
-        <mat-tab label="Consents">
+        <mat-tab [label]="text.consents">
           @if (consentContext(); as ctx) {
             <app-consents-panel class="pt-4" [context]="ctx" />
           }
@@ -299,23 +307,23 @@
     <span class="flex items-center gap-1.5 text-sm text-on-surface-variant" aria-live="polite">
       @switch (saveState()) {
         @case ('saving') {
-          <mat-icon class="!text-lg">sync</mat-icon> Saving…
+          <mat-icon class="!text-lg">sync</mat-icon> {{ text.saving }}
         }
         @case ('saved') {
-          <mat-icon class="!text-lg text-green-700 dark:text-green-400">cloud_done</mat-icon> Saved
+          <mat-icon class="!text-lg text-green-700 dark:text-green-400">cloud_done</mat-icon>
+          {{ text.saved }}
           {{ r.updatedAt | date: 'HH:mm' }}
         }
         @case ('error') {
-          <mat-icon class="!text-lg text-error">error</mat-icon> Not saved — check the fields and
-          try again
+          <mat-icon class="!text-lg text-error">error</mat-icon> {{ text.notSavedCheckThe }}
         }
         @default {
           @if (r.isSigned) {
-            <mat-icon class="!text-lg">lock</mat-icon> Signed and locked
+            <mat-icon class="!text-lg">lock</mat-icon> {{ text.signedAndLocked }}
           } @else if (editable()) {
-            <mat-icon class="!text-lg">edit_note</mat-icon> Changes save as you type
+            <mat-icon class="!text-lg">edit_note</mat-icon> {{ text.changesSaveAsYou }}
           } @else {
-            <mat-icon class="!text-lg">visibility</mat-icon> Read only
+            <mat-icon class="!text-lg">visibility</mat-icon> {{ text.readOnlyBadge }}
           }
         }
       }
@@ -327,14 +335,14 @@
         [variant]="variants.Outlined"
         access="sick_leaves.create"
         [action]="sickLeave"
-        >Sick leave</ui-button
+        >{{ text.sickLeave }}</ui-button
       >
       <ui-button
         icon="edit_document"
         [variant]="variants.Outlined"
         access="written_documents.create"
         [action]="writeDocument"
-        >Write document</ui-button
+        >{{ text.writeDocument }}</ui-button
       >
     }
     @if (canSign()) {
@@ -342,15 +350,17 @@
         icon="draw"
         [variant]="a.status === 'in_progress' ? variants.Outlined : variants.Filled"
         [confirm]="{
-          title: 'Sign this note?',
-          message: 'After signing, corrections are added as dated addenda.',
-          confirmLabel: 'Sign',
+          title: text.signThisNote,
+          message: text.afterSigningCorrectionsAre,
+          confirmLabel: text.sign,
         }"
         [action]="sign"
-        >Sign</ui-button
+        >{{ text.sign }}</ui-button
       >
       @if (a.status === 'in_progress') {
-        <ui-button icon="done_all" [action]="signAndComplete">Sign &amp; complete visit</ui-button>
+        <ui-button icon="done_all" [action]="signAndComplete">{{
+          text.signCompleteVisit
+        }}</ui-button>
       }
     }
   </footer>

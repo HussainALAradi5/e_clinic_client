@@ -14,6 +14,7 @@ import { AttachmentApi } from '@services/attachment/attachment-api.service';
 import { TaskTracker } from '@services/task/task-tracker.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { formatBytes, humanise } from '@utilities/text';
+import { ATTACHMENT_LIST_TEXT } from '@constants/system/attachment-list.constants';
 
 /** `/system/attachments` — every file in the system: download (signed link), ZIP of a selection, bulk archive / delete. */
 @Component({
@@ -31,6 +32,8 @@ import { formatBytes, humanise } from '@utilities/text';
   templateUrl: './attachment-list.page.html',
 })
 export class AttachmentListPage {
+  protected readonly text = ATTACHMENT_LIST_TEXT;
+
   /** Record types arrive as aliases (`clinical_order`); shown as words. */
   protected readonly humanise = humanise;
   private readonly api = inject(AttachmentApi);

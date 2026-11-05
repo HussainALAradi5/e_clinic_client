@@ -5,6 +5,7 @@ import { AppButton } from '@components/common/app-button/app-button.component';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { MoneyPipe } from '@pipes/money.pipe';
+import { PAYROLL_LIST_TEXT } from '@constants/hr/payroll-list.constants';
 
 /** `/hr/payroll` — monthly payroll runs: calculated by HR, approved and paid by finance. */
 @Component({
@@ -17,6 +18,7 @@ export class PayrollListPage {
   private readonly actions = inject(HrActions);
   private readonly router = inject(Router);
 
+  protected readonly text = PAYROLL_LIST_TEXT;
   protected readonly create = async (): Promise<void> => {
     const run = await this.actions.createPayroll();
     if (run) await this.router.navigate(['/hr/payroll', run.id]);

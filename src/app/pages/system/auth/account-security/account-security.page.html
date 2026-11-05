@@ -1,33 +1,33 @@
-<ui-page-header title="Account & security" [subtitle]="auth.user()?.email ?? null" />
+<ui-page-header [title]="text.accountSecurity" [subtitle]="auth.user()?.email ?? null" />
 
 <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
   <mat-card appearance="outlined" class="!p-5">
-    <h2 class="m-0 mb-1 text-base font-semibold">Password</h2>
+    <h2 class="m-0 mb-1 text-base font-semibold">{{ text.password }}</h2>
     <p class="mt-0 mb-4 text-sm text-on-surface-variant">
-      Changing it signs out your other devices. The last 5 passwords cannot be reused.
+      {{ text.changingItSignsOut }}
     </p>
     <ui-form
       [form]="passwordForm"
       [submit]="changePassword"
-      submitLabel="Change password"
+      [submitLabel]="text.changePassword"
       [cancelLabel]="null"
       [compact]="true"
     >
       <ui-text
-        label="Current password"
+        [label]="text.currentPassword"
         type="password"
         autocomplete="current-password"
         [control]="passwordForm.controls.currentPassword"
       />
       <ui-text
-        label="New password"
+        [label]="text.newPassword"
         type="password"
         autocomplete="new-password"
         [control]="passwordForm.controls.password"
       />
       <ui-password-strength class="-mt-4" [value]="newPassword()" />
       <ui-text
-        label="Repeat new password"
+        [label]="text.repeatNewPassword"
         type="password"
         autocomplete="new-password"
         [control]="passwordForm.controls.passwordConfirmation"
@@ -37,30 +37,29 @@
 
   <mat-card id="two-factor" appearance="outlined" class="!p-5">
     <div class="mb-1 flex items-center gap-2">
-      <h2 class="m-0 flex-1 text-base font-semibold">Two-factor authentication</h2>
+      <h2 class="m-0 flex-1 text-base font-semibold">{{ text.twoFactorAuthentication }}</h2>
       @if (twoFactor()?.enabled) {
         <span
           class="inline-flex items-center gap-1 text-sm font-medium text-emerald-700 dark:text-emerald-400"
         >
-          <mat-icon class="!size-5 !text-xl">verified_user</mat-icon> On
+          <mat-icon class="!size-5 !text-xl">verified_user</mat-icon> {{ text.on }}
         </span>
       } @else {
-        <span class="text-sm font-medium text-on-surface-variant">Off</span>
+        <span class="text-sm font-medium text-on-surface-variant">{{ text.off }}</span>
       }
     </div>
     <p class="mt-0 mb-4 text-sm text-on-surface-variant">
-      A 6-digit code from an authenticator app (Google Authenticator, Microsoft Authenticator,
-      1Password …) is asked after your password.
+      {{ text.a6DigitCode }}
       @if (twoFactor()?.required) {
-        <strong class="text-on-surface">Your role requires it.</strong>
+        <strong class="text-on-surface">{{ text.yourRoleRequiresIt }}</strong>
       }
     </p>
 
     @if (recoveryCodes(); as codes) {
       <div class="mb-4 rounded-lg border border-outline-variant p-4">
-        <p class="mt-0 mb-2 text-sm font-medium">Save your recovery codes</p>
+        <p class="mt-0 mb-2 text-sm font-medium">{{ text.saveYourRecoveryCodes }}</p>
         <p class="mt-0 mb-3 text-sm text-on-surface-variant">
-          Each code signs you in once if you lose your phone. They are shown only now.
+          {{ text.eachCodeSignsYou }}
         </p>
         <ul class="m-0 mb-3 grid list-none grid-cols-2 gap-1 p-0 font-mono text-sm">
           @for (code of codes; track code) {
@@ -69,10 +68,10 @@
         </ul>
         <div class="flex gap-2">
           <button matButton="tonal" type="button" (click)="copyCodes(codes)">
-            <mat-icon>content_copy</mat-icon> Copy
+            <mat-icon>content_copy</mat-icon> {{ text.copy }}
           </button>
           <button matButton type="button" (click)="downloadCodes(codes)">
-            <mat-icon>download</mat-icon> Download
+            <mat-icon>download</mat-icon> {{ text.download }}
           </button>
         </div>
       </div>
@@ -83,12 +82,12 @@
         <ui-form
           [form]="disableForm"
           [submit]="disableTwoFactor"
-          submitLabel="Turn off"
+          [submitLabel]="text.turnOff"
           [cancelLabel]="null"
           [compact]="true"
         >
           <ui-text
-            label="Confirm with your password"
+            [label]="text.confirmWithYourPassword"
             type="password"
             autocomplete="current-password"
             [control]="disableForm.controls.password"
@@ -97,41 +96,35 @@
       }
     } @else if (enrolment()) {
       <ol class="m-0 mb-4 flex list-decimal flex-col gap-3 pl-5 text-sm">
-        <li>Scan the QR code with your authenticator app.</li>
-        <li>Enter the 6-digit code it shows.</li>
+        <li>{{ text.scanTheQrCode }}</li>
+        <li>{{ text.enterThe6Digit }}</li>
       </ol>
       <div class="mb-4 flex flex-wrap items-center gap-4">
         @if (qrCode(); as qr) {
-          <img
-            [src]="qr"
-            alt="QR code for the authenticator app"
-            class="size-48 rounded-lg bg-white p-2"
-          />
+          <img [src]="qr" [attr.alt]="text.qrCodeForThe" class="size-48 rounded-lg bg-white p-2" />
         }
         <div class="min-w-0 flex-1 text-xs text-on-surface-variant">
-          Can't scan it? Enter this key manually:
+          {{ text.cantScanItEnter }}
           <code class="mt-1 block font-mono text-sm break-all text-on-surface">{{ secret() }}</code>
         </div>
       </div>
       <ui-form
         [form]="confirmForm"
         [submit]="confirmEnrolment"
-        submitLabel="Confirm"
-        cancelLabel="Cancel"
+        [submitLabel]="text.confirm"
+        [cancelLabel]="text.cancel"
         [compact]="true"
         (cancelled)="enrolment.set(null)"
       >
         <ui-text
-          label="Code"
+          [label]="text.code"
           autocomplete="one-time-code"
           [maxLength]="6"
           [control]="confirmForm.controls.code"
         />
       </ui-form>
     } @else {
-      <ui-button icon="qr_code_2" [action]="startEnrolment"
-        >Set up two-factor authentication</ui-button
-      >
+      <ui-button icon="qr_code_2" [action]="startEnrolment">{{ text.setUpTwoFactor }}</ui-button>
     }
   </mat-card>
 
@@ -143,9 +136,9 @@
   <app-time-picker-card />
 
   <mat-card appearance="outlined" class="!p-5 xl:col-span-2">
-    <h2 class="m-0 mb-1 text-base font-semibold">Sessions</h2>
+    <h2 class="m-0 mb-1 text-base font-semibold">{{ text.sessions }}</h2>
     <p class="mt-0 mb-4 text-sm text-on-surface-variant">
-      Lost a device or signed in somewhere public? End every session at once.
+      {{ text.lostADeviceOr }}
     </p>
     <ui-button
       icon="logout"
@@ -153,7 +146,7 @@
       [confirm]="logoutAllConfirm"
       [action]="logoutAll"
     >
-      Sign out of all devices
+      {{ text.signOutOfAll }}
     </ui-button>
   </mat-card>
 </div>

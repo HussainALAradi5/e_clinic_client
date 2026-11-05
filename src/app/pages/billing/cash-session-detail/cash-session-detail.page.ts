@@ -70,6 +70,8 @@ import { WALLET_TEXT } from '@constants/billing/wallet.constants';
   templateUrl: './cash-session-detail.page.html',
 })
 export class CashSessionDetailPage implements OnInit {
+  protected readonly text = CASH_SESSION_DETAIL_TEXT;
+
   protected readonly walletText = WALLET_TEXT;
   readonly id = input.required<string>();
 

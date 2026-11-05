@@ -7,6 +7,7 @@ import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { DATE_FORMAT } from '@constants/app.constants';
 import { MoneyPipe } from '@pipes/money.pipe';
+import { JOURNAL_LIST_TEXT } from '@constants/accounting/journal-list.constants';
 
 /** `/accounting/journal` — the general journal: automatic entries of every document and manual entries. */
 @Component({
@@ -18,6 +19,8 @@ import { MoneyPipe } from '@pipes/money.pipe';
 export class JournalListPage {
   private readonly actions = inject(AccountingActions);
   private readonly router = inject(Router);
+
+  protected readonly text = JOURNAL_LIST_TEXT;
   protected readonly dateFormat = DATE_FORMAT;
 
   protected readonly create = async (): Promise<void> => {

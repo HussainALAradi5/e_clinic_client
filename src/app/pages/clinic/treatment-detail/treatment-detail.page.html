@@ -11,22 +11,22 @@
     </ng-container>
     <ng-container actions>
       @if (open()) {
-        <ui-button icon="event_available" access="appointments.create" [action]="book"
-          >Book session</ui-button
-        >
+        <ui-button icon="event_available" access="appointments.create" [action]="book">{{
+          text.bookSession
+        }}</ui-button>
         <ui-button
           icon="low_priority"
           [variant]="variants.Outlined"
           access="treatments.write"
           [action]="changePriority"
-          >Priority</ui-button
+          >{{ text.priority }}</ui-button
         >
         <ui-button
           icon="edit"
           [variant]="variants.Outlined"
           access="treatments.write"
           [action]="edit"
-          >Edit</ui-button
+          >{{ text.edit }}</ui-button
         >
         @if (t.status === 'in_progress') {
           <ui-button
@@ -34,12 +34,12 @@
             [variant]="variants.Tonal"
             access="treatments.write"
             [confirm]="{
-              title: 'Complete this treatment?',
-              message: 'Sessions still booked are cancelled.',
-              confirmLabel: 'Complete',
+              title: text.completeThisTreatment,
+              message: text.sessionsStillBookedAre,
+              confirmLabel: text.complete,
             }"
             [action]="complete"
-            >Complete</ui-button
+            >{{ text.complete }}</ui-button
           >
         }
         <ui-button
@@ -47,7 +47,7 @@
           [variant]="variants.Danger"
           access="treatments.write"
           [action]="cancel"
-          >Cancel</ui-button
+          >{{ text.cancel }}</ui-button
         >
       }
       <ui-entity-actions
@@ -69,8 +69,8 @@
     >
       <mat-icon>event_busy</mat-icon>
       <span
-        >{{ t.progress?.consecutiveAbsences }} sessions missed in a row. Call
-        {{ t.patient?.fullName }} ({{ t.patient?.phone }}) and rebook — the plan stays open.</span
+        >{{ t.progress?.consecutiveAbsences }} {{ text.sessionsMissedInA }}
+        {{ t.patient?.fullName }} ({{ t.patient?.phone }}{{ text.andRebookThePlan }}</span
       >
     </div>
   }
@@ -78,10 +78,10 @@
   <div class="grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
     <mat-card appearance="outlined" class="!p-5">
       <div class="mb-3 flex items-baseline gap-2">
-        <h2 class="m-0 flex-1 text-base font-semibold">Progress</h2>
+        <h2 class="m-0 flex-1 text-base font-semibold">{{ text.progress }}</h2>
         @if (t.progress?.nextSession; as next) {
           <a class="text-sm text-primary underline" [routerLink]="['/clinic/appointments', next.id]"
-            >Next: {{ next.scheduledDate | date: dateFormat }} {{ next.startTime }}</a
+            >{{ text.next }} {{ next.scheduledDate | date: dateFormat }} {{ next.startTime }}</a
           >
         }
       </div>
@@ -93,7 +93,7 @@
   </div>
 
   <mat-tab-group class="mt-2" mat-stretch-tabs="false" animationDuration="0ms">
-    <mat-tab [label]="'Sessions (' + sessions().length + ')'">
+    <mat-tab [label]="text.sessions + sessions().length + ')'">
       <div class="pt-3">
         @for (s of sessions(); track s.id) {
           <div
@@ -121,8 +121,8 @@
               @if (s.hasNote) {
                 <a
                   [routerLink]="['/clinic/appointments', s.id, 'visit']"
-                  matTooltip="Session note"
-                  aria-label="Session note"
+                  [matTooltip]="text.sessionNote"
+                  [attr.aria-label]="text.sessionNote"
                   ><mat-icon class="!text-lg text-on-surface-variant">description</mat-icon></a
                 >
               }
@@ -130,23 +130,23 @@
             </span>
           </div>
         } @empty {
-          <p class="m-0 text-sm text-on-surface-variant">No session booked yet.</p>
+          <p class="m-0 text-sm text-on-surface-variant">{{ text.noSessionBookedYet }}</p>
         }
       </div>
     </mat-tab>
-    <mat-tab label="Clinical" *hasAccess="'patients.view_medical'">
+    <mat-tab [label]="text.clinical" *hasAccess="'patients.view_medical'">
       <div class="grid gap-4 pt-3 lg:grid-cols-2">
         <mat-card appearance="outlined" class="!p-5">
-          <h3 class="m-0 mb-2 text-sm font-semibold">Diagnosis</h3>
+          <h3 class="m-0 mb-2 text-sm font-semibold">{{ text.diagnosis }}</h3>
           <p class="m-0 whitespace-pre-line text-sm">{{ t.diagnosis || '—' }}</p>
         </mat-card>
         <mat-card appearance="outlined" class="!p-5">
-          <h3 class="m-0 mb-2 text-sm font-semibold">Plan and instructions</h3>
+          <h3 class="m-0 mb-2 text-sm font-semibold">{{ text.planAndInstructions }}</h3>
           <p class="m-0 whitespace-pre-line text-sm">{{ t.plan || '—' }}</p>
         </mat-card>
       </div>
     </mat-tab>
-    <mat-tab label="History" *hasAccess="'audit.read_all | audit.read_own'">
+    <mat-tab [label]="text.history" *hasAccess="'audit.read_all | audit.read_own'">
       <ng-template matTabContent
         ><ui-audit-history class="block pt-4" type="treatment" [id]="t.id"
       /></ng-template>

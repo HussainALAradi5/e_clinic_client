@@ -1,9 +1,9 @@
-<h2 mat-dialog-title>Book the referred visit · {{ data.order.code }}</h2>
+<h2 mat-dialog-title>{{ text.bookTheReferredVisit }} {{ data.order.code }}</h2>
 <mat-dialog-content>
   <p class="mt-0 text-sm text-on-surface-variant">
     {{ data.order.description }}
     @if (data.order.referredToSpecialty) {
-      — any {{ data.order.referredToSpecialty.name }} doctor
+      {{ text.any }} {{ data.order.referredToSpecialty.name }} {{ text.doctor }}
     }
   </p>
   @if (upcoming(); as list) {
@@ -12,16 +12,18 @@
         <span class="w-28 text-on-surface-variant">{{ a.scheduledDate | date: dateFormat }}</span>
         <span class="w-14 font-medium tabular-nums">{{ a.startTime }}</span>
         <span class="flex-1">{{ a.provider?.fullName }}</span>
-        <ui-button [variant]="variants.Tonal" [action]="link.bind(this, a)">Link</ui-button>
+        <ui-button [variant]="variants.Tonal" [action]="link.bind(this, a)">{{
+          text.link
+        }}</ui-button>
       </div>
     } @empty {
-      <p class="m-0 text-sm text-on-surface-variant">No upcoming visit to link yet.</p>
+      <p class="m-0 text-sm text-on-surface-variant">{{ text.noUpcomingVisitTo }}</p>
     }
   }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button matButton type="button" (click)="ref.close()">Close</button>
-  <ui-button icon="event_available" access="appointments.create" [action]="bookNew"
-    >Book a new visit</ui-button
-  >
+  <button matButton type="button" (click)="ref.close()">{{ text.close }}</button>
+  <ui-button icon="event_available" access="appointments.create" [action]="bookNew">{{
+    text.bookANewVisit
+  }}</ui-button>
 </mat-dialog-actions>

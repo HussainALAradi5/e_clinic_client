@@ -32,6 +32,7 @@ export class MyProfilePage {
   private readonly api = inject(PortalApi);
   private readonly actions = inject(PortalActions);
 
+  protected readonly text = PROFILE_TEXT;
   protected readonly securityPath = `${PORTAL_PATH}/security`;
   protected readonly clinicPhone = CLINIC_INFO.phone;
   protected readonly patient = signal<Patient | null>(null);

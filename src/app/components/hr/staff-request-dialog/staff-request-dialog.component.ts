@@ -14,6 +14,7 @@ import { StaffRequest } from '@interfaces/hr/staff-request.interface';
 import { DurationPipe } from '@pipes/duration.pipe';
 import { StaffRequestApi } from '@services/hr/staff-request-api.service';
 import { StaffRequestDialogData } from '@interfaces/hr/staff-request-dialog.interface';
+import { STAFF_REQUEST_DIALOG_TEXT } from '@constants/hr/staff-request-dialog.constants';
 
 /**
  * Ask HR about one of my days: excuse the late arrival, or pay the overtime. Shows the day as attendance measured it;
@@ -36,6 +37,8 @@ import { StaffRequestDialogData } from '@interfaces/hr/staff-request-dialog.inte
   styleUrl: './staff-request-dialog.component.scss',
 })
 export class StaffRequestDialog {
+  protected readonly text = STAFF_REQUEST_DIALOG_TEXT;
+
   protected readonly data = inject<StaffRequestDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<StaffRequestDialog, StaffRequest>);
   private readonly api = inject(StaffRequestApi);

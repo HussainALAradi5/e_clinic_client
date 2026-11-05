@@ -1,9 +1,9 @@
 <ui-resource-list
   resource="claims"
   endpoint="billing/insurance-claims"
-  title="Insurance claims"
-  subtitle="The insurer's share of patients' invoices: prepare from the invoice, send, record the decision and the bank transfer."
-  emptyTitle="No claims found"
+  [title]="text.insuranceClaims"
+  [subtitle]="text.theInsurersShareOf"
+  [emptyTitle]="text.noClaimsFound"
   rowLink="/billing/insurance-claims/:id"
 >
   <ui-button
@@ -11,7 +11,7 @@
     icon="account_balance"
     access="claims.create & claims.remit"
     [action]="remittance"
-    >Record remittance</ui-button
+    >{{ text.recordRemittance }}</ui-button
   >
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template

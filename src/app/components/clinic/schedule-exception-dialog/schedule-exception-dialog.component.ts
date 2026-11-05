@@ -18,6 +18,7 @@ import { ScheduleApi } from '@services/clinic/schedule-api.service';
 import { EnumService } from '@services/data/enum.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 import { isApiError } from '@utilities/guards';
+import { SCHEDULE_EXCEPTION_DIALOG_TEXT } from '@constants/clinic/schedule-exception-dialog.constants';
 
 /**
  * Day off / custom hours for a provider, or a clinic holiday. Bookings it would break are listed first; ticking
@@ -38,6 +39,8 @@ import { isApiError } from '@utilities/guards';
   templateUrl: './schedule-exception-dialog.component.html',
 })
 export class ScheduleExceptionDialog {
+  protected readonly text = SCHEDULE_EXCEPTION_DIALOG_TEXT;
+
   protected readonly data = inject<ScheduleExceptionDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<ScheduleExceptionDialog, ScheduleException>);
   private readonly api = inject(ScheduleApi);

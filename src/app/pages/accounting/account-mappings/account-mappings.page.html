@@ -1,16 +1,18 @@
-<ui-page-header
-  title="Posting accounts"
-  subtitle="Payments, invoices, payroll and stock post automatically. Choose the account each kind of entry uses."
->
+<ui-page-header [title]="text.postingAccounts" [subtitle]="text.paymentsInvoicesPayrollAnd">
   <a actions matButton="outlined" routerLink="/accounting/chart-of-accounts"
-    ><mat-icon>list</mat-icon> Chart of accounts</a
+    ><mat-icon>list</mat-icon> {{ text.chartOfAccounts }}</a
   >
 </ui-page-header>
 
 @if (error(); as e) {
   <ui-error [error]="e" (retry)="load()" />
 } @else if (mappings(); as rows) {
-  <ui-form [form]="form" [submit]="save" submitLabel="Save posting accounts" [cancelLabel]="null">
+  <ui-form
+    [form]="form"
+    [submit]="save"
+    [submitLabel]="text.savePostingAccounts"
+    [cancelLabel]="null"
+  >
     <div class="grid gap-x-6 md:grid-cols-2">
       @for (mapping of rows; track mapping.key) {
         <div
@@ -19,11 +21,11 @@
           <div class="pt-3 text-sm">
             <span class="font-medium">{{ mapping.label }}</span>
             <span class="block text-xs text-on-surface-variant"
-              >{{ mapping.accountType | enumLabel: 'AccountType' }} account</span
+              >{{ mapping.accountType | enumLabel: 'AccountType' }} {{ text.account }}</span
             >
           </div>
           <ui-entity-select
-            label="Account"
+            [label]="text.accountLabel"
             endpoint="accounting/accounts"
             [display]="accountName"
             [filter]="filterFor(mapping)"

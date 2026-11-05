@@ -12,6 +12,7 @@ import { Appointment } from '@interfaces/clinic/appointment.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { EnumService } from '@services/data/enum.service';
 import { TONE_STRIPE_CLASSES } from '@constants/status-tones.constants';
+import { VISIT_CARD_TEXT } from '@constants/portal/visit-card.constants';
 
 /** Statuses for which the check-in code still means something. */
 const CODE_STATUSES = [
@@ -32,6 +33,8 @@ const CODE_STATUSES = [
   styleUrl: './visit-card.component.scss',
 })
 export class VisitCard {
+  protected readonly text = VISIT_CARD_TEXT;
+
   readonly visit = input.required<Appointment>();
   readonly pass = input(false);
   readonly changed = output<Appointment>();

@@ -28,6 +28,7 @@ import { DispensationApi } from '@services/pharmacy/dispensation-api.service';
 import { formatQty } from '@utilities/quantity';
 import { AppValidators } from '@validations/validators';
 import { GivenGroup } from '@interfaces/pharmacy/administer-dialog.interface';
+import { ADMINISTER_DIALOG_TEXT } from '@constants/pharmacy/administer-dialog.constants';
 
 /**
  * Medicines given during the session (injection, infusion, dressing): taken from stock first expiry first, charged on
@@ -50,6 +51,8 @@ import { GivenGroup } from '@interfaces/pharmacy/administer-dialog.interface';
   templateUrl: './administer-dialog.component.html',
 })
 export class AdministerDialog implements OnInit {
+  protected readonly text = ADMINISTER_DIALOG_TEXT;
+
   protected readonly data = inject<AdministerDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<AdministerDialog, Dispensation>);
   private readonly api = inject(DispensationApi);

@@ -1,0 +1,20 @@
+/** Text of clinic/treatment-form-dialog/treatment-form-dialog.component (headings, labels, hints, empty states). */
+export const TREATMENT_FORM_DIALOG_TEXT = {
+  patient: 'Patient',
+  treatment: 'Treatment',
+  eGKneePhysiotherapy: 'e.g. Knee physiotherapy',
+  type: 'Type',
+  priority: 'Priority',
+  urgentFirstSessionWithin: 'Urgent: first session within 24 h · High: 72 h',
+  plannedSessions: 'Planned sessions',
+  sessionLengthMin: 'Session length (min)',
+  blankUsualLengthFor: 'Blank = usual length for the type',
+  responsibleDoctor: 'Responsible doctor',
+  billedPerSessionOptional: 'Billed per session (optional)',
+  diagnosis: 'Diagnosis',
+  planAndInstructions: 'Plan and instructions',
+  edit: 'Edit ',
+  prescribeTreatment: 'Prescribe treatment',
+  save: 'Save',
+  prescribe: 'Prescribe',
+};

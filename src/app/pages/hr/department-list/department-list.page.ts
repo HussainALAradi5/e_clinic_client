@@ -25,6 +25,7 @@ export class DepartmentListPage {
   private readonly notify = inject(NotifyService);
   private readonly router = inject(Router);
 
+  protected readonly text = DEPARTMENT_LIST_TEXT;
   protected readonly create = async (): Promise<void> => {
     const department = await this.dialogs.open<
       DepartmentFormDialog,

@@ -11,6 +11,7 @@ import { InsuranceClaim } from '@interfaces/billing/insurance-claim.interface';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { InsuranceClaimApi } from '@services/billing/insurance-claim-api.service';
 import { AppValidators } from '@validations/validators';
+import { CLAIM_DECISION_DIALOG_TEXT } from '@constants/billing/claim-decision-dialog.constants';
 
 /**
  * The insurer's answer. Approved (in full or in part) records an insurance payment on the invoice so the patient
@@ -31,6 +32,8 @@ import { AppValidators } from '@validations/validators';
   templateUrl: './claim-decision-dialog.component.html',
 })
 export class ClaimDecisionDialog {
+  protected readonly text = CLAIM_DECISION_DIALOG_TEXT;
+
   protected readonly data = inject<ClaimDecisionDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<ClaimDecisionDialog, InsuranceClaim>);
   private readonly api = inject(InsuranceClaimApi);

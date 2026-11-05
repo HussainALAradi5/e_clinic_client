@@ -2,8 +2,8 @@
   <ui-error [error]="error()" (retry)="load()" />
 } @else if (run(); as r) {
   <ui-page-header
-    [title]="'Payroll · ' + month()"
-    [subtitle]="r.code + ' · ' + r.employeeCount + ' employees'"
+    [title]="text.payroll + month()"
+    [subtitle]="r.code + ' · ' + r.employeeCount + text.employees"
   >
     <ui-status status [value]="r.status" enum="PayrollStatus" />
     <ng-container actions>
@@ -14,25 +14,25 @@
           access="payroll.create"
           [disabled]="!ended()"
           [action]="calculate"
-          >{{ r.status === statuses.Draft ? 'Calculate' : 'Recalculate' }}</ui-button
+          >{{ r.status === statuses.Draft ? text.calculate : text.recalculate }}</ui-button
         >
       }
       @if (approvable()) {
-        <ui-button icon="task_alt" access="payroll.write & payroll.approve" [action]="approve"
-          >Approve</ui-button
-        >
+        <ui-button icon="task_alt" access="payroll.write & payroll.approve" [action]="approve">{{
+          text.approve
+        }}</ui-button>
       }
       @if (r.status === statuses.Approved) {
-        <ui-button icon="account_balance" access="payroll.write & payroll.pay" [action]="pay"
-          >Mark as paid</ui-button
-        >
+        <ui-button icon="account_balance" access="payroll.write & payroll.pay" [action]="pay">{{
+          text.markAsPaid
+        }}</ui-button>
       }
       @if (r.accrualJournalEntryId) {
         <a
           *hasAccess="'journal.read_all | journal.read_own'"
           matButton="outlined"
           [routerLink]="['/accounting/journal', r.accrualJournalEntryId]"
-          ><mat-icon>menu_book</mat-icon> Salary entry</a
+          ><mat-icon>menu_book</mat-icon> {{ text.salaryEntry }}</a
         >
       }
       @if (r.paymentJournalEntryId) {
@@ -40,7 +40,7 @@
           *hasAccess="'journal.read_all | journal.read_own'"
           matButton="outlined"
           [routerLink]="['/accounting/journal', r.paymentJournalEntryId]"
-          ><mat-icon>menu_book</mat-icon> Payment entry</a
+          ><mat-icon>menu_book</mat-icon> {{ text.paymentEntry }}</a
         >
       }
       @if (cancellable()) {
@@ -49,7 +49,7 @@
           [variant]="variants.Danger"
           access="payroll.create | payroll.approve"
           [action]="cancel"
-          >Cancel</ui-button
+          >{{ text.cancel }}</ui-button
         >
       }
     </ng-container>
@@ -57,13 +57,12 @@
 
   @if (calculable() && !ended()) {
     <p class="m-0 mb-4 rounded-lg bg-surface-container-low px-4 py-3 text-sm">
-      {{ month() }} has not ended yet — calculate it from {{ r.periodEnd }} onwards, once the last
-      day's attendance is in.
+      {{ month() }} {{ text.hasNotEndedYet }} {{ r.periodEnd }} {{ text.onwardsOnceTheLast }}
     </p>
   }
   @if (r.status === statuses.Calculated && !approvable()) {
     <p class="m-0 mb-4 rounded-lg bg-surface-container-low px-4 py-3 text-sm">
-      You calculated this payroll — someone else (finance) approves it.
+      {{ text.youCalculatedThisPayroll }}
     </p>
   }
 
@@ -71,15 +70,15 @@
     <mat-card appearance="outlined" class="self-start !p-5">
       <dl class="m-0 grid grid-cols-3 gap-4">
         <div>
-          <dt class="text-sm text-on-surface-variant">Gross</dt>
+          <dt class="text-sm text-on-surface-variant">{{ text.gross }}</dt>
           <dd class="m-0 text-xl font-semibold tabular-nums">{{ r.totalGross | money }}</dd>
         </div>
         <div>
-          <dt class="text-sm text-on-surface-variant">Deductions</dt>
+          <dt class="text-sm text-on-surface-variant">{{ text.deductions }}</dt>
           <dd class="m-0 text-xl font-semibold tabular-nums">{{ r.totalDeductions | money }}</dd>
         </div>
         <div>
-          <dt class="text-sm text-on-surface-variant">Net to transfer</dt>
+          <dt class="text-sm text-on-surface-variant">{{ text.netToTransfer }}</dt>
           <dd class="m-0 text-xl font-semibold tabular-nums">{{ r.totalNet | money }}</dd>
         </div>
       </dl>
@@ -94,13 +93,13 @@
       <table class="w-full border-collapse text-sm">
         <thead>
           <tr class="text-left text-xs text-on-surface-variant">
-            <th class="px-4 py-3 font-medium">Employee</th>
-            <th class="px-4 py-3 text-right font-medium">Worked</th>
-            <th class="px-4 py-3 text-right font-medium">Absent</th>
-            <th class="px-4 py-3 text-right font-medium">Leave</th>
-            <th class="px-4 py-3 text-right font-medium">Gross</th>
-            <th class="px-4 py-3 text-right font-medium">Deductions</th>
-            <th class="px-4 py-3 text-right font-medium">Net</th>
+            <th class="px-4 py-3 font-medium">{{ text.employee }}</th>
+            <th class="px-4 py-3 text-right font-medium">{{ text.worked }}</th>
+            <th class="px-4 py-3 text-right font-medium">{{ text.absent }}</th>
+            <th class="px-4 py-3 text-right font-medium">{{ text.leave }}</th>
+            <th class="px-4 py-3 text-right font-medium">{{ text.gross }}</th>
+            <th class="px-4 py-3 text-right font-medium">{{ text.deductions }}</th>
+            <th class="px-4 py-3 text-right font-medium">{{ text.net }}</th>
             <th class="px-4 py-3"></th>
           </tr>
         </thead>
@@ -121,7 +120,7 @@
                 {{ +p.paidLeaveDays + +p.unpaidLeaveDays || '—' }}
                 @if (p.unpaidLeaveDays !== '0.0') {
                   <span class="block text-xs text-on-surface-variant"
-                    >{{ p.unpaidLeaveDays | qty }} unpaid</span
+                    >{{ p.unpaidLeaveDays | qty }} {{ text.unpaid }}</span
                   >
                 }
               </td>
@@ -131,13 +130,13 @@
                 {{ p.netSalary | money }}
                 @if (p.carriedForward.amount !== '0.000') {
                   <span class="block text-xs font-normal text-error"
-                    >{{ p.carriedForward | money }} to next month</span
+                    >{{ p.carriedForward | money }} {{ text.toNextMonth }}</span
                   >
                 }
               </td>
               <td class="px-4 py-3 text-right">
                 <a matButton target="_blank" [routerLink]="['/print/payslip', p.id]"
-                  ><mat-icon>receipt_long</mat-icon> Payslip</a
+                  ><mat-icon>receipt_long</mat-icon> {{ text.payslip }}</a
                 >
               </td>
             </tr>
@@ -146,7 +145,7 @@
       </table>
     } @else {
       <p class="m-0 px-5 py-6 text-sm text-on-surface-variant">
-        No payslips yet — calculate the payroll once the month has ended.
+        {{ text.noPayslipsYetCalculate }}
       </p>
     }
   </mat-card>
@@ -157,7 +156,7 @@
     mat-stretch-tabs="false"
     animationDuration="0ms"
   >
-    <mat-tab label="History">
+    <mat-tab [label]="text.history">
       <ng-template matTabContent
         ><ui-audit-history class="block pt-4" type="payroll_run" [id]="r.id"
       /></ng-template>

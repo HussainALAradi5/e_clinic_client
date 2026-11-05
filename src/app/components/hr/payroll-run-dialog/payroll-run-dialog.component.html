@@ -1,17 +1,21 @@
-<h2 mat-dialog-title>New payroll</h2>
+<h2 mat-dialog-title>{{ text.newPayroll }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Create"
+    [submitLabel]="text.create"
     [compact]="true"
     [allowPristine]="true"
     (cancelled)="ref.close()"
   >
-    <ui-select label="Month" [options]="months" [required]="true" [control]="form.controls.month" />
+    <ui-select
+      [label]="text.month"
+      [options]="months"
+      [required]="true"
+      [control]="form.controls.month"
+    />
     <p class="m-0 text-sm text-on-surface-variant">
-      Salaries, allowances and deductions come from the employee records; absences, unpaid leave and
-      approved overtime from attendance.
+      {{ text.salariesAllowancesAndDeductions }}
     </p>
   </ui-form>
 </mat-dialog-content>

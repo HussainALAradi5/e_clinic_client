@@ -1,6 +1,6 @@
-<button matButton="outlined" [matMenuTriggerFor]="menu" aria-label="Saved views">
+<button matButton="outlined" [matMenuTriggerFor]="menu" [attr.aria-label]="text.savedViews">
   <mat-icon>bookmarks</mat-icon>
-  {{ activeName() ?? 'Views' }}
+  {{ activeName() ?? text.views }}
 </button>
 <mat-menu #menu="matMenu" xPosition="before">
   @for (view of views(); track view.id) {
@@ -11,15 +11,15 @@
       <span [class.font-semibold]="view.id === active()">{{ view.name }}</span>
     </button>
   } @empty {
-    <p class="m-0 px-4 py-2 text-sm text-on-surface-variant">No saved views yet.</p>
+    <p class="m-0 px-4 py-2 text-sm text-on-surface-variant">{{ text.noSavedViewsYet }}</p>
   }
   <mat-divider />
   <button mat-menu-item (click)="save()">
     <mat-icon>bookmark_add</mat-icon>
-    <span>Save current view…</span>
+    <span>{{ text.saveCurrentView }}</span>
   </button>
   <a mat-menu-item routerLink="/system/list-views" [queryParams]="manageParams()">
     <mat-icon>settings</mat-icon>
-    <span>Manage views</span>
+    <span>{{ text.manageViews }}</span>
   </a>
 </mat-menu>

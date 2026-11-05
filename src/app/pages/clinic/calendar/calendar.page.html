@@ -1,11 +1,8 @@
-<ui-page-header
-  title="Calendar"
-  subtitle="Click a booking to open it, or free space to book there."
->
+<ui-page-header [title]="text.calendar" [subtitle]="text.clickABookingTo">
   <ng-container actions>
     @if (canBook) {
       <button matButton="filled" type="button" (click)="book()">
-        <mat-icon>event_available</mat-icon> Book
+        <mat-icon>event_available</mat-icon> {{ text.book }}
       </button>
     }
   </ng-container>
@@ -14,25 +11,25 @@
 <div class="mb-4 flex flex-wrap items-center gap-2">
   <mat-button-toggle-group
     hideSingleSelectionIndicator
-    aria-label="View"
+    [attr.aria-label]="text.view"
     [value]="view()"
     (change)="setView($event.value)"
   >
-    <mat-button-toggle value="day">Day</mat-button-toggle>
-    <mat-button-toggle value="week">Week</mat-button-toggle>
+    <mat-button-toggle value="day">{{ text.day }}</mat-button-toggle>
+    <mat-button-toggle value="week">{{ text.week }}</mat-button-toggle>
   </mat-button-toggle-group>
   <div class="flex items-center">
-    <button matIconButton type="button" aria-label="Previous" (click)="step(-1)">
+    <button matIconButton type="button" [attr.aria-label]="text.previous" (click)="step(-1)">
       <mat-icon>chevron_left</mat-icon>
     </button>
-    <button matButton type="button" (click)="goToday()">Today</button>
-    <button matIconButton type="button" aria-label="Next" (click)="step(1)">
+    <button matButton type="button" (click)="goToday()">{{ text.today }}</button>
+    <button matIconButton type="button" [attr.aria-label]="text.next" (click)="step(1)">
       <mat-icon>chevron_right</mat-icon>
     </button>
   </div>
   <span class="relative inline-flex">
     <button matButton="outlined" type="button" (click)="datePicker.open()">
-      <mat-icon>calendar_month</mat-icon> Go to date
+      <mat-icon>calendar_month</mat-icon> {{ text.goToDate }}
     </button>
     <input
       class="pointer-events-none absolute inset-0 opacity-0"
@@ -49,7 +46,7 @@
     @for (key of [view()]; track key) {
       <ui-entity-select
         class="w-full sm:w-72"
-        [label]="view() === 'day' ? 'Doctor (empty = all)' : 'Doctor'"
+        [label]="view() === 'day' ? text.doctorEmptyAll : text.doctor"
         icon="search"
         subscript="dynamic"
         endpoint="doctors"
@@ -71,7 +68,7 @@
 
 @if (!columns().length) {
   <p class="text-sm text-on-surface-variant">
-    {{ loading() ? 'Loading…' : 'No doctors to show. Add a doctor profile first.' }}
+    {{ loading() ? text.loading : text.noDoctorsToShow }}
   </p>
 } @else {
   <div
@@ -94,7 +91,7 @@
                 >{{ c.date | date: 'EEE d' }}</span
               >
               <span class="block text-xs text-on-surface-variant"
-                >{{ c.items.length }} booking(s)</span
+                >{{ c.items.length }} {{ text.bookingS }}</span
               >
             </button>
           } @else {

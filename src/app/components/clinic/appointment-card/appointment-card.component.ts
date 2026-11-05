@@ -5,6 +5,7 @@ import { AppointmentActionsBar } from '../appointment-actions/appointment-action
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { AppointmentStatus } from '@enums/clinic/appointment-status.enum';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
+import { APPOINTMENT_CARD_TEXT } from '@constants/clinic/appointment-card.constants';
 
 /** Minutes past the start after which a not-yet-arrived patient is shown as late. */
 const LATE_AFTER_MINUTES = 10;
@@ -18,6 +19,8 @@ const LATE_AFTER_MINUTES = 10;
   templateUrl: './appointment-card.component.html',
 })
 export class AppointmentCard {
+  protected readonly text = APPOINTMENT_CARD_TEXT;
+
   readonly appointment = input.required<Appointment>();
   /** Clock tick (ms) from the board so "late" refreshes without reloading. */
   readonly now = input(Date.now());

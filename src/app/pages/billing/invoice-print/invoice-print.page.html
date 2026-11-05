@@ -4,33 +4,33 @@
   <app-print-sheet
     [document]="documentType.Invoice"
     entity="invoice"
-    verifyNote="Scan the code to check this invoice is genuine. It shows amounts only."
+    [verifyNote]="text.scanTheCodeTo"
     [title]="title()"
     [recordId]="inv.id"
     [reference]="inv.invoiceNumber ?? inv.code"
   >
     <dl class="m-0 mb-6 grid grid-cols-[8rem_1fr] gap-y-1">
-      <dt class="text-black/60">Patient</dt>
+      <dt class="text-black/60">{{ text.patient }}</dt>
       <dd class="m-0 font-medium">{{ inv.patient?.fullName }} · {{ inv.patient?.code }}</dd>
       @if (inv.patient?.insurer) {
-        <dt class="text-black/60">Insurer</dt>
+        <dt class="text-black/60">{{ text.insurer }}</dt>
         <dd class="m-0">{{ inv.patient?.insurer?.name }}</dd>
       }
-      <dt class="text-black/60">Invoice no.</dt>
-      <dd class="m-0 font-mono">{{ inv.invoiceNumber ?? 'Draft — not issued' }}</dd>
-      <dt class="text-black/60">Date</dt>
+      <dt class="text-black/60">{{ text.invoiceNo }}</dt>
+      <dd class="m-0 font-mono">{{ inv.invoiceNumber ?? text.draftNotIssued }}</dd>
+      <dt class="text-black/60">{{ text.date }}</dt>
       <dd class="m-0">{{ inv.issueDate ? (inv.issueDate | date: dateFormat) : '—' }}</dd>
     </dl>
 
     <table class="mb-6 w-full border-collapse text-[10pt]">
       <thead>
         <tr class="border-b border-black/40 text-left">
-          <th class="py-1.5 font-semibold">Description</th>
-          <th class="py-1.5 text-right font-semibold">Qty</th>
-          <th class="py-1.5 text-right font-semibold">Price</th>
-          <th class="py-1.5 text-right font-semibold">Discount</th>
-          <th class="py-1.5 text-right font-semibold">VAT</th>
-          <th class="py-1.5 text-right font-semibold">Amount</th>
+          <th class="py-1.5 font-semibold">{{ text.description }}</th>
+          <th class="py-1.5 text-right font-semibold">{{ text.qty }}</th>
+          <th class="py-1.5 text-right font-semibold">{{ text.price }}</th>
+          <th class="py-1.5 text-right font-semibold">{{ text.discount }}</th>
+          <th class="py-1.5 text-right font-semibold">{{ text.vat }}</th>
+          <th class="py-1.5 text-right font-semibold">{{ text.amount }}</th>
         </tr>
       </thead>
       <tbody>
@@ -58,25 +58,26 @@
 
     <div class="flex justify-end">
       <dl class="m-0 grid w-72 grid-cols-[1fr_auto] gap-y-1 tabular-nums">
-        <dt class="text-black/60">Subtotal</dt>
+        <dt class="text-black/60">{{ text.subtotal }}</dt>
         <dd class="m-0 text-right">{{ inv.subtotal.amount }}</dd>
         @if (inv.discountTotal.amount !== '0.000') {
-          <dt class="text-black/60">Discount</dt>
+          <dt class="text-black/60">{{ text.discount }}</dt>
           <dd class="m-0 text-right">−{{ inv.discountTotal.amount }}</dd>
         }
-        <dt class="text-black/60">VAT</dt>
+        <dt class="text-black/60">{{ text.vat }}</dt>
         <dd class="m-0 text-right">{{ inv.taxTotal.amount }}</dd>
-        <dt class="border-t border-black/40 pt-1 font-semibold">Total</dt>
+        <dt class="border-t border-black/40 pt-1 font-semibold">{{ text.total }}</dt>
         <dd class="m-0 border-t border-black/40 pt-1 text-right font-semibold">
           {{ inv.total | money }}
         </dd>
         @for (p of payments(); track p.id) {
           <dt class="text-black/60">
-            Paid {{ p.paidAt | date: dateFormat }} · {{ p.method | enumLabel: 'PaymentMethod' }}
+            {{ text.paid }} {{ p.paidAt | date: dateFormat }} ·
+            {{ p.method | enumLabel: 'PaymentMethod' }}
           </dt>
           <dd class="m-0 text-right">−{{ p.amount.amount }}</dd>
         }
-        <dt class="border-t border-black/40 pt-1 font-semibold">Balance due</dt>
+        <dt class="border-t border-black/40 pt-1 font-semibold">{{ text.balanceDue }}</dt>
         <dd class="m-0 border-t border-black/40 pt-1 text-right font-semibold">
           {{ inv.balanceDue | money }}
         </dd>

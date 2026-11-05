@@ -5,13 +5,13 @@
     *hasAccess="'treatments.read_all | treatments.read_own'"
   >
     <div class="mb-2 flex items-center">
-      <h2 class="m-0 flex-1 text-base font-semibold">Treatment plans</h2>
+      <h2 class="m-0 flex-1 text-base font-semibold">{{ text.treatmentPlans }}</h2>
       <ui-button
         icon="add"
         [variant]="variants.Tonal"
         access="treatments.create"
         [action]="prescribe"
-        >Prescribe</ui-button
+        >{{ text.prescribe }}</ui-button
       >
     </div>
     @for (t of treatments() ?? []; track t.id) {
@@ -32,17 +32,17 @@
       </a>
     } @empty {
       <p class="m-0 text-sm text-on-surface-variant">
-        {{ treatments() === null ? 'Loading…' : 'No treatment plan.' }}
+        {{ treatments() === null ? text.loading : text.noTreatmentPlan }}
       </p>
     }
   </mat-card>
 
   <mat-card appearance="outlined" class="!p-5" *hasAccess="'orders.read_all | orders.read_own'">
     <div class="mb-2 flex items-center">
-      <h2 class="m-0 flex-1 text-base font-semibold">Orders and results</h2>
-      <ui-button icon="add" [variant]="variants.Tonal" access="orders.create" [action]="order"
-        >New order</ui-button
-      >
+      <h2 class="m-0 flex-1 text-base font-semibold">{{ text.ordersAndResults }}</h2>
+      <ui-button icon="add" [variant]="variants.Tonal" access="orders.create" [action]="order">{{
+        text.newOrder
+      }}</ui-button>
     </div>
     @for (o of orders() ?? []; track o.id) {
       <a
@@ -59,14 +59,14 @@
         @if (o.isAbnormal) {
           <span
             class="rounded-full bg-error-container px-2 py-0.5 text-[11px] font-medium text-on-error-container"
-            >Abnormal</span
+            >{{ text.abnormal }}</span
           >
         }
         <ui-status [value]="o.status" enum="GenericStatus" />
       </a>
     } @empty {
       <p class="m-0 text-sm text-on-surface-variant">
-        {{ orders() === null ? 'Loading…' : 'Nothing ordered yet.' }}
+        {{ orders() === null ? text.loading : text.nothingOrderedYet }}
       </p>
     }
   </mat-card>

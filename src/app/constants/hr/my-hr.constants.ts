@@ -1,0 +1,21 @@
+/** Text of hr/my-hr/my-hr.page (headings, labels, hints, empty states). */
+export const MY_HR_TEXT = {
+  requestLeave: 'Request leave',
+  daysWorked: 'Days worked',
+  absent: 'Absent',
+  onLeave: 'On leave',
+  late: 'Late',
+  min: 'min',
+  overtimeApproved: 'Overtime approved',
+  overtimeWaitingForApproval: 'Overtime waiting for approval',
+  noAttendanceRecordedThis: 'No attendance recorded this month.',
+  leaveThisYear: 'Leave this year',
+  myLeaveRequests: 'My leave requests',
+  dayS: 'day(s)',
+  cancel: 'Cancel',
+  noLeaveRequestedYet: 'No leave requested yet.',
+  myPayslips: 'My payslips',
+  payslipsAppearHereOnce: "Payslips appear here once a month's payroll is approved.",
+  myHr: 'My HR',
+  yourDayYourMonth: 'Your day, your month, your leave and your payslips.',
+};

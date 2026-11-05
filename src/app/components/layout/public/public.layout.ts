@@ -25,6 +25,7 @@ export class PublicLayout {
   protected readonly auth = inject(AuthStore);
   private readonly theme = inject(ThemeService);
 
+  protected readonly text = PUBLIC_TEXT;
   protected readonly clinic = CLINIC_INFO;
   protected readonly loginPath = LOGIN_PATH;
   protected readonly tel = 'tel:' + CLINIC_INFO.phone.replaceAll(' ', '');

@@ -1,4 +1,22 @@
 /** Text of hr/shift-form-dialog/shift-form-dialog.component (labels, messages, confirmations). */
 export const SHIFT_FORM_DIALOG_TEXT = {
   theEndMustBeAfter: 'The end must be after the start.',
+  fixedHours: 'Fixed hours',
+  flexible: 'Flexible',
+  name: 'Name',
+  eGMorningEvening: 'e.g. Morning, Evening, Office flexi',
+  kindOfShift: 'Kind of shift',
+  arriveBy: 'Arrive by',
+  lateAfterThis: 'Late after this',
+  hoursADay: 'Hours a day',
+  overtimeIsBeyondThis: 'Overtime is beyond this',
+  notes: 'Notes',
+  edit: 'Edit ',
+  newShift: 'New shift',
+  save: 'Save',
+  createShift: 'Create shift',
+  earliestIn: 'Earliest in',
+  starts: 'Starts',
+  latestOut: 'Latest out',
+  ends: 'Ends',
 };

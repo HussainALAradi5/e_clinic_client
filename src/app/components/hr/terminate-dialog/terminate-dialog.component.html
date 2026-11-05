@@ -1,26 +1,29 @@
-<h2 mat-dialog-title>Terminate {{ data.employee.fullName }}</h2>
+<h2 mat-dialog-title>{{ text.terminate }} {{ data.employee.fullName }}</h2>
 <mat-dialog-content>
   <p class="mt-0 text-sm text-on-surface-variant">
-    The account is deactivated and the record becomes read-only. A doctor stops taking new bookings;
-    upcoming ones stay for the front desk to move.
+    {{ text.theAccountIsDeactivated }}
   </p>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Terminate"
+    [submitLabel]="text.terminate"
     [compact]="true"
     (saved)="close()"
     (cancelled)="ref.close()"
   >
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
-      <ui-text label="Last working day" type="date" [control]="form.controls.terminationDate" />
+      <ui-text
+        [label]="text.lastWorkingDay"
+        type="date"
+        [control]="form.controls.terminationDate"
+      />
       <ui-select
-        label="Reason"
+        [label]="text.reason"
         enum="TerminationReason"
         [required]="true"
         [control]="form.controls.reason"
       />
     </div>
-    <ui-text label="Notes" [multiline]="true" [control]="form.controls.notes" />
+    <ui-text [label]="text.notes" [multiline]="true" [control]="form.controls.notes" />
   </ui-form>
 </mat-dialog-content>

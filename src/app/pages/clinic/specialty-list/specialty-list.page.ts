@@ -24,6 +24,8 @@ export class SpecialtyListPage {
   private readonly dialogs = inject(DialogService);
   private readonly notify = inject(NotifyService);
   private readonly canEdit = inject(AccessService).can('specialties.write');
+
+  protected readonly text = SPECIALTY_LIST_TEXT;
   private readonly list = viewChild.required(ResourceListPage);
 
   protected readonly create = async (): Promise<void> => {

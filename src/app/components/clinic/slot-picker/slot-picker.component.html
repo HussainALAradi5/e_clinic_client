@@ -7,16 +7,20 @@
   </p>
 } @else if (slots(); as list) {
   @if (list.length) {
-    <mat-chip-listbox aria-label="Free times" [value]="start()" (change)="start.set($event.value)">
+    <mat-chip-listbox
+      [attr.aria-label]="text.freeTimes"
+      [value]="start()"
+      (change)="start.set($event.value)"
+    >
       @for (slot of list; track slot.start) {
         <mat-chip-option [value]="slot.startTime">{{ slot.startTime }}</mat-chip-option>
       }
     </mat-chip-listbox>
   } @else {
     <p class="m-0 flex items-center gap-2 text-sm text-on-surface-variant">
-      <mat-icon class="!text-lg">event_busy</mat-icon> No free time that day — try another date.
+      <mat-icon class="!text-lg">event_busy</mat-icon> {{ text.noFreeTimeThat }}
     </p>
   }
 } @else {
-  <p class="m-0 text-sm text-on-surface-variant">Choose who and when to see free times.</p>
+  <p class="m-0 text-sm text-on-surface-variant">{{ text.chooseWhoAndWhen }}</p>
 }

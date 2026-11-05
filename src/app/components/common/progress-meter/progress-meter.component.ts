@@ -4,6 +4,7 @@ import { GenericStatus } from '@enums/shared/generic-status.enum';
 import { TreatmentProgress } from '@interfaces/clinic/treatment-progress.interface';
 import { progressHealth } from '@utilities/treatment-progress';
 import { Cell } from '@interfaces/common/progress-meter.interface';
+import { PROGRESS_METER_TEXT } from '@constants/common/progress-meter.constants';
 
 /**
  * One segment per session — attended (filled), missed (red), booked (outlined), still to book (empty) — coloured by
@@ -17,6 +18,8 @@ import { Cell } from '@interfaces/common/progress-meter.interface';
   templateUrl: './progress-meter.component.html',
 })
 export class ProgressMeter {
+  protected readonly text = PROGRESS_METER_TEXT;
+
   readonly progress = input.required<TreatmentProgress>();
   /** The plan's status (cancelled → stopped, completed → done). */
   readonly status = input<GenericStatus | null>(null);

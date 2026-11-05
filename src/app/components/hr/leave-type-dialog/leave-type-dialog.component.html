@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{ data.type ? 'Edit ' + data.type.name : 'New leave type' }}</h2>
+<h2 mat-dialog-title>{{ data.type ? text.edit + data.type.name : text.newLeaveType }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
@@ -8,29 +8,29 @@
     (cancelled)="ref.close()"
   >
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-[10rem_minmax(0,1fr)]">
-      <ui-text label="Code" hint="e.g. ANNUAL" [control]="form.controls.code" />
-      <ui-text label="Name" [control]="form.controls.name" />
+      <ui-text [label]="text.code" [hint]="text.eGAnnual" [control]="form.controls.code" />
+      <ui-text [label]="text.name" [control]="form.controls.name" />
     </div>
-    <ui-text label="Arabic name" [control]="form.controls.nameAr" />
+    <ui-text [label]="text.arabicName" [control]="form.controls.nameAr" />
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-3">
       <ui-text
-        label="Days a year"
+        [label]="text.daysAYear"
         type="number"
-        hint="0 = no limit"
+        [hint]="text.n0NoLimit"
         [control]="form.controls.annualQuotaDays"
       />
       <ui-text
-        label="Carry to next year"
+        [label]="text.carryToNextYear"
         type="number"
         [control]="form.controls.maxCarryForwardDays"
       />
-      <ui-text label="Notice (days)" type="number" [control]="form.controls.minNoticeDays" />
+      <ui-text [label]="text.noticeDays" type="number" [control]="form.controls.minNoticeDays" />
     </div>
-    <mat-checkbox class="-ml-2 block" [formControl]="form.controls.isPaid"
-      >Paid (unpaid days are deducted in payroll)</mat-checkbox
-    >
-    <mat-checkbox class="-ml-2 block" [formControl]="form.controls.requiresAttachment"
-      >Needs a certificate</mat-checkbox
-    >
+    <mat-checkbox class="-ml-2 block" [formControl]="form.controls.isPaid">{{
+      text.paidUnpaidDaysAre
+    }}</mat-checkbox>
+    <mat-checkbox class="-ml-2 block" [formControl]="form.controls.requiresAttachment">{{
+      text.needsACertificate
+    }}</mat-checkbox>
   </ui-form>
 </mat-dialog-content>

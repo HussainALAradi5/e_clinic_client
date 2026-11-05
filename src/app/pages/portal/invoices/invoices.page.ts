@@ -38,6 +38,7 @@ import { PayOnlineButton } from '@components/portal/pay-online-button/pay-online
 import { OnlinePaymentNotice } from '@components/portal/online-payment-notice/online-payment-notice.component';
 import { ONLINE_PAY_TEXT } from '@constants/portal/online-payment.constants';
 import { PatientPackages } from '@components/billing/patient-packages/patient-packages.component';
+import { INVOICES_TEXT } from '@constants/portal/invoices.constants';
 @Component({
   selector: 'app-my-invoices-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,6 +63,8 @@ import { PatientPackages } from '@components/billing/patient-packages/patient-pa
   templateUrl: './invoices.page.html',
 })
 export class MyInvoicesPage {
+  protected readonly text = INVOICES_TEXT;
+
   /** From / to on the issued (on the server). */
   protected readonly dateFields = [{ value: 'issue_date', label: 'Issued' }];
   protected readonly dates = signal<DateRangeValue>({});

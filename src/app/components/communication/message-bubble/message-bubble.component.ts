@@ -24,6 +24,7 @@ import { MessageQuote } from '../message-quote/message-quote.component';
 import { ReactionPicker } from '../reaction-picker/reaction-picker.component';
 import { BUBBLE_COLORS, LEADER_BUBBLE, tintFor } from '@utilities/communication/chat-style';
 import { Segment } from '@interfaces/communication/message-bubble.interface';
+import { MESSAGE_BUBBLE_TEXT } from '@constants/communication/message-bubble.constants';
 
 const LONG_PRESS_MS = 450;
 /** Space the bar with its "+" grid needs above a bubble; less and it opens below. */
@@ -50,6 +51,8 @@ const SWIPE_REPLY_PX = 64;
   styleUrl: './message-bubble.component.scss',
 })
 export class MessageBubble {
+  protected readonly text = MESSAGE_BUBBLE_TEXT;
+
   readonly message = input.required<ChatMessage>();
   readonly meId = input.required<string>();
   readonly members = input<ChatMember[]>([]);

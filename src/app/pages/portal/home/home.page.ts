@@ -60,6 +60,7 @@ export class PortalHomePage {
   private readonly prescriptions = inject(PrescriptionApi);
   private readonly invoices = inject(InvoiceApi);
 
+  protected readonly text = HOME_TEXT;
   protected readonly bookPath = `${PORTAL_PATH}/appointments/new`;
   protected readonly visitsPath = `${PORTAL_PATH}/appointments`;
   protected readonly greeting = computed(() => {

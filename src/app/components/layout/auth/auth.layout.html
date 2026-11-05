@@ -1,22 +1,18 @@
 <div class="grid min-h-dvh lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
   <ui-brand-surface mark="field" class="hidden flex-col justify-between p-12 lg:flex">
-    <a routerLink="/" class="w-fit no-underline" aria-label="e-Clinic website">
+    <a routerLink="/" class="w-fit no-underline" [attr.aria-label]="text.eClinicWebsite">
       <ui-brand-mark tone="light" size="lg" />
     </a>
 
     <div class="max-w-lg">
       <p class="m-0 text-4xl leading-tight font-bold tracking-tight text-white xl:text-5xl">
-        Your clinic, from the front desk to the pharmacy counter.
+        {{ text.yourClinicFromThe }}
       </p>
       <p class="mt-5 mb-0 max-w-md text-base leading-relaxed text-white/70">
-        Staff sign in to the workspace. Patients see results, prescriptions and invoices as soon as
-        they are released.
+        {{ text.staffSignInTo }}
       </p>
 
-      <ul
-        class="m-0 mt-10 flex list-none flex-col gap-3 p-0"
-        aria-label="What you can do after signing in"
-      >
+      <ul class="m-0 mt-10 flex list-none flex-col gap-3 p-0" [attr.aria-label]="text.whatYouCanDo">
         @for (item of highlights; track item.title) {
           <li class="glass-card">
             <span
@@ -40,7 +36,7 @@
 
   <div class="auth-form-side flex flex-col">
     <header class="flex items-center justify-between px-6 pt-6 sm:px-10">
-      <a routerLink="/" class="no-underline lg:invisible" aria-label="e-Clinic website">
+      <a routerLink="/" class="no-underline lg:invisible" [attr.aria-label]="text.eClinicWebsite">
         <ui-brand-mark />
       </a>
       <a
@@ -48,7 +44,7 @@
         class="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-on-surface-variant no-underline hover:bg-surface-container hover:text-on-surface"
       >
         <mat-icon class="!size-5 !text-xl">arrow_back</mat-icon>
-        Back to website
+        {{ text.backToWebsite }}
       </a>
     </header>
 

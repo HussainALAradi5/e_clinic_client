@@ -9,6 +9,7 @@ import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { DATE_FORMAT, TIME_FORMAT } from '@constants/app.constants';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { AuditLogApi } from '@services/identity/audit-log-api.service';
+import { AUDIT_HISTORY_TEXT } from '@constants/common/audit-history.constants';
 
 /**
  * History tab of any record: `<ui-audit-history type="role" [id]="role.id" />` (GET /audit-logs/{type}/{id}).
@@ -30,6 +31,8 @@ import { AuditLogApi } from '@services/identity/audit-log-api.service';
   templateUrl: './audit-history.component.html',
 })
 export class AuditHistory {
+  protected readonly text = AUDIT_HISTORY_TEXT;
+
   readonly type = input.required<string>();
   readonly id = input.required<string>();
 

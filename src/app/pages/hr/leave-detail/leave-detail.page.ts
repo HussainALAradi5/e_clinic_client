@@ -63,6 +63,8 @@ import { LEAVE_DETAIL_TEXT } from '@constants/hr/leave-detail.constants';
   templateUrl: './leave-detail.page.html',
 })
 export class LeaveDetailPage implements OnInit {
+  protected readonly text = LEAVE_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(LeaveApi);

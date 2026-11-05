@@ -12,6 +12,7 @@ import { SalaryComponentType } from '@enums/hr/salary-component-type.enum';
 import { SalaryComponent } from '@interfaces/hr/salary-component.interface';
 import { EmployeeApi } from '@services/hr/employee-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { SALARY_COMPONENT_DIALOG_TEXT } from '@constants/hr/salary-component-dialog.constants';
 
 /** Recurring monthly allowance or deduction applied by payroll. */
 @Component({
@@ -29,6 +30,8 @@ import { clinicIsoDate } from '@utilities/clinic-time';
   templateUrl: './salary-component-dialog.component.html',
 })
 export class SalaryComponentDialog {
+  protected readonly text = SALARY_COMPONENT_DIALOG_TEXT;
+
   protected readonly data = inject<EmployeeDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<SalaryComponentDialog, SalaryComponent>);
   private readonly api = inject(EmployeeApi);

@@ -31,6 +31,8 @@ import { RESULT_PRINT_TEXT } from '@constants/clinic/result-print.constants';
   templateUrl: './result-print.page.html',
 })
 export class ResultPrintPage implements OnInit {
+  protected readonly text = RESULT_PRINT_TEXT;
+
   protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
   private readonly orders = inject(ClinicalOrderApi);

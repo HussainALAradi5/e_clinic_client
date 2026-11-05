@@ -1,13 +1,13 @@
 <header class="mb-4 flex flex-wrap items-end justify-between gap-3">
   <div>
-    <h1 class="m-0 text-2xl font-bold tracking-tight">My visits</h1>
-    <p class="m-0 text-on-surface-variant">Show the check-in code at the desk when you arrive.</p>
+    <h1 class="m-0 text-2xl font-bold tracking-tight">{{ text.myVisits }}</h1>
+    <p class="m-0 text-on-surface-variant">{{ text.showTheCheckIn }}</p>
   </div>
-  <a matButton="filled" [routerLink]="bookPath"><mat-icon>add</mat-icon> Book a visit</a>
+  <a matButton="filled" [routerLink]="bookPath"><mat-icon>add</mat-icon> {{ text.bookAVisit }}</a>
 </header>
 
 <div class="mb-4 flex flex-wrap items-start gap-3">
-  <ui-enum-filter enum="VisitTiming" label="Which visits" [(value)]="timing" />
+  <ui-enum-filter enum="VisitTiming" [label]="text.whichVisits" [(value)]="timing" />
   <ui-date-range-filter
     class="w-64"
     [fields]="dateFields"
@@ -26,7 +26,7 @@
   </div>
   @if (more()) {
     <div class="mt-4 text-center">
-      <button matButton (click)="load(true)">Show more</button>
+      <button matButton (click)="load(true)">{{ text.showMore }}</button>
     </div>
   }
 } @else {

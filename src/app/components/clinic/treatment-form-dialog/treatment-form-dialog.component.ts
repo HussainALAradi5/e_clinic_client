@@ -19,6 +19,7 @@ import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { AuthStore } from '@services/auth/auth.store';
 import { TreatmentApi } from '@services/clinic/treatment-api.service';
 import { dirtyPayload } from '@utilities/form-payload';
+import { TREATMENT_FORM_DIALOG_TEXT } from '@constants/clinic/treatment-form-dialog.constants';
 
 /**
  * Prescribe a treatment plan (title, type, sessions, priority, diagnosis and plan) or edit an open one. Patient,
@@ -31,6 +32,8 @@ import { dirtyPayload } from '@utilities/form-payload';
   templateUrl: './treatment-form-dialog.component.html',
 })
 export class TreatmentFormDialog {
+  protected readonly text = TREATMENT_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<TreatmentFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<TreatmentFormDialog, Treatment>);
   private readonly api = inject(TreatmentApi);

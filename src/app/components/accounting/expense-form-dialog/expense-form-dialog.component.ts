@@ -19,6 +19,7 @@ import { Company } from '@interfaces/reference/company.interface';
 import { ExpenseApi } from '@services/finance/expense-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 import { AppValidators } from '@validations/validators';
+import { EXPENSE_FORM_DIALOG_TEXT } from '@constants/accounting/expense-form-dialog.constants';
 
 /**
  * Expense form: who is paid (a company from the list or a name), what for, how much (VAT included) and when.
@@ -40,6 +41,8 @@ import { AppValidators } from '@validations/validators';
   templateUrl: './expense-form-dialog.component.html',
 })
 export class ExpenseFormDialog {
+  protected readonly text = EXPENSE_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<ExpenseFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<ExpenseFormDialog, Expense>);
   private readonly api = inject(ExpenseApi);

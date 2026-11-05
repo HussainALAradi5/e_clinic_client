@@ -72,6 +72,7 @@ export class FrontDeskPage {
   private readonly api = inject(AppointmentApi);
   private readonly actions = inject(AppointmentActions);
 
+  protected readonly text = FRONT_DESK_TEXT;
   protected readonly today = signal(clinicIsoDate());
   protected readonly now = signal(Date.now());
   protected readonly appointments = signal<Appointment[] | null>(null);

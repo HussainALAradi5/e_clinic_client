@@ -9,6 +9,7 @@ import { AppButton } from '@components/common/app-button/app-button.component';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { DATE_FORMAT } from '@constants/app.constants';
+import { TREATMENT_LIST_TEXT } from '@constants/clinic/treatment-list.constants';
 
 /** `/clinic/treatments` — every plan with its progress; prescribe from here or from a visit. */
 @Component({
@@ -28,6 +29,8 @@ import { DATE_FORMAT } from '@constants/app.constants';
 })
 export class TreatmentListPage {
   private readonly actions = inject(ClinicalActions);
+
+  protected readonly text = TREATMENT_LIST_TEXT;
   private readonly list = viewChild.required(ResourceListPage);
   protected readonly dateFormat = DATE_FORMAT;
 

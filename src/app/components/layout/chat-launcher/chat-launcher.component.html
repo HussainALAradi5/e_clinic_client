@@ -2,8 +2,8 @@
   matIconButton
   tapMotion="bounce"
   [routerLink]="path"
-  [matTooltip]="unread() ? unread() + ' unread messages' : 'Chat'"
-  aria-label="Chat"
+  [matTooltip]="unread() ? unread() + text.unreadMessages : text.chat"
+  [attr.aria-label]="text.chat"
   [matBadge]="badge()"
   [matBadgeHidden]="!unread()"
   [matBadgeSize]="settings().countInBadge ? 'medium' : 'small'"

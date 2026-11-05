@@ -4,8 +4,8 @@
   <app-print-sheet
     paper="receipt"
     entity="dispensation"
-    verifyNote="Keep out of reach of children. Ask the pharmacist if in doubt."
-    title="Medicine label"
+    [verifyNote]="text.keepOutOfReach"
+    [title]="text.medicineLabel"
     [recordId]="d.id"
     [reference]="d.code"
   >
@@ -17,12 +17,12 @@
       <section class="mb-2 border-t border-dashed border-black/40 pt-2">
         <p class="m-0 text-[10pt] font-semibold">{{ item.medication.name }}</p>
         <p class="m-0">
-          Qty {{ item.quantity | qty }}
+          {{ text.qty }} {{ item.quantity | qty }}
           {{ item.medication.unit | enumLabel: 'DispenseUnit' | lowercase }}
         </p>
         @if (item.prescriptionItemId && dosage().get(item.prescriptionItemId); as line) {
           <p class="m-0 font-semibold">
-            {{ line.dose }}, {{ line.frequency }} — {{ line.durationDays }} days
+            {{ line.dose }}, {{ line.frequency }} — {{ line.durationDays }} {{ text.days }}
           </p>
           @if (line.instructions) {
             <p class="m-0">{{ line.instructions }}</p>
@@ -34,10 +34,13 @@
           </p>
         }
         <p class="m-0 text-black/60">
-          Lot {{ item.batch?.batchNumber }} · exp. {{ item.batch?.expiryDate | date: dateFormat }}
+          {{ text.lot }} {{ item.batch?.batchNumber }} {{ text.exp }}
+          {{ item.batch?.expiryDate | date: dateFormat }}
         </p>
       </section>
     }
-    <p class="m-0 mt-2 text-center text-black/70">Dispensed by {{ d.dispensedBy?.fullName }}</p>
+    <p class="m-0 mt-2 text-center text-black/70">
+      {{ text.dispensedBy }} {{ d.dispensedBy?.fullName }}
+    </p>
   </app-print-sheet>
 }

@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Currency } from '@enums/shared/currency.enum';
 import { normaliseAmount } from '@utilities/money';
 import { errorMessage } from '@validations/validators';
+import { MONEY_INPUT_TEXT } from '@constants/common/money-input.constants';
 
 /** `<ui-money label="Price" [control]="form.controls.price" />` — 3-decimal BHD string, never a float. */
 @Component({
@@ -15,6 +16,8 @@ import { errorMessage } from '@validations/validators';
   templateUrl: './money-input.component.html',
 })
 export class MoneyInput {
+  protected readonly text = MONEY_INPUT_TEXT;
+
   readonly label = input.required<string>();
   readonly control = input.required<FormControl<string | null>>();
   readonly currency = input<Currency | `${Currency}`>(Currency.BHD);

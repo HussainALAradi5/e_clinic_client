@@ -42,6 +42,8 @@ import { ACCOUNT_DETAIL_TEXT } from '@constants/accounting/account-detail.consta
   templateUrl: './account-detail.page.html',
 })
 export class AccountDetailPage implements OnInit {
+  protected readonly text = ACCOUNT_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   protected readonly detail = new EntityDetail(inject(AccountApi));

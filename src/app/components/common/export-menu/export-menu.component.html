@@ -14,11 +14,7 @@
 </button>
 <mat-menu #menu="matMenu" xPosition="before">
   <p class="m-0 px-4 pt-2 pb-1 text-xs text-on-surface-variant">
-    {{
-      selectedCount() > 0
-        ? 'The selected rows, visible columns'
-        : 'All rows matching the filters, visible columns'
-    }}
+    {{ selectedCount() > 0 ? text.theSelectedRowsVisible : text.allRowsMatchingThe }}
   </p>
   @for (option of options(); track option.format) {
     <button mat-menu-item type="button" (click)="choose(option.format)">

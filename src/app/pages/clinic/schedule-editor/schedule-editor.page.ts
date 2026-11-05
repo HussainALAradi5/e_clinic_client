@@ -64,6 +64,8 @@ const EXCEPTION_DAYS = 90;
   templateUrl: './schedule-editor.page.html',
 })
 export class ScheduleEditorPage implements OnInit {
+  protected readonly text = SCHEDULE_EDITOR_TEXT;
+
   readonly providerId = input.required<string>();
 
   private readonly api = inject(ScheduleApi);

@@ -11,6 +11,7 @@ import { Patient } from '@interfaces/clinic/patient.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { ConsentApi } from '@services/clinic/consent-api.service';
 import { PatientApi } from '@services/clinic/patient-api.service';
+import { CONSENT_FORM_TEXT } from '@constants/clinic/consent-form.constants';
 
 /** `/print/consent/:id` — consent form to sign on paper (or the record of a signed one) with a verification QR. */
 @Component({
@@ -20,6 +21,8 @@ import { PatientApi } from '@services/clinic/patient-api.service';
   templateUrl: './consent-form.page.html',
 })
 export class ConsentFormPage implements OnInit {
+  protected readonly text = CONSENT_FORM_TEXT;
+
   protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 

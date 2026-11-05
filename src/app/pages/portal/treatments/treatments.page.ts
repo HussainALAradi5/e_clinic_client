@@ -10,6 +10,7 @@ import { StatusChip } from '@components/common/status-chip/status-chip.component
 import { Treatment } from '@interfaces/clinic/treatment.interface';
 import { TreatmentSession } from '@interfaces/clinic/treatment-session.interface';
 import { TreatmentApi } from '@services/clinic/treatment-api.service';
+import { TREATMENTS_TEXT } from '@constants/portal/treatments.constants';
 
 /** `/portal/treatments` — treatment plans with progress and the next session; each opens to its sessions. */
 @Component({
@@ -29,6 +30,7 @@ import { TreatmentApi } from '@services/clinic/treatment-api.service';
 export class MyTreatmentsPage {
   private readonly api = inject(TreatmentApi);
 
+  protected readonly text = TREATMENTS_TEXT;
   protected readonly plans = signal<Treatment[] | null>(null);
   protected readonly open = signal<string | null>(null);
   protected readonly sessions = signal<Record<string, TreatmentSession[]>>({});

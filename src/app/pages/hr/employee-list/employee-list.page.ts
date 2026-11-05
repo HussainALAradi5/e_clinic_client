@@ -9,6 +9,7 @@ import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { DatePipe } from '@angular/common';
 import { DATE_FORMAT } from '@constants/app.constants';
+import { EMPLOYEE_LIST_TEXT } from '@constants/hr/employee-list.constants';
 
 /** `/hr/employees` — staff list; hire opens the one-step hire dialog. */
 @Component({
@@ -21,6 +22,8 @@ export class EmployeeListPage {
   private readonly dialogs = inject(DialogService);
   private readonly notify = inject(NotifyService);
   private readonly router = inject(Router);
+
+  protected readonly text = EMPLOYEE_LIST_TEXT;
   protected readonly dateFormat = DATE_FORMAT;
 
   protected readonly hire = async (): Promise<void> => {

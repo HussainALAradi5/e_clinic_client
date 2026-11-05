@@ -10,6 +10,7 @@ import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { DATE_FORMAT } from '@constants/app.constants';
+import { LEAVE_LIST_TEXT } from '@constants/hr/leave-list.constants';
 
 /** `/hr/leaves` — leave requests, newest first; staff see their own. */
 @Component({
@@ -31,6 +32,8 @@ import { DATE_FORMAT } from '@constants/app.constants';
 export class LeaveListPage {
   private readonly actions = inject(HrActions);
   private readonly router = inject(Router);
+
+  protected readonly text = LEAVE_LIST_TEXT;
   protected readonly dateFormat = DATE_FORMAT;
 
   protected readonly request = async (): Promise<void> => {

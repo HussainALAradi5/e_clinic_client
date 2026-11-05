@@ -13,6 +13,7 @@ import { StatusChip } from '@components/common/status-chip/status-chip.component
 import { DATE_FORMAT } from '@constants/app.constants';
 import { Treatment } from '@interfaces/clinic/treatment.interface';
 import { TreatmentApi } from '@services/clinic/treatment-api.service';
+import { TREATMENT_QUEUE_TEXT } from '@constants/clinic/treatment-queue.constants';
 
 /** `/clinic/treatments/queue` — open plans with no next session booked, urgent first: reception's work list. */
 @Component({
@@ -34,6 +35,8 @@ import { TreatmentApi } from '@services/clinic/treatment-api.service';
 export class TreatmentQueuePage {
   private readonly api = inject(TreatmentApi);
   private readonly actions = inject(ClinicalActions);
+
+  protected readonly text = TREATMENT_QUEUE_TEXT;
   protected readonly queue = signal<Treatment[] | null>(null);
   protected readonly dateFormat = DATE_FORMAT;
 

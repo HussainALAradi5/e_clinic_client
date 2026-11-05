@@ -29,6 +29,7 @@ import { DASHBOARD_TEXT } from '@constants/dashboard/dashboard.constants';
 export class DashboardPage {
   protected readonly auth = inject(AuthStore);
 
+  protected readonly text = DASHBOARD_TEXT;
   protected readonly securityPath = ACCOUNT_SECURITY_PATH;
   protected readonly dateTimeFormat = `${DATE_FORMAT}, ${TIME_FORMAT}`;
   protected readonly today = new Date();

@@ -1,16 +1,20 @@
 <ui-resource-list
   resource="leaves"
   endpoint="hr/leaves"
-  title="Leave"
-  subtitle="Requests through approval — nobody decides their own. Approved leave marks attendance and blocks a doctor's bookable days."
-  emptyTitle="No leave requests found"
+  [title]="text.leave"
+  [subtitle]="text.requestsThroughApprovalNobody"
+  [emptyTitle]="text.noLeaveRequestsFound"
   rowLink="/hr/leaves/:id"
 >
   <a actions *hasAccess="'leaves.manage_types'" matButton="outlined" routerLink="/hr/leave-types"
-    ><mat-icon>tune</mat-icon> Leave types</a
+    ><mat-icon>tune</mat-icon> {{ text.leaveTypes }}</a
   >
-  <ui-button actions icon="beach_access" access="leaves.create & leaves.request" [action]="request"
-    >Request leave</ui-button
+  <ui-button
+    actions
+    icon="beach_access"
+    access="leaves.create & leaves.request"
+    [action]="request"
+    >{{ text.requestLeave }}</ui-button
   >
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template

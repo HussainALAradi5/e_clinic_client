@@ -68,6 +68,8 @@ import { EMPLOYEE_DETAIL_TEXT } from '@constants/hr/employee-detail.constants';
   templateUrl: './employee-detail.page.html',
 })
 export class EmployeeDetailPage implements OnInit {
+  protected readonly text = EMPLOYEE_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(EmployeeApi);

@@ -1,9 +1,9 @@
 <ui-resource-list
   resource="refunds"
   endpoint="billing/refunds"
-  title="Refunds"
-  subtitle="Requested at the desk, approved by someone else, then paid out by the cashier."
-  emptyTitle="No refunds waiting"
+  [title]="text.refunds"
+  [subtitle]="text.requestedAtTheDesk"
+  [emptyTitle]="text.noRefundsWaiting"
   [defaults]="defaults"
   [columns]="columns"
 >
@@ -34,7 +34,7 @@
   <ng-template uiCell="status" let-row>
     <div class="flex flex-wrap items-center gap-1">
       @if (row.isProcessed) {
-        <span class="text-sm text-on-surface-variant">Paid out</span>
+        <span class="text-sm text-on-surface-variant">{{ text.paidOut }}</span>
       } @else {
         <ui-status [value]="row.status" enum="ApprovalStatus" />
       }
@@ -44,14 +44,14 @@
           [variant]="variants.Text"
           access="refunds.write & refunds.approve"
           [action]="approve.bind(this, row)"
-          >Approve</ui-button
+          >{{ text.approve }}</ui-button
         >
         <ui-button
           icon="close"
           [variant]="variants.Text"
           access="refunds.write & refunds.approve"
           [action]="reject.bind(this, row)"
-          >Reject</ui-button
+          >{{ text.reject }}</ui-button
         >
       }
       @if (toPayOut(row)) {
@@ -60,7 +60,7 @@
           [variant]="variants.Text"
           access="refunds.write & refunds.process"
           [action]="payOut.bind(this, row)"
-          >Pay out</ui-button
+          >{{ text.payOut }}</ui-button
         >
       }
     </div>

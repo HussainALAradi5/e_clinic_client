@@ -1,20 +1,22 @@
 <ui-resource-list
   resource="invoices"
   endpoint="billing/invoices"
-  title="Invoices"
-  subtitle="Visits, sessions and orders land on the patient's draft by themselves; review it, issue it and take payment."
-  emptyTitle="No invoices found"
+  [title]="text.invoices"
+  [subtitle]="text.visitsSessionsAndOrders"
+  [emptyTitle]="text.noInvoicesFound"
   rowLink="/billing/invoices/:id"
   [params]="params()"
   [rowClass]="rowClass"
 >
   <div quick class="mb-3 flex flex-wrap gap-2">
-    <ui-enum-filter enum="InvoicePaymentState" label="Payment" [(value)]="paymentState" />
-    <ui-enum-filter enum="PaymentMethod" label="Paid by" [(value)]="method" />
+    <ui-enum-filter enum="InvoicePaymentState" [label]="text.payment" [(value)]="paymentState" />
+    <ui-enum-filter enum="PaymentMethod" [label]="text.paidBy" [(value)]="method" />
   </div>
-  <ui-button actions icon="add" access="invoices.create" [action]="create">New invoice</ui-button>
+  <ui-button actions icon="add" access="invoices.create" [action]="create">{{
+    text.newInvoice
+  }}</ui-button>
   <ng-template uiCell="invoice_number" let-row>
-    <span class="font-mono">{{ row.invoiceNumber ?? 'Draft' }}</span>
+    <span class="font-mono">{{ row.invoiceNumber ?? text.draft }}</span>
   </ng-template>
   <ng-template uiCell="code" let-row
     ><span class="font-mono text-on-surface-variant">{{ row.code }}</span></ng-template

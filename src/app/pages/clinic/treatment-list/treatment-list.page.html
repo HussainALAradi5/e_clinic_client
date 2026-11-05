@@ -1,16 +1,18 @@
 <ui-resource-list
   resource="treatments"
   endpoint="treatments"
-  title="Treatments"
-  subtitle="Plans of sessions (physiotherapy, wound care, infusions …). Attendance and progress come from the booked sessions."
-  emptyTitle="No treatments found"
+  [title]="text.treatments"
+  [subtitle]="text.plansOfSessionsPhysiotherapy"
+  [emptyTitle]="text.noTreatmentsFound"
   rowLink="/clinic/treatments/:id"
 >
   <ng-container actions>
     <a matButton="outlined" routerLink="/clinic/treatments/queue"
-      ><mat-icon>low_priority</mat-icon> Scheduling queue</a
+      ><mat-icon>low_priority</mat-icon> {{ text.schedulingQueue }}</a
     >
-    <ui-button icon="add" access="treatments.create" [action]="prescribe">Prescribe</ui-button>
+    <ui-button icon="add" access="treatments.create" [action]="prescribe">{{
+      text.prescribe
+    }}</ui-button>
   </ng-container>
   <ng-template uiCell="title" let-row>
     <span class="block max-w-52 truncate font-medium" [title]="row.title">{{ row.title }}</span>

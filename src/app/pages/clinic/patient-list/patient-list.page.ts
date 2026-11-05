@@ -25,6 +25,8 @@ export class PatientListPage {
   private readonly dialogs = inject(DialogService);
   private readonly notify = inject(NotifyService);
   private readonly router = inject(Router);
+
+  protected readonly text = PATIENT_LIST_TEXT;
   protected readonly dateFormat = DATE_FORMAT;
   protected readonly variants = ButtonVariant;
   private readonly access = inject(AccessService);

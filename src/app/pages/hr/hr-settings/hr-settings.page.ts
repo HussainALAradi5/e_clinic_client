@@ -14,6 +14,7 @@ import { AccessService } from '@services/auth/access.service';
 import { SettingApi } from '@services/hr/setting-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { AppValidators } from '@validations/validators';
+import { HR_SETTINGS_TEXT } from '@constants/hr/hr-settings.constants';
 
 /** Card look per setting: late in amber, overtime in blue (as their requests). */
 const LOOK: Record<SettingKey, { icon: string; tone: string }> = {
@@ -45,6 +46,7 @@ export class HrSettingsPage implements OnInit {
   private readonly api = inject(SettingApi);
   private readonly notify = inject(NotifyService);
 
+  protected readonly text = HR_SETTINGS_TEXT;
   protected readonly canEdit = inject(AccessService).can('settings.write');
   protected readonly look = LOOK;
   protected readonly dateTimeFormat = DATE_TIME_FORMAT;

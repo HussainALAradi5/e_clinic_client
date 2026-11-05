@@ -56,6 +56,7 @@ export class PortalBookingPage {
   private readonly router = inject(Router);
   private readonly notify = inject(NotifyService);
 
+  protected readonly text = BOOKING_TEXT;
   protected readonly visitsPath = `${PORTAL_PATH}/appointments`;
   protected readonly types = [
     { value: AppointmentType.Consultation, label: BOOKING_TEXT.newProblem },

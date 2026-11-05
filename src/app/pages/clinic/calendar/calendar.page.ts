@@ -30,6 +30,7 @@ import { AppointmentApi } from '@services/clinic/appointment-api.service';
 import { addDays, clinicIsoDate, clinicTime } from '@utilities/clinic-time';
 import { CalendarView } from '@interfaces/clinic/calendar.interface';
 import { Column } from '@interfaces/clinic/column.interface';
+import { CALENDAR_TEXT } from '@constants/clinic/calendar.constants';
 
 /** Vertical scale and the visible hours (stretched when bookings fall outside). */
 const PX_PER_MINUTE = 1.6;
@@ -73,6 +74,7 @@ export class CalendarPage {
   private readonly router = inject(Router);
   protected readonly canBook = inject(AccessService).can('appointments.create');
 
+  protected readonly text = CALENDAR_TEXT;
   protected readonly view = signal<CalendarView>('day');
   protected readonly date = signal(clinicIsoDate());
   protected readonly doctors = signal<Doctor[]>([]);

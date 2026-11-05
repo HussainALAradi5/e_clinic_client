@@ -9,6 +9,7 @@ import { MedicalHistoryPayload } from '@interfaces/clinic/medical-history-payloa
 import { Patient } from '@interfaces/clinic/patient.interface';
 import { PatientApi } from '@services/clinic/patient-api.service';
 import { dirtyPayload } from '@utilities/form-payload';
+import { MEDICAL_HISTORY_DIALOG_TEXT } from '@constants/clinic/medical-history-dialog.constants';
 
 /**
  * The care team's medical history of a patient: allergies, chronic conditions, family and surgical history
@@ -21,6 +22,8 @@ import { dirtyPayload } from '@utilities/form-payload';
   templateUrl: './medical-history-dialog.component.html',
 })
 export class MedicalHistoryDialog {
+  protected readonly labels = MEDICAL_HISTORY_DIALOG_TEXT;
+
   protected readonly data = inject<PatientFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<MedicalHistoryDialog, Patient>);
   private readonly api = inject(PatientApi);

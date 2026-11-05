@@ -16,6 +16,7 @@ import { AccessService } from '@services/auth/access.service';
 import { AuthStore } from '@services/auth/auth.store';
 import { SettingApi } from '@services/hr/setting-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { ATTENDANCE_LIST_TEXT } from '@constants/hr/attendance-list.constants';
 
 /** `/hr/attendance` — everyone's days: lateness, overtime to approve, missing check-outs, HR corrections. */
 @Component({
@@ -35,6 +36,8 @@ import { clinicIsoDate } from '@utilities/clinic-time';
 })
 export class AttendanceListPage {
   private readonly actions = inject(HrActions);
+
+  protected readonly text = ATTENDANCE_LIST_TEXT;
   private readonly list = viewChild.required(ResourceListPage);
   protected readonly me = inject(AuthStore).user()?.id;
   protected readonly dateFormat = DATE_FORMAT;

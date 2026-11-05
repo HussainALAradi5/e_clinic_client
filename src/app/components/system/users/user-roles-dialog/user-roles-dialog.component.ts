@@ -10,6 +10,7 @@ import { ErrorState } from '@components/common/error-state/error-state.component
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { MAX_PER_PAGE } from '@constants/limits.constants';
 import { RoleApi } from '@services/identity/role-api.service';
+import { USER_ROLES_DIALOG_TEXT } from '@constants/system/user-roles-dialog.constants';
 
 /**
  * Replaces a user's roles (PUT /roles/users/{user}). The server refuses roles whose rights the caller does not hold
@@ -22,6 +23,8 @@ import { RoleApi } from '@services/identity/role-api.service';
   templateUrl: './user-roles-dialog.component.html',
 })
 export class UserRolesDialog {
+  protected readonly text = USER_ROLES_DIALOG_TEXT;
+
   protected readonly data = inject<UserRolesDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<UserRolesDialog>);
   private readonly api = inject(RoleApi);

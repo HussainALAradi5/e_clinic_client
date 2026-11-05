@@ -54,6 +54,8 @@ import { DEPARTMENT_DETAIL_TEXT } from '@constants/hr/department-detail.constant
   templateUrl: './department-detail.page.html',
 })
 export class DepartmentDetailPage implements OnInit {
+  protected readonly text = DEPARTMENT_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(DepartmentApi);

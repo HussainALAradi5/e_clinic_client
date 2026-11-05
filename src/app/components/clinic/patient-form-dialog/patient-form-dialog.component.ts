@@ -10,6 +10,7 @@ import { UpdatePatientPayload } from '@interfaces/clinic/update-patient-payload.
 import { AccessService } from '@services/auth/access.service';
 import { PatientApi } from '@services/clinic/patient-api.service';
 import { dirtyPayload } from '@utilities/form-payload';
+import { PATIENT_FORM_DIALOG_TEXT } from '@constants/clinic/patient-form-dialog.constants';
 
 /** Edit the patient file (personal data is edited once on the person). Sends changed fields + version. */
 @Component({
@@ -19,6 +20,8 @@ import { dirtyPayload } from '@utilities/form-payload';
   templateUrl: './patient-form-dialog.component.html',
 })
 export class PatientFormDialog {
+  protected readonly text = PATIENT_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<PatientFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<PatientFormDialog, Patient>);
   private readonly api = inject(PatientApi);

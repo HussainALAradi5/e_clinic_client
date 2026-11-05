@@ -39,6 +39,8 @@ export const CHAT_PATH = '/chat';
   templateUrl: './chat-launcher.component.html',
 })
 export class ChatLauncher {
+  protected readonly text = CHAT_LAUNCHER_TEXT;
+
   /** I muted the chat and was not mentioned: stay quiet. */
   private mutedForMe(message: ChatMessage): boolean {
     const me = this.auth.user()?.id ?? '';

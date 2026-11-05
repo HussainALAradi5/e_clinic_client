@@ -2,28 +2,34 @@
   <ui-error [error]="e" (retry)="load()" />
 } @else if (claim(); as c) {
   <ui-page-header
-    [title]="'Claim ' + c.code"
+    [title]="text.claim + c.code"
     [subtitle]="(c.insurer?.name ?? '') + ' · ' + (c.patient?.fullName ?? '')"
   >
     <ng-container status><ui-status [value]="c.status" enum="ApprovalStatus" /></ng-container>
     <ng-container actions>
       @if (isDraft()) {
-        <ui-button icon="send" access="claims.write" [action]="submit">Mark as sent</ui-button>
+        <ui-button icon="send" access="claims.write" [action]="submit">{{
+          text.markAsSent
+        }}</ui-button>
       }
       @if (isPending()) {
-        <ui-button icon="gavel" access="claims.write & claims.decide" [action]="decide"
-          >Record decision</ui-button
-        >
+        <ui-button icon="gavel" access="claims.write & claims.decide" [action]="decide">{{
+          text.recordDecision
+        }}</ui-button>
       }
       <a matButton="outlined" [routerLink]="['/billing/invoices', c.invoiceId]"
         ><mat-icon>receipt_long</mat-icon> {{ c.invoice?.invoiceNumber }}</a
       >
       <a matButton="outlined" [routerLink]="['/print/claim', c.id]" target="_blank"
-        ><mat-icon>print</mat-icon> Claim form</a
+        ><mat-icon>print</mat-icon> {{ text.claimForm }}</a
       >
       @if (isDraft() || isPending()) {
-        <ui-button icon="block" [variant]="variants.Danger" access="claims.write" [action]="cancel"
-          >Cancel</ui-button
+        <ui-button
+          icon="block"
+          [variant]="variants.Danger"
+          access="claims.write"
+          [action]="cancel"
+          >{{ text.cancel }}</ui-button
         >
       }
     </ng-container>
@@ -34,13 +40,15 @@
       <mat-card appearance="outlined" class="overflow-x-auto !p-0">
         <table class="w-full border-collapse text-sm">
           <caption class="sr-only">
-            Invoice lines
+            {{
+              text.invoiceLines
+            }}
           </caption>
           <thead>
             <tr class="border-b border-outline-variant text-left text-xs text-on-surface-variant">
-              <th class="px-4 py-3 font-medium" scope="col">Service</th>
-              <th class="px-2 py-3 text-right font-medium" scope="col">Qty</th>
-              <th class="px-4 py-3 text-right font-medium" scope="col">Amount</th>
+              <th class="px-4 py-3 font-medium" scope="col">{{ text.service }}</th>
+              <th class="px-2 py-3 text-right font-medium" scope="col">{{ text.qty }}</th>
+              <th class="px-4 py-3 text-right font-medium" scope="col">{{ text.amount }}</th>
             </tr>
           </thead>
           <tbody>
@@ -49,7 +57,7 @@
                 <td class="px-4 py-2.5">
                   {{ item.description }}
                   <span class="block text-xs text-on-surface-variant"
-                    >{{ item.billableService?.code ?? 'Free-text line'
+                    >{{ item.billableService?.code ?? text.freeTextLine
                     }}{{ item.source?.code ? ' · ' + item.source?.code : '' }}</span
                   >
                 </td>
@@ -62,14 +70,14 @@
       </mat-card>
       @if (c.diagnoses?.length) {
         <mat-card appearance="outlined" class="!p-5">
-          <h2 class="m-0 mb-2 text-base font-semibold">Diagnoses</h2>
+          <h2 class="m-0 mb-2 text-base font-semibold">{{ text.diagnoses }}</h2>
           <ul class="m-0 list-none p-0">
             @for (d of c.diagnoses; track d.code + d.visit) {
               <li class="flex gap-3 py-1 text-sm">
                 <span class="w-16 font-mono font-medium">{{ d.code }}</span>
                 <span class="flex-1">{{ d.title }}</span>
                 <span class="text-xs text-on-surface-variant"
-                  >{{ d.isPrimary ? 'Primary · ' : '' }}{{ d.visit }}</span
+                  >{{ d.isPrimary ? text.primary : '' }}{{ d.visit }}</span
                 >
               </li>
             }
@@ -88,7 +96,7 @@
     mat-stretch-tabs="false"
     animationDuration="0ms"
   >
-    <mat-tab label="History">
+    <mat-tab [label]="text.history">
       <ng-template matTabContent
         ><ui-audit-history class="block pt-4" type="insurance_claim" [id]="c.id"
       /></ng-template>

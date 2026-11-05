@@ -1,9 +1,9 @@
 <ui-resource-list
   resource="stock_movements"
   endpoint="pharmacy/inventory/movements"
-  title="Stock movements"
-  subtitle="Receipts, hand-overs, returns, count corrections and expiry write-offs. A lot's stock is the sum of its rows."
-  emptyTitle="No movements found"
+  [title]="text.stockMovements"
+  [subtitle]="text.receiptsHandOversReturns"
+  [emptyTitle]="text.noMovementsFound"
 >
   <ng-template uiCell="created_at" let-row
     ><span class="tabular-nums">{{ row.createdAt | date: dateTimeFormat }}</span></ng-template
@@ -23,7 +23,7 @@
     <span class="text-sm">{{ row.reason ?? '' }}</span>
     <span class="block text-xs text-on-surface-variant"
       >{{ row.createdBy?.fullName
-      }}{{ row.approvedBy ? ' · approved by ' + row.approvedBy.fullName : '' }}</span
+      }}{{ row.approvedBy ? text.approvedBy + row.approvedBy.fullName : '' }}</span
     >
   </ng-template>
 </ui-resource-list>

@@ -14,4 +14,9 @@ export const SERVICE_DETAIL_TEXT = {
   serviceOfferedAgain: 'Service offered again.',
   serviceRestored: 'Service restored.',
   serviceDeleted: 'Service deleted.',
+  usedBy: 'Used by',
+  notUsedYet: 'Not used yet.',
+  aServiceInUse: 'A service in use cannot be deleted — archive it to stop offering it.',
+  details: 'Details',
+  history: 'History',
 };

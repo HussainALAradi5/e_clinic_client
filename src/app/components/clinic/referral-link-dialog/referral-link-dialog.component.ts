@@ -17,6 +17,7 @@ import { ClinicalOrderApi } from '@services/clinic/clinical-order-api.service';
 import { DoctorApi } from '@services/clinic/doctor-api.service';
 import { PatientApi } from '@services/clinic/patient-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { REFERRAL_LINK_DIALOG_TEXT } from '@constants/clinic/referral-link-dialog.constants';
 
 /**
  * Close the loop of an internal referral: link one of the patient's upcoming visits, or book a new one with the
@@ -29,6 +30,8 @@ import { clinicIsoDate } from '@utilities/clinic-time';
   templateUrl: './referral-link-dialog.component.html',
 })
 export class ReferralLinkDialog implements OnInit {
+  protected readonly text = REFERRAL_LINK_DIALOG_TEXT;
+
   protected readonly data = inject<OrderDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<ReferralLinkDialog, ClinicalOrder>);
   private readonly api = inject(ClinicalOrderApi);

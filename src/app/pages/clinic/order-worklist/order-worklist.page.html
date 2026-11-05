@@ -1,16 +1,13 @@
-<ui-page-header
-  title="Orders work list"
-  subtitle="Open orders, urgent first. Check the patient's card against the order barcode before you start."
->
+<ui-page-header [title]="text.ordersWorkList" [subtitle]="text.openOrdersUrgentFirst">
   <a actions matButton="outlined" routerLink="/clinic/clinical-orders"
-    ><mat-icon>list</mat-icon> All orders</a
+    ><mat-icon>list</mat-icon> {{ text.allOrders }}</a
   >
 </ui-page-header>
 
 <mat-button-toggle-group
   class="mb-4"
   hideSingleSelectionIndicator
-  aria-label="Desk"
+  [attr.aria-label]="text.desk"
   [value]="desk()"
   (change)="pick($event.value)"
 >
@@ -34,7 +31,7 @@
         <a class="min-w-56 flex-1" [routerLink]="['/clinic/clinical-orders', o.id]">
           <span class="block font-semibold hover:underline">{{ o.description }}</span>
           <span class="block text-sm text-on-surface-variant">
-            {{ o.patient?.fullName }} · {{ o.patient?.code }} · by
+            {{ o.patient?.fullName }} · {{ o.patient?.code }} {{ text.by }}
             {{ o.orderingDoctor?.fullName }} · {{ o.createdAt | date: dateTimeFormat }}
           </span>
         </a>
@@ -52,9 +49,9 @@
         >
       </mat-card>
     } @empty {
-      <p class="text-sm text-on-surface-variant">Nothing waiting at this desk.</p>
+      <p class="text-sm text-on-surface-variant">{{ text.nothingWaitingAtThis }}</p>
     }
   </div>
 } @else {
-  <p class="text-sm text-on-surface-variant">Loading…</p>
+  <p class="text-sm text-on-surface-variant">{{ text.loading }}</p>
 }

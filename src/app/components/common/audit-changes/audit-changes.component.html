@@ -2,9 +2,9 @@
   <table class="w-full border-collapse text-sm">
     <thead>
       <tr class="text-left text-xs text-on-surface-variant">
-        <th class="py-1 pr-3 font-medium">Field</th>
-        <th class="py-1 pr-3 font-medium">Before</th>
-        <th class="py-1 font-medium">After</th>
+        <th class="py-1 pr-3 font-medium">{{ text.field }}</th>
+        <th class="py-1 pr-3 font-medium">{{ text.before }}</th>
+        <th class="py-1 font-medium">{{ text.after }}</th>
       </tr>
     </thead>
     <tbody>
@@ -18,5 +18,5 @@
     </tbody>
   </table>
 } @else {
-  <p class="m-0 text-sm text-on-surface-variant">No field changes recorded.</p>
+  <p class="m-0 text-sm text-on-surface-variant">{{ text.noFieldChangesRecorded }}</p>
 }

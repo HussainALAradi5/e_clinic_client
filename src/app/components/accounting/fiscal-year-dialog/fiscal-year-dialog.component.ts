@@ -8,6 +8,7 @@ import { TextField } from '@components/common/text-field/text-field.component';
 import { FiscalYear } from '@interfaces/accounting/fiscal-year.interface';
 import { FiscalApi } from '@services/accounting/fiscal-api.service';
 import { AppValidators } from '@validations/validators';
+import { FISCAL_YEAR_DIALOG_TEXT } from '@constants/accounting/fiscal-year-dialog.constants';
 
 /** A new fiscal year split into monthly periods (plus an optional one-day adjustment period at year end). */
 @Component({
@@ -20,6 +21,7 @@ export class FiscalYearDialog {
   protected readonly ref = inject(MatDialogRef<FiscalYearDialog, FiscalYear>);
   private readonly api = inject(FiscalApi);
 
+  protected readonly text = FISCAL_YEAR_DIALOG_TEXT;
   private readonly next = new Date().getFullYear() + 1;
   protected readonly form = new FormGroup({
     name: new FormControl(`FY${this.next}`, {

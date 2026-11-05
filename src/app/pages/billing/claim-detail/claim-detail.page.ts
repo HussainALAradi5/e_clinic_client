@@ -56,6 +56,8 @@ import { CLAIM_DETAIL_TEXT } from '@constants/billing/claim-detail.constants';
   templateUrl: './claim-detail.page.html',
 })
 export class ClaimDetailPage implements OnInit {
+  protected readonly text = CLAIM_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(InsuranceClaimApi);

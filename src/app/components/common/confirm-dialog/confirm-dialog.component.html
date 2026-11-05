@@ -5,7 +5,7 @@
   }
   @if (data.reason) {
     <mat-form-field class="w-full">
-      <mat-label>{{ data.reasonLabel ?? 'Reason' }}</mat-label>
+      <mat-label>{{ data.reasonLabel ?? text.reason }}</mat-label>
       <textarea
         matInput
         cdkFocusInitial
@@ -15,17 +15,17 @@
       ></textarea>
       <mat-hint align="end"
         >{{ reason.value.trim().length
-        }}{{ data.reasonMinLength ? ' (min ' + data.reasonMinLength + ')' : '' }} /
+        }}{{ data.reasonMinLength ? text.min + data.reasonMinLength + ')' : '' }} /
         {{ maxLength }}</mat-hint
       >
       @if (reason.hasError('required')) {
-        <mat-error>A reason is required.</mat-error>
+        <mat-error>{{ text.aReasonIsRequired }}</mat-error>
       }
     </mat-form-field>
   }
   @if (data.typeToConfirm) {
     <mat-form-field class="w-full">
-      <mat-label>Type {{ data.typeToConfirm }} to confirm</mat-label>
+      <mat-label>{{ text.type }} {{ data.typeToConfirm }} {{ text.toConfirm }}</mat-label>
       <input matInput [formControl]="typed" autocomplete="off" />
     </mat-form-field>
   }
@@ -38,6 +38,6 @@
     [disabled]="!canConfirm()"
     [mat-dialog-close]="data.reason ? reason.value.trim() : true"
   >
-    {{ data.confirmLabel ?? 'Confirm' }}
+    {{ data.confirmLabel ?? text.confirm }}
   </button>
 </mat-dialog-actions>

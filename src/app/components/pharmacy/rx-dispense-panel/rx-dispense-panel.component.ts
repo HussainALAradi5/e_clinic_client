@@ -60,6 +60,8 @@ import { RX_DISPENSE_PANEL_TEXT } from '@constants/pharmacy/rx-dispense-panel.co
   templateUrl: './rx-dispense-panel.component.html',
 })
 export class RxDispensePanel {
+  protected readonly text = RX_DISPENSE_PANEL_TEXT;
+
   readonly prescriptionId = input.required<string>();
   readonly dispensed = output<Dispensation>();
 

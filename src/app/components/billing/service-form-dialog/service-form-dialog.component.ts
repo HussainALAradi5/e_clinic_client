@@ -17,6 +17,7 @@ import { BillableServicePayload } from '@interfaces/billing/billable-service-pay
 import { Specialty } from '@interfaces/clinic/specialty.interface';
 import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { dirtyPayload } from '@utilities/form-payload';
+import { SERVICE_FORM_DIALOG_TEXT } from '@constants/billing/service-form-dialog.constants';
 
 /** Create or edit a price-list item; a new price applies to new charges only. */
 @Component({
@@ -35,6 +36,8 @@ import { dirtyPayload } from '@utilities/form-payload';
   templateUrl: './service-form-dialog.component.html',
 })
 export class ServiceFormDialog {
+  protected readonly text = SERVICE_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<ServiceFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<ServiceFormDialog, BillableService>);
   protected readonly service = this.data.service;

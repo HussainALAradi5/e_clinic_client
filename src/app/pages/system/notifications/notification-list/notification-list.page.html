@@ -1,8 +1,8 @@
 <ui-resource-list
   resource="notifications"
-  title="Notifications"
-  subtitle="Every SMS, email, WhatsApp, push and in-app message with its delivery status. Failed messages can be resent."
-  emptyTitle="No notifications in this view"
+  [title]="text.notifications"
+  [subtitle]="text.everySmsEmailWhatsapp"
+  [emptyTitle]="text.noNotificationsInThis"
 >
   <ng-template uiCell="scheduled_for" let-row>
     <span class="whitespace-nowrap tabular-nums">{{

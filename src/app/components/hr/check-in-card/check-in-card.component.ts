@@ -17,6 +17,7 @@ import { TIME_FORMAT } from '@constants/app.constants';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { AttendanceToday } from '@interfaces/hr/attendance-today.interface';
 import { AttendanceApi } from '@services/hr/attendance-api.service';
+import { CHECK_IN_CARD_TEXT } from '@constants/hr/check-in-card.constants';
 
 /** Today at work: the shift, check-in / check-out (clinic network only) and minutes late or over. */
 @Component({
@@ -28,6 +29,8 @@ import { AttendanceApi } from '@services/hr/attendance-api.service';
 export class CheckInCard implements OnInit {
   private readonly api = inject(AttendanceApi);
   private readonly actions = inject(HrActions);
+
+  protected readonly text = CHECK_IN_CARD_TEXT;
   protected readonly today = signal<AttendanceToday | null>(null);
   protected readonly variants = ButtonVariant;
   protected readonly timeFormat = TIME_FORMAT;

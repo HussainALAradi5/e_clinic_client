@@ -51,6 +51,7 @@ import { defaultQuery } from '@utilities/list-query';
  * takings per method.
  */
 import { WALLET_TEXT } from '@constants/billing/wallet.constants';
+import { CASHIER_DESK_TEXT } from '@constants/billing/cashier-desk.constants';
 @Component({
   selector: 'app-cashier-desk-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -74,6 +75,8 @@ import { WALLET_TEXT } from '@constants/billing/wallet.constants';
   templateUrl: './cashier-desk.page.html',
 })
 export class CashierDeskPage implements OnInit {
+  protected readonly text = CASHIER_DESK_TEXT;
+
   protected readonly walletText = WALLET_TEXT;
   private readonly invoices = inject(InvoiceApi);
   private readonly payments = inject(PaymentApi);

@@ -13,6 +13,8 @@ import { ERROR_STATE_TEXT } from '@constants/common/error-state.constants';
   templateUrl: './error-state.component.html',
 })
 export class ErrorState {
+  protected readonly text = ERROR_STATE_TEXT;
+
   readonly error = input<ApiError | unknown>(null);
   readonly retry = output<void>();
   protected readonly message = computed(() => {

@@ -60,6 +60,8 @@ import { ROLE_DETAIL_TEXT } from '@constants/system/role-detail.constants';
   templateUrl: './role-detail.page.html',
 })
 export class RoleDetailPage implements OnInit {
+  protected readonly text = ROLE_DETAIL_TEXT;
+
   readonly id = input.required<string>();
   /** `?tab=members` opens the Members tab (the users count on the roles list links here). */
   readonly tab = input<string | undefined>();

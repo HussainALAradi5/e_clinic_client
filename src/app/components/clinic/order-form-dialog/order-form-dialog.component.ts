@@ -22,6 +22,7 @@ import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { Company } from '@interfaces/reference/company.interface';
 import { ClinicalOrderApi } from '@services/clinic/clinical-order-api.service';
 import { ReferralTarget } from '@interfaces/clinic/order-form-dialog.interface';
+import { ORDER_FORM_DIALOG_TEXT } from '@constants/clinic/order-form-dialog.constants';
 
 /**
  * Order imaging, a lab test or an ECG (billed service of the matching kind), or write a referral to a doctor, a
@@ -42,6 +43,8 @@ import { ReferralTarget } from '@interfaces/clinic/order-form-dialog.interface';
   templateUrl: './order-form-dialog.component.html',
 })
 export class OrderFormDialog {
+  protected readonly text = ORDER_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<OrderFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<OrderFormDialog, ClinicalOrder>);
   private readonly api = inject(ClinicalOrderApi);

@@ -10,6 +10,7 @@ import { Payment } from '@interfaces/billing/payment.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { PaymentApi } from '@services/billing/payment-api.service';
+import { RECEIPT_PRINT_TEXT } from '@constants/billing/receipt-print.constants';
 
 /** `/print/receipt/:id` — payment receipt for an 80 mm receipt printer. */
 @Component({
@@ -19,6 +20,8 @@ import { PaymentApi } from '@services/billing/payment-api.service';
   templateUrl: './receipt-print.page.html',
 })
 export class ReceiptPrintPage implements OnInit {
+  protected readonly text = RECEIPT_PRINT_TEXT;
+
   protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 

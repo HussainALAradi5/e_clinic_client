@@ -2,7 +2,7 @@
   <ui-error [error]="error" (retry)="detail.load(id())" />
 } @else if (detail.record(); as inv) {
   <ui-page-header
-    [title]="inv.invoiceNumber ? 'Invoice ' + inv.invoiceNumber : 'Draft invoice'"
+    [title]="inv.invoiceNumber ? text.invoice + inv.invoiceNumber : text.draftInvoice"
     [subtitle]="inv.patient?.fullName + ' · ' + inv.patient?.code"
   >
     <ng-container status><ui-status [value]="inv.status" enum="InvoiceStatus" /></ng-container>
@@ -13,16 +13,16 @@
           [variant]="variants.Outlined"
           access="invoices.create"
           [action]="edit"
-          >Edit lines</ui-button
+          >{{ text.editLines }}</ui-button
         >
-        <ui-button icon="task_alt" access="invoices.write & invoices.issue" [action]="issue"
-          >Issue</ui-button
-        >
+        <ui-button icon="task_alt" access="invoices.write & invoices.issue" [action]="issue">{{
+          text.issue
+        }}</ui-button>
       }
       @if (payable()) {
-        <ui-button icon="point_of_sale" access="payments.create" [action]="pay"
-          >Take payment</ui-button
-        >
+        <ui-button icon="point_of_sale" access="payments.create" [action]="pay">{{
+          text.takePayment
+        }}</ui-button>
         <ui-button
           icon="notifications_active"
           [variant]="variants.Outlined"
@@ -38,7 +38,7 @@
           [variant]="variants.Outlined"
           access="claims.create"
           [action]="claim"
-          >Claim insurance</ui-button
+          >{{ text.claimInsurance }}</ui-button
         >
       }
       @for (c of inv.claims ?? []; track c.id) {
@@ -48,7 +48,7 @@
       }
       @if (inv.invoiceNumber) {
         <a matButton="outlined" [routerLink]="['/print/invoice', inv.id]" target="_blank"
-          ><mat-icon>print</mat-icon> Print</a
+          ><mat-icon>print</mat-icon> {{ text.print }}</a
         >
       }
       @if (cancellable()) {
@@ -57,7 +57,7 @@
           [variant]="variants.Danger"
           access="invoices.write & invoices.cancel"
           [action]="cancel"
-          >Cancel</ui-button
+          >{{ text.cancel }}</ui-button
         >
       }
     </ng-container>
@@ -69,10 +69,7 @@
       role="status"
     >
       <mat-icon>edit_document</mat-icon>
-      <span
-        >Draft — completed visits and orders are added here as they happen. Check the lines and
-        discounts, then issue it to take payment.</span
-      >
+      <span>{{ text.draftCompletedVisitsAnd }}</span>
     </div>
   }
 
@@ -80,16 +77,18 @@
     <mat-card appearance="outlined" class="self-start overflow-x-auto !p-0">
       <table class="w-full border-collapse text-sm">
         <caption class="sr-only">
-          Invoice lines
+          {{
+            text.invoiceLines
+          }}
         </caption>
         <thead>
           <tr class="border-b border-outline-variant text-left text-xs text-on-surface-variant">
-            <th class="px-4 py-3 font-medium">Item</th>
-            <th class="px-2 py-3 text-right font-medium">Qty</th>
-            <th class="px-2 py-3 text-right font-medium">Price</th>
-            <th class="px-2 py-3 text-right font-medium">Discount</th>
-            <th class="px-2 py-3 text-right font-medium">VAT</th>
-            <th class="px-4 py-3 text-right font-medium">Total</th>
+            <th class="px-4 py-3 font-medium">{{ text.item }}</th>
+            <th class="px-2 py-3 text-right font-medium">{{ text.qty }}</th>
+            <th class="px-2 py-3 text-right font-medium">{{ text.price }}</th>
+            <th class="px-2 py-3 text-right font-medium">{{ text.discount }}</th>
+            <th class="px-2 py-3 text-right font-medium">{{ text.vat }}</th>
+            <th class="px-4 py-3 text-right font-medium">{{ text.total }}</th>
           </tr>
         </thead>
         <tbody>
@@ -101,7 +100,7 @@
                   @if (sourceLink(item); as link) {
                     <a class="text-primary" [routerLink]="link">{{ item.source?.code }}</a>
                   } @else {
-                    {{ item.billableService?.code ?? 'Free-text line' }}
+                    {{ item.billableService?.code ?? text.freeTextLine }}
                   }
                   @if (item.doctor) {
                     · {{ item.doctor.fullName }}
@@ -132,7 +131,7 @@
           } @empty {
             <tr>
               <td class="px-4 py-6 text-center text-on-surface-variant" colspan="6">
-                No lines yet.
+                {{ text.noLinesYet }}
               </td>
             </tr>
           }
@@ -148,20 +147,20 @@
     <div class="flex flex-col gap-4">
       <mat-card appearance="outlined" class="!p-5">
         <dl class="m-0 grid grid-cols-[1fr_auto] gap-x-4 gap-y-1.5 text-sm tabular-nums">
-          <dt class="text-on-surface-variant">Subtotal</dt>
+          <dt class="text-on-surface-variant">{{ text.subtotal }}</dt>
           <dd class="m-0 text-right">{{ inv.subtotal | money }}</dd>
-          <dt class="text-on-surface-variant">Discount</dt>
+          <dt class="text-on-surface-variant">{{ text.discount }}</dt>
           <dd class="m-0 text-right">−{{ inv.discountTotal.amount }}</dd>
-          <dt class="text-on-surface-variant">VAT</dt>
+          <dt class="text-on-surface-variant">{{ text.vat }}</dt>
           <dd class="m-0 text-right">{{ inv.taxTotal.amount }}</dd>
-          <dt class="border-t border-outline-variant pt-2 font-semibold">Total</dt>
+          <dt class="border-t border-outline-variant pt-2 font-semibold">{{ text.total }}</dt>
           <dd class="m-0 border-t border-outline-variant pt-2 text-right font-semibold">
             {{ inv.total | money }}
           </dd>
-          <dt class="text-on-surface-variant">Paid</dt>
+          <dt class="text-on-surface-variant">{{ text.paid }}</dt>
           <dd class="m-0 text-right">{{ inv.paidAmount | money }}</dd>
           @if (inv.refundedAmount.amount !== '0.000') {
-            <dt class="text-on-surface-variant">Refunded</dt>
+            <dt class="text-on-surface-variant">{{ text.refunded }}</dt>
             <dd class="m-0 text-right">{{ inv.refundedAmount | money }}</dd>
           }
         </dl>
@@ -173,7 +172,7 @@
               : 'bg-primary-container text-on-primary-container'
           "
         >
-          <p class="m-0 text-xs">Balance due</p>
+          <p class="m-0 text-xs">{{ text.balanceDue }}</p>
           <p class="m-0 text-2xl font-semibold tabular-nums">{{ inv.balanceDue | money }}</p>
         </div>
         @if (inv.invoiceNumber) {
@@ -186,11 +185,13 @@
   </div>
 
   @if (inv.payments?.length) {
-    <h2 class="mb-2 mt-6 text-base font-semibold">Payments</h2>
+    <h2 class="mb-2 mt-6 text-base font-semibold">{{ text.payments }}</h2>
     <mat-card appearance="outlined" class="overflow-x-auto !p-0">
       <table class="w-full border-collapse text-sm">
         <caption class="sr-only">
-          Payments
+          {{
+            text.payments
+          }}
         </caption>
         <tbody>
           @for (p of inv.payments; track p.id) {
@@ -219,7 +220,7 @@
                 {{ p.amount | money }}
                 @if (p.refundedAmount.amount !== '0.000') {
                   <span class="block text-xs text-on-surface-variant"
-                    >refunded {{ p.refundedAmount.amount }}</span
+                    >{{ text.refundedPrefix }} {{ p.refundedAmount.amount }}</span
                   >
                 }
               </td>
@@ -231,7 +232,7 @@
                     [variant]="variants.Text"
                     access="refunds.create & refunds.request"
                     [action]="refund.bind(this, p)"
-                    >Refund</ui-button
+                    >{{ text.refund }}</ui-button
                   >
                 }
                 @if (voidable(p)) {
@@ -240,7 +241,7 @@
                     [variant]="variants.Text"
                     access="payments.write & payments.void"
                     [action]="voidPayment.bind(this, p)"
-                    >Void</ui-button
+                    >{{ text.void }}</ui-button
                   >
                 }
               </td>
@@ -252,11 +253,13 @@
   }
 
   @if (inv.refunds?.length) {
-    <h2 class="mb-2 mt-6 text-base font-semibold">Refunds</h2>
+    <h2 class="mb-2 mt-6 text-base font-semibold">{{ text.refunds }}</h2>
     <mat-card appearance="outlined" class="overflow-x-auto !p-0">
       <table class="w-full border-collapse text-sm">
         <caption class="sr-only">
-          Refunds
+          {{
+            text.refunds
+          }}
         </caption>
         <tbody>
           @for (r of inv.refunds; track r.id) {
@@ -269,7 +272,7 @@
               <td class="px-2 py-3 text-right tabular-nums">{{ r.amount | money }}</td>
               <td class="px-2 py-3">
                 @if (r.isProcessed) {
-                  <span class="text-sm text-on-surface-variant">Paid out</span>
+                  <span class="text-sm text-on-surface-variant">{{ text.paidOut }}</span>
                 } @else {
                   <ui-status [value]="r.status" enum="ApprovalStatus" />
                 }
@@ -281,14 +284,14 @@
                     [variant]="variants.Text"
                     access="refunds.write & refunds.approve"
                     [action]="approve.bind(this, r)"
-                    >Approve</ui-button
+                    >{{ text.approve }}</ui-button
                   >
                   <ui-button
                     icon="close"
                     [variant]="variants.Text"
                     access="refunds.write & refunds.approve"
                     [action]="reject.bind(this, r)"
-                    >Reject</ui-button
+                    >{{ text.reject }}</ui-button
                   >
                 }
                 @if (approvedUnpaid(r)) {
@@ -297,7 +300,7 @@
                     [variant]="variants.Text"
                     access="refunds.write & refunds.process"
                     [action]="payOut.bind(this, r)"
-                    >Pay out</ui-button
+                    >{{ text.payOut }}</ui-button
                   >
                 }
               </td>
@@ -314,7 +317,7 @@
     mat-stretch-tabs="false"
     animationDuration="0ms"
   >
-    <mat-tab label="History">
+    <mat-tab [label]="text.history">
       <ng-template matTabContent
         ><ui-audit-history class="block pt-4" type="invoice" [id]="inv.id"
       /></ng-template>

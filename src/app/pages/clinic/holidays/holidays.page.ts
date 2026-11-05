@@ -30,6 +30,7 @@ export class HolidaysPage {
   private readonly dialogs = inject(DialogService);
   private readonly notify = inject(NotifyService);
 
+  protected readonly text = HOLIDAYS_TEXT;
   protected readonly holidays = signal<ScheduleException[] | null>(null);
   protected readonly variants = ButtonVariant;
   protected readonly dateFormat = 'EEEE ' + DATE_FORMAT;

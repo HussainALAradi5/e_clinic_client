@@ -30,6 +30,7 @@ import { PatientApi } from '@services/clinic/patient-api.service';
 import { EnumService } from '@services/data/enum.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { BOOKING_WIZARD_TEXT } from '@constants/clinic/booking-wizard.constants';
 
 /**
  * Booking wizard: 1 patient (search or quick-register) → 2 visit type, doctor, room → 3 date and a free slot.
@@ -52,6 +53,8 @@ import { clinicIsoDate } from '@utilities/clinic-time';
   templateUrl: './booking-wizard.component.html',
 })
 export class BookingWizard {
+  protected readonly text = BOOKING_WIZARD_TEXT;
+
   protected readonly data = inject<BookingWizardData | null>(MAT_DIALOG_DATA) ?? {};
   protected readonly ref = inject(MatDialogRef<BookingWizard, Appointment>);
   private readonly api = inject(AppointmentApi);

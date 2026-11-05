@@ -4,14 +4,14 @@
   <ui-page-header [title]="role.displayName" [subtitle]="role.code + ' · ' + role.name">
     @if (role.isSystem) {
       <span status class="inline-flex items-center gap-1 text-xs text-on-surface-variant"
-        ><mat-icon class="!size-4 !text-base">lock</mat-icon>System</span
+        ><mat-icon class="!size-4 !text-base">lock</mat-icon>{{ text.system }}</span
       >
     }
     @if (role.isArchived) {
       <span
         status
         class="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
-        >Archived</span
+        >{{ text.archived }}</span
       >
     }
     <ui-button
@@ -20,10 +20,15 @@
       access="roles.write"
       [action]="openMatrix"
       [disabled]="store.readOnlyMatrix()"
-      >Access matrix</ui-button
+      >{{ text.accessMatrix }}</ui-button
     >
-    <ui-button actions icon="edit" [variant]="variants.Tonal" access="roles.write" [action]="edit"
-      >Edit</ui-button
+    <ui-button
+      actions
+      icon="edit"
+      [variant]="variants.Tonal"
+      access="roles.write"
+      [action]="edit"
+      >{{ text.edit }}</ui-button
     >
     @if (role.isArchived) {
       <ui-button
@@ -32,7 +37,7 @@
         [variant]="variants.Outlined"
         access="roles.write"
         [action]="unarchive"
-        >Unarchive</ui-button
+        >{{ text.unarchive }}</ui-button
       >
     } @else {
       <ui-button
@@ -41,7 +46,7 @@
         [variant]="variants.Outlined"
         access="roles.write"
         [action]="archive"
-        >Archive</ui-button
+        >{{ text.archive }}</ui-button
       >
     }
     @if (!role.isSystem) {
@@ -52,7 +57,7 @@
         access="roles.delete"
         [confirm]="deleteConfirm"
         [action]="remove"
-        >Delete</ui-button
+        >{{ text.delete }}</ui-button
       >
     }
   </ui-page-header>
@@ -62,17 +67,17 @@
     animationDuration="0ms"
     [selectedIndex]="tab() === 'members' ? 1 : 0"
   >
-    <mat-tab label="Overview">
+    <mat-tab [label]="text.overview">
       <div class="grid grid-cols-1 gap-4 pt-4 lg:grid-cols-3">
         <mat-card appearance="outlined" class="!p-5 lg:col-span-2">
-          <h2 class="m-0 mb-2 text-base font-semibold">Description</h2>
+          <h2 class="m-0 mb-2 text-base font-semibold">{{ text.description }}</h2>
           <p class="m-0 text-sm whitespace-pre-line text-on-surface-variant">
-            {{ role.description || 'No description.' }}
+            {{ role.description || text.noDescription }}
           </p>
         </mat-card>
         <mat-card appearance="outlined" class="!p-5">
           <dl class="m-0 grid grid-cols-[1fr_auto] gap-y-2 text-sm">
-            <dt class="text-on-surface-variant">Users</dt>
+            <dt class="text-on-surface-variant">{{ text.users }}</dt>
             <dd class="m-0 text-right font-semibold tabular-nums">
               <a
                 class="text-primary underline-offset-2 hover:underline"
@@ -81,7 +86,7 @@
                 >{{ role.usersCount ?? 0 }}</a
               >
             </dd>
-            <dt class="text-on-surface-variant">Permissions</dt>
+            <dt class="text-on-surface-variant">{{ text.permissions }}</dt>
             <dd class="m-0 text-right font-semibold tabular-nums">
               {{ role.permissionsCount ?? 0 }}
             </dd>
@@ -92,7 +97,7 @@
 
     <mat-tab *hasAccess="'users.read_all | users.read_own'">
       <ng-template mat-tab-label>
-        Members
+        {{ text.members }}
         <span
           class="ms-2 rounded-full bg-secondary-container px-2 text-xs font-semibold text-on-secondary-container tabular-nums"
           >{{ role.usersCount ?? 0 }}</span
@@ -102,19 +107,19 @@
         <!-- The users who hold this role: same table as Users (search, filters, sorting, pages), limited to it. -->
         @if (!role.isArchived) {
           <div class="flex justify-end pt-4">
-            <ui-button icon="group_add" access="roles.write&roles.assign" [action]="addMembers"
-              >Add people</ui-button
-            >
+            <ui-button icon="group_add" access="roles.write&roles.assign" [action]="addMembers">{{
+              text.addPeople
+            }}</ui-button>
           </div>
         }
         <ui-resource-list
           #members
           class="block pt-4"
           resource="users"
-          title="Members"
+          [title]="text.members"
           embedded
           rowLink="/system/users/:id"
-          emptyTitle="Nobody has this role yet"
+          [emptyTitle]="text.nobodyHasThisRole"
           [params]="{ role: role.name }"
           [columns]="memberColumns"
         >
@@ -129,7 +134,7 @@
             </span>
           </ng-template>
           <ng-template uiCell="last_login_at" let-row>
-            {{ row.lastLoginAt ? (row.lastLoginAt | relativeTime) : 'Never' }}
+            {{ row.lastLoginAt ? (row.lastLoginAt | relativeTime) : text.never }}
           </ng-template>
           <ng-template uiCell="row_actions" let-row>
             <ui-button
@@ -138,14 +143,14 @@
               [variant]="variants.Text"
               [confirm]="removeConfirm(row)"
               [action]="removeMember(row)"
-              >Remove</ui-button
+              >{{ text.remove }}</ui-button
             >
           </ng-template>
         </ui-resource-list>
       </ng-template>
     </mat-tab>
 
-    <mat-tab label="Access">
+    <mat-tab [label]="text.access">
       <div class="pt-4">
         @for (row of granted(); track row.resource) {
           <div
@@ -160,12 +165,12 @@
             </mat-chip-set>
           </div>
         } @empty {
-          <p class="text-sm text-on-surface-variant">This role grants no rights yet.</p>
+          <p class="text-sm text-on-surface-variant">{{ text.thisRoleGrantsNo }}</p>
         }
       </div>
     </mat-tab>
 
-    <mat-tab label="History" *hasAccess="'audit.read_all | audit.read_own'">
+    <mat-tab [label]="text.history" *hasAccess="'audit.read_all | audit.read_own'">
       <ng-template matTabContent>
         <div class="pt-4"><ui-audit-history type="role" [id]="role.id" /></div>
       </ng-template>

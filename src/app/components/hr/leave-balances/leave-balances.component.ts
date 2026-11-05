@@ -4,6 +4,7 @@ import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { LeaveBalance } from '@interfaces/hr/leave-balance.interface';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { LeaveApi } from '@services/hr/leave-api.service';
+import { LEAVE_BALANCES_TEXT } from '@constants/hr/leave-balances.constants';
 
 /** An employee's leave this year by type: what is left, taken and waiting. */
 @Component({
@@ -13,6 +14,8 @@ import { LeaveApi } from '@services/hr/leave-api.service';
   templateUrl: './leave-balances.component.html',
 })
 export class LeaveBalances {
+  protected readonly text = LEAVE_BALANCES_TEXT;
+
   readonly employeeId = input.required<string>();
   /** Bump to reload (e.g. after a new request). */
   readonly version = input(0);

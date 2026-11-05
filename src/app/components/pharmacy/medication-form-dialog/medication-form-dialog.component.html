@@ -1,43 +1,39 @@
-<h2 mat-dialog-title>{{ medication ? 'Edit ' + medication.name : 'New medication' }}</h2>
+<h2 mat-dialog-title>{{ medication ? text.edit + medication.name : text.newMedication }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    [submitLabel]="medication ? 'Save' : 'Add to catalogue'"
+    [submitLabel]="medication ? text.save : text.addToCatalogue"
     [compact]="true"
     (cancelled)="ref.close()"
   >
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+      <ui-text [label]="text.code" [hint]="text.alsoItsPriceList" [control]="form.controls.code" />
       <ui-text
-        label="Code"
-        hint="Also its price-list code, e.g. MED-AMOX-500"
-        [control]="form.controls.code"
-      />
-      <ui-text
-        label="Barcode (GTIN)"
+        [label]="text.barcodeGtin"
         icon="barcode"
-        hint="Scan the pack, or type 8–14 digits"
+        [hint]="text.scanThePackOr"
         [control]="form.controls.gtin"
       />
-      <ui-text label="Generic name" [control]="form.controls.genericName" />
-      <ui-text label="Brand name" [control]="form.controls.brandName" />
+      <ui-text [label]="text.genericName" [control]="form.controls.genericName" />
+      <ui-text [label]="text.brandName" [control]="form.controls.brandName" />
       <ui-select
-        label="Form"
+        [label]="text.form"
         enum="MedicationForm"
         [required]="true"
         [control]="form.controls.form"
       />
-      <ui-text label="Strength" hint="e.g. 500 mg, 5 mg/ml" [control]="form.controls.strength" />
+      <ui-text [label]="text.strength" [hint]="text.eG500Mg" [control]="form.controls.strength" />
       <ui-select
-        label="Counted in"
+        [label]="text.countedIn"
         enum="DispenseUnit"
-        hint="The unit stock, prescriptions and prices use"
+        [hint]="text.theUnitStockPrescriptions"
         [required]="true"
         [control]="form.controls.unit"
       />
-      <ui-text label="Arabic name" [control]="form.controls.nameAr" />
+      <ui-text [label]="text.arabicName" [control]="form.controls.nameAr" />
       <ui-entity-select
-        label="Manufacturer"
+        [label]="text.manufacturer"
         endpoint="reference/companies"
         icon="factory"
         [display]="companyName"
@@ -45,37 +41,35 @@
         [initial]="$any(medication?.manufacturer ?? null)"
         [control]="form.controls.manufacturerId"
       />
-      <ui-country-select label="Made in" [control]="form.controls.originCountryCode" />
+      <ui-country-select [label]="text.madeIn" [control]="form.controls.originCountryCode" />
     </div>
 
-    <h3 class="m-0 mb-2 mt-1 text-sm font-semibold text-on-surface-variant">Price and stock</h3>
+    <h3 class="m-0 mb-2 mt-1 text-sm font-semibold text-on-surface-variant">
+      {{ text.priceAndStock }}
+    </h3>
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-3">
-      <ui-money label="Price per unit" [control]="form.controls.price" />
-      <ui-text label="VAT %" type="number" [control]="form.controls.taxRate" />
+      <ui-money [label]="text.pricePerUnit" [control]="form.controls.price" />
+      <ui-text [label]="text.vat" type="number" [control]="form.controls.taxRate" />
       <ui-text
-        label="Reorder level"
+        [label]="text.reorderLevel"
         type="number"
-        hint="Flagged as low at or below this"
+        [hint]="text.flaggedAsLowAt"
         [control]="form.controls.reorderLevel"
       />
     </div>
 
     <div class="mb-3 flex flex-wrap gap-x-6">
-      <mat-checkbox class="-ml-2" [formControl]="form.controls.requiresPrescription"
-        >Prescription only</mat-checkbox
-      >
-      <mat-checkbox class="-ml-2" [formControl]="form.controls.isControlled"
-        >Controlled drug — witness needed</mat-checkbox
-      >
+      <mat-checkbox class="-ml-2" [formControl]="form.controls.requiresPrescription">{{
+        text.prescriptionOnly
+      }}</mat-checkbox>
+      <mat-checkbox class="-ml-2" [formControl]="form.controls.isControlled">{{
+        text.controlledDrugWitnessNeeded
+      }}</mat-checkbox>
     </div>
 
+    <ui-text [label]="text.storage" [hint]="text.eG28" [control]="form.controls.storageNotes" />
     <ui-text
-      label="Storage"
-      hint="e.g. 2–8 °C, protect from light"
-      [control]="form.controls.storageNotes"
-    />
-    <ui-text
-      label="Indications and notes"
+      [label]="text.indicationsAndNotes"
       [multiline]="true"
       [rows]="3"
       [control]="form.controls.description"

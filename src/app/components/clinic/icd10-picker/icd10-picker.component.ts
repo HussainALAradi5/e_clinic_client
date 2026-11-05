@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { Icd10Code } from '@interfaces/clinic/icd10-code.interface';
 import { MedicalRecordApi } from '@services/clinic/medical-record-api.service';
+import { ICD10_PICKER_TEXT } from '@constants/clinic/icd10-picker.constants';
 
 /** Type a code ("J06") or words in English or Arabic; pick a diagnosis. */
 @Component({
@@ -27,6 +28,8 @@ import { MedicalRecordApi } from '@services/clinic/medical-record-api.service';
   templateUrl: './icd10-picker.component.html',
 })
 export class Icd10Picker {
+  protected readonly text = ICD10_PICKER_TEXT;
+
   readonly disabled = input(false);
   readonly picked = output<Icd10Code>();
 

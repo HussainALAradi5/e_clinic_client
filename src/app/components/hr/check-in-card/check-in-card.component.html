@@ -1,18 +1,18 @@
 <mat-card appearance="outlined" class="!p-5">
   <div class="mb-3 flex items-start justify-between gap-3">
     <div>
-      <h2 class="m-0 text-base font-semibold">Today</h2>
+      <h2 class="m-0 text-base font-semibold">{{ text.today }}</h2>
       @if (today(); as t) {
         <p class="m-0 text-sm text-on-surface-variant">
           @if (t.shift.name) {
             {{ t.shift.name }} ({{ t.shift.code }}) ·
             {{
               t.shift.type === 'flexible'
-                ? 'in by ' + t.shift.start
+                ? text.inBy + t.shift.start
                 : t.shift.start + '–' + t.shift.end
             }}
           } @else {
-            Shift {{ t.shift.start }}–{{ t.shift.end }}
+            {{ text.shift }} {{ t.shift.start }}–{{ t.shift.end }}
           }
         </p>
       }
@@ -24,40 +24,42 @@
   @if (day(); as d) {
     <dl class="m-0 mb-4 grid grid-cols-3 gap-2 text-sm">
       <div>
-        <dt class="text-on-surface-variant">In</dt>
+        <dt class="text-on-surface-variant">{{ text.in }}</dt>
         <dd class="m-0 text-lg font-semibold tabular-nums">
           {{ d.checkInAt ? (d.checkInAt | date: timeFormat : zone) : '—' }}
         </dd>
       </div>
       <div>
-        <dt class="text-on-surface-variant">Out</dt>
+        <dt class="text-on-surface-variant">{{ text.out }}</dt>
         <dd class="m-0 text-lg font-semibold tabular-nums">
           {{ d.checkOutAt ? (d.checkOutAt | date: timeFormat : zone) : '—' }}
         </dd>
       </div>
       <div>
         <dt class="text-on-surface-variant">
-          {{ d.overtimeMinutes ? 'Overtime' : 'Late' }}
+          {{ d.overtimeMinutes ? text.overtime : text.late }}
         </dt>
         <dd class="m-0 text-lg font-semibold tabular-nums">
           {{
-            d.overtimeMinutes || d.lateMinutes ? (d.overtimeMinutes || d.lateMinutes) + ' min' : '—'
+            d.overtimeMinutes || d.lateMinutes
+              ? (d.overtimeMinutes || d.lateMinutes) + text.min
+              : '—'
           }}
         </dd>
       </div>
     </dl>
   } @else {
-    <p class="m-0 mb-4 text-sm text-on-surface-variant">Not checked in yet.</p>
+    <p class="m-0 mb-4 text-sm text-on-surface-variant">{{ text.notCheckedInYet }}</p>
   }
   <div class="flex gap-2">
     @if (canCheckIn()) {
-      <ui-button icon="login" [action]="checkIn">Check in</ui-button>
+      <ui-button icon="login" [action]="checkIn">{{ text.checkIn }}</ui-button>
     }
     @if (canCheckOut()) {
-      <ui-button icon="logout" [variant]="variants.Outlined" [action]="checkOut"
-        >Check out</ui-button
-      >
+      <ui-button icon="logout" [variant]="variants.Outlined" [action]="checkOut">{{
+        text.checkOut
+      }}</ui-button>
     }
   </div>
-  <p class="m-0 mt-3 text-xs text-on-surface-variant">Works from the clinic network only.</p>
+  <p class="m-0 mt-3 text-xs text-on-surface-variant">{{ text.worksFromTheClinic }}</p>
 </mat-card>

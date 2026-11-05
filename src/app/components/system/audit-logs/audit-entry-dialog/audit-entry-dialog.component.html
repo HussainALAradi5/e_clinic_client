@@ -1,23 +1,23 @@
 <h2 mat-dialog-title>{{ entry.action | enumLabel: 'AuditAction' }}</h2>
 <mat-dialog-content class="!flex flex-col gap-4">
   <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-sm">
-    <dt class="text-on-surface-variant">When</dt>
+    <dt class="text-on-surface-variant">{{ text.when }}</dt>
     <dd class="m-0">{{ entry.createdAt | date: dateTimeFormat }}</dd>
-    <dt class="text-on-surface-variant">Who</dt>
+    <dt class="text-on-surface-variant">{{ text.who }}</dt>
     <dd class="m-0">
-      {{ entry.user ? entry.user.fullName + ' (' + entry.user.email + ')' : 'System' }}
+      {{ entry.user ? entry.user.fullName + ' (' + entry.user.email + ')' : text.system }}
     </dd>
-    <dt class="text-on-surface-variant">Record</dt>
+    <dt class="text-on-surface-variant">{{ text.record }}</dt>
     <dd class="m-0 break-all">
       {{ entry.module }} · {{ entry.auditableType ?? '—' }} {{ entry.auditableId ?? '' }}
     </dd>
-    <dt class="text-on-surface-variant">From</dt>
+    <dt class="text-on-surface-variant">{{ text.from }}</dt>
     <dd class="m-0 break-all">{{ entry.ipAddress ?? '—' }} · {{ entry.userAgent ?? '—' }}</dd>
-    <dt class="text-on-surface-variant">Request</dt>
+    <dt class="text-on-surface-variant">{{ text.request }}</dt>
     <dd class="m-0 font-mono text-xs">{{ entry.requestId ?? '—' }}</dd>
   </dl>
   <ui-audit-changes [entry]="entry" />
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button matButton mat-dialog-close>Close</button>
+  <button matButton mat-dialog-close>{{ text.close }}</button>
 </mat-dialog-actions>

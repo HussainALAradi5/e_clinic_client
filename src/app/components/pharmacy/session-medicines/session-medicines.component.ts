@@ -24,6 +24,7 @@ import { AppointmentMedicines } from '@interfaces/pharmacy/appointment-medicines
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { DispensationApi } from '@services/pharmacy/dispensation-api.service';
+import { SESSION_MEDICINES_TEXT } from '@constants/pharmacy/session-medicines.constants';
 
 /**
  * Medicines of one visit or session, on the appointment page: what the doctor prescribed there (and how much the
@@ -46,6 +47,8 @@ import { DispensationApi } from '@services/pharmacy/dispensation-api.service';
   templateUrl: './session-medicines.component.html',
 })
 export class SessionMedicines implements OnInit {
+  protected readonly text = SESSION_MEDICINES_TEXT;
+
   readonly appointmentId = input.required<string>();
   readonly patient = input.required<PatientSummary | null>();
   /** Checked in or in progress: medicines can be given now. */

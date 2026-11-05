@@ -1,15 +1,11 @@
 <ui-page-header
   [title]="title()"
-  [subtitle]="
-    canReview
-      ? 'Late excuses and overtime from the team. Approve with an optional note; a rejection always says why.'
-      : 'Ask HR to excuse a late arrival or to pay your overtime, and follow the decision.'
-  "
+  [subtitle]="canReview ? text.lateExcusesAndOvertime : text.askHrToExcuse"
 />
 
 <div class="layout" [class.with-rail]="canAsk">
   <!-- Requests: status tabs with server counts, type chips, search, cards, pages. -->
-  <section class="min-w-0" aria-label="Requests">
+  <section class="min-w-0" [attr.aria-label]="text.requests">
     <div class="tabs" role="tablist">
       @for (t of tabs; track t.value) {
         <button
@@ -29,9 +25,9 @@
     </div>
 
     <div class="filters">
-      <div class="chips" role="group" aria-label="Kind of request">
+      <div class="chips" role="group" [attr.aria-label]="text.kindOfRequest">
         <button type="button" class="chip" [class.on]="type() === null" (click)="setType(null)">
-          All kinds
+          {{ text.allKinds }}
         </button>
         <button
           type="button"
@@ -39,7 +35,7 @@
           [class.on]="type() === types.LateExcuse"
           (click)="setType(types.LateExcuse)"
         >
-          <mat-icon aria-hidden="true">running_with_errors</mat-icon> Late excuses
+          <mat-icon aria-hidden="true">running_with_errors</mat-icon> {{ text.lateExcuses }}
         </button>
         <button
           type="button"
@@ -47,17 +43,17 @@
           [class.on]="type() === types.Overtime"
           (click)="setType(types.Overtime)"
         >
-          <mat-icon aria-hidden="true">more_time</mat-icon> Overtime
+          <mat-icon aria-hidden="true">more_time</mat-icon> {{ text.overtime }}
         </button>
       </div>
       <label class="search">
         <mat-icon aria-hidden="true">search</mat-icon>
         <input
           type="search"
-          [placeholder]="seesEveryone ? 'Code or reason' : 'Search my requests'"
+          [placeholder]="seesEveryone ? text.codeOrReason : text.searchMyRequests"
           [value]="search()"
           (change)="setSearch($any($event.target).value)"
-          aria-label="Search requests"
+          [attr.aria-label]="text.searchRequests"
         />
       </label>
     </div>
@@ -76,13 +72,13 @@
         @if (!loading()) {
           <ui-empty
             icon="fact_check"
-            [title]="tab() === 'pending' ? 'Nothing waiting' : 'No requests here'"
+            [title]="tab() === 'pending' ? text.nothingWaiting : text.noRequestsHere"
             [message]="
               tab() === 'pending'
                 ? canReview
-                  ? 'Every late excuse and overtime request has been decided.'
-                  : 'You have no request waiting for HR.'
-                : 'Try another tab or kind.'
+                  ? text.everyLateExcuseAnd
+                  : text.youHaveNoRequest
+                : text.tryAnotherTabOr
             "
           />
         }
@@ -98,10 +94,10 @@
 
   <!-- My days I can still ask about (only the kinds HR has switched on). -->
   @if (canAsk) {
-    <aside class="rail" aria-label="Ask HR about a day">
-      <h2 class="m-0 text-base font-semibold">Ask HR about a day</h2>
+    <aside class="rail" [attr.aria-label]="text.askHrAboutA">
+      <h2 class="m-0 text-base font-semibold">{{ text.askHrAboutA }}</h2>
       <p class="m-0 mb-1 text-sm text-on-surface-variant">
-        Your last 31 days with late minutes or overtime not settled yet.
+        {{ text.yourLast31Days }}
       </p>
       @for (a of askable(); track a.attendance.id) {
         <div class="day">
@@ -123,14 +119,14 @@
                 type="button"
                 class="ask"
                 [class.late]="t === types.LateExcuse"
-                [matTooltip]="t === types.LateExcuse ? 'Ask HR to excuse it' : 'Ask HR to pay it'"
+                [matTooltip]="t === types.LateExcuse ? text.askHrToExcuseIt : text.askHrToPay"
                 (click)="ask(a.attendance, t)"
               >
                 <mat-icon aria-hidden="true">{{
                   t === types.LateExcuse ? 'running_with_errors' : 'more_time'
                 }}</mat-icon>
                 <span>
-                  {{ t === types.LateExcuse ? 'Late' : 'Overtime' }}
+                  {{ t === types.LateExcuse ? text.late : text.overtime }}
                   <strong>{{ minutesOf(a.attendance, t) | duration }}</strong>
                 </span>
                 <mat-icon class="go" aria-hidden="true">arrow_forward</mat-icon>
@@ -142,8 +138,7 @@
         <div class="day calm">
           <mat-icon aria-hidden="true">sentiment_satisfied</mat-icon>
           <p class="m-0 text-sm">
-            Nothing to ask about — no late arrivals or unpaid overtime, or HR has these requests
-            switched off.
+            {{ text.nothingToAskAbout }}
           </p>
         </div>
       }

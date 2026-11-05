@@ -1,14 +1,16 @@
 <ui-resource-list
   resource="journal"
   endpoint="accounting/journal-entries"
-  title="Journal"
-  subtitle="Every invoice, payment, refund, drawer difference and expense posts here by itself. Write manual entries for the rest."
-  emptyTitle="No journal entries found"
+  [title]="text.journal"
+  [subtitle]="text.everyInvoicePaymentRefund"
+  [emptyTitle]="text.noJournalEntriesFound"
   rowLink="/accounting/journal/:id"
 >
-  <ui-button actions icon="add" access="journal.create" [action]="create">New entry</ui-button>
+  <ui-button actions icon="add" access="journal.create" [action]="create">{{
+    text.newEntry
+  }}</ui-button>
   <ng-template uiCell="entry_number" let-row
-    ><span class="font-mono">{{ row.entryNumber ?? 'Draft' }}</span></ng-template
+    ><span class="font-mono">{{ row.entryNumber ?? text.draft }}</span></ng-template
   >
   <ng-template uiCell="code" let-row
     ><span class="font-mono text-on-surface-variant">{{ row.code }}</span></ng-template

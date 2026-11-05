@@ -13,6 +13,7 @@ import { Refund } from '@interfaces/billing/refund.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { defaultQuery } from '@utilities/list-query';
+import { REFUND_LIST_TEXT } from '@constants/billing/refund-list.constants';
 
 /**
  * `/billing/refunds` — the refund queue: approvers see what waits for them, cashiers what is approved and still to
@@ -26,6 +27,8 @@ import { defaultQuery } from '@utilities/list-query';
 })
 export class RefundListPage {
   private readonly actions = inject(BillingActions);
+
+  protected readonly text = REFUND_LIST_TEXT;
   private readonly list = viewChild.required(ResourceListPage);
 
   protected readonly variants = ButtonVariant;

@@ -8,14 +8,15 @@
           id="hero-title"
           class="m-0 text-[2.6rem] leading-[1.05] font-extrabold tracking-[-0.03em] sm:text-6xl lg:text-[4.25rem]"
         >
-          Unhurried care, ten minutes from home.
+          {{ text.unhurriedCareTenMinutes }}
         </h1>
         <p class="mt-6 mb-0 max-w-[46ch] text-lg leading-relaxed text-white/75">
-          {{ clinic.tagline }} Book by phone or sign in to book online, and see your results as soon
-          as your doctor releases them.
+          {{ clinic.tagline }} {{ text.bookByPhoneOr }}
         </p>
         <div class="mt-9 flex flex-wrap items-center gap-3">
-          <a class="btn-on-brand" [href]="tel"><mat-icon>call</mat-icon> Call {{ clinic.phone }}</a>
+          <a class="btn-on-brand" [href]="tel"
+            ><mat-icon>call</mat-icon> {{ text.call }} {{ clinic.phone }}</a
+          >
         </div>
       </div>
 
@@ -25,7 +26,7 @@
         aria-labelledby="hours-title"
       >
         <div class="flex items-center justify-between gap-4">
-          <h2 id="hours-title" class="m-0 text-lg font-bold">Opening hours</h2>
+          <h2 id="hours-title" class="m-0 text-lg font-bold">{{ text.openingHours }}</h2>
           <span
             class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold"
             [class.bg-pine-100]="status().open"
@@ -36,7 +37,7 @@
             aria-live="polite"
           >
             <span class="live-dot" [class.off]="!status().open" aria-hidden="true"></span>
-            {{ status().open ? 'Open now' : 'Closed now' }}
+            {{ status().open ? text.openNow : text.closedNow }}
           </span>
         </div>
         <p class="mt-1 mb-4 text-sm text-on-surface-variant">{{ statusText() }}</p>
@@ -50,7 +51,7 @@
             >
               <span>{{ weekdays[h.day] }}</span>
               <span class="tabular-nums">{{
-                h.opens ? h.opens + ' – ' + h.closes : 'Closed'
+                h.opens ? h.opens + ' – ' + h.closes : text.closed
               }}</span>
             </li>
           }
@@ -63,8 +64,8 @@
 <section id="services" class="mx-auto max-w-6xl scroll-mt-24 px-4 pt-20 pb-16 sm:px-6">
   <ui-hub-section
     size="page"
-    title="Everything for one visit, in one building"
-    description="Your doctor, the X-ray room, the lab and the pharmacy are a few steps apart, so most visits need only one trip."
+    [title]="text.everythingForOneVisit"
+    [description]="text.yourDoctorTheX"
   >
     @for (service of services; track service.title; let last = $last) {
       <ui-hub-tile
@@ -85,7 +86,7 @@
 >
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
     <h2 id="visit-title" class="m-0 text-3xl font-bold tracking-tight sm:text-4xl">
-      Your visit, start to finish
+      {{ text.yourVisitStartTo }}
     </h2>
     <ol class="timeline m-0 mt-12 grid list-none gap-10 p-0 md:grid-cols-4 md:gap-6">
       @for (step of steps; track step.title; let i = $index) {
@@ -107,20 +108,21 @@
   >
     <div>
       <h2 id="verify-title" class="m-0 text-2xl font-bold tracking-tight sm:text-3xl">
-        Received a document from us?
+        {{ text.receivedADocumentFrom }}
       </h2>
       <p class="mt-3 mb-0 max-w-[52ch] leading-relaxed text-on-primary-container/85">
-        Every invoice, payslip and medical certificate we print carries a QR code. Scan it, or type
-        the code here, to confirm the clinic issued it and nobody has changed it.
+        {{ text.everyInvoicePayslipAnd }}
       </p>
     </div>
     <form class="flex flex-col gap-3 sm:flex-row sm:items-start" (submit)="verify($event)">
       <mat-form-field class="min-w-0 flex-1" subscriptSizing="dynamic">
-        <mat-label>Document code</mat-label>
+        <mat-label>{{ text.documentCode }}</mat-label>
         <mat-icon matPrefix>qr_code_2</mat-icon>
         <input matInput [formControl]="code" autocomplete="off" spellcheck="false" />
       </mat-form-field>
-      <button matButton="filled" type="submit" class="sm:mt-2 !h-12">Check document</button>
+      <button matButton="filled" type="submit" class="sm:mt-2 !h-12">
+        {{ text.checkDocument }}
+      </button>
     </form>
   </div>
 </section>
@@ -132,29 +134,31 @@
 >
   <div class="grid gap-10 md:grid-cols-2 md:items-end">
     <div>
-      <h2 id="contact-title" class="m-0 text-3xl font-bold tracking-tight sm:text-4xl">Find us</h2>
+      <h2 id="contact-title" class="m-0 text-3xl font-bold tracking-tight sm:text-4xl">
+        {{ text.findUs }}
+      </h2>
       <address class="mt-5 text-lg leading-relaxed not-italic">
         @for (line of clinic.addressLines; track line) {
           {{ line }}<br />
         }
       </address>
       <p class="mt-3 mb-0 text-on-surface-variant">
-        Free parking in front of the building. Wheelchair access from the main entrance.
+        {{ text.freeParkingInFront }}
       </p>
     </div>
     <div class="grid gap-3 sm:grid-cols-2">
       <ui-hub-tile
         icon="map"
-        title="Directions"
-        description="Open in Maps"
+        [title]="text.directions"
+        [description]="text.openInMaps"
         [href]="clinic.mapUrl"
         [external]="true"
       />
-      <ui-hub-tile icon="call" title="Reception" [description]="clinic.phone" [href]="tel" />
+      <ui-hub-tile icon="call" [title]="text.reception" [description]="clinic.phone" [href]="tel" />
       @if (whatsapp) {
         <ui-hub-tile
           icon="chat"
-          title="WhatsApp"
+          [title]="text.whatsapp"
           [description]="clinic.whatsapp"
           [href]="whatsapp"
           [external]="true"
@@ -162,7 +166,7 @@
       }
       <ui-hub-tile
         icon="mail"
-        title="Email"
+        [title]="text.email"
         [description]="clinic.email"
         [href]="'mailto:' + clinic.email"
       />

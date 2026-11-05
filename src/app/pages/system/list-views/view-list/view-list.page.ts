@@ -25,6 +25,8 @@ export class ViewListPage {
   private readonly api = inject(SavedViewApi);
   private readonly dialogs = inject(DialogService);
   private readonly notify = inject(NotifyService);
+
+  protected readonly text = VIEW_LIST_TEXT;
   private readonly list = viewChild.required(ResourceListPage);
 
   protected readonly dateFormat = DATE_FORMAT;

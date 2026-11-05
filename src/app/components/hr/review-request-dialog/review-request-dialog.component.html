@@ -1,48 +1,48 @@
 @let r = data.request;
 <h2 mat-dialog-title>
-  {{ approving ? 'Approve' : 'Reject' }} {{ isLate ? 'late excuse' : 'overtime' }}
+  {{ approving ? text.approve : text.reject }} {{ isLate ? text.lateExcuse : 'overtime' }}
   <span class="block text-sm font-normal text-on-surface-variant"
     >{{ r.employee?.fullName }} · {{ r.code }}</span
   >
 </h2>
 <mat-dialog-content>
   <dl class="m-0 mb-4 grid grid-cols-[8rem_1fr] gap-y-1.5 text-sm">
-    <dt class="text-on-surface-variant">Day</dt>
+    <dt class="text-on-surface-variant">{{ text.day }}</dt>
     <dd class="m-0">{{ r.attendance?.date | date: dateFormat }}</dd>
-    <dt class="text-on-surface-variant">{{ isLate ? 'Late by' : 'Overtime' }}</dt>
+    <dt class="text-on-surface-variant">{{ isLate ? text.lateBy : text.overtime }}</dt>
     <dd class="m-0 flex items-center gap-2">
       <ui-status enum="StaffRequestType" [value]="r.type" />
       <span class="font-semibold">{{ r.minutes | duration }}</span>
     </dd>
     @if (r.details?.amount; as amount) {
-      <dt class="text-on-surface-variant">{{ isLate ? 'If not excused' : 'To pay' }}</dt>
+      <dt class="text-on-surface-variant">{{ isLate ? text.ifNotExcused : text.toPay }}</dt>
       <dd class="m-0">
         {{ isLate ? '−' : '+' }}{{ amount | money }}
         @if (r.details?.rate; as rate) {
-          <span class="text-on-surface-variant">({{ rate }} an hour)</span>
+          <span class="text-on-surface-variant">({{ rate }} {{ text.anHour }}</span>
         }
       </dd>
     }
-    <dt class="text-on-surface-variant">Their reason</dt>
-    <dd class="m-0 italic">{{ r.reason ?? 'No reason given.' }}</dd>
+    <dt class="text-on-surface-variant">{{ text.theirReason }}</dt>
+    <dd class="m-0 italic">{{ r.reason ?? text.noReasonGiven }}</dd>
   </dl>
   <ui-form
     [form]="form"
     [submit]="submit"
-    [submitLabel]="approving ? 'Approve' : 'Reject'"
+    [submitLabel]="approving ? text.approve : text.reject"
     [submitIcon]="approving ? 'check' : 'close'"
     [compact]="true"
     [allowPristine]="approving"
     (cancelled)="ref.close()"
   >
     <ui-text
-      [label]="approving ? 'Note to the employee (optional)' : 'Why it is rejected'"
+      [label]="approving ? text.noteToTheEmployee : text.whyItIsRejected"
       [control]="form.controls.reason"
       [multiline]="true"
       [rows]="3"
       [maxLength]="1000"
       [autofocus]="!approving"
-      hint="The employee sees this with the decision."
+      [hint]="text.theEmployeeSeesThis"
     />
   </ui-form>
 </mat-dialog-content>

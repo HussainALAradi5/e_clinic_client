@@ -28,6 +28,7 @@ import { StatusChip } from '@components/common/status-chip/status-chip.component
 import { DateRangeFilter } from '@components/common/date-range-filter/date-range-filter.component';
 import { DateRangeValue } from '@interfaces/list/date-range-filter.interface';
 import { dateRangeQuery } from '@utilities/date-range-query';
+import { RESULTS_TEXT } from '@constants/portal/results.constants';
 
 /**
  * `/portal/results` — completed tests and scans, newest first. Opening one shows the report and its images or
@@ -50,6 +51,8 @@ import { dateRangeQuery } from '@utilities/date-range-query';
   templateUrl: './results.page.html',
 })
 export class MyResultsPage {
+  protected readonly text = RESULTS_TEXT;
+
   /** From / to on the result date (on the server). */
   protected readonly dateFields = [{ value: 'completed_at', label: 'Result date' }];
   protected readonly dates = signal<DateRangeValue>({});

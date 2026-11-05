@@ -14,6 +14,7 @@ import { AuthStore } from '@services/auth/auth.store';
 import { RealtimeService } from '@services/communication/realtime.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NewTicketDialog } from '@components/communication/new-ticket-dialog/new-ticket-dialog.component';
+import { TICKET_LIST_TEXT } from '@constants/communication/ticket-list.constants';
 
 /**
  * `/support/tickets` — the generic list (server filters by status, priority, category, people and dates; search;
@@ -29,6 +30,8 @@ export class TicketListPage {
   private readonly dialogs = inject(DialogService);
   private readonly router = inject(Router);
   private readonly access = inject(AccessService);
+
+  protected readonly text = TICKET_LIST_TEXT;
   private readonly list = viewChild.required(ResourceListPage);
 
   protected readonly dateTimeFormat = DATE_TIME_FORMAT;

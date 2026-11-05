@@ -8,7 +8,7 @@
   />
   @if (isGroup() && amLeader()) {
     <mat-form-field class="mt-3 w-full" subscriptSizing="dynamic">
-      <mat-label>Group name</mat-label>
+      <mat-label>{{ text.groupName }}</mat-label>
       <input
         matInput
         [(ngModel)]="title"
@@ -21,9 +21,9 @@
     <h2 class="m-0 mt-3 text-lg font-semibold">{{ chat().title }}</h2>
   }
   <p class="m-0 text-sm text-on-surface-variant">
-    {{ isGroup() ? 'Group' : 'One-to-one' }} · {{ chat().members.length }} members
+    {{ isGroup() ? text.group : text.oneToOne }} · {{ chat().members.length }} {{ text.members }}
     @if (chat().messagesCount !== undefined) {
-      · {{ chat().messagesCount }} messages
+      · {{ chat().messagesCount }} {{ text.messages }}
     }
   </p>
 </div>
@@ -32,7 +32,9 @@
   @if (isGroup() && amLeader()) {
     @if (adding()) {
       <div class="add">
-        <p class="m-0 mb-1 text-xs font-semibold uppercase text-on-surface-variant">Add people</p>
+        <p class="m-0 mb-1 text-xs font-semibold uppercase text-on-surface-variant">
+          {{ text.addPeople }}
+        </p>
         <mat-form-field class="w-full" subscriptSizing="dynamic">
           <mat-label>{{ searchText.label }}</mat-label>
           <mat-icon matPrefix>search</mat-icon>
@@ -65,7 +67,7 @@
       </div>
     } @else {
       <button matButton="tonal" class="mb-2 w-full" (click)="openAdd()">
-        <mat-icon>person_add</mat-icon> Add people
+        <mat-icon>person_add</mat-icon> {{ text.addPeople }}
       </button>
     }
   }
@@ -97,36 +99,36 @@
           }
         </span>
         @if (m.isMe) {
-          <span class="badge you">You</span>
+          <span class="badge you">{{ text.you }}</span>
         }
         @if (isGroup()) {
           <span class="badge" [class.leader]="m.role === roles.Admin">
             @if (m.role === roles.Admin) {
               <mat-icon>star</mat-icon>
             }
-            {{ m.role === roles.Admin ? 'Leader' : 'Member' }}
+            {{ m.role === roles.Admin ? text.leader : text.member }}
           </span>
         }
         @if (isGroup() && amLeader() && !m.isMe) {
           <button
             matIconButton
             [matMenuTriggerFor]="actions"
-            [attr.aria-label]="'Actions for ' + m.fullName"
+            [attr.aria-label]="text.actionsFor + m.fullName"
           >
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #actions="matMenu">
             @if (m.role === roles.Admin) {
               <button mat-menu-item (click)="setRole(m, roles.Member)">
-                <mat-icon>person</mat-icon>Make member
+                <mat-icon>person</mat-icon>{{ text.makeMember }}
               </button>
             } @else {
               <button mat-menu-item (click)="setRole(m, roles.Admin)">
-                <mat-icon>star</mat-icon>Make leader
+                <mat-icon>star</mat-icon>{{ text.makeLeader }}
               </button>
             }
             <button mat-menu-item class="!text-error" (click)="remove(m)">
-              <mat-icon class="!text-error">person_remove</mat-icon>Remove from group
+              <mat-icon class="!text-error">person_remove</mat-icon>{{ text.removeFromGroup }}
             </button>
           </mat-menu>
         }
@@ -138,9 +140,9 @@
 <mat-dialog-actions>
   @if (isGroup()) {
     <button matButton class="!text-error" (click)="leave()">
-      <mat-icon>logout</mat-icon> Leave group
+      <mat-icon>logout</mat-icon> {{ text.leaveGroup }}
     </button>
   }
   <span class="flex-1"></span>
-  <button matButton="filled" (click)="close()">Done</button>
+  <button matButton="filled" (click)="close()">{{ text.done }}</button>
 </mat-dialog-actions>

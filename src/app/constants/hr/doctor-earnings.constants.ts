@@ -27,4 +27,6 @@ export const EARNINGS_TEXT = {
       : type === CommissionType.PerVisit
         ? `${rate} / visit`
         : '—',
+  previousMonth: 'Previous month',
+  nextMonth: 'Next month',
 };

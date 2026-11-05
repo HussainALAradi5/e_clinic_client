@@ -1,9 +1,9 @@
 <ui-resource-list
   resource="cash_sessions"
   endpoint="finance/cash-sessions"
-  title="Cash drawers"
-  subtitle="Each cashier's shift: the float, the count at close, differences and bank deposits."
-  emptyTitle="No drawer shifts found"
+  [title]="text.cashDrawers"
+  [subtitle]="text.eachCashiersShiftThe"
+  [emptyTitle]="text.noDrawerShiftsFound"
   rowLink="/billing/cash-drawers/:id"
 >
   <ng-template uiCell="code" let-row

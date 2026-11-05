@@ -23,6 +23,7 @@ import { AccessService } from '@services/auth/access.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { ActionLock, CANCELLED, minDuration, toPromise } from '@utilities/action-lock';
+import { APP_BUTTON_TEXT } from '@constants/common/app-button.constants';
 
 /**
  * The only button in the app. Disables itself on click until the action settles (no double submit), shows a spinner
@@ -45,6 +46,8 @@ import { ActionLock, CANCELLED, minDuration, toPromise } from '@utilities/action
   styleUrl: './app-button.component.scss',
 })
 export class AppButton {
+  protected readonly text = APP_BUTTON_TEXT;
+
   /** Called on click; may return an Observable / Promise. Receives the reason when `confirm.reason` is set. */
   readonly action = input<((reason?: string) => ActionResult) | null>(null);
   readonly lockMode = input<LockMode | `${LockMode}`>(LockMode.UntilDone, { alias: 'lock' });

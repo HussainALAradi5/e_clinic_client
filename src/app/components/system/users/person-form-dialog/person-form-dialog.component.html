@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Edit personal data</h2>
+<h2 mat-dialog-title>{{ text.editPersonalData }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
@@ -8,28 +8,41 @@
     (cancelled)="ref.close()"
   >
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
-      <ui-text label="First name" [control]="form.controls.firstName" autocomplete="given-name" />
-      <ui-text label="Last name" [control]="form.controls.lastName" autocomplete="family-name" />
-      <ui-select label="Gender" enum="Gender" [required]="true" [control]="form.controls.gender" />
-      <ui-text label="Date of birth" type="date" [control]="form.controls.dateOfBirth" />
       <ui-text
-        label="National ID / passport"
+        [label]="text.firstName"
+        [control]="form.controls.firstName"
+        autocomplete="given-name"
+      />
+      <ui-text
+        [label]="text.lastName"
+        [control]="form.controls.lastName"
+        autocomplete="family-name"
+      />
+      <ui-select
+        [label]="text.gender"
+        enum="Gender"
+        [required]="true"
+        [control]="form.controls.gender"
+      />
+      <ui-text [label]="text.dateOfBirth" type="date" [control]="form.controls.dateOfBirth" />
+      <ui-text
+        [label]="text.nationalIdPassport"
         [control]="form.controls.nationalId"
         [hint]="
           data.person.nationalId
-            ? 'Stored: ' + data.person.nationalId + ' — leave blank to keep'
+            ? text.storedPrefix + data.person.nationalId + text.leaveBlankToKeep
             : null
         "
       />
       <ui-text
-        label="Mobile"
+        [label]="text.mobile"
         type="tel"
-        hint="International format, e.g. +97336001234"
+        [hint]="text.internationalFormatEG"
         [control]="form.controls.phone"
       />
-      <ui-text label="Email" type="email" [control]="form.controls.email" />
+      <ui-text [label]="text.email" type="email" [control]="form.controls.email" />
       <ui-country-select
-        label="Nationality"
+        [label]="text.nationality"
         mode="nationality"
         [control]="form.controls.nationalityCode"
       />

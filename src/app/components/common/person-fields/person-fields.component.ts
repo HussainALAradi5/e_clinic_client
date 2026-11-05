@@ -3,6 +3,7 @@ import { CountrySelect } from '@components/common/country-select/country-select.
 import { SelectField } from '@components/common/select-field/select-field.component';
 import { TextField } from '@components/common/text-field/text-field.component';
 import { NewPersonForm } from '@interfaces/common/person.interface';
+import { PERSON_FIELDS_TEXT } from '@constants/common/person-fields.constants';
 
 /** Personal data fields of a new person (patient registration, hire) — one layout everywhere. */
 @Component({
@@ -13,5 +14,7 @@ import { NewPersonForm } from '@interfaces/common/person.interface';
   templateUrl: './person-fields.component.html',
 })
 export class PersonFields {
+  protected readonly text = PERSON_FIELDS_TEXT;
+
   readonly form = input.required<NewPersonForm>();
 }

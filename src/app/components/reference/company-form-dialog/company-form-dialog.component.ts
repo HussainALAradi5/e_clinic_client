@@ -11,6 +11,7 @@ import { CompanyType } from '@enums/reference/company-type.enum';
 import { Company } from '@interfaces/reference/company.interface';
 import { CompanyPayload } from '@interfaces/reference/company-payload.interface';
 import { addressForm, toAddressPayload } from '@utilities/address';
+import { COMPANY_FORM_DIALOG_TEXT } from '@constants/reference/company-form-dialog.constants';
 
 const optional = (value: string | null | undefined, max: number): FormControl<string | null> =>
   new FormControl(value ?? null, [Validators.maxLength(max)]);
@@ -23,6 +24,8 @@ const optional = (value: string | null | undefined, max: number): FormControl<st
   templateUrl: './company-form-dialog.component.html',
 })
 export class CompanyFormDialog {
+  protected readonly text = COMPANY_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<CompanyFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<CompanyFormDialog, Company>);
   private readonly company = this.data.company;

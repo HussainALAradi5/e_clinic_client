@@ -5,6 +5,7 @@ import { ResourceListPage } from '@components/common/resource-list/resource-list
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { QtyPipe } from '@pipes/qty.pipe';
+import { DISPENSATION_LIST_TEXT } from '@constants/pharmacy/dispensation-list.constants';
 
 /** `/pharmacy/dispensations` — every medicine handed over by the pharmacy or given in a session. */
 @Component({
@@ -14,5 +15,7 @@ import { QtyPipe } from '@pipes/qty.pipe';
   templateUrl: './dispensation-list.page.html',
 })
 export class DispensationListPage {
+  protected readonly text = DISPENSATION_LIST_TEXT;
+
   protected readonly dateTimeFormat = DATE_TIME_FORMAT;
 }

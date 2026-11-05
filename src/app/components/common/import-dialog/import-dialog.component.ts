@@ -25,6 +25,8 @@ import { IMPORT_DIALOG_TEXT } from '@constants/common/import-dialog.constants';
   styleUrl: './import-dialog.component.scss',
 })
 export class ImportDialog {
+  protected readonly text = IMPORT_DIALOG_TEXT;
+
   protected readonly data = inject<ImportDialogData>(MAT_DIALOG_DATA);
   private readonly ref = inject(MatDialogRef<ImportDialog, ImportResult>);
   private readonly api = inject(TransferApi);

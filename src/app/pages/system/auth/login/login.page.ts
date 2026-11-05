@@ -5,6 +5,7 @@ import { GenericForm } from '@components/common/generic-form/generic-form.compon
 import { TextField } from '@components/common/text-field/text-field.component';
 import { LoginPayload } from '@interfaces/auth/auth-payloads.interface';
 import { SessionService } from '@services/auth/session.service';
+import { LOGIN_TEXT } from '@constants/system/login.constants';
 
 /** `/login` — email + password; hands over to `/login/2fa` when a TOTP code is needed. */
 @Component({
@@ -14,6 +15,8 @@ import { SessionService } from '@services/auth/session.service';
   templateUrl: './login.page.html',
 })
 export class LoginPage {
+  protected readonly text = LOGIN_TEXT;
+
   /** Query parameter set by authGuard / the 401 handler. */
   readonly returnUrl = input<string | undefined>();
 

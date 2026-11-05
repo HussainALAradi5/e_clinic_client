@@ -11,7 +11,7 @@
         <ui-brand-mark tone="light" />
       </a>
 
-      <nav aria-label="Main menu" class="flex-1 overflow-y-auto px-3 pb-4">
+      <nav [attr.aria-label]="text.mainMenu" class="flex-1 overflow-y-auto px-3 pb-4">
         @for (group of menu(); track group.label) {
           @if (group.route) {
             <a
@@ -47,10 +47,10 @@
       <a
         routerLink="/"
         class="nav-item mx-3 mb-4 border border-white/10"
-        matTooltip="Open the public website"
+        [matTooltip]="text.openThePublicWebsite"
       >
         <mat-icon class="!size-5 !text-xl">language</mat-icon>
-        <span>Public website</span>
+        <span>{{ text.publicWebsite }}</span>
       </a>
     </div>
   </mat-sidenav>
@@ -62,7 +62,7 @@
       <button
         matIconButton
         tapMotion
-        aria-label="Toggle menu"
+        [attr.aria-label]="text.toggleMenu"
         (click)="handset() ? drawer.toggle() : menuOpen.set(!menuOpen())"
       >
         <mat-icon>{{ opened() ? 'left_panel_close' : 'left_panel_open' }}</mat-icon>
@@ -76,8 +76,8 @@
       <button
         matIconButton
         tapMotion="spin"
-        [matTooltip]="theme.dark() ? 'Switch to light mode' : 'Switch to dark mode'"
-        [attr.aria-label]="theme.dark() ? 'Switch to light mode' : 'Switch to dark mode'"
+        [matTooltip]="theme.dark() ? text.switchToLightMode : text.switchToDarkMode"
+        [attr.aria-label]="theme.dark() ? text.switchToLightMode : text.switchToDarkMode"
         (click)="theme.toggle()"
       >
         <mat-icon>{{ theme.dark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
@@ -88,7 +88,7 @@
           type="button"
           class="ml-1 flex items-center gap-2.5 rounded-xl py-1.5 pr-3 pl-1.5 hover:bg-surface-container-high"
           [matMenuTriggerFor]="userMenu"
-          aria-label="Account menu"
+          [attr.aria-label]="text.accountMenu"
         >
           @if (user.avatarUrl) {
             <img [src]="user.avatarUrl" alt="" class="size-9 rounded-lg object-cover" />
@@ -116,15 +116,15 @@
           <mat-divider />
           <a mat-menu-item [routerLink]="securityPath">
             <mat-icon>shield_person</mat-icon>
-            <span>Account &amp; security</span>
+            <span>{{ text.accountSecurity }}</span>
           </a>
           <a mat-menu-item routerLink="/">
             <mat-icon>language</mat-icon>
-            <span>Public website</span>
+            <span>{{ text.publicWebsite }}</span>
           </a>
           <button mat-menu-item (click)="logout()">
             <mat-icon>logout</mat-icon>
-            <span>Sign out</span>
+            <span>{{ text.signOut }}</span>
           </button>
         </mat-menu>
       }
@@ -136,10 +136,8 @@
         role="alert"
       >
         <mat-icon class="!size-5 !text-xl">gpp_maybe</mat-icon>
-        <span class="flex-1"
-          >Your role requires two-factor authentication. Set it up to use protected areas.</span
-        >
-        <a matButton [routerLink]="securityPath">Set up now</a>
+        <span class="flex-1">{{ text.yourRoleRequiresTwo }}</span>
+        <a matButton [routerLink]="securityPath">{{ text.setUpNow }}</a>
       </div>
     }
 

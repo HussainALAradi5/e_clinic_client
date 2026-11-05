@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{ referral ? 'Reply received' : 'Result' }} · {{ order.code }}</h2>
+<h2 mat-dialog-title>{{ referral ? text.replyReceived : text.result }} · {{ order.code }}</h2>
 <mat-dialog-content>
   <p class="mt-0 text-sm text-on-surface-variant">
     {{ order.description }} · {{ order.patient?.fullName }}
@@ -11,26 +11,26 @@
   />
   @if (blocked()) {
     <p class="m-0 mb-3 text-sm text-on-surface-variant">
-      Add at least one image before completing.
+      {{ text.addAtLeastOne }}
     </p>
   }
   <ui-form
     [form]="form"
     [submit]="submit"
-    [submitLabel]="referral ? 'Close referral' : 'Complete'"
+    [submitLabel]="referral ? text.closeReferral : text.complete"
     [compact]="true"
     (cancelled)="ref.close()"
   >
     <ui-text
-      [label]="referral ? 'Summary of the reply' : 'Report / findings'"
+      [label]="referral ? text.summaryOfTheReply : text.reportFindings"
       [multiline]="true"
       [rows]="5"
       [control]="form.controls.report"
     />
     @if (!referral) {
-      <mat-checkbox class="-ml-2 block" [formControl]="form.controls.isAbnormal"
-        >Abnormal result — alert the ordering doctor now</mat-checkbox
-      >
+      <mat-checkbox class="-ml-2 block" [formControl]="form.controls.isAbnormal">{{
+        text.abnormalResultAlertThe
+      }}</mat-checkbox>
     }
   </ui-form>
 </mat-dialog-content>

@@ -1,7 +1,4 @@
-<ui-page-header
-  title="HR settings"
-  subtitle="How lateness and overtime are handled. Changes apply from the next request and payroll."
-/>
+<ui-page-header [title]="text.hrSettings" [subtitle]="text.howLatenessAndOvertime" />
 
 <div class="grid">
   @for (s of settings(); track s.key) {
@@ -15,7 +12,7 @@
           <p class="m-0 text-xs text-on-surface-variant">
             {{ s.code }}
             @if (s.updatedAt) {
-              · changed {{ s.updatedAt | date: dateTimeFormat : zone }}
+              {{ text.changed }} {{ s.updatedAt | date: dateTimeFormat : zone }}
             }
           </p>
         </div>
@@ -32,31 +29,23 @@
       <p class="state">
         <mat-icon aria-hidden="true">{{ s.isEnabled ? 'toggle_on' : 'toggle_off' }}</mat-icon>
         @if (s.key === 'late_excuse') {
-          {{
-            s.isEnabled
-              ? 'On — staff can send an excuse; late minutes HR does not excuse are deducted.'
-              : 'Off — lateness is recorded only, nothing is deducted.'
-          }}
+          {{ s.isEnabled ? text.onStaffCanSend : text.offLatenessIsRecorded }}
         } @else {
-          {{
-            s.isEnabled
-              ? 'On — staff ask for their overtime; HR approves it under Requests.'
-              : 'Off — HR approves overtime straight from Attendance.'
-          }}
+          {{ s.isEnabled ? text.onStaffAskFor : text.offHrApprovesOvertime }}
         }
       </p>
 
       @if (s.hasAmount) {
         <div class="rate">
           <ui-money
-            label="Overtime pay per hour"
+            [label]="text.overtimePayPerHour"
             [control]="rate"
-            hint="Empty: each employee's hourly wage × 1.25."
+            [hint]="text.emptyEachEmployeesHourly"
           />
           @if (canEdit) {
-            <ui-button icon="save" variant="tonal" [action]="saveRate" [disabled]="rate.invalid"
-              >Save rate</ui-button
-            >
+            <ui-button icon="save" variant="tonal" [action]="saveRate" [disabled]="rate.invalid">{{
+              text.saveRate
+            }}</ui-button>
           }
         </div>
       }

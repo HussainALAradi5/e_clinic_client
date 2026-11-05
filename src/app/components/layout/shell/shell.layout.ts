@@ -24,6 +24,7 @@ import { NavigationService } from '@services/ui/navigation.service';
 import { ThemeService } from '@services/ui/theme.service';
 import { NotificationSoundService } from '@services/notification/notification-sound.service';
 import { PushNotificationService } from '@services/notification/push-notification.service';
+import { SHELL_TEXT } from '@constants/layout/shell.constants';
 
 /**
  * Staff app frame: toolbar (menu toggle, notifications, theme, user menu) + side menu filtered by AccessService.
@@ -56,6 +57,7 @@ export class ShellLayout {
   protected readonly theme = inject(ThemeService);
   private readonly session = inject(SessionService);
 
+  protected readonly text = SHELL_TEXT;
   protected readonly securityPath = ACCOUNT_SECURITY_PATH;
   protected readonly handset = toSignal(
     inject(BreakpointObserver)

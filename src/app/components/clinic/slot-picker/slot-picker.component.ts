@@ -16,6 +16,7 @@ import { AppointmentType } from '@enums/clinic/appointment-type.enum';
 import { ApiError } from '@interfaces/api/api-error.interface';
 import { Slot } from '@interfaces/clinic/slot.interface';
 import { AppointmentApi } from '@services/clinic/appointment-api.service';
+import { SLOT_PICKER_TEXT } from '@constants/clinic/slot-picker.constants';
 
 /**
  * Free slots of a provider on a date as chips (GET /appointments/available-slots); two-way `[(start)]` = HH:mm.
@@ -29,6 +30,8 @@ import { AppointmentApi } from '@services/clinic/appointment-api.service';
   templateUrl: './slot-picker.component.html',
 })
 export class SlotPicker {
+  protected readonly text = SLOT_PICKER_TEXT;
+
   readonly providerId = input.required<string | null>();
   readonly date = input.required<string | null>();
   readonly type = input<AppointmentType>(AppointmentType.Consultation);

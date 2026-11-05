@@ -1,26 +1,23 @@
-<ui-page-header
-  title="Front desk"
-  subtitle="Today's patients from arrival to the end of the visit. The board refreshes every 30 seconds."
->
+<ui-page-header [title]="text.frontDesk" [subtitle]="text.todaysPatientsFromArrival">
   <ng-container actions>
     <a matButton="outlined" routerLink="/clinic/calendar"
-      ><mat-icon>calendar_view_day</mat-icon> Calendar</a
+      ><mat-icon>calendar_view_day</mat-icon> {{ text.calendar }}</a
     >
-    <ui-button icon="person_add" access="appointments.create" [action]="walkIn"
-      >Book walk-in</ui-button
-    >
+    <ui-button icon="person_add" access="appointments.create" [action]="walkIn">{{
+      text.bookWalkIn
+    }}</ui-button>
   </ng-container>
 </ui-page-header>
 
 <div class="mb-4 flex flex-wrap items-center gap-3">
   <ui-text
     class="w-full sm:w-72"
-    label="Find a patient"
+    [label]="text.findAPatient"
     icon="search"
-    hint="Name, file no., mobile or check-in code"
+    [hint]="text.nameFileNoMobile"
     [control]="search"
   />
-  <div class="mb-5 flex flex-wrap gap-2" role="group" aria-label="Doctor">
+  <div class="mb-5 flex flex-wrap gap-2" role="group" [attr.aria-label]="text.doctor">
     @for (d of doctors(); track d.id) {
       <button
         type="button"
@@ -40,7 +37,7 @@
 </div>
 
 @if (appointments() === null) {
-  <p class="text-sm text-on-surface-variant">Loading today's bookings…</p>
+  <p class="text-sm text-on-surface-variant">{{ text.loadingTodaysBookings }}</p>
 } @else {
   <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
     @for (lane of lanes(); track lane.title) {
@@ -62,7 +59,7 @@
           @for (a of lane.items; track a.id) {
             <app-appointment-card [appointment]="a" [now]="now()" (changed)="changed($event)" />
           } @empty {
-            <p class="m-0 px-1 text-sm text-on-surface-variant">Nobody here.</p>
+            <p class="m-0 px-1 text-sm text-on-surface-variant">{{ text.nobodyHere }}</p>
           }
         </div>
       </section>

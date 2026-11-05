@@ -1,10 +1,7 @@
-<ui-page-header
-  title="Leave types"
-  subtitle="Yearly days are pro-rated for new joiners; unused days carry forward up to the limit on 1 January."
->
-  <ui-button actions icon="add" access="leaves.create & leaves.manage_types" [action]="create"
-    >New leave type</ui-button
-  >
+<ui-page-header [title]="text.leaveTypes" [subtitle]="text.yearlyDaysArePro">
+  <ui-button actions icon="add" access="leaves.create & leaves.manage_types" [action]="create">{{
+    text.newLeaveType
+  }}</ui-button>
 </ui-page-header>
 
 @if (types(); as list) {
@@ -12,12 +9,12 @@
     <table class="w-full border-collapse text-sm">
       <thead>
         <tr class="text-left text-xs text-on-surface-variant">
-          <th class="px-4 py-3 font-medium">Code</th>
-          <th class="px-4 py-3 font-medium">Name</th>
-          <th class="px-4 py-3 text-right font-medium">Days a year</th>
-          <th class="px-4 py-3 text-right font-medium">Carry forward</th>
-          <th class="px-4 py-3 text-right font-medium">Notice</th>
-          <th class="px-4 py-3 font-medium">Rules</th>
+          <th class="px-4 py-3 font-medium">{{ text.code }}</th>
+          <th class="px-4 py-3 font-medium">{{ text.name }}</th>
+          <th class="px-4 py-3 text-right font-medium">{{ text.daysAYear }}</th>
+          <th class="px-4 py-3 text-right font-medium">{{ text.carryForward }}</th>
+          <th class="px-4 py-3 text-right font-medium">{{ text.notice }}</th>
+          <th class="px-4 py-3 font-medium">{{ text.rules }}</th>
           <th class="px-4 py-3"></th>
         </tr>
       </thead>
@@ -41,8 +38,8 @@
               {{ t.minNoticeDays ? t.minNoticeDays + ' d' : '—' }}
             </td>
             <td class="px-4 py-3 text-on-surface-variant">
-              {{ t.isPaid ? 'Paid' : 'Unpaid (deducted)'
-              }}{{ t.requiresAttachment ? ' · certificate' : '' }}
+              {{ t.isPaid ? text.paid : text.unpaidDeducted
+              }}{{ t.requiresAttachment ? text.certificate : '' }}
             </td>
             <td class="px-4 py-3 text-right">
               <ui-button
@@ -51,7 +48,7 @@
                 size="sm"
                 access="leaves.write & leaves.manage_types"
                 [action]="edit.bind(this, t)"
-                >Edit</ui-button
+                >{{ text.edit }}</ui-button
               >
             </td>
           </tr>

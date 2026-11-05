@@ -6,6 +6,7 @@ import { GenericForm } from '@components/common/generic-form/generic-form.compon
 import { TextField } from '@components/common/text-field/text-field.component';
 import { Role } from '@interfaces/identity/role.interface';
 import { RolePayload } from '@interfaces/identity/role-payload.interface';
+import { ROLE_FORM_DIALOG_TEXT } from '@constants/system/role-form-dialog.constants';
 
 /** Create a custom role, or edit labels (and the machine name of custom roles). Rights are set in the access matrix. */
 @Component({
@@ -15,6 +16,8 @@ import { RolePayload } from '@interfaces/identity/role-payload.interface';
   templateUrl: './role-form-dialog.component.html',
 })
 export class RoleFormDialog {
+  protected readonly text = ROLE_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<RoleFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<RoleFormDialog, Role>);
   private readonly role = this.data.role;

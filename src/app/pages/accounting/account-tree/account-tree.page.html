@@ -1,9 +1,6 @@
-<ui-page-header
-  title="Account tree"
-  subtitle="The chart of accounts as an outline. Click a group to fold it."
->
+<ui-page-header [title]="text.accountTree" [subtitle]="text.theChartOfAccounts">
   <a actions matButton="outlined" routerLink="/accounting/chart-of-accounts"
-    ><mat-icon>list</mat-icon> List</a
+    ><mat-icon>list</mat-icon> {{ text.list }}</a
   >
 </ui-page-header>
 
@@ -12,9 +9,9 @@
   hideSingleSelectionIndicator
   [value]="type()"
   (change)="load($event.value)"
-  aria-label="Account type"
+  [attr.aria-label]="text.accountType"
 >
-  <mat-button-toggle [value]="null">All</mat-button-toggle>
+  <mat-button-toggle [value]="null">{{ text.all }}</mat-button-toggle>
   @for (t of types; track t) {
     <mat-button-toggle [value]="t">{{ t | enumLabel: 'AccountType' }}</mat-button-toggle>
   }
@@ -43,7 +40,9 @@
             type="button"
             class="!h-8 !w-8 !p-1"
             (click)="toggle(node.id)"
-            [attr.aria-label]="(folded().has(node.id) ? 'Unfold ' : 'Fold ') + node.name"
+            [attr.aria-label]="
+              (folded().has(node.id) ? text.unfoldPrefix : text.foldPrefix) + node.name
+            "
           >
             <mat-icon>{{ folded().has(node.id) ? 'chevron_right' : 'expand_more' }}</mat-icon>
           </button>
@@ -61,7 +60,7 @@
           @if (node.isSystem) {
             <span
               class="rounded bg-surface-container-high px-1.5 text-[11px] text-on-surface-variant"
-              >system</span
+              >{{ text.system }}</span
             >
           }
         </a>

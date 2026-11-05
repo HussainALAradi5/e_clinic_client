@@ -1,18 +1,18 @@
 <h2 mat-dialog-title class="flex items-center gap-2">
-  <mat-icon>task_alt</mat-icon>Mark {{ data.code }} solved
+  <mat-icon>task_alt</mat-icon>{{ text.mark }} {{ data.code }} {{ text.solved }}
 </h2>
 <mat-dialog-content>
   <p class="mt-0 mb-4 text-sm text-on-surface-variant">
-    {{ data.requester }} sees what you write here and is asked to confirm it works.
+    {{ data.requester }} {{ text.seesWhatYouWrite }}
   </p>
   <label class="field">
-    <span>Solution <b aria-hidden="true">*</b></span>
+    <span>{{ text.solution }} <b aria-hidden="true">*</b></span>
     <textarea
       rows="4"
       maxlength="1000"
       required
-      aria-label="Solution"
-      placeholder="What was wrong and what you did, e.g. The print head was dirty; I cleaned it and printed a test label."
+      [attr.aria-label]="text.solution"
+      [placeholder]="text.whatWasWrongAnd"
       [ngModel]="resolution()"
       (ngModelChange)="resolution.set($event)"
     ></textarea>
@@ -20,16 +20,16 @@
   </label>
 
   <p class="mt-4 mb-2 text-sm font-medium">
-    Steps
-    <span class="font-normal text-on-surface-variant">(optional — for a step-by-step fix)</span>
+    {{ text.steps }}
+    <span class="font-normal text-on-surface-variant">{{ text.optionalForAStep }}</span>
   </p>
   <ol class="steps">
     @for (step of steps(); track $index; let i = $index; let last = $last) {
       <li>
         <span class="num">{{ i + 1 }}</span>
         <input
-          [attr.aria-label]="'Step ' + (i + 1)"
-          [placeholder]="i === 0 ? 'e.g. Cleaned the print head' : 'Next step'"
+          [attr.aria-label]="text.step + (i + 1)"
+          [placeholder]="i === 0 ? text.eGCleanedThe : text.nextStep"
           maxlength="500"
           [ngModel]="step"
           (ngModelChange)="set(i, $event)"
@@ -38,8 +38,8 @@
         <button
           matIconButton
           type="button"
-          matTooltip="Move up"
-          aria-label="Move up"
+          [matTooltip]="text.moveUp"
+          [attr.aria-label]="text.moveUp"
           [disabled]="i === 0"
           (click)="move(i, -1)"
         >
@@ -48,8 +48,8 @@
         <button
           matIconButton
           type="button"
-          matTooltip="Move down"
-          aria-label="Move down"
+          [matTooltip]="text.moveDown"
+          [attr.aria-label]="text.moveDown"
           [disabled]="last"
           (click)="move(i, 1)"
         >
@@ -58,8 +58,8 @@
         <button
           matIconButton
           type="button"
-          matTooltip="Remove step"
-          aria-label="Remove step"
+          [matTooltip]="text.removeStep"
+          [attr.aria-label]="text.removeStep"
           [disabled]="steps().length === 1"
           (click)="remove(i)"
         >
@@ -74,11 +74,11 @@
     [disabled]="steps().length >= max"
     (click)="add(steps().length - 1)"
   >
-    <mat-icon>add</mat-icon> Add a step
+    <mat-icon>add</mat-icon> {{ text.addAStep }}
   </button>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button matButton mat-dialog-close>Cancel</button>
+  <button matButton mat-dialog-close>{{ text.cancel }}</button>
   <button matButton="filled" [disabled]="!resolution().trim()" (click)="done()">
     <mat-icon>task_alt</mat-icon> {{ label() }}
   </button>

@@ -60,6 +60,8 @@ const FLAG_LABELS: Record<AccessFlag, string> = {
   templateUrl: './access-matrix.page.html',
 })
 export class AccessMatrixPage implements OnInit, HasUnsavedChanges {
+  protected readonly text = ACCESS_MATRIX_TEXT;
+
   readonly id = input.required<string>();
 
   protected readonly store = inject(RoleStore);

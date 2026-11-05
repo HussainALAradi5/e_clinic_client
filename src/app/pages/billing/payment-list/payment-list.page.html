@@ -1,9 +1,9 @@
 <ui-resource-list
   resource="payments"
   endpoint="billing/payments"
-  title="Payments"
-  subtitle="Money taken at the desk. Payments are never edited: void one the same day, or refund it."
-  emptyTitle="No payments found"
+  [title]="text.payments"
+  [subtitle]="text.moneyTakenAtThe"
+  [emptyTitle]="text.noPaymentsFound"
 >
   <ng-template uiCell="code" let-row
     ><a class="font-mono text-primary" [routerLink]="['/print/receipt', row.id]" target="_blank">{{

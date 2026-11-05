@@ -9,6 +9,7 @@ import { Employee } from '@interfaces/hr/employee.interface';
 import { UpdateEmployeePayload } from '@interfaces/hr/update-employee-payload.interface';
 import { EmployeeApi } from '@services/hr/employee-api.service';
 import { dirtyPayload } from '@utilities/form-payload';
+import { EMPLOYMENT_DIALOG_TEXT } from '@constants/hr/employment-dialog.constants';
 
 /** Edit employment data (only changed fields, with the version read — 409 when someone else saved first). */
 @Component({
@@ -18,6 +19,8 @@ import { dirtyPayload } from '@utilities/form-payload';
   templateUrl: './employment-dialog.component.html',
 })
 export class EmploymentDialog {
+  protected readonly text = EMPLOYMENT_DIALOG_TEXT;
+
   protected readonly data = inject<EmploymentDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<EmploymentDialog, Employee>);
   private readonly api = inject(EmployeeApi);

@@ -1,8 +1,8 @@
 <div class="mb-2 flex items-center">
-  <h2 class="m-0 flex-1 text-base font-semibold">Consents</h2>
-  <ui-button icon="draw" [variant]="variants.Tonal" access="consents.create" [action]="record"
-    >Record consent</ui-button
-  >
+  <h2 class="m-0 flex-1 text-base font-semibold">{{ text.consents }}</h2>
+  <ui-button icon="draw" [variant]="variants.Tonal" access="consents.create" [action]="record">{{
+    text.recordConsent
+  }}</ui-button>
 </div>
 @for (c of consents() ?? []; track c.id) {
   <div
@@ -15,14 +15,14 @@
     >
     <span class="min-w-48 flex-1">
       <span class="font-medium">{{ c.type | enumLabel: 'ConsentType' }}</span>
-      <span class="text-on-surface-variant"> · {{ c.scope ? c.scope.code : 'whole file' }}</span>
+      <span class="text-on-surface-variant"> · {{ c.scope ? c.scope.code : text.wholeFile }}</span>
       <span class="block text-xs text-on-surface-variant">
-        Signed {{ c.signedAt | date: dateFormat }} by {{ c.signedByName
+        {{ text.signed }} {{ c.signedAt | date: dateFormat }} {{ text.by }} {{ c.signedByName
         }}{{ c.signerRelationship !== 'self' ? ' (' + c.signerRelationship + ')' : '' }}
         @if (c.revokedAt) {
-          — revoked {{ c.revokedAt | date: dateFormat }}: {{ c.revocationReason }}
+          {{ text.revoked }} {{ c.revokedAt | date: dateFormat }}: {{ c.revocationReason }}
         } @else if (c.validUntil) {
-          — valid until {{ c.validUntil | date: dateFormat }}
+          {{ text.validUntil }} {{ c.validUntil | date: dateFormat }}
         }
       </span>
     </span>
@@ -30,7 +30,7 @@
       class="text-sm text-primary underline"
       [routerLink]="['/print/consent', c.id]"
       target="_blank"
-      >Print</a
+      >{{ text.print }}</a
     >
     @if (!c.revokedAt) {
       <ui-button
@@ -38,12 +38,12 @@
         [variant]="variants.Text"
         access="consents.write"
         [action]="revoke.bind(this, c)"
-        >Revoke</ui-button
+        >{{ text.revoke }}</ui-button
       >
     }
   </div>
 } @empty {
   <p class="m-0 text-sm text-on-surface-variant">
-    {{ consents() === null ? 'Loading…' : 'No consent on file yet.' }}
+    {{ consents() === null ? text.loading : text.noConsentOnFile }}
   </p>
 }

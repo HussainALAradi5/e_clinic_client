@@ -8,4 +8,10 @@ export const VIEW_LIST_TEXT = {
   viewDeleted: 'View deleted.',
   currentName: (p0: unknown) => `Current name: ${p0}`,
   delete2: (p0: unknown) => `Delete "${p0}"?`,
+  sharedWithYou: '(shared with you)',
+  savedViews: 'Saved views',
+  filtersSortAndColumns:
+    'Filters, sort and columns saved from any list. Shared views are visible to everyone who can read that list.',
+  noSavedViewsUse: 'No saved views — use the Views menu on any list to save one',
+  makeDefault: 'Make default',
 };

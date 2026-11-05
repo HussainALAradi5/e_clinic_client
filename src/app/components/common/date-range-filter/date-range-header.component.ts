@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/cor
 import { MatCalendarHeader } from '@angular/material/datepicker';
 import { DateFieldOption } from '@interfaces/list/date-field-option.interface';
 import { DateRangeValue } from '@interfaces/list/date-range-filter.interface';
+import { DATE_RANGE_HEADER_TEXT } from '@constants/common/date-range-header.constants';
 
 /** What the calendar header needs from the field that opened it (provided by DateRangeFilter). */
 export abstract class DateRangeHost {
@@ -20,4 +21,6 @@ export abstract class DateRangeHost {
 })
 export class DateRangeHeader {
   protected readonly host = inject(DateRangeHost);
+
+  protected readonly text = DATE_RANGE_HEADER_TEXT;
 }

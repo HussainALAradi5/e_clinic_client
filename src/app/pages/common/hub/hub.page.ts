@@ -7,6 +7,7 @@ import { BrandSurface } from '@components/common/hub/brand-surface.component';
 import { HubNav } from '@components/common/hub/hub-nav.component';
 import { HOME_PATH } from '@constants/app.constants';
 import { NavigationService } from '@services/ui/navigation.service';
+import { HUB_TEXT } from '@constants/common/hub.constants';
 
 /**
  * Generic hub of one menu group (`/system`, `/reference`, …): route data `{ hub: '/system' }` names the group;
@@ -19,6 +20,8 @@ import { NavigationService } from '@services/ui/navigation.service';
   templateUrl: './hub.page.html',
 })
 export class HubPage {
+  protected readonly text = HUB_TEXT;
+
   /** Route data (component input binding). */
   readonly hub = input.required<string>();
 

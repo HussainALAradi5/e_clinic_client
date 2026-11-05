@@ -81,6 +81,8 @@ const SEARCH_HINT_WORDS = 2;
   templateUrl: './generic-filter.component.html',
 })
 export class GenericFilter implements OnInit {
+  protected readonly text = GENERIC_FILTER_TEXT;
+
   readonly schema = input.required<ResourceSchema>();
   readonly query = input.required<ListQuery>();
   readonly queryChange = output<ListQuery>();

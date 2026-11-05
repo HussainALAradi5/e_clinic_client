@@ -13,6 +13,7 @@ import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { PrescriptionApi } from '@services/pharmacy/prescription-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { PRESCRIPTIONS_TEXT } from '@constants/portal/prescriptions.constants';
 
 /** `/portal/prescriptions` — medicines with how to take them; open ones carry the code for the pharmacy. */
 @Component({
@@ -35,6 +36,7 @@ export class MyPrescriptionsPage {
   private readonly api = inject(PrescriptionApi);
   private readonly actions = inject(PortalActions);
 
+  protected readonly text = PRESCRIPTIONS_TEXT;
   protected readonly prescriptions = signal<Prescription[] | null>(null);
   private readonly today = clinicIsoDate();
 

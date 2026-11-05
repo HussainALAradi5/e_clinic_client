@@ -61,6 +61,8 @@ import { ROOM_DETAIL_TEXT } from '@constants/clinic/room-detail.constants';
   templateUrl: './room-detail.page.html',
 })
 export class RoomDetailPage implements OnInit {
+  protected readonly text = ROOM_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(RoomApi);

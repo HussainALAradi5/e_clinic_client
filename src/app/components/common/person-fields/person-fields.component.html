@@ -1,17 +1,35 @@
 <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
-  <ui-text label="First name" autocomplete="given-name" [control]="form().controls.firstName" />
-  <ui-text label="Last name" autocomplete="family-name" [control]="form().controls.lastName" />
-  <ui-select label="Gender" enum="Gender" [required]="true" [control]="form().controls.gender" />
-  <ui-text label="Date of birth" type="date" [control]="form().controls.dateOfBirth" />
   <ui-text
-    label="National ID (CPR) / passport"
-    hint="Finds the person if already registered"
+    [label]="text.firstName"
+    autocomplete="given-name"
+    [control]="form().controls.firstName"
+  />
+  <ui-text
+    [label]="text.lastName"
+    autocomplete="family-name"
+    [control]="form().controls.lastName"
+  />
+  <ui-select
+    [label]="text.gender"
+    enum="Gender"
+    [required]="true"
+    [control]="form().controls.gender"
+  />
+  <ui-text [label]="text.dateOfBirth" type="date" [control]="form().controls.dateOfBirth" />
+  <ui-text
+    [label]="text.nationalIdCprPassport"
+    [hint]="text.findsThePersonIf"
     [control]="form().controls.nationalId"
   />
-  <ui-text label="Mobile" type="tel" hint="e.g. +973 3600 1234" [control]="form().controls.phone" />
-  <ui-text label="Email" type="email" [control]="form().controls.email" />
+  <ui-text
+    [label]="text.mobile"
+    type="tel"
+    [hint]="text.eG9733600"
+    [control]="form().controls.phone"
+  />
+  <ui-text [label]="text.email" type="email" [control]="form().controls.email" />
   <ui-country-select
-    label="Nationality"
+    [label]="text.nationality"
     mode="nationality"
     [control]="form().controls.nationalityCode"
   />

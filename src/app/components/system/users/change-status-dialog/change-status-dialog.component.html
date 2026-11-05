@@ -1,25 +1,25 @@
-<h2 mat-dialog-title>Change account status</h2>
+<h2 mat-dialog-title>{{ text.changeAccountStatus }}</h2>
 <mat-dialog-content>
   <p class="mt-0 text-sm text-on-surface-variant">
-    {{ data.user.fullName }} — locking or deactivating signs the user out of every device.
+    {{ data.user.fullName }} {{ text.lockingOrDeactivatingSigns }}
   </p>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Change status"
+    [submitLabel]="text.changeStatus"
     [compact]="true"
     (saved)="ref.close(true)"
     (cancelled)="ref.close()"
   >
     <ui-select
-      label="New status"
+      [label]="text.newStatus"
       [control]="form.controls.status"
       [options]="options()"
       [required]="true"
     />
     @if (needsReason()) {
       <ui-text
-        label="Reason"
+        [label]="text.reason"
         [multiline]="true"
         [maxLength]="reasonMax"
         [control]="form.controls.reason"

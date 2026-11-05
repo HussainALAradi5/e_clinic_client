@@ -6,6 +6,7 @@ import { AppButton } from '@components/common/app-button/app-button.component';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { DATE_FORMAT } from '@constants/app.constants';
+import { PRESCRIPTION_LIST_TEXT } from '@constants/pharmacy/prescription-list.constants';
 
 /** `/pharmacy/prescriptions` — every prescription; patients see their own here. */
 @Component({
@@ -17,6 +18,8 @@ import { DATE_FORMAT } from '@constants/app.constants';
 export class PrescriptionListPage {
   private readonly actions = inject(PharmacyActions);
   private readonly router = inject(Router);
+
+  protected readonly text = PRESCRIPTION_LIST_TEXT;
   protected readonly dateFormat = DATE_FORMAT;
 
   protected readonly create = async (): Promise<void> => {

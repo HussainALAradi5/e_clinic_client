@@ -12,6 +12,7 @@ import { QtyPipe } from '@pipes/qty.pipe';
 import { InventoryApi } from '@services/pharmacy/inventory-api.service';
 import { compareQty } from '@utilities/quantity';
 import { AppValidators } from '@validations/validators';
+import { TRANSFER_STOCK_DIALOG_TEXT } from '@constants/pharmacy/transfer-stock-dialog.constants';
 
 /**
  * Moves units of one lot to the other place: from the pharmacy to the treatment room (ward stock the nurses give in
@@ -24,6 +25,8 @@ import { AppValidators } from '@validations/validators';
   templateUrl: './transfer-stock-dialog.component.html',
 })
 export class TransferStockDialog {
+  protected readonly text = TRANSFER_STOCK_DIALOG_TEXT;
+
   protected readonly data = inject<TransferStockDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<TransferStockDialog, MedicationBatch>);
   private readonly api = inject(InventoryApi);

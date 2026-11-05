@@ -67,6 +67,8 @@ import { DISPENSATION_DETAIL_TEXT } from '@constants/pharmacy/dispensation-detai
   templateUrl: './dispensation-detail.page.html',
 })
 export class DispensationDetailPage implements OnInit {
+  protected readonly text = DISPENSATION_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(DispensationApi);

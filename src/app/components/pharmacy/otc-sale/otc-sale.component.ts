@@ -49,6 +49,8 @@ import { OTC_SALE_TEXT } from '@constants/pharmacy/otc-sale.constants';
   templateUrl: './otc-sale.component.html',
 })
 export class OtcSale {
+  protected readonly text = OTC_SALE_TEXT;
+
   readonly dispensed = output<Dispensation>();
 
   private readonly api = inject(DispensationApi);

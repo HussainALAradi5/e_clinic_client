@@ -2,7 +2,7 @@
   <ui-error [error]="error" (retry)="detail.load(id())" />
 } @else if (detail.record(); as e) {
   <ui-page-header
-    [title]="e.entryNumber ? 'Entry ' + e.entryNumber : 'Draft entry'"
+    [title]="e.entryNumber ? text.entry + e.entryNumber : text.draftEntry"
     [subtitle]="(e.entryDate | date: dateFormat) + ' · ' + e.description"
   >
     <ng-container status><ui-status [value]="e.status" enum="JournalEntryStatus" /></ng-container>
@@ -13,19 +13,23 @@
         >
       }
       @if (isDraft()) {
-        <ui-button icon="edit" [variant]="variants.Outlined" access="journal.create" [action]="edit"
-          >Edit</ui-button
+        <ui-button
+          icon="edit"
+          [variant]="variants.Outlined"
+          access="journal.create"
+          [action]="edit"
+          >{{ text.edit }}</ui-button
         >
-        <ui-button icon="task_alt" access="journal.write & journal.post" [action]="post"
-          >Post</ui-button
-        >
+        <ui-button icon="task_alt" access="journal.write & journal.post" [action]="post">{{
+          text.post
+        }}</ui-button>
         <ui-button
           icon="delete"
           [variant]="variants.Danger"
           access="journal.create"
           [action]="remove"
-          [confirm]="{ title: 'Delete this draft entry?', confirmLabel: 'Delete', danger: true }"
-          >Delete</ui-button
+          [confirm]="{ title: text.deleteThisDraftEntry, confirmLabel: text.delete, danger: true }"
+          >{{ text.delete }}</ui-button
         >
       }
       @if (reversible()) {
@@ -34,7 +38,7 @@
           [variant]="variants.Outlined"
           access="journal.write & journal.reverse"
           [action]="reverse"
-          >Reverse</ui-button
+          >{{ text.reverse }}</ui-button
         >
       }
     </ng-container>
@@ -44,14 +48,16 @@
     <mat-card appearance="outlined" class="self-start overflow-x-auto !p-0">
       <table class="w-full border-collapse text-sm">
         <caption class="sr-only">
-          Lines
+          {{
+            text.lines
+          }}
         </caption>
         <thead>
           <tr class="border-b border-outline-variant text-left text-xs text-on-surface-variant">
-            <th class="px-4 py-3 font-medium" scope="col">Account</th>
-            <th class="px-2 py-3 font-medium" scope="col">For</th>
-            <th class="px-2 py-3 text-right font-medium" scope="col">Debit</th>
-            <th class="px-4 py-3 text-right font-medium" scope="col">Credit</th>
+            <th class="px-4 py-3 font-medium" scope="col">{{ text.account }}</th>
+            <th class="px-2 py-3 font-medium" scope="col">{{ text.for }}</th>
+            <th class="px-2 py-3 text-right font-medium" scope="col">{{ text.debit }}</th>
+            <th class="px-4 py-3 text-right font-medium" scope="col">{{ text.credit }}</th>
           </tr>
         </thead>
         <tbody>
@@ -83,7 +89,7 @@
         </tbody>
         <tfoot>
           <tr class="font-semibold">
-            <td class="px-4 py-3" colspan="2">Total</td>
+            <td class="px-4 py-3" colspan="2">{{ text.total }}</td>
             <td class="px-2 py-3 text-right tabular-nums">{{ e.totalDebit | money }}</td>
             <td class="px-4 py-3 text-right tabular-nums">{{ e.totalCredit | money }}</td>
           </tr>

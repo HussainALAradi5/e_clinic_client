@@ -1,14 +1,14 @@
 <ui-resource-list
   resource="employees"
   endpoint="hr/employees"
-  title="Employees"
-  subtitle="Staff records. Personal data lives on the person, the sign-in on the account — one id for all three."
-  emptyTitle="No employees found"
+  [title]="text.employees"
+  [subtitle]="text.staffRecordsPersonalData"
+  [emptyTitle]="text.noEmployeesFound"
   rowLink="/hr/employees/:id"
 >
-  <ui-button actions icon="person_add" access="employees.create" [action]="hire"
-    >Hire employee</ui-button
-  >
+  <ui-button actions icon="person_add" access="employees.create" [action]="hire">{{
+    text.hireEmployee
+  }}</ui-button>
   <ng-template uiCell="full_name" let-row
     ><span class="font-medium">{{ row.fullName }}</span></ng-template
   >

@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { TIME_FIELD_TEXT, TIME_MINUTE_STEP } from '@constants/ui/time-field.constants';
 import { ClockTime } from '@interfaces/ui/clock-time.interface';
+import { TIME_WHEEL_TEXT } from '@constants/common/time-wheel.constants';
 
 /** Height of one wheel row in px (matches h-10 in the template). */
 const ROW = 40;
@@ -22,6 +23,8 @@ const ROW = 40;
   templateUrl: './time-wheel.component.html',
 })
 export class TimeWheel {
+  protected readonly labels = TIME_WHEEL_TEXT;
+
   readonly time = model.required<ClockTime>();
 
   protected readonly text = TIME_FIELD_TEXT;

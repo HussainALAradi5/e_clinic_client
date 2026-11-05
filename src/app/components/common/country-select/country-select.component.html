@@ -22,7 +22,7 @@
         {{ display(country) }}
       </mat-option>
     } @empty {
-      <mat-option disabled>No country matches</mat-option>
+      <mat-option disabled>{{ text.noCountryMatches }}</mat-option>
     }
   </mat-autocomplete>
   @if (hint()) {

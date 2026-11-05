@@ -41,6 +41,8 @@ export const CHAT_ACCEPT =
   styleUrl: './message-composer.component.scss',
 })
 export class MessageComposer implements OnDestroy {
+  protected readonly labels = MESSAGE_COMPOSER_TEXT;
+
   readonly members = input<ChatMember[]>([]);
   readonly busy = input(false);
   /** The message being answered (shown above the box until sent or cancelled). */

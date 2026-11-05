@@ -1,16 +1,16 @@
-<h2 mat-dialog-title>Complete visit {{ data.appointment.code }}</h2>
+<h2 mat-dialog-title>{{ text.completeVisit }} {{ data.appointment.code }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Complete visit"
+    [submitLabel]="text.completeVisit"
     [allowPristine]="true"
     [compact]="true"
     (saved)="close()"
     (cancelled)="ref.close()"
   >
     <ui-entity-select
-      label="Add a service performed"
+      [label]="text.addAServicePerformed"
       endpoint="billing/services"
       icon="add_shopping_cart"
       [display]="serviceName"
@@ -19,11 +19,11 @@
       (picked)="add($event)"
     />
     @if (extras().length) {
-      <mat-chip-set class="mb-3 block" aria-label="Extra services">
+      <mat-chip-set class="mb-3 block" [attr.aria-label]="text.extraServices">
         @for (s of extras(); track s.id) {
           <mat-chip (removed)="removeExtra(s.id)"
             >{{ s.name
-            }}<button matChipRemove [attr.aria-label]="'Remove ' + s.name">
+            }}<button matChipRemove [attr.aria-label]="text.remove + s.name">
               <mat-icon>cancel</mat-icon>
             </button></mat-chip
           >
@@ -31,8 +31,8 @@
       </mat-chip-set>
     }
     <ui-select
-      label="Follow-up"
-      hint="Suggests a date to book after closing"
+      [label]="text.followUp"
+      [hint]="text.suggestsADateTo"
       [options]="followUps"
       [control]="form.controls.followUpInDays"
     />

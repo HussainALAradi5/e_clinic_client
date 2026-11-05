@@ -4,6 +4,7 @@ import { CountrySelect } from '@components/common/country-select/country-select.
 import { TextField } from '@components/common/text-field/text-field.component';
 import { BAHRAIN } from '@utilities/address';
 import { AddressForm } from '@interfaces/common/address.interface';
+import { ADDRESS_FIELDS_TEXT } from '@constants/common/address-fields.constants';
 
 /**
  * Shared address editor: Bahrain format (flat / building / road / block / area) or international
@@ -17,6 +18,8 @@ import { AddressForm } from '@interfaces/common/address.interface';
   templateUrl: './address-fields.component.html',
 })
 export class AddressFields {
+  protected readonly text = ADDRESS_FIELDS_TEXT;
+
   readonly form = input.required<AddressForm>();
 
   private readonly country = signal(BAHRAIN);

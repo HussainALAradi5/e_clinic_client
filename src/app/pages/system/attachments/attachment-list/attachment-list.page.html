@@ -1,21 +1,19 @@
 <ui-resource-list
   resource="attachments"
-  title="Attachments"
-  subtitle="Files are stored privately, virus-scanned and downloaded through 5-minute links only."
-  emptyTitle="No files found"
+  [title]="text.attachments"
+  [subtitle]="text.filesAreStoredPrivately"
+  [emptyTitle]="text.noFilesFound"
 >
   @if (picked().length > 1) {
-    <ui-button bulk size="sm" variant="tonal" icon="folder_zip" [action]="zip"
-      >Download ZIP</ui-button
-    >
+    <ui-button bulk size="sm" variant="tonal" icon="folder_zip" [action]="zip">{{
+      text.downloadZip
+    }}</ui-button>
   }
 
   <ng-template uiCell="original_name" let-row>
     <div class="flex items-center gap-2">
       @if (row.isSensitive) {
-        <mat-icon
-          class="!size-4 !text-base text-error"
-          matTooltip="Medical (PHI) — needs view-medical rights"
+        <mat-icon class="!size-4 !text-base text-error" [matTooltip]="text.medicalPhiNeedsView"
           >health_and_safety</mat-icon
         >
       }
@@ -38,16 +36,16 @@
       <button
         matIconButton
         class="ml-1"
-        aria-label="Preview"
-        matTooltip="Open"
+        [attr.aria-label]="text.preview"
+        [matTooltip]="text.open"
         (click)="download(row, true, $event)"
       >
         <mat-icon>open_in_new</mat-icon>
       </button>
       <button
         matIconButton
-        aria-label="Download"
-        matTooltip="Download"
+        [attr.aria-label]="text.download"
+        [matTooltip]="text.download"
         (click)="download(row, false, $event)"
       >
         <mat-icon>download</mat-icon>

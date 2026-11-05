@@ -6,6 +6,7 @@ import { ResourceListPage } from '@components/common/resource-list/resource-list
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { MoneyPipe } from '@pipes/money.pipe';
+import { PAYMENT_LIST_TEXT } from '@constants/billing/payment-list.constants';
 
 /** `/billing/payments` — every receipt by method, cashier and drawer; a row opens its invoice. */
 @Component({
@@ -15,5 +16,7 @@ import { MoneyPipe } from '@pipes/money.pipe';
   templateUrl: './payment-list.page.html',
 })
 export class PaymentListPage {
+  protected readonly text = PAYMENT_LIST_TEXT;
+
   protected readonly dateTimeFormat = DATE_TIME_FORMAT;
 }

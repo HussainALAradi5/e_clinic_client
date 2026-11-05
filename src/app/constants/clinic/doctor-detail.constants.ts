@@ -15,4 +15,16 @@ export const DOCTOR_DETAIL_TEXT = {
   newBookingsAreOpen: 'New bookings are open.',
   newBookingsPausedExistingOnes: 'New bookings paused — existing ones stay.',
   doctorProfileSaved: 'Doctor profile saved.',
+  book: 'Book',
+  edit: 'Edit',
+  notBookableRightNow:
+    'Not bookable right now — bookings are paused, the licence has expired or the employee is not active.',
+  upcomingBookings: 'Upcoming bookings',
+  weeklySchedule: 'Weekly schedule',
+  open: 'Open',
+  about: 'About',
+  history: 'History',
+  nothingBooked: 'Nothing booked.',
+  takingNewBookings: 'Taking new bookings',
+  bookingsPaused: 'Bookings paused',
 };

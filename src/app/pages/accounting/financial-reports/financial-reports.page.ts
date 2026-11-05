@@ -33,6 +33,7 @@ import { Department } from '@interfaces/hr/department.interface';
 import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { ReportApi } from '@services/accounting/report-api.service';
 import { addDays, clinicIsoDate } from '@utilities/clinic-time';
+import { FINANCIAL_REPORTS_TEXT } from '@constants/accounting/financial-reports.constants';
 
 /**
  * `/accounting/reports` — the financial reports on one screen: pick a report, set its dates (and account,
@@ -63,6 +64,7 @@ export class FinancialReportsPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
+  protected readonly text = FINANCIAL_REPORTS_TEXT;
   protected readonly reports = REPORTS;
   protected readonly variants = ButtonVariant;
   protected readonly selected = signal<ReportDefinition>(REPORTS[0]);

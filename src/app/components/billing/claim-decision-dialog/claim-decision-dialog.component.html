@@ -1,14 +1,15 @@
 <h2 mat-dialog-title>
-  Insurer's decision
+  {{ text.insurersDecision }}
   <span class="block text-sm font-normal text-on-surface-variant"
-    >{{ claim.code }} · {{ claim.insurer?.name }} · claimed {{ claim.claimedAmount | money }}</span
+    >{{ claim.code }} · {{ claim.insurer?.name }} {{ text.claimed }}
+    {{ claim.claimedAmount | money }}</span
   >
 </h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Record decision"
+    [submitLabel]="text.recordDecision"
     [compact]="true"
     [allowPristine]="true"
     (cancelled)="ref.close()"
@@ -16,28 +17,28 @@
     <mat-button-toggle-group
       class="mb-4"
       hideSingleSelectionIndicator
-      aria-label="Decision"
+      [attr.aria-label]="text.decision"
       [formControl]="form.controls.approved"
     >
-      <mat-button-toggle [value]="true">Approved</mat-button-toggle>
-      <mat-button-toggle [value]="false">Rejected</mat-button-toggle>
+      <mat-button-toggle [value]="true">{{ text.approved }}</mat-button-toggle>
+      <mat-button-toggle [value]="false">{{ text.rejected }}</mat-button-toggle>
     </mat-button-toggle-group>
     @if (form.controls.approved.value) {
       <ui-money
-        label="Approved amount"
-        hint="Less than claimed when the insurer pays only part"
+        [label]="text.approvedAmount"
+        [hint]="text.lessThanClaimedWhen"
         [control]="form.controls.approvedAmount"
       />
-      <ui-text label="Insurer's reference" [control]="form.controls.insurerReference" />
+      <ui-text [label]="text.insurersReference" [control]="form.controls.insurerReference" />
     } @else {
       <ui-text
-        label="Why it was rejected"
+        [label]="text.whyItWasRejected"
         [multiline]="true"
         [rows]="3"
         [control]="form.controls.rejectionReason"
       />
       <p class="m-0 mb-2 text-sm text-on-surface-variant">
-        The patient keeps the whole balance; correct the claim and prepare a new one if needed.
+        {{ text.thePatientKeepsThe }}
       </p>
     }
   </ui-form>

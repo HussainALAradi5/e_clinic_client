@@ -36,6 +36,8 @@ import { SAVED_VIEWS_TEXT } from '@constants/common/saved-views.constants';
   templateUrl: './saved-views.component.html',
 })
 export class SavedViews implements OnInit {
+  protected readonly text = SAVED_VIEWS_TEXT;
+
   readonly resource = input.required<string>();
   readonly query = input.required<ListQuery>();
   /** Visible columns to store with the view. */

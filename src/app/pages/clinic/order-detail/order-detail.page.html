@@ -20,7 +20,7 @@
           *hasAccess="'invoices.read_all | invoices.read_own'"
           matButton="outlined"
           [routerLink]="['/billing/invoices', inv.id]"
-          ><mat-icon>receipt_long</mat-icon> {{ inv.invoiceNumber ?? 'Draft invoice' }}</a
+          ><mat-icon>receipt_long</mat-icon> {{ inv.invoiceNumber ?? text.draftInvoice }}</a
         >
       } @else if (billable()) {
         <ui-button
@@ -28,21 +28,25 @@
           [variant]="variants.Outlined"
           access="invoices.create"
           [action]="bill"
-          >Bill order</ui-button
+          >{{ text.billOrder }}</ui-button
         >
       }
       @if (referral()) {
         <a matButton="outlined" [routerLink]="['/print/referral', o.id]" target="_blank"
-          ><mat-icon>print</mat-icon> Letter</a
+          ><mat-icon>print</mat-icon> {{ text.letter }}</a
         >
       } @else if (o.status === 'completed') {
         <a matButton="outlined" [routerLink]="['/print/result', o.id]" target="_blank"
-          ><mat-icon>print</mat-icon> Print report</a
+          ><mat-icon>print</mat-icon> {{ text.printReport }}</a
         >
       }
       @if (cancellable()) {
-        <ui-button icon="block" [variant]="variants.Danger" access="orders.write" [action]="cancel"
-          >Cancel</ui-button
+        <ui-button
+          icon="block"
+          [variant]="variants.Danger"
+          access="orders.write"
+          [action]="cancel"
+          >{{ text.cancel }}</ui-button
         >
       }
       <ui-entity-actions
@@ -62,8 +66,7 @@
       class="mb-4 flex items-center gap-3 rounded-xl bg-error-container px-4 py-3 text-on-error-container"
       role="alert"
     >
-      <mat-icon>priority_high</mat-icon
-      ><span>Abnormal result — the ordering doctor was alerted.</span>
+      <mat-icon>priority_high</mat-icon><span>{{ text.abnormalResultTheOrdering }}</span>
     </div>
   }
 
@@ -72,20 +75,22 @@
     <div class="flex flex-col gap-4" *hasAccess="'patients.view_medical'">
       <mat-card appearance="outlined" class="!p-5">
         <h2 class="m-0 mb-2 text-base font-semibold">
-          {{ referral() ? 'Reason for referral' : 'Clinical question' }}
+          {{ referral() ? text.reasonForReferral : text.clinicalQuestion }}
         </h2>
         <p class="m-0 whitespace-pre-line text-sm">{{ o.clinicalNotes || '—' }}</p>
       </mat-card>
       <mat-card appearance="outlined" class="!p-5">
         <div class="mb-2 flex items-baseline gap-2">
-          <h2 class="m-0 flex-1 text-base font-semibold">{{ referral() ? 'Reply' : 'Result' }}</h2>
+          <h2 class="m-0 flex-1 text-base font-semibold">
+            {{ referral() ? text.reply : text.result }}
+          </h2>
           @if (o.completedAt) {
             <span class="text-xs text-on-surface-variant">{{
               o.completedAt | date: dateTimeFormat
             }}</span>
           }
         </div>
-        <p class="m-0 whitespace-pre-line text-sm">{{ o.report || 'Not reported yet.' }}</p>
+        <p class="m-0 whitespace-pre-line text-sm">{{ o.report || text.notReportedYet }}</p>
         @if (o.attachments?.length) {
           <ul class="m-0 mt-3 list-none p-0">
             @for (f of o.attachments; track f.id) {
@@ -95,13 +100,13 @@
                 }}</mat-icon>
                 <span class="flex-1 truncate">{{ f.originalName }}</span>
                 <span class="text-xs text-on-surface-variant"
-                  >{{ f.sizeBytes / 1024 | number: '1.0-0' }} KB</span
+                  >{{ f.sizeBytes / 1024 | number: '1.0-0' }} {{ text.kb }}</span
                 >
                 <ui-button
                   icon="open_in_new"
                   [variant]="variants.Text"
                   [action]="open.bind(this, f)"
-                  >View</ui-button
+                  >{{ text.view }}</ui-button
                 >
               </li>
             }
@@ -117,7 +122,7 @@
     mat-stretch-tabs="false"
     animationDuration="0ms"
   >
-    <mat-tab label="History">
+    <mat-tab [label]="text.history">
       <ng-template matTabContent
         ><ui-audit-history class="block pt-4" type="clinical_order" [id]="o.id"
       /></ng-template>

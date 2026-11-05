@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PageMeta } from '@interfaces/api/page-meta.interface';
 import { PageChange } from '@interfaces/ui/page-change.interface';
+import { PAGINATOR_TEXT } from '@constants/common/paginator.constants';
 
 /**
  * Page mode: "1–25 of 1,284", first / previous / next / last, go to page, per page 10/25/50/100.
@@ -19,6 +20,8 @@ import { PageChange } from '@interfaces/ui/page-change.interface';
   templateUrl: './paginator.component.html',
 })
 export class Paginator {
+  protected readonly text = PAGINATOR_TEXT;
+
   readonly meta = input.required<PageMeta>();
   readonly pageSizes = input<number[]>([10, 25, 50, 100]);
   readonly pageChange = output<PageChange>();

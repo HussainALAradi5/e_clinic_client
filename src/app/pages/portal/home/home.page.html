@@ -1,18 +1,18 @@
 <header class="mb-5">
   <h1 class="m-0 text-2xl font-bold tracking-tight lg:text-3xl">{{ greeting() }}</h1>
-  <p class="m-0 mt-1 text-on-surface-variant">Your visits, results and medicines in one place.</p>
+  <p class="m-0 mt-1 text-on-surface-variant">{{ text.yourVisitsResultsAnd }}</p>
 </header>
 
 <div
   class="grid grid-cols-[minmax(0,1fr)] items-start gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]"
 >
-  <section aria-label="Upcoming visits">
+  <section [attr.aria-label]="text.upcomingVisits">
     @if (visits() === null) {
       <ui-skeleton [rows]="4" [height]="28" />
     } @else if (next(); as visit) {
       <app-visit-card [visit]="visit" [pass]="true" (changed)="changed()" />
       @if (later().length) {
-        <h2 class="m-0 mt-6 mb-2 text-base font-semibold">Also booked</h2>
+        <h2 class="m-0 mt-6 mb-2 text-base font-semibold">{{ text.alsoBooked }}</h2>
         <div class="space-y-2">
           @for (v of later(); track v.id) {
             <app-visit-card [visit]="v" (changed)="changed()" />
@@ -23,20 +23,22 @@
       <div class="no-visit">
         <mat-icon class="!size-10 !text-[2.5rem] text-pine-700">event_available</mat-icon>
         <div class="min-w-0 flex-1">
-          <p class="m-0 font-semibold">No visit booked</p>
+          <p class="m-0 font-semibold">{{ text.noVisitBooked }}</p>
           <p class="m-0 text-sm text-on-surface-variant">
-            Choose a doctor and a time that suits you; the clinic confirms it.
+            {{ text.chooseADoctorAnd }}
           </p>
         </div>
       </div>
     }
     <div class="mt-4 flex flex-wrap gap-2">
-      <a matButton="filled" [routerLink]="bookPath"><mat-icon>add</mat-icon> Book a visit</a>
-      <a matButton [routerLink]="visitsPath">All visits</a>
+      <a matButton="filled" [routerLink]="bookPath"
+        ><mat-icon>add</mat-icon> {{ text.bookAVisit }}</a
+      >
+      <a matButton [routerLink]="visitsPath">{{ text.allVisits }}</a>
     </div>
   </section>
 
-  <section aria-label="At a glance">
+  <section [attr.aria-label]="text.atAGlance">
     <ul class="glances">
       @for (g of glances(); track g.route) {
         <li>
@@ -47,7 +49,7 @@
               <span class="block truncate text-sm text-on-surface-variant">{{ g.detail }}</span>
             </span>
             @if (g.flag) {
-              <span class="flag" aria-label="Needs your attention"></span>
+              <span class="flag" [attr.aria-label]="text.needsYourAttention"></span>
             }
             <mat-icon class="text-on-surface-variant">chevron_right</mat-icon>
           </a>

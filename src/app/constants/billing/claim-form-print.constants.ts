@@ -1,0 +1,20 @@
+/** Text of billing/claim-form-print/claim-form-print.page (headings, labels, hints, empty states). */
+export const CLAIM_FORM_PRINT_TEXT = {
+  insurer: 'Insurer',
+  patient: 'Patient',
+  policyNumber: 'Policy number',
+  cover: '% cover)',
+  preAuthorisation: 'Pre-authorisation',
+  invoice: 'Invoice',
+  diagnosesIcd10: 'Diagnoses (ICD-10)',
+  services: 'Services',
+  code: 'Code',
+  service: 'Service',
+  qty: 'Qty',
+  amount: 'Amount',
+  invoiceTotal: 'Invoice total',
+  amountClaimed: 'Amount claimed',
+  insuranceClaimForm: 'Insurance claim form',
+  scanTheCodeTo: 'Scan the code to check the invoice behind this claim is genuine.',
+  primary: 'Primary',
+};

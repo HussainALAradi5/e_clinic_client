@@ -6,7 +6,7 @@
       [entity]="data.entity"
       [recordId]="data.recordId"
       [pixels]="448"
-      [label]="'Code of ' + data.title"
+      [label]="text.codeOf + data.title"
     />
   </div>
   <div class="mt-4 text-center">
@@ -17,5 +17,5 @@
   <p class="m-0 mt-3 max-w-xs text-center text-xs text-on-surface-variant">{{ data.hint }}</p>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
-  <button matButton="filled" mat-dialog-close>Done</button>
+  <button matButton="filled" mat-dialog-close>{{ text.done }}</button>
 </mat-dialog-actions>

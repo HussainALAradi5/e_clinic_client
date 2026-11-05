@@ -1,17 +1,17 @@
-<h2 mat-dialog-title>{{ specialty ? 'Edit specialty' : 'New specialty' }}</h2>
+<h2 mat-dialog-title>{{ specialty ? text.editSpecialty : text.newSpecialty }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    [submitLabel]="specialty ? 'Save' : 'Create specialty'"
+    [submitLabel]="specialty ? text.save : text.createSpecialty"
     [compact]="true"
     (saved)="close()"
     (cancelled)="ref.close()"
   >
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-[9rem_1fr]">
-      <ui-text label="Code" hint="e.g. PED" [control]="form.controls.code" />
-      <ui-text label="Name" [control]="form.controls.name" />
+      <ui-text [label]="text.code" [hint]="text.eGPed" [control]="form.controls.code" />
+      <ui-text [label]="text.name" [control]="form.controls.name" />
     </div>
-    <ui-text label="Description" [multiline]="true" [control]="form.controls.description" />
+    <ui-text [label]="text.description" [multiline]="true" [control]="form.controls.description" />
   </ui-form>
 </mat-dialog-content>

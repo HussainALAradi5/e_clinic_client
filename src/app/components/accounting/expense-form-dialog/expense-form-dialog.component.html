@@ -1,29 +1,29 @@
-<h2 mat-dialog-title>{{ expense ? 'Edit expense ' + expense.code : 'New expense' }}</h2>
+<h2 mat-dialog-title>{{ expense ? text.editExpense + expense.code : text.newExpense }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    [submitLabel]="expense ? 'Save' : 'Save draft'"
+    [submitLabel]="expense ? text.save : text.saveDraft"
     [compact]="true"
     (cancelled)="ref.close()"
   >
     <div class="mb-4">
-      <p class="m-0 mb-2 text-sm text-on-surface-variant">Paid to</p>
+      <p class="m-0 mb-2 text-sm text-on-surface-variant">{{ text.paidTo }}</p>
       <mat-button-toggle-group
         hideSingleSelectionIndicator
-        aria-label="Paid to"
+        [attr.aria-label]="text.paidTo"
         [value]="payeeKind()"
         (change)="setPayeeKind($event.value)"
       >
-        <mat-button-toggle value="company">A company on file</mat-button-toggle>
-        <mat-button-toggle value="name">Someone else</mat-button-toggle>
+        <mat-button-toggle value="company">{{ text.aCompanyOnFile }}</mat-button-toggle>
+        <mat-button-toggle value="name">{{ text.someoneElse }}</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
       @if (payeeKind() === 'company') {
         <ui-entity-select
           class="sm:col-span-2"
-          label="Company"
+          [label]="text.company"
           endpoint="reference/companies"
           icon="domain"
           [display]="companyName"
@@ -31,30 +31,30 @@
           [control]="form.controls.payeeCompanyId"
         />
       } @else {
-        <ui-text class="sm:col-span-2" label="Paid to (name)" [control]="form.controls.payee" />
+        <ui-text class="sm:col-span-2" [label]="text.paidToName" [control]="form.controls.payee" />
       }
       <ui-text
         class="sm:col-span-2"
-        label="What for"
+        [label]="text.whatFor"
         [maxLength]="500"
         [control]="form.controls.description"
       />
       <ui-select
-        label="Category"
+        [label]="text.category"
         enum="ExpenseCategory"
         [required]="true"
         [control]="form.controls.category"
       />
-      <ui-text label="Date" type="date" [control]="form.controls.expenseDate" />
-      <ui-money label="Amount (VAT included)" [control]="form.controls.amount" />
+      <ui-text [label]="text.date" type="date" [control]="form.controls.expenseDate" />
+      <ui-money [label]="text.amountVatIncluded" [control]="form.controls.amount" />
       <ui-money
-        label="Of which VAT"
-        hint="Recoverable input VAT"
+        [label]="text.ofWhichVat"
+        [hint]="text.recoverableInputVat"
         [control]="form.controls.taxAmount"
       />
-      <ui-text label="Vendor invoice number" [control]="form.controls.vendorInvoiceNumber" />
+      <ui-text [label]="text.vendorInvoiceNumber" [control]="form.controls.vendorInvoiceNumber" />
       <ui-entity-select
-        label="Department (optional)"
+        [label]="text.departmentOptional"
         endpoint="hr/departments"
         [display]="departmentName"
         [initial]="$any(expense?.department ?? null)"
@@ -62,10 +62,10 @@
       />
       <ui-entity-select
         class="sm:col-span-2"
-        label="Expense account (optional)"
+        [label]="text.expenseAccountOptional"
         endpoint="accounting/accounts"
         icon="account_tree"
-        hint="Left empty, the category's usual account is used."
+        [hint]="text.leftEmptyTheCategorys"
         [display]="accountName"
         [filter]="expenseAccounts"
         [initial]="$any(expense?.expenseAccount ?? null)"

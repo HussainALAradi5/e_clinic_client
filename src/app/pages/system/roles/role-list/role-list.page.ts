@@ -26,6 +26,7 @@ export class RoleListPage {
   private readonly notify = inject(NotifyService);
   private readonly router = inject(Router);
 
+  protected readonly text = ROLE_LIST_TEXT;
   protected readonly create = async (): Promise<void> => {
     const role = await this.dialogs.open<RoleFormDialog, RoleFormDialogData, Role>(RoleFormDialog, {
       role: null,

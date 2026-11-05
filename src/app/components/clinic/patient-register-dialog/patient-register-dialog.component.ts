@@ -21,6 +21,7 @@ import { isApiError } from '@utilities/guards';
 import { dirtyPayload } from '@utilities/form-payload';
 import { newPersonForm, toNewPerson } from '@utilities/person';
 import { RegisterResult } from '@interfaces/clinic/patient-register-dialog.interface';
+import { PATIENT_REGISTER_DIALOG_TEXT } from '@constants/clinic/patient-register-dialog.constants';
 
 /**
  * Register a patient: search the person first (staff and relatives are often on file already) or enter a new one.
@@ -46,6 +47,7 @@ export class PatientRegisterDialog {
   private readonly api = inject(PatientApi);
   private readonly access = inject(AccessService);
 
+  protected readonly text = PATIENT_REGISTER_DIALOG_TEXT;
   protected readonly mode = signal<'new' | 'existing'>('new');
   protected readonly candidates = signal<DuplicateCandidate[]>([]);
   protected readonly chosen = signal<Person | DuplicateCandidate | null>(null);

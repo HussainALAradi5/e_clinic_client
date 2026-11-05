@@ -101,6 +101,8 @@ import { VISIT_WORKSPACE_TEXT } from '@constants/clinic/visit-workspace.constant
   templateUrl: './visit-workspace.page.html',
 })
 export class VisitWorkspacePage implements OnInit {
+  protected readonly text = VISIT_WORKSPACE_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly appointments = inject(AppointmentApi);

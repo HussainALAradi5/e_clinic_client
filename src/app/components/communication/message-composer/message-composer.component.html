@@ -1,6 +1,6 @@
 <div class="composer">
   @if (suggestions().length) {
-    <ul class="mentions glass" role="listbox" aria-label="Mention a member">
+    <ul class="mentions glass" role="listbox" [attr.aria-label]="labels.mentionAMember">
       @for (m of suggestions(); track m.userId; let i = $index) {
         <li
           role="option"
@@ -20,13 +20,13 @@
       <mat-icon aria-hidden="true">reply</mat-icon>
       <div class="min-w-0 flex-1">
         <p class="m-0 text-xs font-semibold">
-          Replying to {{ r.sender.id === meId() ? 'yourself' : r.sender.fullName }}
+          {{ labels.replyingTo }} {{ r.sender.id === meId() ? 'yourself' : r.sender.fullName }}
         </p>
         <p class="m-0 truncate text-sm opacity-80">
-          {{ r.body || (r.attachments[0]?.name ?? 'File') }}
+          {{ r.body || (r.attachments[0]?.name ?? labels.file) }}
         </p>
       </div>
-      <button type="button" aria-label="Cancel reply" (click)="cancelReply.emit()">
+      <button type="button" [attr.aria-label]="labels.cancelReply" (click)="cancelReply.emit()">
         <mat-icon>close</mat-icon>
       </button>
     </div>
@@ -41,7 +41,7 @@
           <span class="opacity-70">{{ size(file.size) }}</span>
           <button
             type="button"
-            [attr.aria-label]="'Remove ' + file.name"
+            [attr.aria-label]="labels.remove + file.name"
             (click)="removeFile(file)"
           >
             <mat-icon>close</mat-icon>
@@ -53,13 +53,18 @@
 
   @if (recording()) {
     <div class="bar recording">
-      <button matIconButton type="button" aria-label="Discard voice note" (click)="cancelVoice()">
+      <button
+        matIconButton
+        type="button"
+        [attr.aria-label]="labels.discardVoiceNote"
+        (click)="cancelVoice()"
+      >
         <mat-icon>delete</mat-icon>
       </button>
       <span class="dot"></span>
-      <span class="flex-1 font-medium">Recording {{ clock() }}</span>
+      <span class="flex-1 font-medium">{{ labels.recording }} {{ clock() }}</span>
       <button matFab extended type="button" class="send" (click)="toggleVoice()">
-        <mat-icon>send</mat-icon> Send
+        <mat-icon>send</mat-icon> {{ labels.send }}
       </button>
     </div>
   } @else {
@@ -68,8 +73,8 @@
       <button
         matIconButton
         type="button"
-        matTooltip="Attach photos or files (or drop them on the chat)"
-        aria-label="Attach files"
+        [matTooltip]="labels.attachPhotosOrFiles"
+        [attr.aria-label]="labels.attachFiles"
         (click)="picker.click()"
       >
         <mat-icon>attach_file</mat-icon>
@@ -78,14 +83,20 @@
         #box
         rows="1"
         class="input"
-        placeholder="Message — type @ to mention"
-        aria-label="Message"
+        [placeholder]="labels.messageTypeToMention"
+        [attr.aria-label]="labels.message"
         [ngModel]="text()"
         (ngModelChange)="typed($event)"
         (keydown)="keydown($event)"
       ></textarea>
       @if (canSend()) {
-        <button matIconButton type="button" class="send" aria-label="Send" (click)="submit()">
+        <button
+          matIconButton
+          type="button"
+          class="send"
+          [attr.aria-label]="labels.send"
+          (click)="submit()"
+        >
           <mat-icon>send</mat-icon>
         </button>
       } @else {
@@ -93,8 +104,8 @@
           matIconButton
           type="button"
           class="send"
-          matTooltip="Record a voice note"
-          aria-label="Record a voice note"
+          [matTooltip]="labels.recordAVoiceNote"
+          [attr.aria-label]="labels.recordAVoiceNote"
           [disabled]="busy()"
           (click)="toggleVoice()"
         >

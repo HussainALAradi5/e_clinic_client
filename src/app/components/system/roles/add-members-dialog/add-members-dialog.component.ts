@@ -11,6 +11,7 @@ import { UserType } from '@enums/identity/user-type.enum';
 import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { User } from '@interfaces/identity/user.interface';
 import { initials } from '@utilities/text';
+import { ADD_MEMBERS_DIALOG_TEXT } from '@constants/system/add-members-dialog.constants';
 
 /** Staff accounts only — patients sign in to the portal and never hold staff roles. */
 const STAFF_TYPES = Object.values(UserType).filter((type) => type !== UserType.Patient);
@@ -26,6 +27,8 @@ const STAFF_TYPES = Object.values(UserType).filter((type) => type !== UserType.P
   templateUrl: './add-members-dialog.component.html',
 })
 export class AddMembersDialog {
+  protected readonly text = ADD_MEMBERS_DIALOG_TEXT;
+
   protected readonly data = inject<AddMembersDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<AddMembersDialog, number>);
 

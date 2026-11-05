@@ -4,6 +4,7 @@ import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { DATE_FORMAT } from '@constants/app.constants';
 import { SickLeave } from '@interfaces/clinic/sick-leave.interface';
+import { SICK_LEAVE_LIST_TEXT } from '@constants/clinic/sick-leave-list.constants';
 
 /**
  * `/clinic/sick-leaves` — certificates on file: the front desk sees all (to print them for a patient), doctors those
@@ -16,6 +17,8 @@ import { SickLeave } from '@interfaces/clinic/sick-leave.interface';
   templateUrl: './sick-leave-list.page.html',
 })
 export class SickLeaveListPage {
+  protected readonly text = SICK_LEAVE_LIST_TEXT;
+
   protected readonly dateFormat = DATE_FORMAT;
 
   protected open(leave: SickLeave): void {

@@ -1,15 +1,15 @@
-<h2 mat-dialog-title>Insurer remittance</h2>
+<h2 mat-dialog-title>{{ text.insurerRemittance }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Record remittance"
+    [submitLabel]="text.recordRemittance"
     [compact]="true"
     [allowPristine]="true"
     (cancelled)="ref.close()"
   >
     <ui-entity-select
-      label="Insurer"
+      [label]="text.insurer"
       endpoint="reference/companies"
       icon="health_and_safety"
       [display]="insurerName"
@@ -33,19 +33,18 @@
         </ul>
       } @else {
         <p class="m-0 mb-3 text-sm text-on-surface-variant">
-          No approved claims of this insurer wait for payment.
+          {{ text.noApprovedClaimsOf }}
         </p>
       }
     }
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
-      <ui-text label="Received on" type="date" [control]="form.controls.date" />
-      <ui-text label="Bank reference" [control]="form.controls.reference" />
+      <ui-text [label]="text.receivedOn" type="date" [control]="form.controls.date" />
+      <ui-text [label]="text.bankReference" [control]="form.controls.reference" />
     </div>
     <p class="m-0 mb-2 rounded-xl bg-surface-container px-4 py-3 text-sm">
-      Transfer amount: <span class="font-semibold tabular-nums">{{ total() | money }}</span>
-      <span class="block text-xs text-on-surface-variant"
-        >Must equal the bank transfer; untick claims it does not cover.</span
-      >
+      {{ text.transferAmount }}
+      <span class="font-semibold tabular-nums">{{ total() | money }}</span>
+      <span class="block text-xs text-on-surface-variant">{{ text.mustEqualTheBank }}</span>
     </p>
   </ui-form>
 </mat-dialog-content>

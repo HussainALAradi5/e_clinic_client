@@ -14,6 +14,7 @@ import { DurationPipe } from '@pipes/duration.pipe';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { StaffRequestApi } from '@services/hr/staff-request-api.service';
 import { ReviewRequestDialogData } from '@interfaces/hr/review-request-dialog.interface';
+import { REVIEW_REQUEST_DIALOG_TEXT } from '@constants/hr/review-request-dialog.constants';
 
 /**
  * HR decides a staff request. The reason goes back to the employee: optional when approving, required when
@@ -36,6 +37,8 @@ import { ReviewRequestDialogData } from '@interfaces/hr/review-request-dialog.in
   templateUrl: './review-request-dialog.component.html',
 })
 export class ReviewRequestDialog {
+  protected readonly text = REVIEW_REQUEST_DIALOG_TEXT;
+
   protected readonly data = inject<ReviewRequestDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<ReviewRequestDialog, StaffRequest>);
   private readonly api = inject(StaffRequestApi);

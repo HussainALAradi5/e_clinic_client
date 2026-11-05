@@ -27,6 +27,7 @@ export class AccountListPage {
   private readonly notify = inject(NotifyService);
   private readonly router = inject(Router);
 
+  protected readonly text = ACCOUNT_LIST_TEXT;
   protected readonly create = async (): Promise<void> => {
     const account = await this.dialogs.open<AccountFormDialog, AccountFormDialogData, Account>(
       AccountFormDialog,

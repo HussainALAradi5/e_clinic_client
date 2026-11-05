@@ -1,7 +1,4 @@
-<ui-page-header
-  title="Financial reports"
-  subtitle="Read straight from the posted journal — every invoice, payment, refund and expense is already in it."
->
+<ui-page-header [title]="text.financialReports" [subtitle]="text.readStraightFromThe">
   @if (table()) {
     <ng-container actions>
       <ui-button
@@ -9,21 +6,21 @@
         [variant]="variants.Outlined"
         access="reports.export"
         [action]="exportXlsx"
-        >Excel</ui-button
+        >{{ text.excel }}</ui-button
       >
       <ui-button
         icon="picture_as_pdf"
         [variant]="variants.Outlined"
         access="reports.export"
         [action]="exportPdf"
-        >PDF</ui-button
+        >{{ text.pdf }}</ui-button
       >
     </ng-container>
   }
 </ui-page-header>
 
 <div class="grid gap-4 lg:grid-cols-[16rem_minmax(0,1fr)]">
-  <nav aria-label="Reports">
+  <nav [attr.aria-label]="text.reports">
     <ul class="m-0 flex list-none gap-1 overflow-x-auto p-0 lg:flex-col">
       @for (r of reports; track r.type) {
         <li class="shrink-0">
@@ -55,18 +52,18 @@
     >
       @switch (inputs()) {
         @case ('as-of') {
-          <ui-text class="w-44" label="As of" type="date" [control]="form.controls.asOf" />
+          <ui-text class="w-44" [label]="text.asOf" type="date" [control]="form.controls.asOf" />
           @if (selected().type === trialBalance) {
-            <mat-slide-toggle class="mt-4" [formControl]="form.controls.includeZero"
-              >Show zero balances</mat-slide-toggle
-            >
+            <mat-slide-toggle class="mt-4" [formControl]="form.controls.includeZero">{{
+              text.showZeroBalances
+            }}</mat-slide-toggle>
           }
         }
         @default {
           @if (inputs() === 'ledger') {
             <ui-entity-select
               class="w-full sm:w-80"
-              label="Account"
+              [label]="text.account"
               endpoint="accounting/accounts"
               icon="account_tree"
               [display]="accountName"
@@ -74,25 +71,25 @@
               [control]="form.controls.accountId"
             />
           }
-          <ui-text class="w-44" label="From" type="date" [control]="form.controls.from" />
-          <ui-text class="w-44" label="To" type="date" [control]="form.controls.to" />
+          <ui-text class="w-44" [label]="text.from" type="date" [control]="form.controls.from" />
+          <ui-text class="w-44" [label]="text.to" type="date" [control]="form.controls.to" />
           @if (inputs() === 'income') {
             <ui-entity-select
               class="w-full sm:w-64"
-              label="Department (optional)"
+              [label]="text.departmentOptional"
               endpoint="hr/departments"
               [display]="departmentName"
               [control]="form.controls.departmentId"
             />
-            <mat-slide-toggle class="mt-4" [formControl]="form.controls.compare"
-              >Compare with the previous period</mat-slide-toggle
-            >
+            <mat-slide-toggle class="mt-4" [formControl]="form.controls.compare">{{
+              text.compareWithThePrevious
+            }}</mat-slide-toggle>
           }
         }
       }
       <span class="flex-1"></span>
       <button class="mt-2" matButton="filled" type="submit" [disabled]="loading()">
-        <mat-icon>play_arrow</mat-icon> Show report
+        <mat-icon>play_arrow</mat-icon> {{ text.showReport }}
       </button>
     </form>
 
@@ -153,7 +150,7 @@
                     class="px-4 py-8 text-center text-on-surface-variant"
                     [attr.colspan]="t.columns.length"
                   >
-                    Nothing posted in this period.
+                    {{ text.nothingPostedInThis }}
                   </td>
                 </tr>
               }
@@ -163,7 +160,7 @@
                 <tr class="border-t-2 border-outline font-semibold">
                   @for (c of t.columns; track c.key; let first = $first) {
                     <td class="px-4 py-2" [class]="align(c.type)">
-                      {{ first ? 'Total' : cell(t.totals, c.key) }}
+                      {{ first ? text.total : cell(t.totals, c.key) }}
                     </td>
                   }
                 </tr>
@@ -174,7 +171,7 @@
       </mat-card>
     } @else {
       <p class="m-0 rounded-xl bg-surface-container px-4 py-6 text-center text-on-surface-variant">
-        Pick the account and dates, then show the report.
+        {{ text.pickTheAccountAnd }}
       </p>
     }
   </section>

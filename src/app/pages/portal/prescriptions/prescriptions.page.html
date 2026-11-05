@@ -1,7 +1,7 @@
 <header class="mb-4">
-  <h1 class="m-0 text-2xl font-bold tracking-tight">My prescriptions</h1>
+  <h1 class="m-0 text-2xl font-bold tracking-tight">{{ text.myPrescriptions }}</h1>
   <p class="m-0 text-on-surface-variant">
-    Show the code at the clinic pharmacy to collect your medicines.
+    {{ text.showTheCodeAt }}
   </p>
 </header>
 
@@ -16,7 +16,8 @@
           <div class="min-w-0 flex-1">
             <h2 class="m-0 text-base font-semibold">{{ rx.code }}</h2>
             <p class="m-0 text-sm text-on-surface-variant">
-              {{ rx.doctor?.fullName }} · {{ rx.createdAt | date: 'd MMM yyyy' }} · valid until
+              {{ rx.doctor?.fullName }} · {{ rx.createdAt | date: 'd MMM yyyy' }}
+              {{ text.validUntil }}
               {{ rx.validUntil + 'T00:00:00' | date: 'd MMM yyyy' }}
             </p>
           </div>
@@ -27,7 +28,8 @@
             <li class="rounded-xl bg-surface-container-low px-3 py-2">
               <p class="m-0 text-sm font-semibold">{{ item.medication.name }}</p>
               <p class="m-0 text-sm">
-                {{ item.dose }}, {{ item.frequency | lowercase }}, for {{ item.durationDays }} days
+                {{ item.dose }}, {{ item.frequency | lowercase }}{{ text.for }}
+                {{ item.durationDays }} {{ text.days }}
                 <span class="text-on-surface-variant"
                   >({{ item.route | enumLabel: 'MedicationRoute' | lowercase }})</span
                 >
@@ -36,11 +38,11 @@
                 <p class="m-0 text-xs text-on-surface-variant">{{ item.instructions }}</p>
               }
               <p class="m-0 text-xs text-on-surface-variant">
-                Quantity {{ item.quantity | qty }} ({{
+                {{ text.quantity }} {{ item.quantity | qty }} ({{
                   item.medication.unit | enumLabel: 'DispenseUnit' | lowercase
                 }})
                 @if (item.remainingQuantity !== null && +item.remainingQuantity > 0) {
-                  · {{ item.remainingQuantity | qty }} still to collect
+                  · {{ item.remainingQuantity | qty }} {{ text.stillToCollect }}
                 }
               </p>
             </li>
@@ -48,20 +50,20 @@
         </ul>
         @if (rx.cancellationReason) {
           <p class="m-0 mt-2 text-sm text-on-surface-variant">
-            Cancelled: {{ rx.cancellationReason }}
+            {{ text.cancelled }} {{ rx.cancellationReason }}
           </p>
         }
         @if (collectable(rx)) {
           <button matButton="tonal" class="mt-3" (click)="code(rx)">
-            <mat-icon>qr_code_2</mat-icon> Pharmacy code
+            <mat-icon>qr_code_2</mat-icon> {{ text.pharmacyCode }}
           </button>
         }
       </article>
     } @empty {
       <ui-empty
         icon="medication"
-        title="No prescriptions"
-        message="Medicines your doctor prescribes at the clinic show here."
+        [title]="text.noPrescriptions"
+        [message]="text.medicinesYourDoctorPrescribes"
       />
     }
   </div>

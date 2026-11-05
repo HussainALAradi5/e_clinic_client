@@ -21,6 +21,7 @@ import { QtyPipe } from '@pipes/qty.pipe';
 import { LeaveApi } from '@services/hr/leave-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 import { AppValidators } from '@validations/validators';
+import { LEAVE_REQUEST_DIALOG_TEXT } from '@constants/hr/leave-request-dialog.constants';
 
 /**
  * Ask for leave (or, for HR, record it for an employee). Weekly days off and clinic holidays are not counted. Types
@@ -45,6 +46,8 @@ import { AppValidators } from '@validations/validators';
   templateUrl: './leave-request-dialog.component.html',
 })
 export class LeaveRequestDialog {
+  protected readonly text = LEAVE_REQUEST_DIALOG_TEXT;
+
   protected readonly data = inject<LeaveRequestDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<LeaveRequestDialog, LeaveRequest>);
   private readonly api = inject(LeaveApi);

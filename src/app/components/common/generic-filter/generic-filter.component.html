@@ -10,7 +10,12 @@
         [matTooltip]="searchTip()"
       />
       @if (search.value) {
-        <button matIconSuffix matIconButton aria-label="Clear search" (click)="search.setValue('')">
+        <button
+          matIconSuffix
+          matIconButton
+          [attr.aria-label]="text.clearSearch"
+          (click)="search.setValue('')"
+        >
           <mat-icon>close</mat-icon>
         </button>
       }
@@ -112,9 +117,9 @@
             [value]="draft(def).text"
             (selectionChange)="setDraft(def, { text: $event.value })"
           >
-            <mat-option value="">Any</mat-option>
-            <mat-option value="true">Yes</mat-option>
-            <mat-option value="false">No</mat-option>
+            <mat-option value="">{{ text.any }}</mat-option>
+            <mat-option value="true">{{ text.yes }}</mat-option>
+            <mat-option value="false">{{ text.no }}</mat-option>
           </mat-select>
         </mat-form-field>
       }
@@ -145,11 +150,11 @@
   }
 
   @if (hiddenActive().length) {
-    <mat-chip-set aria-label="Filters from a link">
+    <mat-chip-set [attr.aria-label]="text.filtersFromALink">
       @for (def of hiddenActive(); track def.field) {
         <mat-chip (removed)="remove(def)">
           <span class="font-medium">{{ label(def.field) }}:</span> {{ summary(def) }}
-          <button matChipRemove [attr.aria-label]="'Remove ' + label(def.field) + ' filter'">
+          <button matChipRemove [attr.aria-label]="text.remove + label(def.field) + text.filter">
             <mat-icon>cancel</mat-icon>
           </button>
         </mat-chip>
@@ -158,7 +163,7 @@
   }
 
   @if (hasActive()) {
-    <button matButton type="button" (click)="clearAll()">Clear all</button>
+    <button matButton type="button" (click)="clearAll()">{{ text.clearAll }}</button>
   }
   @if (schema().archivable) {
     <mat-slide-toggle
@@ -166,7 +171,7 @@
       [checked]="!!query().includeArchived"
       (change)="patch({ includeArchived: $event.checked || undefined })"
     >
-      Show archived
+      {{ text.showArchived }}
     </mat-slide-toggle>
   }
 </div>
@@ -175,7 +180,7 @@
   @let d = draft(def);
   <div class="inline-flex gap-1">
     <mat-form-field subscriptSizing="dynamic" class="w-32">
-      <mat-label>{{ label(def.field) }} from</mat-label>
+      <mat-label>{{ label(def.field) }} {{ text.from }}</mat-label>
       <input
         matInput
         type="number"
@@ -185,7 +190,7 @@
       />
     </mat-form-field>
     <mat-form-field subscriptSizing="dynamic" class="w-32">
-      <mat-label>to</mat-label>
+      <mat-label>{{ text.to }}</mat-label>
       <input
         matInput
         type="number"
@@ -204,13 +209,13 @@
     <mat-date-range-input [rangePicker]="picker" separator="–">
       <input
         matStartDate
-        placeholder="From"
+        [placeholder]="text.fromPlaceholder"
         [value]="d.min || null"
         (dateChange)="setDraft(def, { min: day($event.value) })"
       />
       <input
         matEndDate
-        placeholder="To"
+        [placeholder]="text.toPlaceholder"
         [value]="d.max || null"
         (dateChange)="setDraft(def, { max: day($event.value) })"
       />

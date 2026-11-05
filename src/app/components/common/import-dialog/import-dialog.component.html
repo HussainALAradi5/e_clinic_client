@@ -1,25 +1,24 @@
-<h2 mat-dialog-title>Import {{ data.title.toLowerCase() }}</h2>
+<h2 mat-dialog-title>{{ text.import }} {{ data.title.toLowerCase() }}</h2>
 
 <mat-dialog-content class="!pt-1">
   <ol class="m-0 list-none space-y-4 p-0">
     <li class="flex gap-3">
       <span class="step" aria-hidden="true">1</span>
       <div class="flex-1">
-        <p class="m-0 font-semibold">Fill in the template</p>
+        <p class="m-0 font-semibold">{{ text.fillInTheTemplate }}</p>
         <p class="mt-1 mb-2 text-sm text-on-surface-variant">
-          One row per record on the "Data" sheet. The "Example" and "Instructions" sheets show what
-          each column needs; columns marked * are required.
+          {{ text.oneRowPerRecord }}
         </p>
-        <ui-button variant="tonal" size="sm" icon="download" [action]="downloadTemplate"
-          >Download template</ui-button
-        >
+        <ui-button variant="tonal" size="sm" icon="download" [action]="downloadTemplate">{{
+          text.downloadTemplate
+        }}</ui-button>
       </div>
     </li>
 
     <li class="flex gap-3">
       <span class="step" aria-hidden="true">2</span>
       <div class="min-w-0 flex-1">
-        <p class="m-0 mb-2 font-semibold">Upload the filled-in file</p>
+        <p class="m-0 mb-2 font-semibold">{{ text.uploadTheFilledIn }}</p>
         @if (file(); as chosen) {
           <div class="file">
             <mat-icon class="text-primary">table_view</mat-icon>
@@ -27,7 +26,12 @@
               <span class="block truncate font-medium">{{ chosen.name }}</span>
               <span class="block text-xs text-on-surface-variant">{{ size(chosen.size) }}</span>
             </span>
-            <button matIconButton type="button" aria-label="Remove file" (click)="setFile(null)">
+            <button
+              matIconButton
+              type="button"
+              [attr.aria-label]="text.removeFile"
+              (click)="setFile(null)"
+            >
               <mat-icon>close</mat-icon>
             </button>
           </div>
@@ -40,8 +44,10 @@
             (drop)="drop($event)"
           >
             <mat-icon>upload_file</mat-icon>
-            <span class="font-medium">Drop the Excel file here or <u>choose a file</u></span>
-            <span class="text-xs text-on-surface-variant">.xlsx</span>
+            <span class="font-medium"
+              >{{ text.dropTheExcelFile }} <u>{{ text.chooseAFile }}</u></span
+            >
+            <span class="text-xs text-on-surface-variant">{{ text.xlsx }}</span>
             <input type="file" class="sr-only" [accept]="accept" (change)="pick($event)" />
           </label>
         }
@@ -61,9 +67,9 @@
           <table class="w-full border-collapse text-sm">
             <thead class="sticky top-0 bg-surface-container-high text-left">
               <tr>
-                <th class="px-3 py-1.5 font-semibold">Row</th>
-                <th class="px-3 py-1.5 font-semibold">Column</th>
-                <th class="px-3 py-1.5 font-semibold">Problem</th>
+                <th class="px-3 py-1.5 font-semibold">{{ text.row }}</th>
+                <th class="px-3 py-1.5 font-semibold">{{ text.column }}</th>
+                <th class="px-3 py-1.5 font-semibold">{{ text.problem }}</th>
               </tr>
             </thead>
             <tbody>
@@ -79,7 +85,7 @@
         </div>
         @if (hiddenErrors()) {
           <p class="mt-2 mb-0 text-xs">
-            …and {{ hiddenErrors() }} more. Fix these and import again.
+            {{ text.and }} {{ hiddenErrors() }} {{ text.moreFixTheseAnd }}
           </p>
         }
       }
@@ -88,6 +94,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button matButton type="button" mat-dialog-close>Cancel</button>
-  <ui-button icon="upload" [disabled]="!file()" [action]="import">Import</ui-button>
+  <button matButton type="button" mat-dialog-close>{{ text.cancel }}</button>
+  <ui-button icon="upload" [disabled]="!file()" [action]="import">{{ text.import }}</ui-button>
 </mat-dialog-actions>

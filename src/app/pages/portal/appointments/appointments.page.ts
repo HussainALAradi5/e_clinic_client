@@ -46,6 +46,8 @@ const PAGE_SIZE = 20;
   templateUrl: './appointments.page.html',
 })
 export class MyAppointmentsPage {
+  protected readonly text = APPOINTMENTS_TEXT;
+
   /** From / to on the visit date (on the server). */
   protected readonly dateFields = [{ value: 'scheduled_date', label: 'Visit date' }];
   protected readonly dates = signal<DateRangeValue>({});

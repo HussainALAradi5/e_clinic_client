@@ -7,6 +7,7 @@ import { CompanyType } from '@enums/reference/company-type.enum';
 import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { Company } from '@interfaces/reference/company.interface';
 import { EmergencyContactsField } from '@components/clinic/emergency-contacts-field/emergency-contacts-field.component';
+import { PATIENT_FIELDS_TEXT } from '@constants/clinic/patient-fields.constants';
 
 /** Patient-file fields (registration and edit): medical alerts, emergency contact, insurance. */
 @Component({
@@ -17,6 +18,8 @@ import { EmergencyContactsField } from '@components/clinic/emergency-contacts-fi
   templateUrl: './patient-fields.component.html',
 })
 export class PatientFields {
+  protected readonly text = PATIENT_FIELDS_TEXT;
+
   readonly form = input.required<PatientForm>();
   readonly insurer = input<{ id: string; name: string } | null>(null);
 

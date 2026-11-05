@@ -1,8 +1,8 @@
 <h2 mat-dialog-title>
   @if (draft()) {
-    Attach the certificate
+    {{ text.attachTheCertificate }}
   } @else {
-    {{ data.employee ? 'Record leave' : 'Request leave' }}
+    {{ data.employee ? text.recordLeave : text.requestLeave }}
   }
   @if (data.employee) {
     <span class="block text-sm font-normal text-on-surface-variant">{{
@@ -13,8 +13,8 @@
 <mat-dialog-content>
   @if (draft(); as d) {
     <p class="m-0 mb-3 text-sm text-on-surface-variant">
-      {{ d.leaveType?.name }} needs a supporting document (e.g. a medical certificate) before
-      {{ d.code }} can go for approval. It is saved as a draft until then.
+      {{ d.leaveType?.name }} {{ text.needsASupportingDocument }} {{ d.code }}
+      {{ text.canGoForApproval }}
     </p>
     <ui-upload-zone
       [category]="certificate"
@@ -24,20 +24,22 @@
       (uploaded)="attached.set(true)"
     />
     <div class="mt-4 flex justify-end gap-2">
-      <button matButton type="button" (click)="ref.close(d)">Later</button>
-      <ui-button icon="send" [disabled]="!attached()" [action]="send">Send for approval</ui-button>
+      <button matButton type="button" (click)="ref.close(d)">{{ text.later }}</button>
+      <ui-button icon="send" [disabled]="!attached()" [action]="send">{{
+        text.sendForApproval
+      }}</ui-button>
     </div>
   } @else {
     <ui-form
       [form]="form"
       [submit]="submit"
-      [submitLabel]="data.employee ? 'Record' : 'Send request'"
+      [submitLabel]="data.employee ? text.record : text.sendRequest"
       [compact]="true"
       [allowPristine]="true"
       (cancelled)="ref.close()"
     >
       <ui-select
-        label="Type of leave"
+        [label]="text.typeOfLeave"
         [options]="typeOptions()"
         [required]="true"
         [control]="form.controls.leaveTypeId"
@@ -45,30 +47,30 @@
       @if (type(); as t) {
         <p class="-mt-2 mb-3 text-xs text-on-surface-variant">
           @if (t.isLimited) {
-            {{ t.annualQuotaDays | qty }} days a year.
+            {{ t.annualQuotaDays | qty }} {{ text.daysAYear }}
           } @else if (!t.isPaid) {
-            Not paid — deducted from the salary.
+            {{ text.notPaidDeductedFrom }}
           }
           @if (t.minNoticeDays > 0 && !data.employee) {
-            Ask at least {{ t.minNoticeDays }} day(s) ahead.
+            {{ text.askAtLeast }} {{ t.minNoticeDays }} {{ text.daySAhead }}
           }
           @if (t.requiresAttachment) {
-            A certificate is needed.
+            {{ text.aCertificateIsNeeded }}
           }
         </p>
       }
       <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
-        <ui-text label="From" type="date" [control]="form.controls.startDate" />
-        <ui-text label="To (inclusive)" type="date" [control]="form.controls.endDate" />
+        <ui-text [label]="text.from" type="date" [control]="form.controls.startDate" />
+        <ui-text [label]="text.toInclusive" type="date" [control]="form.controls.endDate" />
       </div>
       @if (singleDay()) {
-        <mat-checkbox class="-ml-2 mb-2 block" [formControl]="form.controls.isHalfDay"
-          >Half day</mat-checkbox
-        >
+        <mat-checkbox class="-ml-2 mb-2 block" [formControl]="form.controls.isHalfDay">{{
+          text.halfDay
+        }}</mat-checkbox>
       }
-      <ui-text label="Reason (optional)" [control]="form.controls.reason" />
+      <ui-text [label]="text.reasonOptional" [control]="form.controls.reason" />
       <p class="m-0 text-xs text-on-surface-variant">
-        Weekly days off and clinic holidays are not counted.
+        {{ text.weeklyDaysOffAnd }}
       </p>
     </ui-form>
   }

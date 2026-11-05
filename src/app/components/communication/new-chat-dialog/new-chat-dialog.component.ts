@@ -16,6 +16,7 @@ import { Conversation } from '@interfaces/communication/conversation.interface';
 import { ChatApi } from '@services/communication/chat-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { ChatAvatar } from '../chat-avatar/chat-avatar.component';
+import { NEW_CHAT_DIALOG_TEXT } from '@constants/communication/new-chat-dialog.constants';
 
 /** Start a one-to-one chat with a colleague, or a group (you become its leader). Closes with the chat. */
 @Component({
@@ -41,6 +42,7 @@ export class NewChatDialog implements OnInit {
   private readonly api = inject(ChatApi);
   private readonly notify = inject(NotifyService);
 
+  protected readonly text = NEW_CHAT_DIALOG_TEXT;
   protected readonly types = ConversationType;
   protected type = ConversationType.Direct;
   protected title = '';

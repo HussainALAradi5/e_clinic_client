@@ -29,6 +29,8 @@ import { INVOICE_PRINT_TEXT } from '@constants/billing/invoice-print.constants';
   templateUrl: './invoice-print.page.html',
 })
 export class InvoicePrintPage implements OnInit {
+  protected readonly text = INVOICE_PRINT_TEXT;
+
   protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 

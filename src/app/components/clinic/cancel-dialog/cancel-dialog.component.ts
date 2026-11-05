@@ -16,6 +16,7 @@ import { FEE_TEXT } from '@constants/billing/appointment-fee.constants';
 import { AppointmentFeeApi } from '@services/billing/appointment-fee-api.service';
 import { AccessService } from '@services/auth/access.service';
 import { formatMoney } from '@utilities/money';
+import { CANCEL_DIALOG_TEXT } from '@constants/clinic/cancel-dialog.constants';
 
 /**
  * Cancel a pending / confirmed booking: who asked and why (the patient is told; the slot frees up). When the patient
@@ -28,6 +29,8 @@ import { formatMoney } from '@utilities/money';
   templateUrl: './cancel-dialog.component.html',
 })
 export class CancelDialog {
+  protected readonly text = CANCEL_DIALOG_TEXT;
+
   protected readonly data = inject<AppointmentDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<CancelDialog, Appointment>);
   private readonly api = inject(AppointmentApi);

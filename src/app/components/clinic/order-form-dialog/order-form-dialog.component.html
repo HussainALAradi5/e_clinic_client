@@ -1,44 +1,44 @@
-<h2 mat-dialog-title>New order · {{ data.patient.fullName }}</h2>
+<h2 mat-dialog-title>{{ text.newOrder }} {{ data.patient.fullName }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    [submitLabel]="referral() ? 'Write referral' : 'Order'"
+    [submitLabel]="referral() ? text.writeReferral : text.order"
     [compact]="true"
     [allowPristine]="true"
     (cancelled)="ref.close()"
   >
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
       <ui-select
-        label="Type of order"
+        [label]="text.typeOfOrder"
         enum="ClinicalOrderType"
         [required]="true"
         [control]="form.controls.type"
       />
       <ui-select
-        label="Priority"
+        [label]="text.priority"
         enum="TreatmentPriority"
         [required]="true"
         [control]="form.controls.priority"
       />
       @if (referral()) {
         <div class="mb-4 sm:col-span-2">
-          <p class="m-0 mb-2 text-sm text-on-surface-variant">Refer to</p>
+          <p class="m-0 mb-2 text-sm text-on-surface-variant">{{ text.referTo }}</p>
           <mat-button-toggle-group
             hideSingleSelectionIndicator
-            aria-label="Refer to"
+            [attr.aria-label]="text.referTo"
             [formControl]="form.controls.target"
           >
-            <mat-button-toggle value="specialty">A specialty</mat-button-toggle>
-            <mat-button-toggle value="doctor">A doctor</mat-button-toggle>
-            <mat-button-toggle value="company">Another hospital</mat-button-toggle>
+            <mat-button-toggle value="specialty">{{ text.aSpecialty }}</mat-button-toggle>
+            <mat-button-toggle value="doctor">{{ text.aDoctor }}</mat-button-toggle>
+            <mat-button-toggle value="company">{{ text.anotherHospital }}</mat-button-toggle>
           </mat-button-toggle-group>
         </div>
         @switch (target()) {
           @case ('doctor') {
             <ui-entity-select
               class="sm:col-span-2"
-              label="Doctor"
+              [label]="text.doctor"
               endpoint="doctors"
               icon="stethoscope"
               [display]="doctorName"
@@ -48,7 +48,7 @@
           @case ('company') {
             <ui-entity-select
               class="sm:col-span-2"
-              label="Hospital"
+              [label]="text.hospital"
               endpoint="reference/companies"
               icon="local_hospital"
               [display]="companyName"
@@ -59,7 +59,7 @@
           @default {
             <ui-entity-select
               class="sm:col-span-2"
-              label="Specialty"
+              [label]="text.specialty"
               endpoint="doctors/specialties"
               [display]="specialtyName"
               [control]="form.controls.referredToSpecialtyId"
@@ -69,23 +69,23 @@
       } @else {
         <ui-entity-select
           class="sm:col-span-2"
-          label="Test or exam"
+          [label]="text.testOrExam"
           endpoint="billing/services"
-          hint="Billed when the result is in"
+          [hint]="text.billedWhenTheResult"
           [display]="serviceName"
           [filter]="services()"
           [control]="form.controls.billableServiceId"
         />
         <ui-text
           class="sm:col-span-2"
-          label="Body part / sample"
-          hint="e.g. Chest PA, Left knee, Blood"
+          [label]="text.bodyPartSample"
+          [hint]="text.eGChestPa"
           [control]="form.controls.bodyPart"
         />
       }
       <ui-text
         class="sm:col-span-2"
-        [label]="referral() ? 'Reason for referral' : 'Clinical question'"
+        [label]="referral() ? text.reasonForReferral : text.clinicalQuestion"
         [multiline]="true"
         [rows]="3"
         [control]="form.controls.clinicalNotes"

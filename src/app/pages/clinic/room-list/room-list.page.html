@@ -1,12 +1,14 @@
 <ui-resource-list
   resource="rooms"
   endpoint="rooms"
-  title="Rooms"
-  subtitle="Each booking type uses its own room types; a room out of service keeps its bookings until they are moved."
-  emptyTitle="No rooms found"
+  [title]="text.rooms"
+  [subtitle]="text.eachBookingTypeUses"
+  [emptyTitle]="text.noRoomsFound"
   rowLink="/clinic/rooms/:id"
 >
-  <ui-button actions icon="add" access="rooms.create" [action]="create">New room</ui-button>
+  <ui-button actions icon="add" access="rooms.create" [action]="create">{{
+    text.newRoom
+  }}</ui-button>
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template
   >
@@ -16,9 +18,9 @@
   <ng-template uiCell="department" let-row>{{ row.department?.name ?? '—' }}</ng-template>
   <ng-template uiCell="is_in_service" let-row>
     @if (row.isInService) {
-      <span class="text-primary">In service</span>
+      <span class="text-primary">{{ text.inService }}</span>
     } @else {
-      <span class="text-error">Out — {{ row.outOfServiceReason }}</span>
+      <span class="text-error">{{ text.out }} {{ row.outOfServiceReason }}</span>
     }
   </ng-template>
 </ui-resource-list>

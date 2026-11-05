@@ -1,16 +1,16 @@
 <a
   href="#portal-main"
   class="sr-only z-50 rounded-md bg-white px-3 py-2 text-pine-900 focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
-  >Skip to content</a
+  >{{ text.skipToContent }}</a
 >
 
 <header class="portal-header sticky top-0 z-30 text-white">
   <div class="mx-auto flex h-16 max-w-5xl items-center gap-1 px-4">
-    <a [routerLink]="home" class="mr-auto no-underline" aria-label="My portal home">
+    <a [routerLink]="home" class="mr-auto no-underline" [attr.aria-label]="text.myPortalHome">
       <ui-brand-mark tone="light" />
     </a>
 
-    <nav class="mr-2 hidden items-center gap-1 lg:flex" aria-label="Portal">
+    <nav class="mr-2 hidden items-center gap-1 lg:flex" [attr.aria-label]="text.portal">
       @for (tab of tabs; track tab.route) {
         <a
           class="header-link"
@@ -29,7 +29,7 @@
         type="button"
         class="avatar ml-1"
         [matMenuTriggerFor]="account"
-        [attr.aria-label]="'Account menu of ' + user.fullName"
+        [attr.aria-label]="text.accountMenuOf + user.fullName"
       >
         {{ initials() }}
       </button>
@@ -48,19 +48,19 @@
         <mat-divider />
         <a mat-menu-item [routerLink]="security">
           <mat-icon>shield_person</mat-icon>
-          <span>Password &amp; security</span>
+          <span>{{ text.passwordSecurity }}</span>
         </a>
         <button mat-menu-item tapMotion="spin" (click)="theme.toggle()">
           <mat-icon>{{ theme.dark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
-          <span>{{ theme.dark() ? 'Light mode' : 'Dark mode' }}</span>
+          <span>{{ theme.dark() ? text.lightMode : text.darkMode }}</span>
         </button>
         <a mat-menu-item routerLink="/">
           <mat-icon>language</mat-icon>
-          <span>Clinic website</span>
+          <span>{{ text.clinicWebsite }}</span>
         </a>
         <button mat-menu-item (click)="logout()">
           <mat-icon>logout</mat-icon>
-          <span>Sign out</span>
+          <span>{{ text.signOut }}</span>
         </button>
       </mat-menu>
     }
@@ -75,7 +75,7 @@
   <router-outlet />
 </main>
 
-<nav class="tab-bar" aria-label="Portal tabs">
+<nav class="tab-bar" [attr.aria-label]="text.portalTabs">
   @for (tab of tabs; track tab.route) {
     <a
       class="tab"

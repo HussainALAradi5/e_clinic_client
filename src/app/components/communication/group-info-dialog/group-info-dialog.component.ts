@@ -50,6 +50,7 @@ export class GroupInfoDialog {
   private readonly dialogs = inject(DialogService);
   private readonly notify = inject(NotifyService);
 
+  protected readonly text = GROUP_INFO_DIALOG_TEXT;
   protected readonly chat = signal(inject<Conversation>(MAT_DIALOG_DATA));
   protected readonly roles = ParticipantRole;
   protected readonly contactText = CHAT_MENU_TEXT;

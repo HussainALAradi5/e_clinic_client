@@ -1,7 +1,7 @@
 @if (error(); as e) {
   <ui-error [error]="e" (retry)="reload()" />
 } @else if (session(); as s) {
-  <ui-page-header [title]="'Cash drawer ' + s.code" [subtitle]="s.cashier?.fullName ?? null">
+  <ui-page-header [title]="text.cashDrawer + s.code" [subtitle]="s.cashier?.fullName ?? null">
     <ng-container status><ui-status [value]="s.status" enum="CashSessionStatus" /></ng-container>
     <ng-container actions>
       @if (isOpen() && mine()) {
@@ -9,7 +9,7 @@
           icon="calculate"
           access="cash_sessions.write & cash_sessions.operate"
           [action]="close"
-          >Count and close</ui-button
+          >{{ text.countAndClose }}</ui-button
         >
       }
       @if (waiting()) {
@@ -17,7 +17,7 @@
           icon="rule"
           access="cash_sessions.write & cash_sessions.supervise"
           [action]="accept"
-          >Accept difference</ui-button
+          >{{ text.acceptDifference }}</ui-button
         >
       }
       @if (depositable()) {
@@ -25,11 +25,11 @@
           icon="account_balance"
           access="cash_sessions.write & cash_sessions.supervise"
           [action]="deposit"
-          >Record deposit</ui-button
+          >{{ text.recordDeposit }}</ui-button
         >
       }
       <a matButton="outlined" [routerLink]="['/print/z-report', s.id]" target="_blank"
-        ><mat-icon>print</mat-icon> Shift report</a
+        ><mat-icon>print</mat-icon> {{ text.shiftReport }}</a
       >
     </ng-container>
   </ui-page-header>
@@ -39,27 +39,27 @@
     <div class="flex flex-col gap-4">
       @if (s.report; as r) {
         <mat-card appearance="outlined" class="!p-5">
-          <h2 class="m-0 mb-2 text-base font-semibold">Expected cash</h2>
+          <h2 class="m-0 mb-2 text-base font-semibold">{{ text.expectedCash }}</h2>
           <dl class="m-0 grid grid-cols-[1fr_auto] gap-y-1 text-sm tabular-nums">
-            <dt class="text-on-surface-variant">Opening float</dt>
+            <dt class="text-on-surface-variant">{{ text.openingFloat }}</dt>
             <dd class="m-0 text-right">{{ r.openingFloat.amount }}</dd>
-            <dt class="text-on-surface-variant">Cash payments · {{ r.payments }}</dt>
+            <dt class="text-on-surface-variant">{{ text.cashPayments }} {{ r.payments }}</dt>
             <dd class="m-0 text-right">+{{ r.cashIn.amount }}</dd>
-            <dt class="text-on-surface-variant">Cash refunds · {{ r.refunds }}</dt>
+            <dt class="text-on-surface-variant">{{ text.cashRefunds }} {{ r.refunds }}</dt>
             <dd class="m-0 text-right">−{{ r.cashRefunds.amount }}</dd>
-            <dt class="text-on-surface-variant">Cash expenses · {{ r.expenses }}</dt>
+            <dt class="text-on-surface-variant">{{ text.cashExpenses }} {{ r.expenses }}</dt>
             <dd class="m-0 text-right">−{{ r.cashExpenses.amount }}</dd>
             <dt class="text-on-surface-variant">{{ walletText.balanceDeposits }}</dt>
             <dd class="m-0 text-right">+{{ r.balanceDeposits.amount }}</dd>
             <dt class="text-on-surface-variant">{{ walletText.balancePaybacks }}</dt>
             <dd class="m-0 text-right">−{{ r.balancePaybacks.amount }}</dd>
-            <dt class="border-t border-outline-variant pt-1 font-semibold">Expected</dt>
+            <dt class="border-t border-outline-variant pt-1 font-semibold">{{ text.expected }}</dt>
             <dd class="m-0 border-t border-outline-variant pt-1 text-right font-semibold">
               {{ r.expected | money }}
             </dd>
           </dl>
           @if (r.byMethod.length) {
-            <h3 class="m-0 mb-1 mt-4 text-sm font-semibold">All takings of the shift</h3>
+            <h3 class="m-0 mb-1 mt-4 text-sm font-semibold">{{ text.allTakingsOfThe }}</h3>
             <dl class="m-0 grid grid-cols-[1fr_auto] gap-y-1 text-sm tabular-nums">
               @for (m of r.byMethod; track m.method) {
                 <dt class="text-on-surface-variant">{{ m.method | enumLabel: 'PaymentMethod' }}</dt>
@@ -71,7 +71,7 @@
       }
       @if (s.denominations?.length) {
         <mat-card appearance="outlined" class="!p-5">
-          <h2 class="m-0 mb-2 text-base font-semibold">Count</h2>
+          <h2 class="m-0 mb-2 text-base font-semibold">{{ text.count }}</h2>
           <dl class="m-0 grid grid-cols-[1fr_auto] gap-y-1 text-sm tabular-nums">
             @for (d of s.denominations; track d.value) {
               <dt class="text-on-surface-variant">{{ d.value }} × {{ d.count }}</dt>
@@ -83,11 +83,13 @@
     </div>
   </div>
 
-  <h2 class="mb-2 mt-6 text-base font-semibold">Cash payments into this drawer</h2>
+  <h2 class="mb-2 mt-6 text-base font-semibold">{{ text.cashPaymentsIntoThis }}</h2>
   <mat-card appearance="outlined" class="overflow-x-auto !p-0">
     <table class="w-full border-collapse text-sm">
       <caption class="sr-only">
-        Payments of the shift
+        {{
+          text.paymentsOfTheShift
+        }}
       </caption>
       <tbody>
         @for (p of taken(); track p.id) {
@@ -106,7 +108,7 @@
         } @empty {
           <tr>
             <td class="px-4 py-6 text-center text-on-surface-variant">
-              No payments in this drawer.
+              {{ text.noPaymentsInThis }}
             </td>
           </tr>
         }
@@ -120,7 +122,7 @@
     mat-stretch-tabs="false"
     animationDuration="0ms"
   >
-    <mat-tab label="History">
+    <mat-tab [label]="text.history">
       <ng-template matTabContent
         ><ui-audit-history class="block pt-4" type="cash_session" [id]="s.id"
       /></ng-template>

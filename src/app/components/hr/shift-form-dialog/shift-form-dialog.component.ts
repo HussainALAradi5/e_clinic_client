@@ -32,6 +32,8 @@ import { SHIFT_FORM_DIALOG_TEXT } from '@constants/hr/shift-form-dialog.constant
   templateUrl: './shift-form-dialog.component.html',
 })
 export class ShiftFormDialog {
+  protected readonly text = SHIFT_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<ShiftFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<ShiftFormDialog, Shift>);
   protected readonly shift = this.data.shift;

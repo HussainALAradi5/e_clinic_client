@@ -6,4 +6,9 @@ export const APPOINTMENTS_TEXT = {
   noVisitsToday: 'No visits today',
   noMissedVisits: 'No missed visits',
   noVisitsYet: 'No visits yet',
+  myVisits: 'My visits',
+  showTheCheckIn: 'Show the check-in code at the desk when you arrive.',
+  bookAVisit: 'Book a visit',
+  showMore: 'Show more',
+  whichVisits: 'Which visits',
 };

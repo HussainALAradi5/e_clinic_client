@@ -8,6 +8,7 @@ import { GenericForm } from '@components/common/generic-form/generic-form.compon
 import { TextField } from '@components/common/text-field/text-field.component';
 import { LeaveType } from '@interfaces/hr/leave.interface';
 import { LeaveApi } from '@services/hr/leave-api.service';
+import { LEAVE_TYPE_DIALOG_TEXT } from '@constants/hr/leave-type-dialog.constants';
 
 /** Leave type: yearly days (0 = no limit), paid, certificate, carry-forward and notice. */
 @Component({
@@ -17,6 +18,8 @@ import { LeaveApi } from '@services/hr/leave-api.service';
   templateUrl: './leave-type-dialog.component.html',
 })
 export class LeaveTypeDialog {
+  protected readonly text = LEAVE_TYPE_DIALOG_TEXT;
+
   protected readonly data = inject<LeaveTypeDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<LeaveTypeDialog, LeaveType>);
   private readonly api = inject(LeaveApi);

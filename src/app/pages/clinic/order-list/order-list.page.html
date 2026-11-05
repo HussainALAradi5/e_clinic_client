@@ -1,9 +1,9 @@
 <ui-resource-list
   resource="orders"
   endpoint="clinical-orders"
-  title="Clinical orders"
-  subtitle="Imaging, lab tests, ECGs and referrals. Doctors order them from the visit; results come back here and on the patient file."
-  emptyTitle="No orders found"
+  [title]="text.clinicalOrders"
+  [subtitle]="text.imagingLabTestsEcgs"
+  [emptyTitle]="text.noOrdersFound"
   rowLink="/clinic/clinical-orders/:id"
   [params]="params()"
 >
@@ -11,11 +11,11 @@
     quick
     class="mb-3 block"
     enum="ClinicalOrderType"
-    label="Kind of order"
+    [label]="text.kindOfOrder"
     [(value)]="type"
   />
   <a actions matButton="filled" routerLink="/clinic/clinical-orders/worklist"
-    ><mat-icon>checklist</mat-icon> Work list</a
+    ><mat-icon>checklist</mat-icon> {{ text.workList }}</a
   >
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template
@@ -29,7 +29,7 @@
     @if (row.isAbnormal) {
       <span
         class="ml-2 rounded-full bg-error-container px-2 py-0.5 text-[11px] font-medium text-on-error-container"
-        >Abnormal</span
+        >{{ text.abnormal }}</span
       >
     }
   </ng-template>

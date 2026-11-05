@@ -1,44 +1,43 @@
 <h2 mat-dialog-title class="flex items-center gap-2">
-  <mat-icon>support_agent</mat-icon>New support ticket
+  <mat-icon>support_agent</mat-icon>{{ text.newSupportTicket }}
 </h2>
 <mat-dialog-content>
   <p class="mt-0 mb-4 text-sm text-on-surface-variant">
-    The support team is told right away; you get a notification when it is picked up and when it is
-    solved.
+    {{ text.theSupportTeamIs }}
   </p>
   <ui-form
     [form]="form"
     [submit]="save"
-    submitLabel="Open ticket"
+    [submitLabel]="text.openTicket"
     submitIcon="send"
     lock="once"
     [compact]="true"
     (cancelled)="ref.close()"
   >
     <ui-text
-      label="Subject"
-      hint="e.g. Label printer in ward 2 is offline"
+      [label]="text.subject"
+      [hint]="text.eGLabelPrinter"
       [maxLength]="150"
       [control]="form.controls.subject"
       [autofocus]="true"
     />
     <div class="grid gap-x-4 sm:grid-cols-2">
       <ui-select
-        label="Category"
+        [label]="text.category"
         enum="TicketCategory"
         [control]="form.controls.category"
         [required]="true"
       />
       <ui-select
-        label="Priority"
+        [label]="text.priority"
         enum="TreatmentPriority"
         [control]="form.controls.priority"
         [required]="true"
       />
     </div>
     <ui-text
-      label="What happened?"
-      hint="Where, since when, what you already tried"
+      [label]="text.whatHappened"
+      [hint]="text.whereSinceWhenWhat"
       [multiline]="true"
       [rows]="5"
       [maxLength]="5000"
@@ -54,11 +53,9 @@
         (change)="pick(picker)"
       />
       <button matButton type="button" (click)="picker.click()">
-        <mat-icon>add_photo_alternate</mat-icon> Add screenshots or photos
+        <mat-icon>add_photo_alternate</mat-icon> {{ text.addScreenshotsOrPhotos }}
       </button>
-      <span class="ml-2 text-xs text-on-surface-variant"
-        >JPEG, PNG, WebP or PDF, up to 10 MB each</span
-      >
+      <span class="ml-2 text-xs text-on-surface-variant">{{ text.jpegPngWebpOr }}</span>
       @if (files().length) {
         <div class="mt-2 flex flex-wrap gap-2">
           @for (f of files(); track f) {
@@ -72,7 +69,7 @@
               <button
                 type="button"
                 class="ml-1 cursor-pointer border-0 bg-transparent p-0 text-inherit"
-                [attr.aria-label]="'Remove ' + f.name"
+                [attr.aria-label]="text.remove + f.name"
                 (click)="remove(f)"
               >
                 <mat-icon class="!size-4 !text-base">close</mat-icon>

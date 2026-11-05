@@ -28,6 +28,8 @@ import { PAYSLIP_PRINT_TEXT } from '@constants/hr/payslip-print.constants';
   templateUrl: './payslip-print.page.html',
 })
 export class PayslipPrintPage implements OnInit {
+  protected readonly text = PAYSLIP_PRINT_TEXT;
+
   protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 

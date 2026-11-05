@@ -63,6 +63,8 @@ import { TREATMENT_DETAIL_TEXT } from '@constants/clinic/treatment-detail.consta
   templateUrl: './treatment-detail.page.html',
 })
 export class TreatmentDetailPage implements OnInit {
+  protected readonly text = TREATMENT_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(TreatmentApi);

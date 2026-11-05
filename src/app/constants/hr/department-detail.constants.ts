@@ -12,4 +12,12 @@ export const DEPARTMENT_DETAIL_TEXT = {
   departmentRestored: 'Department restored.',
   departmentDeleted: 'Department deleted.',
   departmentCreated: (p0: unknown) => `Department ${p0} created.`,
+  subDepartments: 'Sub-departments',
+  add: 'Add',
+  none: 'None.',
+  nobodyWorksInThis: 'Nobody works in this department yet.',
+  aDepartmentWithStaff: 'A department with staff cannot be deleted — move them or archive it.',
+  details: 'Details',
+  history: 'History',
+  staff: 'Staff (',
 };

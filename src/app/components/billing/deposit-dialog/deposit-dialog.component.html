@@ -1,20 +1,20 @@
 <h2 mat-dialog-title>
-  Bank deposit
+  {{ text.bankDeposit }}
   <span class="block text-sm font-normal text-on-surface-variant">{{ session.code }}</span>
 </h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Record deposit"
+    [submitLabel]="text.recordDeposit"
     [compact]="true"
     [allowPristine]="true"
     (cancelled)="ref.close()"
   >
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
-      <ui-text label="Deposit date" type="date" [control]="form.controls.date" />
-      <ui-money label="Amount" [control]="form.controls.amount" />
+      <ui-text [label]="text.depositDate" type="date" [control]="form.controls.date" />
+      <ui-money [label]="text.amount" [control]="form.controls.amount" />
     </div>
-    <ui-text label="Bank slip reference" [control]="form.controls.reference" />
+    <ui-text [label]="text.bankSlipReference" [control]="form.controls.reference" />
   </ui-form>
 </mat-dialog-content>

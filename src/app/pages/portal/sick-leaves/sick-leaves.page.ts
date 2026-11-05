@@ -10,6 +10,7 @@ import { DATE_FORMAT } from '@constants/app.constants';
 import { SickLeave } from '@interfaces/clinic/sick-leave.interface';
 import { SickLeaveApi } from '@services/clinic/sick-leave-api.service';
 import { defaultQuery } from '@utilities/list-query';
+import { SICK_LEAVES_TEXT } from '@constants/portal/sick-leaves.constants';
 
 /** `/portal/sick-leaves` — every sick leave the clinic gave me, newest first, each ready to print or show. */
 @Component({
@@ -20,6 +21,8 @@ import { defaultQuery } from '@utilities/list-query';
 })
 export class MySickLeavesPage implements OnInit {
   private readonly api = inject(SickLeaveApi);
+
+  protected readonly text = SICK_LEAVES_TEXT;
   protected readonly leaves = signal<SickLeave[] | null>(null);
   protected readonly error = signal<unknown>(null);
   protected readonly dateFormat = DATE_FORMAT;

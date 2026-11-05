@@ -1,18 +1,16 @@
 <ui-page-header
-  title="Notifications"
-  [subtitle]="
-    unread() ? unread() + ' unread — unread ones are shown in blue.' : 'You are all caught up.'
-  "
+  [title]="text.notifications"
+  [subtitle]="unread() ? unread() + text.unreadUnreadOnesAre : text.youAreAllCaught"
 >
   <ng-container actions>
     <button matButton="tonal" [disabled]="!unread()" (click)="markAllRead()">
-      <mat-icon>done_all</mat-icon> Mark all read
+      <mat-icon>done_all</mat-icon> {{ text.markAllRead }}
     </button>
   </ng-container>
 </ui-page-header>
 
 <div class="filters">
-  <div class="chips" role="tablist" aria-label="Show">
+  <div class="chips" role="tablist" [attr.aria-label]="text.show">
     @for (c of chips; track c.value) {
       <button
         type="button"
@@ -31,9 +29,9 @@
   </div>
 
   <mat-form-field subscriptSizing="dynamic" class="w-56">
-    <mat-label>About</mat-label>
+    <mat-label>{{ text.about }}</mat-label>
     <mat-select [ngModel]="topic()" (ngModelChange)="topic.set($event)">
-      <mat-option value="">Everything</mat-option>
+      <mat-option value="">{{ text.everything }}</mat-option>
       @for (t of topics; track t.value) {
         <mat-option [value]="t.value"
           ><mat-icon>{{ t.icon }}</mat-icon
@@ -44,7 +42,7 @@
   </mat-form-field>
 
   <mat-form-field subscriptSizing="dynamic" class="min-w-56 flex-1">
-    <mat-label>Search</mat-label>
+    <mat-label>{{ text.search }}</mat-label>
     <mat-icon matPrefix>search</mat-icon>
     <input matInput [ngModel]="search()" (ngModelChange)="search.set($event)" />
   </mat-form-field>
@@ -57,7 +55,7 @@
   />
 
   @if (filtered()) {
-    <button matButton (click)="clear()">Clear all</button>
+    <button matButton (click)="clear()">{{ text.clearAll }}</button>
   }
 </div>
 
@@ -79,7 +77,7 @@
       <div class="min-w-0 flex-1">
         <p class="m-0 flex items-center gap-2 text-sm" [class.font-semibold]="!n.readAt">
           @if (!n.readAt) {
-            <span class="dot" aria-label="Unread"></span>
+            <span class="dot" [attr.aria-label]="text.unread"></span>
           }
           <span class="truncate">{{ n.subject ?? n.body }}</span>
         </p>
@@ -96,27 +94,23 @@
       @if (!n.readAt) {
         <button
           matIconButton
-          matTooltip="Mark read"
-          aria-label="Mark read"
+          [matTooltip]="text.markRead"
+          [attr.aria-label]="text.markRead"
           (click)="markRead(n, $event)"
         >
           <mat-icon>mark_email_read</mat-icon>
         </button>
       }
       @if (link(n)) {
-        <span class="open">Open <mat-icon>chevron_right</mat-icon></span>
+        <span class="open">{{ text.open }} <mat-icon>chevron_right</mat-icon></span>
       }
     </div>
   } @empty {
     @if (!loading()) {
       <ui-empty
         icon="notifications_off"
-        [title]="filtered() ? 'Nothing matches these filters' : 'No notifications yet'"
-        [message]="
-          filtered()
-            ? 'Try another filter or clear them.'
-            : 'Ticket updates, mentions and other news land here.'
-        "
+        [title]="filtered() ? text.nothingMatchesTheseFilters : text.noNotificationsYet"
+        [message]="filtered() ? text.tryAnotherFilterOr : text.ticketUpdatesMentionsAnd"
       />
     }
   }

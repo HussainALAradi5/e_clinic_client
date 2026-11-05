@@ -21,4 +21,11 @@ export const ROOM_DETAIL_TEXT = {
   roomDeleted: 'Room deleted.',
   outOfService2: (p0: unknown) => `Out of service — ${p0}`,
   roomOutOfServiceBooking: (p0: unknown) => `Room out of service — ${p0} booking(s) to move.`,
+  backInService: 'Back in service',
+  bookingsToMoveTo: 'Bookings to move to another room',
+  bookings: 'Bookings',
+  details: 'Details',
+  day: 'Day',
+  theRoomIsFree: 'The room is free that day.',
+  history: 'History',
 };

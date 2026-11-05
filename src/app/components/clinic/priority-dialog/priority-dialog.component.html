@@ -1,21 +1,21 @@
-<h2 mat-dialog-title>Change priority · {{ data.treatment.code }}</h2>
+<h2 mat-dialog-title>{{ text.changePriority }} {{ data.treatment.code }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Change priority"
+    [submitLabel]="text.changePriorityLabel"
     [compact]="true"
     (cancelled)="ref.close()"
   >
     <ui-select
-      label="Priority"
+      [label]="text.priority"
       enum="TreatmentPriority"
       [required]="true"
       [control]="form.controls.priority"
     />
     <ui-text
-      label="Reason"
-      hint="Kept in the history of the plan"
+      [label]="text.reason"
+      [hint]="text.keptInTheHistory"
       [control]="form.controls.reason"
     />
   </ui-form>

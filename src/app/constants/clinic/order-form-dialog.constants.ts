@@ -1,0 +1,21 @@
+/** Text of clinic/order-form-dialog/order-form-dialog.component (headings, labels, hints, empty states). */
+export const ORDER_FORM_DIALOG_TEXT = {
+  newOrder: 'New order ·',
+  referTo: 'Refer to',
+  aSpecialty: 'A specialty',
+  aDoctor: 'A doctor',
+  anotherHospital: 'Another hospital',
+  typeOfOrder: 'Type of order',
+  priority: 'Priority',
+  doctor: 'Doctor',
+  hospital: 'Hospital',
+  specialty: 'Specialty',
+  testOrExam: 'Test or exam',
+  billedWhenTheResult: 'Billed when the result is in',
+  bodyPartSample: 'Body part / sample',
+  eGChestPa: 'e.g. Chest PA, Left knee, Blood',
+  writeReferral: 'Write referral',
+  order: 'Order',
+  reasonForReferral: 'Reason for referral',
+  clinicalQuestion: 'Clinical question',
+};

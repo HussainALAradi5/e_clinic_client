@@ -18,6 +18,7 @@ import { catchError, debounceTime, distinctUntilChanged, of, Subject, switchMap 
 import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { ApiClient } from '@services/api/api-client.service';
 import { errorMessage } from '@validations/validators';
+import { ENTITY_SELECT_TEXT } from '@constants/common/entity-select.constants';
 
 const SEARCH_DEBOUNCE_MS = 250;
 const PAGE_SIZE = 20;
@@ -41,6 +42,8 @@ const PAGE_SIZE = 20;
   templateUrl: './entity-select.component.html',
 })
 export class EntitySelect<T extends { id: string }> implements OnInit {
+  protected readonly text = ENTITY_SELECT_TEXT;
+
   readonly label = input.required<string>();
   readonly control = input.required<FormControl<string | null>>();
   readonly endpoint = input.required<string>();

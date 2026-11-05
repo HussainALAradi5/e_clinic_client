@@ -60,6 +60,8 @@ import { APPOINTMENT_DETAIL_TEXT } from '@constants/clinic/appointment-detail.co
   templateUrl: './appointment-detail.page.html',
 })
 export class AppointmentDetailPage implements OnInit {
+  protected readonly text = APPOINTMENT_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(AppointmentApi);

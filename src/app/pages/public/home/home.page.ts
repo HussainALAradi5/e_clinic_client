@@ -46,6 +46,7 @@ const STATUS_REFRESH_MS = 60_000;
 export class HomePage {
   private readonly router = inject(Router);
 
+  protected readonly text = HOME_TEXT;
   protected readonly clinic = CLINIC_INFO;
   protected readonly services = CLINIC_SERVICES;
   protected readonly steps = VISIT_STEPS;

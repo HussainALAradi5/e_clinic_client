@@ -14,4 +14,13 @@ export const PROFILE_TEXT = {
   policyNumber: 'Policy number',
   covers: 'Covers',
   validUntil: 'Valid until',
+  myProfile: 'My profile',
+  yourDetailsAsThe: 'Your details as the clinic holds them.',
+  passwordSecurity: 'Password & security',
+  howWeReachYou: 'How we reach you',
+  edit: 'Edit',
+  aboutYou: 'About you',
+  somethingWrongHereBring: 'Something wrong here? Bring your ID to the front desk or call',
+  insurance: 'Insurance',
+  noInsuranceOnFile: 'No insurance on file. Bring your card to the front desk to add it.',
 };

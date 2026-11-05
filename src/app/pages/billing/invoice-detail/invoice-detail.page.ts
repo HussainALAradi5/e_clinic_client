@@ -70,6 +70,8 @@ import { REMINDER_TEXT } from '@constants/billing/reminder.constants';
   templateUrl: './invoice-detail.page.html',
 })
 export class InvoiceDetailPage implements OnInit {
+  protected readonly text = INVOICE_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   protected readonly detail = new EntityDetail(inject(InvoiceApi));

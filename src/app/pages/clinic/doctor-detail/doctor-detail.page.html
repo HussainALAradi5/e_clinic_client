@@ -12,14 +12,14 @@
         [disabled]="!canWrite"
         (change)="setAccepting($event.checked)"
       >
-        {{ doctor.isAcceptingPatients ? 'Taking new bookings' : 'Bookings paused' }}
+        {{ doctor.isAcceptingPatients ? text.takingNewBookings : text.bookingsPaused }}
       </mat-slide-toggle>
-      <ui-button icon="event_available" access="appointments.create" [action]="book"
-        >Book</ui-button
-      >
-      <ui-button icon="edit" [variant]="variants.Tonal" access="doctors.write" [action]="edit"
-        >Edit</ui-button
-      >
+      <ui-button icon="event_available" access="appointments.create" [action]="book">{{
+        text.book
+      }}</ui-button>
+      <ui-button icon="edit" [variant]="variants.Tonal" access="doctors.write" [action]="edit">{{
+        text.edit
+      }}</ui-button>
     </ng-container>
   </ui-page-header>
 
@@ -29,8 +29,7 @@
       role="status"
     >
       <mat-icon>info</mat-icon>
-      Not bookable right now — bookings are paused, the licence has expired or the employee is not
-      active.
+      {{ text.notBookableRightNow }}
     </div>
   }
 
@@ -38,19 +37,19 @@
     <div class="flex flex-col gap-4">
       <mat-card appearance="outlined" class="!p-5"><ui-facts [items]="profile()" /></mat-card>
       <mat-card appearance="outlined" class="!p-5">
-        <h2 class="m-0 mb-2 text-base font-semibold">Upcoming bookings</h2>
-        <app-appointment-rows empty="Nothing booked." [appointments]="upcoming()" />
+        <h2 class="m-0 mb-2 text-base font-semibold">{{ text.upcomingBookings }}</h2>
+        <app-appointment-rows [empty]="text.nothingBooked" [appointments]="upcoming()" />
       </mat-card>
     </div>
     <div class="flex flex-col gap-4">
       <mat-card appearance="outlined" class="!p-5">
         <div class="mb-2 flex items-center">
-          <h2 class="m-0 flex-1 text-base font-semibold">Weekly schedule</h2>
+          <h2 class="m-0 flex-1 text-base font-semibold">{{ text.weeklySchedule }}</h2>
           <a
             *hasAccess="'schedules.read_all | schedules.read_own'"
             matButton
             [routerLink]="['/clinic/providers', doctor.id, 'schedule']"
-            ><mat-icon>edit_calendar</mat-icon> Open</a
+            ><mat-icon>edit_calendar</mat-icon> {{ text.open }}</a
           >
         </div>
         @for (row of rows(); track row.day) {
@@ -66,7 +65,7 @@
       </mat-card>
       @if (doctor.bio) {
         <mat-card appearance="outlined" class="!p-5">
-          <h2 class="m-0 mb-2 text-base font-semibold">About</h2>
+          <h2 class="m-0 mb-2 text-base font-semibold">{{ text.about }}</h2>
           <p class="m-0 whitespace-pre-line text-sm">{{ doctor.bio }}</p>
         </mat-card>
       }
@@ -74,7 +73,7 @@
   </div>
 
   <div *hasAccess="'audit.read_all | audit.read_own'" class="mt-6">
-    <h2 class="mb-2 text-base font-semibold">History</h2>
+    <h2 class="mb-2 text-base font-semibold">{{ text.history }}</h2>
     <ui-audit-history type="doctor" [id]="doctor.id" />
   </div>
 } @else {

@@ -1,14 +1,14 @@
 <ui-resource-list
   resource="companies"
   endpoint="reference/companies"
-  title="Companies"
-  subtitle="Manufacturers, suppliers, insurers, external labs and referral hospitals."
-  emptyTitle="No companies found"
+  [title]="text.companies"
+  [subtitle]="text.manufacturersSuppliersInsurersExternal"
+  [emptyTitle]="text.noCompaniesFound"
   rowLink="/reference/companies/:id"
 >
-  <ui-button actions icon="add_business" access="companies.create" [action]="create"
-    >New company</ui-button
-  >
+  <ui-button actions icon="add_business" access="companies.create" [action]="create">{{
+    text.newCompany
+  }}</ui-button>
 
   <ng-template uiCell="name" let-row>
     <span class="font-medium">{{ row.name }}</span>

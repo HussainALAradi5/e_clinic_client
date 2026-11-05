@@ -1,8 +1,7 @@
-<ui-page-header
-  title="Fiscal years"
-  subtitle="Close each month once its invoices, payments and expenses are checked — nothing can be posted into a closed month."
->
-  <ui-button actions icon="add" access="fiscal.create" [action]="create">New year</ui-button>
+<ui-page-header [title]="text.fiscalYears" [subtitle]="text.closeEachMonthOnce">
+  <ui-button actions icon="add" access="fiscal.create" [action]="create">{{
+    text.newYear
+  }}</ui-button>
 </ui-page-header>
 
 @if (error(); as e) {
@@ -24,7 +23,7 @@
               [variant]="variants.Tonal"
               access="fiscal.write & fiscal.close"
               [action]="closeYear.bind(this, year)"
-              >Close year</ui-button
+              >{{ text.closeYear }}</ui-button
             >
           }
           @if (year.status === states.Closed) {
@@ -33,7 +32,7 @@
               [variant]="variants.Outlined"
               access="fiscal.write & fiscal.reopen"
               [action]="lockYear.bind(this, year)"
-              >Lock after audit</ui-button
+              >{{ text.lockAfterAudit }}</ui-button
             >
           }
         </div>
@@ -57,10 +56,10 @@
               </span>
               <span class="text-xs text-on-surface-variant">{{
                 period.status === states.Open
-                  ? 'Open'
+                  ? text.open
                   : period.status === states.Locked
-                    ? 'Locked'
-                    : 'Closed'
+                    ? text.locked
+                    : text.closed
               }}</span>
               @if (closable(year, period)) {
                 <ui-button
@@ -68,7 +67,7 @@
                   [variant]="variants.Text"
                   access="fiscal.write & fiscal.close"
                   [action]="close.bind(this, period)"
-                  >Close</ui-button
+                  >{{ text.close }}</ui-button
                 >
               } @else if (period.status === states.Closed && year.status === states.Open) {
                 <ui-button
@@ -76,7 +75,7 @@
                   [variant]="variants.Text"
                   access="fiscal.write & fiscal.reopen"
                   [action]="reopen.bind(this, period)"
-                  >Reopen</ui-button
+                  >{{ text.reopen }}</ui-button
                 >
               }
             </li>
@@ -85,7 +84,7 @@
       </mat-card>
     } @empty {
       <p class="m-0 rounded-xl bg-surface-container px-4 py-6 text-center text-on-surface-variant">
-        No fiscal year yet — create one before issuing invoices.
+        {{ text.noFiscalYearYet }}
       </p>
     }
   </div>

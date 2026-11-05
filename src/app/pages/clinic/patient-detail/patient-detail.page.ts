@@ -77,6 +77,8 @@ import { emergencyContactLine } from '@utilities/clinic/emergency-contacts-form'
   templateUrl: './patient-detail.page.html',
 })
 export class PatientDetailPage implements OnInit {
+  protected readonly text = PATIENT_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(PatientApi);

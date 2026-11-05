@@ -41,6 +41,7 @@ export class AccountMappingsPage {
   private readonly notify = inject(NotifyService);
   protected readonly canEdit = inject(AccessService).can('accounts.write');
 
+  protected readonly text = ACCOUNT_MAPPINGS_TEXT;
   protected readonly mappings = signal<AccountMapping[] | null>(null);
   protected readonly error = signal<ApiError | null>(null);
   protected form = new FormGroup<Record<string, FormControl<string | null>>>({});

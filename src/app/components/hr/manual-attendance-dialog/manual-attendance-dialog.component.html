@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  Correct attendance
+  {{ text.correctAttendance }}
   @if (data.employee) {
     <span class="block text-sm font-normal text-on-surface-variant">{{
       data.employee.fullName
@@ -10,14 +10,14 @@
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Save day"
+    [submitLabel]="text.saveDay"
     [compact]="true"
     [allowPristine]="true"
     (cancelled)="ref.close()"
   >
     @if (!data.employee) {
       <ui-entity-select
-        label="Employee"
+        [label]="text.employee"
         endpoint="hr/employees"
         icon="badge"
         [display]="employeeName"
@@ -26,32 +26,32 @@
         [control]="form.controls.employeeId"
       />
     }
-    <ui-text label="Day" type="date" [control]="form.controls.date" />
+    <ui-text [label]="text.day" type="date" [control]="form.controls.date" />
     <mat-button-toggle-group
       class="mb-4"
       hideSingleSelectionIndicator
-      aria-label="What to record"
+      [attr.aria-label]="text.whatToRecord"
       [formControl]="form.controls.mode"
     >
-      <mat-button-toggle value="times">Times worked</mat-button-toggle>
-      <mat-button-toggle value="day">Day not worked</mat-button-toggle>
+      <mat-button-toggle value="times">{{ text.timesWorked }}</mat-button-toggle>
+      <mat-button-toggle value="day">{{ text.dayNotWorked }}</mat-button-toggle>
     </mat-button-toggle-group>
     @if (mode() === 'times') {
       <div class="grid grid-cols-2 gap-x-4">
-        <ui-text label="Checked in" type="time" [control]="form.controls.checkIn" />
-        <ui-text label="Checked out" type="time" [control]="form.controls.checkOut" />
+        <ui-text [label]="text.checkedIn" type="time" [control]="form.controls.checkIn" />
+        <ui-text [label]="text.checkedOut" type="time" [control]="form.controls.checkOut" />
       </div>
     } @else {
       <ui-select
-        label="The day was"
+        [label]="text.theDayWas"
         [options]="dayResults"
         [required]="true"
         [control]="form.controls.status"
       />
     }
     <ui-text
-      label="Reason"
-      hint="Kept in the history, e.g. 'Forgot to check in'"
+      [label]="text.reason"
+      [hint]="text.keptInTheHistory"
       [control]="form.controls.reason"
     />
   </ui-form>

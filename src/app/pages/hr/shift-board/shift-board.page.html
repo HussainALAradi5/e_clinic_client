@@ -1,14 +1,13 @@
-<ui-page-header
-  title="Shifts"
-  subtitle="Fixed or flexible hours, and who works them. Drag someone onto a shift card, or add them by name."
->
-  <ui-button actions icon="add" access="shifts.create" [action]="create">New shift</ui-button>
+<ui-page-header [title]="text.shiftsTitle" [subtitle]="text.fixedOrFlexibleHours">
+  <ui-button actions icon="add" access="shifts.create" [action]="create">{{
+    text.newShift
+  }}</ui-button>
 </ui-page-header>
 
 <div class="board" [class.busy]="busy()">
   <!-- Every shift as a card; each card takes a person dropped on it. -->
-  <section class="rail" aria-label="Shifts">
-    <p class="rail-head">{{ shifts().length }} shifts · {{ total() }} people</p>
+  <section class="rail" [attr.aria-label]="text.shiftsTitle">
+    <p class="rail-head">{{ shifts().length }} {{ text.shifts }} {{ total() }} {{ text.people }}</p>
 
     @for (s of shifts(); track s.id) {
       <button
@@ -38,7 +37,7 @@
           {{ s.employeesCount ?? 0 }} {{ s.employeesCount === 1 ? 'person' : 'people' }}
         </span>
         <span class="drop-hint" aria-hidden="true"
-          ><mat-icon>login</mat-icon> Drop to put on {{ s.name }}</span
+          ><mat-icon>login</mat-icon> {{ text.dropToPutOn }} {{ s.name }}</span
         >
       </button>
     }
@@ -54,13 +53,16 @@
       (cdkDropListDropped)="dropped(none, $event)"
       (click)="select(none)"
     >
-      <span class="card-name"><mat-icon aria-hidden="true">person_off</mat-icon> No shift</span>
+      <span class="card-name"
+        ><mat-icon aria-hidden="true">person_off</mat-icon> {{ text.noShift }}</span
+      >
       <span class="card-count">
-        {{ unassigned().length }} {{ unassigned().length === 1 ? 'person needs' : 'people need' }} a
-        shift
+        {{ unassigned().length }}
+        {{ unassigned().length === 1 ? text.personNeeds : text.peopleNeed }}
+        {{ text.aShift }}
       </span>
       <span class="drop-hint" aria-hidden="true"
-        ><mat-icon>logout</mat-icon> Drop to take off the shift</span
+        ><mat-icon>logout</mat-icon> {{ text.dropToTakeOff }}</span
       >
     </button>
   </section>
@@ -78,13 +80,19 @@
           }
         </div>
         @if (canEdit) {
-          <button matIconButton aria-label="Shift actions" [matMenuTriggerFor]="shiftMenu">
+          <button
+            matIconButton
+            [attr.aria-label]="text.shiftActions"
+            [matMenuTriggerFor]="shiftMenu"
+          >
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #shiftMenu="matMenu">
-            <button mat-menu-item (click)="edit(s)"><mat-icon>edit</mat-icon>Edit hours</button>
+            <button mat-menu-item (click)="edit(s)">
+              <mat-icon>edit</mat-icon>{{ text.editHours }}
+            </button>
             <button mat-menu-item class="danger" (click)="remove(s)">
-              <mat-icon>delete</mat-icon>Delete shift
+              <mat-icon>delete</mat-icon>{{ text.deleteShift }}
             </button>
           </mat-menu>
         }
@@ -93,7 +101,7 @@
       @if (canEdit) {
         <ui-entity-select
           class="block"
-          label="Add someone to this shift"
+          [label]="text.addSomeoneToThis"
           icon="person_add"
           endpoint="hr/employees"
           subscript="dynamic"
@@ -107,10 +115,9 @@
     } @else {
       <header class="panel-head">
         <div>
-          <h2 class="m-0 text-xl font-semibold">No shift</h2>
+          <h2 class="m-0 text-xl font-semibold">{{ text.noShift }}</h2>
           <p class="m-0 text-sm text-on-surface-variant">
-            Without a shift, lateness and overtime use the person's own working hours. Drag them
-            onto a shift.
+            {{ text.withoutAShiftLateness }}
           </p>
         </div>
       </header>
@@ -122,7 +129,7 @@
       cdkDropList
       cdkDropListSortingDisabled
       [cdkDropListConnectedTo]="cardIds()"
-      aria-label="People on this shift"
+      [attr.aria-label]="text.peopleOnThisShift"
     >
       @for (m of members(); track m.id) {
         <li class="person" cdkDrag [cdkDragData]="m" [cdkDragDisabled]="!canEdit">
@@ -143,7 +150,7 @@
             <mat-icon class="grip" aria-hidden="true">drag_indicator</mat-icon>
             <button
               matIconButton
-              [attr.aria-label]="'Move ' + m.fullName"
+              [attr.aria-label]="text.move + m.fullName"
               [matMenuTriggerFor]="moveMenu"
             >
               <mat-icon>swap_horiz</mat-icon>
@@ -158,7 +165,7 @@
               }
               @if (selectedId() !== none) {
                 <button mat-menu-item class="danger" (click)="move(m, none)">
-                  <mat-icon>person_off</mat-icon>Take off this shift
+                  <mat-icon>person_off</mat-icon>{{ text.takeOffThisShift }}
                 </button>
               }
             </mat-menu>
@@ -170,12 +177,8 @@
           <li class="col-span-full">
             <ui-empty
               icon="group_add"
-              [title]="selectedId() === none ? 'Everyone has a shift' : 'Nobody on this shift yet'"
-              [message]="
-                selectedId() === none
-                  ? null
-                  : 'Add someone by name above, or drag them here from another shift.'
-              "
+              [title]="selectedId() === none ? text.everyoneHasAShift : text.nobodyOnThisShift"
+              [message]="selectedId() === none ? null : text.addSomeoneByName"
             />
           </li>
         }

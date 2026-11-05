@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { PageLoader } from '@components/common/page-loader/page-loader.component';
 import { LoadingService } from '@services/ui/loading.service';
 import { RouteLoadingService } from '@services/ui/route-loading.service';
+import { APP_TEXT } from '@constants/layout/app.constants';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,8 @@ import { RouteLoadingService } from '@services/ui/route-loading.service';
   templateUrl: './app.html',
 })
 export class App {
+  protected readonly text = APP_TEXT;
+
   /** API requests in flight: thin bar on top of the current page. */
   protected readonly loading = inject(LoadingService);
   /** Slow page changes: the full-screen loader replaces the page. */

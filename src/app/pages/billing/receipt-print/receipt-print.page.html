@@ -5,43 +5,43 @@
     [document]="documentType.Receipt"
     paper="receipt"
     entity="payment"
-    verifyNote="Scan to check this receipt."
-    [title]="p.status === voided ? 'Receipt — VOIDED' : 'Payment receipt'"
+    [verifyNote]="text.scanToCheckThis"
+    [title]="p.status === voided ? text.receiptVoided : text.paymentReceipt"
     [recordId]="p.id"
     [reference]="p.code"
   >
     <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5">
-      <dt class="text-black/60">Date</dt>
+      <dt class="text-black/60">{{ text.date }}</dt>
       <dd class="m-0 text-right">{{ p.paidAt | date: dateTimeFormat }}</dd>
-      <dt class="text-black/60">Patient</dt>
+      <dt class="text-black/60">{{ text.patient }}</dt>
       <dd class="m-0 text-right">{{ p.patient?.fullName }}</dd>
-      <dt class="text-black/60">File</dt>
+      <dt class="text-black/60">{{ text.file }}</dt>
       <dd class="m-0 text-right">{{ p.patient?.code }}</dd>
-      <dt class="text-black/60">Invoice</dt>
+      <dt class="text-black/60">{{ text.invoice }}</dt>
       <dd class="m-0 text-right font-mono">{{ p.invoice?.invoiceNumber }}</dd>
-      <dt class="text-black/60">Method</dt>
+      <dt class="text-black/60">{{ text.method }}</dt>
       <dd class="m-0 text-right">
         {{ p.method | enumLabel: 'PaymentMethod' }}{{ p.cardLast4 ? ' ·· ' + p.cardLast4 : '' }}
       </dd>
       @if (p.referenceNumber) {
-        <dt class="text-black/60">Reference</dt>
+        <dt class="text-black/60">{{ text.reference }}</dt>
         <dd class="m-0 text-right">{{ p.referenceNumber }}</dd>
       }
       <dt class="mt-2 border-t border-dashed border-black/40 pt-2 text-[11pt] font-semibold">
-        Paid
+        {{ text.paid }}
       </dt>
       <dd
         class="m-0 mt-2 border-t border-dashed border-black/40 pt-2 text-right text-[11pt] font-semibold"
       >
         {{ p.amount | money }}
       </dd>
-      <dt class="text-black/60">Balance left</dt>
+      <dt class="text-black/60">{{ text.balanceLeft }}</dt>
       <dd class="m-0 text-right">{{ p.invoice?.balanceDue | money }}</dd>
-      <dt class="text-black/60">Received by</dt>
+      <dt class="text-black/60">{{ text.receivedBy }}</dt>
       <dd class="m-0 text-right">{{ p.receivedBy?.fullName }}</dd>
     </dl>
     @if (p.status === voided) {
-      <p class="m-0 mt-3 text-center font-semibold">Voided: {{ p.voidReason }}</p>
+      <p class="m-0 mt-3 text-center font-semibold">{{ text.voided }} {{ p.voidReason }}</p>
     }
   </app-print-sheet>
 }

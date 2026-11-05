@@ -1,29 +1,29 @@
-<h2 mat-dialog-title>{{ clinicWide ? 'Add clinic holiday' : 'Day off or special hours' }}</h2>
+<h2 mat-dialog-title>{{ clinicWide ? text.addClinicHoliday : text.dayOffOrSpecial }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Save"
+    [submitLabel]="text.save"
     [compact]="true"
     (saved)="close()"
     (cancelled)="ref.close()"
   >
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
-      <ui-text label="Date" type="date" [control]="form.controls.date" />
+      <ui-text [label]="text.date" type="date" [control]="form.controls.date" />
       <ui-select
-        label="Type of change"
+        [label]="text.typeOfChange"
         [required]="true"
         [options]="types"
         [control]="form.controls.type"
       />
       @if (type() === custom) {
-        <ui-text label="From" type="time" [control]="form.controls.startTime" />
-        <ui-text label="Until" type="time" [control]="form.controls.endTime" />
+        <ui-text [label]="text.from" type="time" [control]="form.controls.startTime" />
+        <ui-text [label]="text.until" type="time" [control]="form.controls.endTime" />
       }
     </div>
     <ui-text
-      label="Reason"
-      [hint]="clinicWide ? 'e.g. National Day' : null"
+      [label]="text.reason"
+      [hint]="clinicWide ? text.eGNationalDay : null"
       [control]="form.controls.reason"
     />
     @if (affected().length) {
@@ -32,8 +32,8 @@
         role="alert"
       >
         <p class="m-0 mb-1 flex items-center gap-2 font-medium">
-          <mat-icon class="!text-lg">event_busy</mat-icon> {{ affected().length }} booking(s) fall
-          on this change:
+          <mat-icon class="!text-lg">event_busy</mat-icon> {{ affected().length }}
+          {{ text.bookingSFallOn }}
         </p>
         <ul class="m-0 pl-5">
           @for (a of affected(); track a.id) {
@@ -41,9 +41,9 @@
           }
         </ul>
       </div>
-      <mat-checkbox class="-ml-2 block" [formControl]="form.controls.cancelAffected"
-        >Cancel these bookings and tell the patients</mat-checkbox
-      >
+      <mat-checkbox class="-ml-2 block" [formControl]="form.controls.cancelAffected">{{
+        text.cancelTheseBookingsAnd
+      }}</mat-checkbox>
     }
   </ui-form>
 </mat-dialog-content>

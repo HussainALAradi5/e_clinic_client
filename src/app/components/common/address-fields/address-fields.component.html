@@ -1,43 +1,43 @@
 <fieldset class="m-0 grid grid-cols-1 gap-x-4 border-0 p-0 sm:grid-cols-2">
-  <legend class="mb-2 p-0 text-sm font-medium text-on-surface-variant">Address</legend>
+  <legend class="mb-2 p-0 text-sm font-medium text-on-surface-variant">{{ text.address }}</legend>
   <ui-country-select
     class="sm:col-span-2"
-    label="Country"
+    [label]="text.country"
     [control]="form().controls.countryCode"
   />
   @if (bahrain()) {
-    <ui-text label="Flat / office" [control]="form().controls.flat" />
-    <ui-text label="Building" [control]="form().controls.building" />
-    <ui-text label="Road" [control]="form().controls.road" />
-    <ui-text label="Block" [control]="form().controls.block" />
+    <ui-text [label]="text.flatOffice" [control]="form().controls.flat" />
+    <ui-text [label]="text.building" [control]="form().controls.building" />
+    <ui-text [label]="text.road" [control]="form().controls.road" />
+    <ui-text [label]="text.block" [control]="form().controls.block" />
     <ui-text
       class="sm:col-span-2"
-      label="Area"
-      hint="e.g. Seef, Juffair"
+      [label]="text.area"
+      [hint]="text.eGSeefJuffair"
       [control]="form().controls.area"
     />
   } @else {
     <ui-text
       class="sm:col-span-2"
-      label="Address line 1"
+      [label]="text.addressLine1"
       [control]="form().controls.line1"
       autocomplete="address-line1"
     />
     <ui-text
       class="sm:col-span-2"
-      label="Address line 2"
+      [label]="text.addressLine2"
       [control]="form().controls.line2"
       autocomplete="address-line2"
     />
-    <ui-text label="City" [control]="form().controls.city" autocomplete="address-level2" />
+    <ui-text [label]="text.city" [control]="form().controls.city" autocomplete="address-level2" />
     <ui-text
-      label="Postal code"
+      [label]="text.postalCode"
       [control]="form().controls.postalCode"
       autocomplete="postal-code"
     />
     <ui-text
       class="sm:col-span-2"
-      label="State / governorate"
+      [label]="text.stateGovernorate"
       [control]="form().controls.governorate"
     />
   }

@@ -1,9 +1,6 @@
-<ui-page-header
-  [title]="name()"
-  subtitle="Weekly working hours and the days that differ. Free booking times come from here."
->
+<ui-page-header [title]="name()" [subtitle]="text.weeklyWorkingHoursAnd">
   <a actions matButton="outlined" [routerLink]="['/clinic/doctors', providerId()]"
-    ><mat-icon>arrow_back</mat-icon> Doctor</a
+    ><mat-icon>arrow_back</mat-icon> {{ text.doctor }}</a
   >
 </ui-page-header>
 
@@ -12,20 +9,20 @@
     <ui-form
       [form]="form"
       [submit]="save"
-      submitLabel="Save week"
+      [submitLabel]="text.saveWeek"
       access="schedules.write"
       [cancelLabel]="null"
     >
       <div class="mb-2 flex flex-wrap items-center gap-3">
         <ui-text
           class="w-48"
-          label="Applies from"
+          [label]="text.appliesFrom"
           type="date"
           [control]="form.controls.effectiveFrom"
         />
         @if (canEdit) {
           <button matButton type="button" (click)="copySundayToWeekdays()">
-            <mat-icon>content_copy</mat-icon> Copy Sunday to Mon–Thu
+            <mat-icon>content_copy</mat-icon> {{ text.copySundayToMon }}
           </button>
         }
       </div>
@@ -40,21 +37,21 @@
               <div class="flex flex-wrap items-center gap-2">
                 <ui-text
                   class="w-32"
-                  label="From"
+                  [label]="text.from"
                   type="time"
                   [control]="block.controls.startTime"
                 />
                 <ui-text
                   class="w-32"
-                  label="Until"
+                  [label]="text.until"
                   type="time"
                   [control]="block.controls.endTime"
                 />
                 <ui-text
                   class="w-40"
-                  label="Slot minutes"
+                  [label]="text.slotMinutes"
                   type="number"
-                  hint="Blank = default"
+                  [hint]="text.blankDefault"
                   [control]="block.controls.slotMinutes"
                 />
                 @if (canEdit) {
@@ -62,7 +59,7 @@
                     matIconButton
                     type="button"
                     class="mb-5"
-                    [attr.aria-label]="'Remove ' + day.label + ' block'"
+                    [attr.aria-label]="text.removePrefix + day.label + text.block"
                     (click)="removeBlock(block)"
                   >
                     <mat-icon>delete</mat-icon>
@@ -70,11 +67,11 @@
                 }
               </div>
             } @empty {
-              <p class="m-0 pt-3 text-sm text-on-surface-variant">Off</p>
+              <p class="m-0 pt-3 text-sm text-on-surface-variant">{{ text.off }}</p>
             }
             @if (canEdit) {
               <button matButton type="button" class="mb-1" (click)="addBlock(day.value)">
-                <mat-icon>add</mat-icon> Hours
+                <mat-icon>add</mat-icon> {{ text.hours }}
               </button>
             }
           </div>
@@ -87,7 +84,7 @@
           role="alert"
         >
           <p class="m-0 mb-1 font-medium">
-            These bookings would fall outside the new hours — reschedule or cancel them first:
+            {{ text.theseBookingsWouldFall }}
           </p>
           <ul class="m-0 pl-5">
             @for (a of conflicts(); track a.id) {
@@ -101,17 +98,17 @@
 
   <mat-card appearance="outlined" class="!p-5">
     <div class="mb-2 flex items-center">
-      <h2 class="m-0 flex-1 text-base font-semibold">Days that differ</h2>
+      <h2 class="m-0 flex-1 text-base font-semibold">{{ text.daysThatDiffer }}</h2>
       <ui-button
         icon="add"
         [variant]="variants.Text"
         access="schedules.create"
         [action]="addException"
-        >Add</ui-button
+        >{{ text.add }}</ui-button
       >
     </div>
     <p class="m-0 mb-2 text-xs text-on-surface-variant">
-      Next three months, including clinic holidays.
+      {{ text.nextThreeMonthsIncluding }}
     </p>
     @for (e of exceptions(); track e.id) {
       <div class="flex items-center gap-3 border-b border-outline-variant/60 py-2 text-sm">
@@ -129,17 +126,17 @@
             [variant]="variants.Text"
             access="schedules.delete"
             [confirm]="{
-              title: 'Remove this change?',
-              message: 'The usual hours apply again that day.',
-              confirmLabel: 'Remove',
+              title: text.removeThisChange,
+              message: text.theUsualHoursApply,
+              confirmLabel: text.remove,
             }"
             [action]="removeException.bind(this, e)"
-            >Remove</ui-button
+            >{{ text.remove }}</ui-button
           >
         }
       </div>
     } @empty {
-      <p class="m-0 text-sm text-on-surface-variant">Every day follows the weekly hours.</p>
+      <p class="m-0 text-sm text-on-surface-variant">{{ text.everyDayFollowsThe }}</p>
     }
   </mat-card>
 </div>

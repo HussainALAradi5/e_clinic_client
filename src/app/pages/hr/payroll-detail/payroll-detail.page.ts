@@ -57,6 +57,8 @@ import { PAYROLL_DETAIL_TEXT } from '@constants/hr/payroll-detail.constants';
   templateUrl: './payroll-detail.page.html',
 })
 export class PayrollDetailPage implements OnInit {
+  protected readonly text = PAYROLL_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(PayrollApi);

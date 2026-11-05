@@ -50,6 +50,8 @@ import { PRESCRIPTION_FORM_DIALOG_TEXT } from '@constants/pharmacy/prescription-
   templateUrl: './prescription-form-dialog.component.html',
 })
 export class PrescriptionFormDialog implements OnInit {
+  protected readonly text = PRESCRIPTION_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<PrescriptionFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<PrescriptionFormDialog, Prescription>);
   private readonly api = inject(PrescriptionApi);

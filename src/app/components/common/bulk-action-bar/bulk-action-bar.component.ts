@@ -8,6 +8,7 @@ import { BulkActionDef } from '@interfaces/list/bulk-action-def.interface';
 import { BulkService } from '@services/data/bulk.service';
 import { ListSelection } from '@utilities/list-selection';
 import { humanise } from '@utilities/text';
+import { BULK_ACTION_BAR_TEXT } from '@constants/common/bulk-action-bar.constants';
 
 /**
  * Slides in when rows are selected: count, clear, one locking AppButton per permitted bulk action
@@ -21,6 +22,8 @@ import { humanise } from '@utilities/text';
   templateUrl: './bulk-action-bar.component.html',
 })
 export class BulkActionBar {
+  protected readonly text = BULK_ACTION_BAR_TEXT;
+
   /** API path of the resource, e.g. 'clinic/rooms' (POST {endpoint}/bulk). */
   readonly endpoint = input.required<string>();
   readonly selection = input.required<ListSelection>();

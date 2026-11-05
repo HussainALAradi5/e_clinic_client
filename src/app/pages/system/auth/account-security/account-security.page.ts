@@ -56,6 +56,8 @@ import { ACCOUNT_SECURITY_TEXT } from '@constants/system/account-security.consta
   templateUrl: './account-security.page.html',
 })
 export class AccountSecurityPage implements OnInit {
+  protected readonly text = ACCOUNT_SECURITY_TEXT;
+
   /** `?setup=2fa` (sent by the 2FA-required redirect) scrolls to the 2FA section. */
   readonly setup = input<string | undefined>();
 

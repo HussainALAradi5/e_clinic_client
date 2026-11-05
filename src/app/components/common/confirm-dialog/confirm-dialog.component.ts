@@ -25,6 +25,8 @@ import { CONFIRM_DIALOG_TEXT } from '@constants/common/confirm-dialog.constants'
   styleUrl: './confirm-dialog.component.scss',
 })
 export class ConfirmDialog {
+  protected readonly text = CONFIRM_DIALOG_TEXT;
+
   protected readonly data = inject<ConfirmConfig>(MAT_DIALOG_DATA);
   protected readonly maxLength = REASON_MAX_LENGTH;
   protected readonly reason = new FormControl('', {

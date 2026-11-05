@@ -23,6 +23,8 @@ const MAX_STEPS = 20;
 })
 export class SolveTicketDialog {
   protected readonly ref = inject(MatDialogRef<SolveTicketDialog, TicketSolution>);
+
+  protected readonly text = SOLVE_TICKET_DIALOG_TEXT;
   protected readonly data = inject<SolveTicketData>(MAT_DIALOG_DATA);
   protected readonly max = MAX_STEPS;
 

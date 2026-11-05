@@ -53,6 +53,8 @@ import { USER_DETAIL_TEXT } from '@constants/system/user-detail.constants';
   templateUrl: './user-detail.page.html',
 })
 export class UserDetailPage implements OnInit {
+  protected readonly text = USER_DETAIL_TEXT;
+
   /** Route parameter. */
   readonly id = input.required<string>();
 

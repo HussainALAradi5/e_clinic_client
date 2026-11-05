@@ -1,17 +1,17 @@
-<h2 mat-dialog-title>New chat</h2>
+<h2 mat-dialog-title>{{ text.newChat }}</h2>
 <mat-dialog-content class="!pt-1">
-  <mat-button-toggle-group [(ngModel)]="type" aria-label="Chat type" class="mb-3 w-full">
+  <mat-button-toggle-group [(ngModel)]="type" [attr.aria-label]="text.chatType" class="mb-3 w-full">
     <mat-button-toggle class="flex-1" [value]="types.Direct"
-      ><mat-icon>person</mat-icon> One-to-one</mat-button-toggle
+      ><mat-icon>person</mat-icon> {{ text.oneToOne }}</mat-button-toggle
     >
     <mat-button-toggle class="flex-1" [value]="types.Group"
-      ><mat-icon>groups</mat-icon> Group</mat-button-toggle
+      ><mat-icon>groups</mat-icon> {{ text.group }}</mat-button-toggle
     >
   </mat-button-toggle-group>
 
   @if (type === types.Group) {
     <mat-form-field class="w-full">
-      <mat-label>Group name</mat-label>
+      <mat-label>{{ text.groupName }}</mat-label>
       <input matInput [(ngModel)]="title" maxlength="100" required />
     </mat-form-field>
   }
@@ -54,7 +54,7 @@
         }
       </li>
     } @empty {
-      <li class="py-6 text-center text-sm text-on-surface-variant">No colleagues found.</li>
+      <li class="py-6 text-center text-sm text-on-surface-variant">{{ text.noColleaguesFound }}</li>
     }
   </ul>
   @if (!contacts.loading() && contacts.shown().length === 0) {
@@ -73,14 +73,14 @@
   }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button matButton mat-dialog-close>Cancel</button>
+  <button matButton mat-dialog-close>{{ text.cancel }}</button>
   @if (type === types.Group) {
     <button
       matButton="filled"
       [disabled]="!title.trim() || !picked().size || busy()"
       (click)="group()"
     >
-      Create group ({{ picked().size }})
+      {{ text.createGroup }}{{ picked().size }})
     </button>
   }
 </mat-dialog-actions>

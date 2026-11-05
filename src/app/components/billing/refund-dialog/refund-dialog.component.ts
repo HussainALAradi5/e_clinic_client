@@ -14,6 +14,7 @@ import { MoneyPipe } from '@pipes/money.pipe';
 import { RefundApi } from '@services/billing/refund-api.service';
 import { EnumService } from '@services/data/enum.service';
 import { AppValidators } from '@validations/validators';
+import { REFUND_DIALOG_TEXT } from '@constants/billing/refund-dialog.constants';
 
 /**
  * Ask for a refund of (part of) a payment. Someone else approves it; then the cashier pays it out (cash from the
@@ -34,6 +35,8 @@ import { AppValidators } from '@validations/validators';
   templateUrl: './refund-dialog.component.html',
 })
 export class RefundDialog {
+  protected readonly text = REFUND_DIALOG_TEXT;
+
   protected readonly data = inject<RefundDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<RefundDialog, Refund>);
   private readonly api = inject(RefundApi);

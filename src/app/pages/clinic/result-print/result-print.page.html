@@ -9,43 +9,43 @@
     [reference]="o.code"
   >
     <dl class="m-0 mb-6 grid grid-cols-[9rem_1fr] gap-y-1">
-      <dt class="text-black/60">Patient</dt>
+      <dt class="text-black/60">{{ text.patient }}</dt>
       <dd class="m-0 font-medium">
-        {{ o.patient?.fullName }} · {{ o.patient?.code }} · born
+        {{ o.patient?.fullName }} · {{ o.patient?.code }} {{ text.born }}
         {{ o.patient?.dateOfBirth | date: dateFormat }} ·
         {{ o.patient?.gender | enumLabel: 'Gender' }}
       </dd>
-      <dt class="text-black/60">Examination</dt>
+      <dt class="text-black/60">{{ text.examination }}</dt>
       <dd class="m-0">
         {{ o.type | enumLabel: 'ClinicalOrderType' }}{{ o.bodyPart ? ' — ' + o.bodyPart : '' }}
       </dd>
-      <dt class="text-black/60">Ordered by</dt>
+      <dt class="text-black/60">{{ text.orderedBy }}</dt>
       <dd class="m-0">
         {{ o.orderingDoctor?.fullName ?? '—' }} · {{ o.createdAt | date: dateFormat }}
       </dd>
-      <dt class="text-black/60">Performed</dt>
+      <dt class="text-black/60">{{ text.performed }}</dt>
       <dd class="m-0">
         {{ o.completedAt | date: dateFormat }}{{ o.performer ? ' · ' + o.performer.fullName : '' }}
       </dd>
       @if (o.room) {
-        <dt class="text-black/60">Room</dt>
+        <dt class="text-black/60">{{ text.room }}</dt>
         <dd class="m-0">{{ o.room.name }}</dd>
       }
     </dl>
     @if (o.clinicalNotes) {
-      <h2 class="m-0 mb-1 text-[12pt] font-semibold">Clinical question</h2>
+      <h2 class="m-0 mb-1 text-[12pt] font-semibold">{{ text.clinicalQuestion }}</h2>
       <p class="m-0 mb-4 whitespace-pre-line">{{ o.clinicalNotes }}</p>
     }
     <h2 class="m-0 mb-1 text-[12pt] font-semibold">
-      Findings
+      {{ text.findings }}
       @if (o.isAbnormal) {
-        <span class="ml-2 rounded border border-red-700 px-1.5 text-[10pt] text-red-700"
-          >ABNORMAL</span
-        >
+        <span class="ml-2 rounded border border-red-700 px-1.5 text-[10pt] text-red-700">{{
+          text.abnormal
+        }}</span>
       }
     </h2>
     <p class="m-0 mb-6 whitespace-pre-line rounded border border-black/15 px-4 py-3">
-      {{ o.report || 'Not reported yet.' }}
+      {{ o.report || text.notReportedYet }}
     </p>
     @if (images().length) {
       <div class="mb-6 grid grid-cols-2 gap-3">
@@ -62,6 +62,6 @@
       </div>
     }
     <p class="m-0 mt-8 font-semibold">{{ o.reporter?.fullName ?? o.orderingDoctor?.fullName }}</p>
-    <p class="m-0 text-black/60">Reported · Signature ____________________</p>
+    <p class="m-0 text-black/60">{{ text.reportedSignature }}</p>
   </app-print-sheet>
 }

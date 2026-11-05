@@ -4,6 +4,7 @@ import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { QtyPipe } from '@pipes/qty.pipe';
+import { MOVEMENTS_TEXT } from '@constants/pharmacy/movements.constants';
 
 /** `/pharmacy/movements` — the append-only stock ledger: every unit in and out, who and why. */
 @Component({
@@ -13,5 +14,7 @@ import { QtyPipe } from '@pipes/qty.pipe';
   templateUrl: './movements.page.html',
 })
 export class MovementsPage {
+  protected readonly text = MOVEMENTS_TEXT;
+
   protected readonly dateTimeFormat = DATE_TIME_FORMAT;
 }

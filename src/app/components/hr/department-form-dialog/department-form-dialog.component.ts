@@ -11,6 +11,7 @@ import { DepartmentPayload } from '@interfaces/hr/department-payload.interface';
 import { Employee } from '@interfaces/hr/employee.interface';
 import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { dirtyPayload } from '@utilities/form-payload';
+import { DEPARTMENT_FORM_DIALOG_TEXT } from '@constants/hr/department-form-dialog.constants';
 
 /** Create or edit a department: code, name, parent (never itself or below) and an active manager. */
 @Component({
@@ -20,6 +21,8 @@ import { dirtyPayload } from '@utilities/form-payload';
   templateUrl: './department-form-dialog.component.html',
 })
 export class DepartmentFormDialog {
+  protected readonly text = DEPARTMENT_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<DepartmentFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<DepartmentFormDialog, Department>);
   protected readonly department = this.data.department;

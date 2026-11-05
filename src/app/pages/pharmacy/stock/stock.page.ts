@@ -12,6 +12,7 @@ import { MedicationBatch } from '@interfaces/pharmacy/inventory.interface';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { defaultQuery } from '@utilities/list-query';
+import { STOCK_TEXT } from '@constants/pharmacy/stock.constants';
 
 /** `/pharmacy/stock` — lots on the shelf, first expiry first, with value; receive a delivery from here. */
 @Component({
@@ -31,6 +32,8 @@ import { defaultQuery } from '@utilities/list-query';
 })
 export class StockPage {
   private readonly actions = inject(PharmacyActions);
+
+  protected readonly text = STOCK_TEXT;
   protected readonly dateFormat = DATE_FORMAT;
   /** Lots still holding stock, the soonest expiry first. */
   protected readonly defaults = defaultQuery({

@@ -10,6 +10,7 @@ import { ButtonVariant } from '@enums/ui/button.enum';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { QtyPipe } from '@pipes/qty.pipe';
+import { MEDICATION_LIST_TEXT } from '@constants/pharmacy/medication-list.constants';
 
 /** `/pharmacy/medications` — the catalogue with price and stock on hand; low stock stands out. */
 @Component({
@@ -21,6 +22,8 @@ import { QtyPipe } from '@pipes/qty.pipe';
 export class MedicationListPage {
   private readonly actions = inject(PharmacyActions);
   private readonly router = inject(Router);
+
+  protected readonly text = MEDICATION_LIST_TEXT;
   protected readonly variants = ButtonVariant;
   protected readonly dateFormat = DATE_FORMAT;
 

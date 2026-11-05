@@ -12,6 +12,7 @@ import { ClinicalOrderType, IMAGING_ORDER_TYPES } from '@enums/clinic/clinical-o
 import { Attachment } from '@interfaces/attachment/attachment.interface';
 import { ClinicalOrder } from '@interfaces/clinic/clinical-order.interface';
 import { ClinicalOrderApi } from '@services/clinic/clinical-order-api.service';
+import { ORDER_RESULT_DIALOG_TEXT } from '@constants/clinic/order-result-dialog.constants';
 
 /**
  * Record the result: images / files (uploaded straight to the order), the report and whether it is abnormal — an
@@ -31,6 +32,8 @@ import { ClinicalOrderApi } from '@services/clinic/clinical-order-api.service';
   templateUrl: './order-result-dialog.component.html',
 })
 export class OrderResultDialog {
+  protected readonly text = ORDER_RESULT_DIALOG_TEXT;
+
   protected readonly data = inject<OrderDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<OrderResultDialog, ClinicalOrder>);
   private readonly api = inject(ClinicalOrderApi);

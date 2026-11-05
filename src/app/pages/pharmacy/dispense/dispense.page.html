@@ -1,19 +1,16 @@
-<ui-page-header
-  title="Dispense"
-  subtitle="Scan, check, hand over. Lots are taken first expiry first; every hand-over is charged to the patient."
->
+<ui-page-header [title]="text.dispense" [subtitle]="text.scanCheckHandOver">
   <ng-container actions>
     <mat-button-toggle-group
       hideSingleSelectionIndicator
-      aria-label="Counter mode"
+      [attr.aria-label]="text.counterMode"
       [value]="mode()"
       (change)="mode.set($event.value)"
     >
       <mat-button-toggle value="prescriptions"
-        ><mat-icon>prescriptions</mat-icon> Prescriptions</mat-button-toggle
+        ><mat-icon>prescriptions</mat-icon> {{ text.prescriptions }}</mat-button-toggle
       >
       <mat-button-toggle value="counter"
-        ><mat-icon>shopping_bag</mat-icon> Over the counter</mat-button-toggle
+        ><mat-icon>shopping_bag</mat-icon> {{ text.overTheCounter }}</mat-button-toggle
       >
     </mat-button-toggle-group>
   </ng-container>
@@ -26,13 +23,14 @@
   >
     <mat-icon>check_circle</mat-icon>
     <span class="flex-1"
-      ><span class="font-semibold">{{ d.code }}</span> handed over to {{ d.patient?.fullName }} — on
-      their {{ d.invoice?.invoiceNumber ?? 'draft invoice' }}.</span
+      ><span class="font-semibold">{{ d.code }}</span> {{ text.handedOverTo }}
+      {{ d.patient?.fullName }} {{ text.onTheir }}
+      {{ d.invoice?.invoiceNumber ?? text.draftInvoice }}.</span
     >
     <a matButton="outlined" target="_blank" [routerLink]="['/print/medicine-label', d.id]"
-      ><mat-icon>label</mat-icon> Print label</a
+      ><mat-icon>label</mat-icon> {{ text.printLabel }}</a
     >
-    <a matButton [routerLink]="['/pharmacy/dispensations', d.id]">Open</a>
+    <a matButton [routerLink]="['/pharmacy/dispensations', d.id]">{{ text.open }}</a>
   </div>
 }
 
@@ -41,16 +39,16 @@
     <mat-card appearance="outlined" class="self-start !p-0">
       <div class="px-4 pt-4">
         <ui-text
-          label="Scan or search a prescription"
+          [label]="text.scanOrSearchA"
           icon="qr_code_scanner"
-          hint="QR code, RX number or patient"
+          [hint]="text.qrCodeRxNumber"
           [autofocus]="!selected()"
           [control]="search"
           (keydown.enter)="$event.preventDefault(); find()"
         />
       </div>
       <h2 class="m-0 px-4 pb-2 text-sm font-semibold text-on-surface-variant">
-        Waiting{{ queue()?.length ? ' (' + queue()!.length + ')' : '' }}
+        {{ text.waiting }}{{ queue()?.length ? ' (' + queue()!.length + ')' : '' }}
       </h2>
       <ul class="m-0 max-h-[60vh] list-none overflow-y-auto p-0">
         @for (rx of queue() ?? []; track rx.id) {
@@ -67,7 +65,8 @@
                 <ui-status [value]="rx.status" enum="GenericStatus" />
               </span>
               <span class="block truncate text-xs text-on-surface-variant">
-                <span class="font-mono">{{ rx.code }}</span> · Dr {{ rx.doctor?.fullName }} ·
+                <span class="font-mono">{{ rx.code }}</span> {{ text.dr }}
+                {{ rx.doctor?.fullName }} ·
                 {{ rx.createdAt | date: dateFormat }}
               </span>
               <span class="block truncate text-sm">
@@ -81,7 +80,7 @@
           <li
             class="border-t border-outline-variant/60 px-4 py-6 text-center text-sm text-on-surface-variant"
           >
-            {{ queue() ? 'No prescriptions waiting.' : 'Loading…' }}
+            {{ queue() ? text.noPrescriptionsWaiting : text.loading }}
           </li>
         }
       </ul>
@@ -96,8 +95,8 @@
       >
         <div>
           <mat-icon class="!size-12 !text-5xl text-on-surface-variant">qr_code_scanner</mat-icon>
-          <p class="m-0 mt-2 font-medium">Scan the patient's prescription</p>
-          <p class="m-0 text-sm text-on-surface-variant">or pick one from the queue.</p>
+          <p class="m-0 mt-2 font-medium">{{ text.scanThePatientsPrescription }}</p>
+          <p class="m-0 text-sm text-on-surface-variant">{{ text.orPickOneFrom }}</p>
         </div>
       </mat-card>
     }

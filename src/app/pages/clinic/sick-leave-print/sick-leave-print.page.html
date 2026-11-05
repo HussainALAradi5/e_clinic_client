@@ -3,39 +3,38 @@
 } @else if (leave(); as l) {
   <app-print-sheet
     [document]="documentType.SickLeave"
-    title="Sick leave certificate"
+    [title]="text.sickLeaveCertificate"
     entity="sick_leave"
     [recordId]="l.id"
     [reference]="l.code"
-    verifyNote="Scan to check this certificate with the clinic (dates only)."
+    [verifyNote]="text.scanToCheckThis"
   >
     @if (l.isCancelled) {
       <p class="m-0 mb-4 rounded border border-red-700 px-4 py-2 font-semibold text-red-700">
-        CANCELLED {{ l.cancelledAt | date: dateFormat }} — {{ l.cancelReason }}
+        {{ text.cancelled }} {{ l.cancelledAt | date: dateFormat }} — {{ l.cancelReason }}
       </p>
     }
     <dl class="m-0 mb-6 grid grid-cols-[9rem_1fr] gap-y-1">
-      <dt class="text-black/60">Patient</dt>
+      <dt class="text-black/60">{{ text.patient }}</dt>
       <dd class="m-0 font-medium">
-        {{ l.patient.fullName }} · {{ l.patient.code }} · born
+        {{ l.patient.fullName }} · {{ l.patient.code }} {{ text.born }}
         {{ l.patient.dateOfBirth | date: dateFormat }} ·
         {{ l.patient.gender | enumLabel: 'Gender' }}
       </dd>
-      <dt class="text-black/60">Issued</dt>
+      <dt class="text-black/60">{{ text.issued }}</dt>
       <dd class="m-0">{{ l.issuedAt | date: dateFormat }}</dd>
     </dl>
-    <p class="m-0 mb-4">To whom it may concern,</p>
+    <p class="m-0 mb-4">{{ text.toWhomItMay }}</p>
     <p class="m-0 mb-4 leading-relaxed">
-      This is to certify that the above patient was seen at the clinic and is unfit for work or
-      school for
+      {{ text.thisIsToCertify }}
       <strong>{{ l.days }} {{ l.days === 1 ? 'day' : 'days' }}</strong
-      >, from <strong>{{ l.startDate | date: dateFormat }}</strong> to
-      <strong>{{ l.endDate | date: dateFormat }}</strong> inclusive,
+      >{{ text.from }} <strong>{{ l.startDate | date: dateFormat }}</strong> {{ text.to }}
+      <strong>{{ l.endDate | date: dateFormat }}</strong> {{ text.inclusive }}
       @if (l.showReason && l.reason) {
-        because of: <strong>{{ l.reason }}</strong
+        {{ text.becauseOf }} <strong>{{ l.reason }}</strong
         >.
       } @else {
-        for medical reasons.
+        {{ text.forMedicalReasons }}
       }
     </p>
     @if (l.notes) {
@@ -43,6 +42,6 @@
     }
     <p class="m-0 mt-12 font-semibold">{{ l.doctor.fullName }}</p>
     <p class="m-0 text-black/60">{{ l.doctor.jobTitle }}</p>
-    <p class="m-0 mt-6 text-black/60">Signature ____________________ Stamp</p>
+    <p class="m-0 mt-6 text-black/60">{{ text.signatureStamp }}</p>
   </app-print-sheet>
 }

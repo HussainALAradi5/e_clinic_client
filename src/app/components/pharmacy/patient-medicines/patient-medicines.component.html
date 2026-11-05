@@ -1,14 +1,14 @@
 @if (prescriptions(); as list) {
   <div class="mb-3 flex items-center">
     <p class="m-0 flex-1 text-sm text-on-surface-variant">
-      {{ list.length ? list.length + ' prescription(s)' : 'No prescriptions yet.' }}
+      {{ list.length ? list.length + text.prescriptionS : text.noPrescriptionsYet }}
     </p>
     <ui-button
       icon="prescriptions"
       [variant]="variants.Outlined"
       access="prescriptions.create"
       [action]="prescribe"
-      >Prescribe</ui-button
+      >{{ text.prescribe }}</ui-button
     >
   </div>
   @if (list.length) {
@@ -29,7 +29,8 @@
               }
             </p>
             <p class="m-0 text-xs text-on-surface-variant">
-              {{ rx.createdAt | date: dateFormat }} · {{ rx.doctor?.fullName }} · valid until
+              {{ rx.createdAt | date: dateFormat }} · {{ rx.doctor?.fullName }}
+              {{ text.validUntil }}
               {{ rx.validUntil | date: dateFormat }}
             </p>
           </div>
@@ -39,5 +40,5 @@
     </ul>
   }
 } @else {
-  <p class="m-0 text-sm text-on-surface-variant">Loading…</p>
+  <p class="m-0 text-sm text-on-surface-variant">{{ text.loading }}</p>
 }

@@ -1,11 +1,10 @@
 <header class="mb-4">
-  <h1 class="m-0 text-2xl font-bold tracking-tight">My invoices</h1>
+  <h1 class="m-0 text-2xl font-bold tracking-tight">{{ text.myInvoices }}</h1>
   <p class="m-0 text-on-surface-variant">
     @if (!filtered() && due(); as amount) {
-      <strong class="text-on-surface">{{ amount }}</strong> left to pay — at the clinic's cashier
-      desk.
+      <strong class="text-on-surface">{{ amount }}</strong> {{ text.leftToPayAt }}
     } @else {
-      Pay at the clinic's cashier desk; your receipts are kept here.
+      {{ text.payAtTheClinics }}
     }
   </p>
 </header>
@@ -20,11 +19,11 @@
 <div class="mb-4 flex flex-wrap gap-2">
   <ui-enum-filter
     enum="InvoicePaymentState"
-    label="Payment"
+    [label]="text.payment"
     [values]="['unpaid', 'overdue', 'partially_paid', 'paid', 'refunded']"
     [(value)]="paymentState"
   />
-  <ui-enum-filter enum="PaymentMethod" label="Paid by" [(value)]="method" />
+  <ui-enum-filter enum="PaymentMethod" [label]="text.paidBy" [(value)]="method" />
   <ui-date-range-filter
     class="w-64"
     [fields]="dateFields"
@@ -53,7 +52,7 @@
             <span class="block font-semibold tabular-nums">{{ inv.total | money }}</span>
             @if (owing(inv)) {
               <span class="block text-xs text-error tabular-nums"
-                >{{ inv.balanceDue | money }} due</span
+                >{{ inv.balanceDue | money }} {{ text.due }}</span
               >
             }
             <app-invoice-paid-bar class="mt-1 w-24" [invoice]="inv" />
@@ -83,7 +82,7 @@
                 }
               </ul>
               @if (d.payments?.length) {
-                <h3 class="m-0 mt-3 mb-1 text-sm font-semibold">Payments</h3>
+                <h3 class="m-0 mt-3 mb-1 text-sm font-semibold">{{ text.payments }}</h3>
                 <ul class="m-0 list-none p-0 text-sm">
                   @for (p of d.payments; track p.id) {
                     <li class="flex items-center gap-3 py-1">
@@ -97,7 +96,7 @@
                         class="!h-8"
                         target="_blank"
                         [routerLink]="['/print/receipt', p.id]"
-                        >Receipt</a
+                        >{{ text.receipt }}</a
                       >
                     </li>
                   }
@@ -108,7 +107,7 @@
                 class="mt-3"
                 target="_blank"
                 [routerLink]="['/print/invoice', d.id]"
-                ><mat-icon>print</mat-icon> Invoice to print or save</a
+                ><mat-icon>print</mat-icon> {{ text.invoiceToPrintOr }}</a
               >
             } @else {
               <ui-skeleton [rows]="3" />
@@ -119,8 +118,8 @@
     } @empty {
       <ui-empty
         icon="receipt_long"
-        title="No invoices"
-        message="Invoices for your visits show here once the clinic issues them."
+        [title]="text.noInvoices"
+        [message]="text.invoicesForYourVisits"
       />
     }
   </div>

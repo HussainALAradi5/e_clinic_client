@@ -30,6 +30,7 @@ export class ChatSettingsDialog {
   private readonly store = inject(ChatSettingsStore);
   private readonly notify = inject(NotifyService);
 
+  protected readonly text = CHAT_SETTINGS_DIALOG_TEXT;
   protected readonly settings = this.store.settings;
   protected readonly colors = Object.values(BubbleColor).map((value) => ({
     value,

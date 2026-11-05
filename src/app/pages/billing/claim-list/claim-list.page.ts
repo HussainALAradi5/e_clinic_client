@@ -6,6 +6,7 @@ import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { DATE_FORMAT } from '@constants/app.constants';
 import { MoneyPipe } from '@pipes/money.pipe';
+import { CLAIM_LIST_TEXT } from '@constants/billing/claim-list.constants';
 
 /** `/billing/insurance-claims` — claims by insurer and status; record an insurer's remittance from here. */
 @Component({
@@ -16,6 +17,8 @@ import { MoneyPipe } from '@pipes/money.pipe';
 })
 export class ClaimListPage {
   private readonly actions = inject(BillingActions);
+
+  protected readonly text = CLAIM_LIST_TEXT;
   private readonly list = viewChild.required(ResourceListPage);
   protected readonly dateFormat = DATE_FORMAT;
 

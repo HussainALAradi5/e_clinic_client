@@ -15,7 +15,7 @@
           matButton="filled"
           [routerLink]="['/clinic/appointments', a.id, 'visit']"
           ><mat-icon>clinical_notes</mat-icon>
-          {{ a.status === 'completed' ? 'Visit note' : 'Open visit' }}</a
+          {{ a.status === 'completed' ? text.visitNote : text.openVisit }}</a
         >
       }
       @if (a.invoice; as inv) {
@@ -23,7 +23,7 @@
           *hasAccess="'invoices.read_all | invoices.read_own'"
           matButton="outlined"
           [routerLink]="['/billing/invoices', inv.id]"
-          ><mat-icon>receipt_long</mat-icon> {{ inv.invoiceNumber ?? 'Draft invoice' }}</a
+          ><mat-icon>receipt_long</mat-icon> {{ inv.invoiceNumber ?? text.draftInvoice }}</a
         >
       } @else if (billable()) {
         <ui-button
@@ -31,16 +31,16 @@
           [variant]="variants.Outlined"
           access="invoices.create"
           [action]="bill"
-          >Bill visit</ui-button
+          >{{ text.billVisit }}</ui-button
         >
       }
       @if (a.treatmentId) {
         <a matButton="outlined" [routerLink]="['/clinic/treatments', a.treatmentId]"
-          ><mat-icon>healing</mat-icon> Treatment</a
+          ><mat-icon>healing</mat-icon> {{ text.treatment }}</a
         >
       }
       <a matButton="outlined" routerLink="/clinic/appointments"
-        ><mat-icon>arrow_back</mat-icon> Appointments</a
+        ><mat-icon>arrow_back</mat-icon> {{ text.appointments }}</a
       >
     </ng-container>
   </ui-page-header>
@@ -52,7 +52,7 @@
   @if (a.rescheduledFrom; as from) {
     <p class="m-0 mb-4 flex items-center gap-2 text-sm text-on-surface-variant">
       <mat-icon class="!text-lg">update</mat-icon>
-      Moved from
+      {{ text.movedFrom }}
       <a class="text-primary underline" [routerLink]="['/clinic/appointments', from.id]">{{
         from.code
       }}</a>
@@ -62,7 +62,7 @@
 
   <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.8fr)]">
     <mat-card appearance="outlined" class="!p-5">
-      <h2 class="m-0 mb-3 text-base font-semibold">Who</h2>
+      <h2 class="m-0 mb-3 text-base font-semibold">{{ text.who }}</h2>
       @if (a.patient; as p) {
         <a
           class="block rounded-lg p-2 -mx-2 hover:bg-surface-container"
@@ -89,7 +89,7 @@
     <mat-card appearance="outlined" class="!p-5"><ui-facts [items]="facts()" /></mat-card>
 
     <mat-card appearance="outlined" class="!p-5">
-      <h2 class="m-0 mb-3 text-base font-semibold">Status trail</h2>
+      <h2 class="m-0 mb-3 text-base font-semibold">{{ text.statusTrail }}</h2>
       <ol class="m-0 list-none p-0">
         @for (step of trail(); track $index) {
           <li class="relative border-l-2 border-outline-variant pb-3 pl-4 last:pb-0">
@@ -103,7 +103,8 @@
           </li>
         } @empty {
           <li class="text-sm text-on-surface-variant">
-            Booked {{ a.createdAt | date: dateTimeFormat }} — no status changes since.
+            {{ text.booked }} {{ a.createdAt | date: dateTimeFormat }}
+            {{ text.noStatusChangesSince }}
           </li>
         }
       </ol>

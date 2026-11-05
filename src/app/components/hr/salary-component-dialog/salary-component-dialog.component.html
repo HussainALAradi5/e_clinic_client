@@ -1,28 +1,32 @@
-<h2 mat-dialog-title>Add allowance or deduction</h2>
+<h2 mat-dialog-title>{{ text.addAllowanceOrDeduction }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Add"
+    [submitLabel]="text.add"
     [compact]="true"
     (saved)="close()"
     (cancelled)="ref.close()"
   >
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
       <ui-select
-        label="Allowance or deduction"
+        [label]="text.allowanceOrDeduction"
         enum="SalaryComponentType"
         [required]="true"
         [control]="form.controls.type"
       />
-      <ui-text label="Name" hint="e.g. Housing allowance" [control]="form.controls.name" />
-      <ui-money label="Monthly amount" [control]="form.controls.amount" />
+      <ui-text
+        [label]="text.name"
+        [hint]="text.eGHousingAllowance"
+        [control]="form.controls.name"
+      />
+      <ui-money [label]="text.monthlyAmount" [control]="form.controls.amount" />
       <span></span>
-      <ui-text label="From" type="date" [control]="form.controls.effectiveFrom" />
-      <ui-text label="Until (optional)" type="date" [control]="form.controls.effectiveTo" />
+      <ui-text [label]="text.from" type="date" [control]="form.controls.effectiveFrom" />
+      <ui-text [label]="text.untilOptional" type="date" [control]="form.controls.effectiveTo" />
     </div>
-    <mat-checkbox class="-ml-2 block" [formControl]="form.controls.isTaxable"
-      >Counts toward social insurance</mat-checkbox
-    >
+    <mat-checkbox class="-ml-2 block" [formControl]="form.controls.isTaxable">{{
+      text.countsTowardSocialInsurance
+    }}</mat-checkbox>
   </ui-form>
 </mat-dialog-content>

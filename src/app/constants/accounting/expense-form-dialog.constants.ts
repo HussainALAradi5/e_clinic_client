@@ -1,0 +1,22 @@
+/** Text of accounting/expense-form-dialog/expense-form-dialog.component (headings, labels, hints, empty states). */
+export const EXPENSE_FORM_DIALOG_TEXT = {
+  paidTo: 'Paid to',
+  aCompanyOnFile: 'A company on file',
+  someoneElse: 'Someone else',
+  company: 'Company',
+  paidToName: 'Paid to (name)',
+  whatFor: 'What for',
+  category: 'Category',
+  date: 'Date',
+  amountVatIncluded: 'Amount (VAT included)',
+  ofWhichVat: 'Of which VAT',
+  recoverableInputVat: 'Recoverable input VAT',
+  vendorInvoiceNumber: 'Vendor invoice number',
+  departmentOptional: 'Department (optional)',
+  expenseAccountOptional: 'Expense account (optional)',
+  leftEmptyTheCategorys: "Left empty, the category's usual account is used.",
+  editExpense: 'Edit expense ',
+  newExpense: 'New expense',
+  save: 'Save',
+  saveDraft: 'Save draft',
+};

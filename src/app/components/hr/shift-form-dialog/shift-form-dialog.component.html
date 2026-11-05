@@ -1,56 +1,52 @@
-<h2 mat-dialog-title>{{ shift ? 'Edit ' + shift.code : 'New shift' }}</h2>
+<h2 mat-dialog-title>{{ shift ? text.edit + shift.code : text.newShift }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    [submitLabel]="shift ? 'Save' : 'Create shift'"
+    [submitLabel]="shift ? text.save : text.createShift"
     [compact]="true"
     [allowPristine]="!shift"
     (saved)="close()"
     (cancelled)="ref.close()"
   >
-    <ui-text
-      label="Name"
-      hint="e.g. Morning, Evening, Office flexi"
-      [control]="form.controls.name"
-    />
+    <ui-text [label]="text.name" [hint]="text.eGMorningEvening" [control]="form.controls.name" />
 
     <mat-button-toggle-group
       class="mb-4 w-full"
       hideSingleSelectionIndicator
-      aria-label="Kind of shift"
+      [attr.aria-label]="text.kindOfShift"
       [formControl]="form.controls.type"
     >
       <mat-button-toggle class="flex-1" [value]="types.Fixed">
-        <mat-icon>schedule</mat-icon> Fixed hours
+        <mat-icon>schedule</mat-icon> {{ text.fixedHours }}
       </mat-button-toggle>
       <mat-button-toggle class="flex-1" [value]="types.Flexible">
-        <mat-icon>more_time</mat-icon> Flexible
+        <mat-icon>more_time</mat-icon> {{ text.flexible }}
       </mat-button-toggle>
     </mat-button-toggle-group>
 
     <div class="grid grid-cols-2 gap-x-4">
       <ui-text
-        [label]="flexible() ? 'Earliest in' : 'Starts'"
+        [label]="flexible() ? text.earliestIn : text.starts"
         type="time"
         [control]="form.controls.startTime"
       />
       <ui-text
-        [label]="flexible() ? 'Latest out' : 'Ends'"
+        [label]="flexible() ? text.latestOut : text.ends"
         type="time"
         [control]="form.controls.endTime"
       />
       @if (flexible()) {
         <ui-text
-          label="Arrive by"
+          [label]="text.arriveBy"
           type="time"
-          hint="Late after this"
+          [hint]="text.lateAfterThis"
           [control]="form.controls.latestStart"
         />
         <ui-text
-          label="Hours a day"
+          [label]="text.hoursADay"
           type="number"
-          hint="Overtime is beyond this"
+          [hint]="text.overtimeIsBeyondThis"
           [control]="form.controls.hours"
         />
       }
@@ -63,6 +59,6 @@
       <span>{{ summary() }}</span>
     </p>
 
-    <ui-text label="Notes" [multiline]="true" [rows]="2" [control]="form.controls.notes" />
+    <ui-text [label]="text.notes" [multiline]="true" [rows]="2" [control]="form.controls.notes" />
   </ui-form>
 </mat-dialog-content>

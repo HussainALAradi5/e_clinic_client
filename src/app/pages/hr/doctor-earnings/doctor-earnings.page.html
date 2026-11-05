@@ -1,10 +1,10 @@
 <ui-page-header [title]="text.title" [subtitle]="text.subtitle" />
 <div class="mb-4 flex items-center gap-2">
-  <button matIconButton aria-label="Previous month" (click)="shift(-1)">
+  <button matIconButton [attr.aria-label]="text.previousMonth" (click)="shift(-1)">
     <mat-icon>chevron_left</mat-icon>
   </button>
   <span class="min-w-40 text-center font-semibold">{{ start() | date: 'MMMM y' }}</span>
-  <button matIconButton aria-label="Next month" (click)="shift(1)">
+  <button matIconButton [attr.aria-label]="text.nextMonth" (click)="shift(1)">
     <mat-icon>chevron_right</mat-icon>
   </button>
 </div>

@@ -1,9 +1,9 @@
 <ui-resource-list
   resource="appointments"
   endpoint="appointments"
-  title="Appointments"
-  subtitle="Every booking, past and upcoming. Filter by date, doctor or status; open one to check in, move or cancel it."
-  emptyTitle="No appointments found"
+  [title]="text.appointments"
+  [subtitle]="text.everyBookingPastAnd"
+  [emptyTitle]="text.noAppointmentsFound"
   rowLink="/clinic/appointments/:id"
   [params]="params()"
   [rowClass]="rowClass"
@@ -12,12 +12,12 @@
     quick
     class="mb-3 block"
     enum="VisitTiming"
-    label="Which visits"
+    [label]="text.whichVisits"
     [(value)]="timing"
   />
-  <ui-button actions icon="event_available" access="appointments.create" [action]="book"
-    >Book appointment</ui-button
-  >
+  <ui-button actions icon="event_available" access="appointments.create" [action]="book">{{
+    text.bookAppointment
+  }}</ui-button>
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template
   >

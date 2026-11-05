@@ -10,6 +10,7 @@ import { REASON_MAX_LENGTH } from '@constants/limits.constants';
 import { UserStatus } from '@enums/identity/user-status.enum';
 import { EnumService } from '@services/data/enum.service';
 import { AppValidators } from '@validations/validators';
+import { CHANGE_STATUS_DIALOG_TEXT } from '@constants/system/change-status-dialog.constants';
 
 const NEEDS_REASON: string[] = [UserStatus.Locked, UserStatus.Inactive];
 
@@ -21,6 +22,8 @@ const NEEDS_REASON: string[] = [UserStatus.Locked, UserStatus.Inactive];
   templateUrl: './change-status-dialog.component.html',
 })
 export class ChangeStatusDialog {
+  protected readonly text = CHANGE_STATUS_DIALOG_TEXT;
+
   protected readonly data = inject<ChangeStatusDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<ChangeStatusDialog>);
   private readonly enums = inject(EnumService);

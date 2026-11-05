@@ -9,6 +9,7 @@ import { SickLeave } from '@interfaces/clinic/sick-leave.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { EnumService } from '@services/data/enum.service';
 import { SickLeaveApi } from '@services/clinic/sick-leave-api.service';
+import { SICK_LEAVE_PRINT_TEXT } from '@constants/clinic/sick-leave-print.constants';
 
 /**
  * `/print/sick-leave/:id` — the certificate: patient, days off, the reason only when it may be printed, the doctor's
@@ -21,6 +22,8 @@ import { SickLeaveApi } from '@services/clinic/sick-leave-api.service';
   templateUrl: './sick-leave-print.page.html',
 })
 export class SickLeavePrintPage implements OnInit {
+  protected readonly text = SICK_LEAVE_PRINT_TEXT;
+
   protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
   private readonly api = inject(SickLeaveApi);

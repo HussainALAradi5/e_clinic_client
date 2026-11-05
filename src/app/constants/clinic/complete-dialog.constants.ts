@@ -2,4 +2,10 @@
 export const COMPLETE_DIALOG_TEXT = {
   inDays: (p0: unknown) => `In ${p0} days`,
   in: (p0: unknown) => `In ${p0}`,
+  completeVisit: 'Complete visit',
+  addAServicePerformed: 'Add a service performed',
+  extraServices: 'Extra services',
+  followUp: 'Follow-up',
+  suggestsADateTo: 'Suggests a date to book after closing',
+  remove: 'Remove ',
 };

@@ -48,6 +48,8 @@ import { TASK_DETAIL_TEXT } from '@constants/system/task-detail.constants';
   templateUrl: './task-detail.page.html',
 })
 export class TaskDetailPage implements OnInit {
+  protected readonly text = TASK_DETAIL_TEXT;
+
   /** Route parameter. */
   readonly id = input.required<string>();
 

@@ -10,6 +10,7 @@ import { CountryApi } from '@services/reference/country-api.service';
 import { DialogService } from '@services/ui/dialog.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { Flag } from '@components/common/flag/flag.component';
+import { COUNTRY_LIST_TEXT } from '@constants/reference/country-list.constants';
 
 /** `/reference/countries` — ISO country list; reference editors relabel, reorder and hide countries. */
 @Component({
@@ -23,6 +24,8 @@ export class CountryListPage {
   private readonly dialogs = inject(DialogService);
   private readonly notify = inject(NotifyService);
   private readonly access = inject(AccessService);
+
+  protected readonly text = COUNTRY_LIST_TEXT;
   private readonly list = viewChild.required(ResourceListPage);
 
   protected async edit(row: { id: string }): Promise<void> {

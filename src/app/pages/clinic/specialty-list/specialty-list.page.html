@@ -1,14 +1,14 @@
 <ui-resource-list
   resource="specialties"
   endpoint="doctors/specialties"
-  title="Specialties"
-  subtitle="Used by doctor profiles, the price list and online booking."
-  emptyTitle="No specialties found"
+  [title]="text.specialties"
+  [subtitle]="text.usedByDoctorProfiles"
+  [emptyTitle]="text.noSpecialtiesFound"
   (rowClick)="edit($event)"
 >
-  <ui-button actions icon="add" access="specialties.create" [action]="create"
-    >New specialty</ui-button
-  >
+  <ui-button actions icon="add" access="specialties.create" [action]="create">{{
+    text.newSpecialty
+  }}</ui-button>
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template
   >

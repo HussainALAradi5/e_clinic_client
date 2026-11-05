@@ -8,6 +8,7 @@ import { DATE_FORMAT } from '@constants/app.constants';
 import { InsuranceClaim } from '@interfaces/billing/insurance-claim.interface';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { InsuranceClaimApi } from '@services/billing/insurance-claim-api.service';
+import { CLAIM_FORM_PRINT_TEXT } from '@constants/billing/claim-form-print.constants';
 
 /** `/print/claim/:id` — claim form for the insurer: patient, policy, pre-authorisation, ICD-10, services, amounts. */
 @Component({
@@ -17,6 +18,8 @@ import { InsuranceClaimApi } from '@services/billing/insurance-claim-api.service
   templateUrl: './claim-form-print.page.html',
 })
 export class ClaimFormPrintPage implements OnInit {
+  protected readonly text = CLAIM_FORM_PRINT_TEXT;
+
   protected readonly documentType = DocumentType;
   readonly id = input.required<string>();
 

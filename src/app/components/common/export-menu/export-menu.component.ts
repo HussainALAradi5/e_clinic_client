@@ -18,6 +18,8 @@ import { EXPORT_MENU_TEXT } from '@constants/common/export-menu.constants';
   templateUrl: './export-menu.component.html',
 })
 export class ExportMenu {
+  protected readonly text = EXPORT_MENU_TEXT;
+
   readonly formats = input.required<ExportFormat[]>();
   readonly selectedCount = input(0);
   /** Runs the export; the button shows a spinner until it settles. */

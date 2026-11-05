@@ -1,34 +1,33 @@
 <h2 mat-dialog-title>
-  Refund
+  {{ text.refund }}
   <span class="block text-sm font-normal text-on-surface-variant"
-    >{{ payment.code }} · {{ payment.amount | money }} by
+    >{{ payment.code }} · {{ payment.amount | money }} {{ text.by }}
     {{ payment.method | enumLabel: 'PaymentMethod' }} · {{ data.invoice.patient?.fullName }}</span
   >
 </h2>
 <mat-dialog-content>
   <p class="mt-0 text-sm text-on-surface-variant">
-    Up to {{ payment.refundable | money }} can be refunded. Another person approves the refund
-    before it is paid out.
+    {{ text.upTo }} {{ payment.refundable | money }} {{ text.canBeRefundedAnother }}
   </p>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Ask for approval"
+    [submitLabel]="text.askForApproval"
     [compact]="true"
     [allowPristine]="true"
     (cancelled)="ref.close()"
   >
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
-      <ui-money label="Amount" [control]="form.controls.amount" />
+      <ui-money [label]="text.amount" [control]="form.controls.amount" />
       <ui-select
-        label="Pay back by"
+        [label]="text.payBackBy"
         [options]="methods"
         [required]="true"
         [control]="form.controls.method"
       />
     </div>
     <ui-text
-      label="Reason"
+      [label]="text.reason"
       [multiline]="true"
       [rows]="3"
       [maxLength]="500"

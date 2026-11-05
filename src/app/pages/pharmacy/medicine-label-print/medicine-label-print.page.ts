@@ -18,6 +18,7 @@ import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { DispensationApi } from '@services/pharmacy/dispensation-api.service';
 import { PrescriptionApi } from '@services/pharmacy/prescription-api.service';
+import { MEDICINE_LABEL_PRINT_TEXT } from '@constants/pharmacy/medicine-label-print.constants';
 
 /**
  * `/print/medicine-label/:id` — the label stuck on what was handed over (80 mm): one block per medicine with the
@@ -30,6 +31,8 @@ import { PrescriptionApi } from '@services/pharmacy/prescription-api.service';
   templateUrl: './medicine-label-print.page.html',
 })
 export class MedicineLabelPrintPage implements OnInit {
+  protected readonly text = MEDICINE_LABEL_PRINT_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(DispensationApi);

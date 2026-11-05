@@ -14,6 +14,7 @@ import { FiscalPeriod } from '@interfaces/accounting/fiscal.interface';
 import { FiscalYear } from '@interfaces/accounting/fiscal-year.interface';
 import { ApiError } from '@interfaces/api/api-error.interface';
 import { FiscalApi } from '@services/accounting/fiscal-api.service';
+import { FISCAL_YEARS_TEXT } from '@constants/accounting/fiscal-years.constants';
 
 /**
  * `/accounting/fiscal-years` — each year as a strip of months: close them in order once the month is checked,
@@ -29,6 +30,7 @@ export class FiscalYearsPage implements OnInit {
   private readonly api = inject(FiscalApi);
   private readonly actions = inject(AccountingActions);
 
+  protected readonly text = FISCAL_YEARS_TEXT;
   protected readonly variants = ButtonVariant;
   protected readonly states = FiscalStatus;
   protected readonly years = signal<FiscalYear[] | null>(null);

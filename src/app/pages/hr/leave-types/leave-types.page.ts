@@ -9,6 +9,7 @@ import { ButtonVariant } from '@enums/ui/button.enum';
 import { LeaveType } from '@interfaces/hr/leave.interface';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { LeaveApi } from '@services/hr/leave-api.service';
+import { LEAVE_TYPES_TEXT } from '@constants/hr/leave-types.constants';
 
 /** `/hr/leave-types` — the kinds of leave staff can request, their yearly days and rules. */
 @Component({
@@ -20,6 +21,8 @@ import { LeaveApi } from '@services/hr/leave-api.service';
 export class LeaveTypesPage implements OnInit {
   private readonly api = inject(LeaveApi);
   private readonly actions = inject(HrActions);
+
+  protected readonly text = LEAVE_TYPES_TEXT;
   protected readonly types = signal<LeaveType[] | null>(null);
   protected readonly variants = ButtonVariant;
 

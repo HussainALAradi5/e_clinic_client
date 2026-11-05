@@ -58,6 +58,8 @@ import { ORDER_DETAIL_TEXT } from '@constants/clinic/order-detail.constants';
   templateUrl: './order-detail.page.html',
 })
 export class OrderDetailPage implements OnInit {
+  protected readonly text = ORDER_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(ClinicalOrderApi);

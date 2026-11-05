@@ -64,6 +64,8 @@ import { DOCTOR_DETAIL_TEXT } from '@constants/clinic/doctor-detail.constants';
   templateUrl: './doctor-detail.page.html',
 })
 export class DoctorDetailPage implements OnInit {
+  protected readonly text = DOCTOR_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   private readonly api = inject(DoctorApi);

@@ -18,6 +18,7 @@ import { DATE_FORMAT } from '@constants/app.constants';
 import { TONE_STRIPE_CLASSES } from '@constants/status-tones.constants';
 import { VisitTiming } from '@enums/clinic/visit-timing.enum';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
+import { APPOINTMENT_LIST_TEXT } from '@constants/clinic/appointment-list.constants';
 
 /**
  * `/clinic/appointments` — every booking, searchable and filterable; book from here. Rows carry the colour of
@@ -32,6 +33,8 @@ import { Appointment } from '@interfaces/clinic/appointment.interface';
 export class AppointmentListPage {
   private readonly actions = inject(AppointmentActions);
   private readonly enums = inject(EnumService);
+
+  protected readonly text = APPOINTMENT_LIST_TEXT;
   private readonly list = viewChild.required(ResourceListPage);
   protected readonly dateFormat = DATE_FORMAT;
 

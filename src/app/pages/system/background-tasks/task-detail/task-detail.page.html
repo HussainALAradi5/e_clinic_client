@@ -3,11 +3,11 @@
 } @else if (task(); as task) {
   <ui-page-header
     [title]="task.type | enumLabel: 'TaskType'"
-    [subtitle]="'Started ' + (task.createdAt | date: dateTimeFormat)"
+    [subtitle]="text.startedPrefix + (task.createdAt | date: dateTimeFormat)"
   >
     <ui-status status enum="GenericStatus" [value]="task.status" />
     @if (task.hasResult) {
-      <ui-button actions icon="download" [action]="download">Download</ui-button>
+      <ui-button actions icon="download" [action]="download">{{ text.download }}</ui-button>
     }
     @if (running() && isOwner()) {
       <ui-button
@@ -16,7 +16,7 @@
         [variant]="variants.Danger"
         [confirm]="cancelConfirm"
         [action]="cancel"
-        >Cancel</ui-button
+        >{{ text.cancel }}</ui-button
       >
     }
   </ui-page-header>
@@ -24,7 +24,7 @@
   <mat-card appearance="outlined" class="mb-4">
     <mat-card-content>
       <div class="mb-1 flex items-center justify-between text-sm">
-        <span>Progress</span>
+        <span>{{ text.progress }}</span>
         <span class="tabular-nums">{{ task.progress }}%</span>
       </div>
       <mat-progress-bar
@@ -37,7 +37,7 @@
         </p>
       } @else if (task.cancelReason) {
         <p class="mb-0 mt-3 text-sm text-on-surface-variant">
-          Cancelled ({{ task.cancelReason | enumLabel: 'TaskCancelReason' }}).
+          {{ text.cancelled }}{{ task.cancelReason | enumLabel: 'TaskCancelReason' }}).
         </p>
       }
     </mat-card-content>
@@ -45,19 +45,19 @@
 
   <dl class="grid grid-cols-[max-content_1fr] gap-x-6 gap-y-2 text-sm">
     @if (task.requestedBy) {
-      <dt class="text-on-surface-variant">Started by</dt>
+      <dt class="text-on-surface-variant">{{ text.startedBy }}</dt>
       <dd class="m-0">{{ task.requestedBy.fullName }}</dd>
     }
-    <dt class="text-on-surface-variant">Started</dt>
+    <dt class="text-on-surface-variant">{{ text.started }}</dt>
     <dd class="m-0 tabular-nums">
       {{ task.startedAt ? (task.startedAt | date: dateTimeFormat) : '—' }}
     </dd>
-    <dt class="text-on-surface-variant">Finished</dt>
+    <dt class="text-on-surface-variant">{{ text.finished }}</dt>
     <dd class="m-0 tabular-nums">
       {{ task.finishedAt ? (task.finishedAt | date: dateTimeFormat) : '—' }}
     </dd>
     @if (task.expiresAt) {
-      <dt class="text-on-surface-variant">Result available until</dt>
+      <dt class="text-on-surface-variant">{{ text.resultAvailableUntil }}</dt>
       <dd class="m-0 tabular-nums">{{ task.expiresAt | date: dateTimeFormat }}</dd>
     }
     @for (entry of task.resultSummary ?? {} | keyvalue; track entry.key) {

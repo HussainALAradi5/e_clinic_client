@@ -2,8 +2,8 @@
   <a
     matIconButton
     tapMotion="ring"
-    aria-label="Notifications"
-    matTooltip="Notifications"
+    [attr.aria-label]="text.notifications"
+    [matTooltip]="text.notifications"
     [routerLink]="link"
   >
     <ng-container [ngTemplateOutlet]="icon" />
@@ -12,8 +12,8 @@
   <button
     matIconButton
     tapMotion="ring"
-    aria-label="Notifications"
-    matTooltip="Notifications"
+    [attr.aria-label]="text.notifications"
+    [matTooltip]="text.notifications"
     [matMenuTriggerFor]="inbox"
     (menuOpened)="load()"
   >
@@ -36,9 +36,9 @@
     (click)="$event.stopPropagation()"
     role="presentation"
   >
-    <span class="font-semibold">Notifications</span>
+    <span class="font-semibold">{{ text.notifications }}</span>
     @if (unread() > 0) {
-      <button matButton (click)="markAllRead($event)">Mark all read</button>
+      <button matButton (click)="markAllRead($event)">{{ text.markAllRead }}</button>
     }
   </div>
   @for (item of items(); track item.id) {
@@ -53,7 +53,7 @@
           @if (!item.readAt) {
             <span
               class="inline-block size-2 shrink-0 rounded-full bg-primary"
-              aria-label="Unread"
+              [attr.aria-label]="text.unread"
             ></span>
           }
           {{ item.subject ?? item.body }}
@@ -66,13 +66,13 @@
     </button>
   } @empty {
     <p class="m-0 px-4 py-3 text-sm text-on-surface-variant">
-      {{ loading() ? 'Loading…' : 'You are all caught up.' }}
+      {{ loading() ? text.loading : text.youAreAllCaught }}
     </p>
   }
   <a
     mat-menu-item
     routerLink="/notifications"
     class="!justify-center !text-sm !font-medium !text-primary"
-    >See all notifications</a
+    >{{ text.seeAllNotifications }}</a
   >
 </mat-menu>

@@ -1,20 +1,19 @@
 <header class="mb-5">
   <a matButton [routerLink]="visitsPath" class="!-ml-3 mb-1"
-    ><mat-icon>arrow_back</mat-icon> My visits</a
+    ><mat-icon>arrow_back</mat-icon> {{ text.myVisits }}</a
   >
-  <h1 class="m-0 text-2xl font-bold tracking-tight">Book a visit</h1>
+  <h1 class="m-0 text-2xl font-bold tracking-tight">{{ text.bookAVisit }}</h1>
   <p class="m-0 text-on-surface-variant">
-    Pick a doctor and a free time. The clinic confirms your booking; you can cancel online up to 3
-    days before; closer to the visit, call reception.
+    {{ text.pickADoctorAnd }}
   </p>
 </header>
 
 <ol class="steps">
   <li class="step">
-    <h2 class="step-title">What is the visit for?</h2>
+    <h2 class="step-title">{{ text.whatIsTheVisit }}</h2>
     <mat-button-toggle-group
       hideSingleSelectionIndicator
-      aria-label="Kind of visit"
+      [attr.aria-label]="text.kindOfVisit"
       [value]="type()"
       (change)="pickType($event.value)"
     >
@@ -25,12 +24,12 @@
   </li>
 
   <li class="step">
-    <h2 class="step-title">Choose a doctor</h2>
+    <h2 class="step-title">{{ text.chooseADoctor }}</h2>
     @if (allDoctors() === null) {
       <ui-skeleton [rows]="3" [height]="48" />
     } @else {
       @if (specialties().length > 1) {
-        <div class="chips mb-3" role="group" aria-label="Specialty">
+        <div class="chips mb-3" role="group" [attr.aria-label]="text.specialty">
           <button
             type="button"
             class="chip"
@@ -38,7 +37,7 @@
             [attr.aria-pressed]="specialty() === null"
             (click)="pickSpecialty(null)"
           >
-            All
+            {{ text.all }}
           </button>
           @for (s of specialties(); track s.id) {
             <button
@@ -53,7 +52,7 @@
           }
         </div>
       }
-      <div class="grid gap-2 sm:grid-cols-2" role="radiogroup" aria-label="Doctor">
+      <div class="grid gap-2 sm:grid-cols-2" role="radiogroup" [attr.aria-label]="text.doctor">
         @for (d of doctors(); track d.id) {
           <button
             type="button"
@@ -76,7 +75,7 @@
           </button>
         } @empty {
           <p class="m-0 text-sm text-on-surface-variant">
-            No doctor of this specialty takes online bookings at the moment. Please call the clinic.
+            {{ text.noDoctorOfThis }}
           </p>
         }
       </div>
@@ -85,8 +84,8 @@
 
   @if (doctor(); as d) {
     <li class="step">
-      <h2 class="step-title">Pick a day and time</h2>
-      <div class="days" role="radiogroup" aria-label="Day">
+      <h2 class="step-title">{{ text.pickADayAnd }}</h2>
+      <div class="days" role="radiogroup" [attr.aria-label]="text.day">
         @for (day of days; track day) {
           <button
             type="button"
@@ -106,7 +105,7 @@
 
       @if (slots(); as list) {
         @if (list.length) {
-          <div class="slots mt-3" role="radiogroup" aria-label="Time">
+          <div class="slots mt-3" role="radiogroup" [attr.aria-label]="text.time">
             @for (s of list; track s.start) {
               <button
                 type="button"
@@ -122,7 +121,7 @@
           </div>
         } @else {
           <p class="m-0 mt-3 text-sm text-on-surface-variant">
-            {{ d.displayName }} has no free time online that day. Try another day.
+            {{ d.displayName }} {{ text.hasNoFreeTime }}
           </p>
         }
       } @else {
@@ -131,11 +130,11 @@
     </li>
   }
 
-  @if (summary(); as text) {
+  @if (summary(); as summaryText) {
     <li class="step">
-      <h2 class="step-title">Anything the doctor should know?</h2>
+      <h2 class="step-title">{{ text.anythingTheDoctorShould }}</h2>
       <ui-text
-        label="Reason for the visit (optional)"
+        [label]="text.reasonForTheVisit"
         [multiline]="true"
         [rows]="2"
         [maxLength]="500"
@@ -143,14 +142,16 @@
       />
       <div class="confirm">
         <div>
-          <p class="m-0 font-semibold">{{ text }}</p>
+          <p class="m-0 font-semibold">{{ summaryText }}</p>
           @if (price(); as p) {
             <p class="m-0 text-sm text-on-surface-variant">
-              Fee {{ p | money }}, paid at the clinic (insurance applied there).
+              {{ text.fee }} {{ p | money }}{{ text.paidAtTheClinic }}
             </p>
           }
         </div>
-        <ui-button icon="event_available" [lock]="lockOnce" [action]="book">Book visit</ui-button>
+        <ui-button icon="event_available" [lock]="lockOnce" [action]="book">{{
+          text.bookVisit
+        }}</ui-button>
       </div>
     </li>
   }

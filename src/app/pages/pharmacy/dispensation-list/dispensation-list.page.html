@@ -1,9 +1,9 @@
 <ui-resource-list
   resource="dispensing"
   endpoint="pharmacy/dispensations"
-  title="Dispensing log"
-  subtitle="Every hand-over at the pharmacy and every medicine given in a session, with its lot and invoice."
-  emptyTitle="Nothing dispensed yet"
+  [title]="text.dispensingLog"
+  [subtitle]="text.everyHandOverAt"
+  [emptyTitle]="text.nothingDispensedYet"
   rowLink="/pharmacy/dispensations/:id"
 >
   <ng-template uiCell="code" let-row

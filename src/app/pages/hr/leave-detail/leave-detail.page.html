@@ -3,29 +3,29 @@
 } @else if (leave(); as l) {
   <ui-page-header
     [title]="
-      (l.leaveType?.name ?? 'Leave') +
+      (l.leaveType?.name ?? text.leave) +
       ' · ' +
-      (l.isHalfDay ? 'half a day' : (l.totalDays | qty) + ' day(s)')
+      (l.isHalfDay ? text.halfADayLower : (l.totalDays | qty) + text.dayS)
     "
     [subtitle]="l.code + ' · ' + (l.employee?.fullName ?? '')"
   >
     <ui-status status [value]="l.status" enum="ApprovalStatus" />
     <ng-container actions>
       @if (isDraft() && mine()) {
-        <ui-button icon="send" access="leaves.write & leaves.request" [action]="submit"
-          >Send for approval</ui-button
-        >
+        <ui-button icon="send" access="leaves.write & leaves.request" [action]="submit">{{
+          text.sendForApproval
+        }}</ui-button>
       }
       @if (decidable()) {
-        <ui-button icon="check" access="leaves.write & leaves.approve" [action]="approve"
-          >Approve</ui-button
-        >
+        <ui-button icon="check" access="leaves.write & leaves.approve" [action]="approve">{{
+          text.approve
+        }}</ui-button>
         <ui-button
           icon="close"
           [variant]="variants.Outlined"
           access="leaves.write & leaves.approve"
           [action]="reject"
-          >Reject</ui-button
+          >{{ text.reject }}</ui-button
         >
       }
       @if (cancellable()) {
@@ -34,7 +34,7 @@
           [variant]="variants.Danger"
           access="leaves.write & leaves.request"
           [action]="cancel"
-          >Cancel leave</ui-button
+          >{{ text.cancelLeave }}</ui-button
         >
       }
     </ng-container>
@@ -45,7 +45,7 @@
       ><ui-facts [items]="facts()"
     /></mat-card>
     <mat-card appearance="outlined" class="self-start !p-5">
-      <h2 class="m-0 mb-3 text-base font-semibold">Supporting documents</h2>
+      <h2 class="m-0 mb-3 text-base font-semibold">{{ text.supportingDocuments }}</h2>
       @for (f of documents(); track f.id) {
         <div
           class="flex items-center gap-2 border-b border-outline-variant/60 py-2 text-sm last:border-0"
@@ -55,19 +55,15 @@
           }}</mat-icon>
           <span class="flex-1 truncate">{{ f.originalName }}</span>
           <span class="text-xs text-on-surface-variant"
-            >{{ f.sizeBytes / 1024 | number: '1.0-0' }} KB</span
+            >{{ f.sizeBytes / 1024 | number: '1.0-0' }} {{ text.kb }}</span
           >
-          <ui-button icon="open_in_new" [variant]="variants.Text" [action]="view.bind(this, f)"
-            >View</ui-button
-          >
+          <ui-button icon="open_in_new" [variant]="variants.Text" [action]="view.bind(this, f)">{{
+            text.view
+          }}</ui-button>
         </div>
       } @empty {
         <p class="m-0 mb-3 text-sm text-on-surface-variant">
-          {{
-            l.leaveType?.requiresAttachment
-              ? 'A certificate is needed before this request can be sent.'
-              : 'None needed for this type of leave.'
-          }}
+          {{ l.leaveType?.requiresAttachment ? text.aCertificateIsNeeded : text.noneNeededForThis }}
         </p>
       }
       @if (isDraft() || (l.leaveType?.requiresAttachment && l.status === 'pending')) {
@@ -85,7 +81,9 @@
 
   @if (!mine()) {
     <section class="mt-6" *hasAccess="'leaves.read_all'">
-      <h2 class="m-0 mb-3 text-base font-semibold">{{ l.employee?.fullName }}'s leave this year</h2>
+      <h2 class="m-0 mb-3 text-base font-semibold">
+        {{ l.employee?.fullName }}{{ text.sLeaveThisYear }}
+      </h2>
       <app-leave-balances [employeeId]="l.employeeId" [version]="version()" />
     </section>
   }
@@ -96,7 +94,7 @@
     mat-stretch-tabs="false"
     animationDuration="0ms"
   >
-    <mat-tab label="History">
+    <mat-tab [label]="text.history">
       <ng-template matTabContent
         ><ui-audit-history class="block pt-4" type="leave_request" [id]="l.id"
       /></ng-template>

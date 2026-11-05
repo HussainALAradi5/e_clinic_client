@@ -47,6 +47,8 @@ import { JOURNAL_ENTRY_DIALOG_TEXT } from '@constants/accounting/journal-entry-d
   templateUrl: './journal-entry-dialog.component.html',
 })
 export class JournalEntryDialog {
+  protected readonly text = JOURNAL_ENTRY_DIALOG_TEXT;
+
   protected readonly data = inject<JournalEntryDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<JournalEntryDialog, JournalEntry>);
   private readonly api = inject(JournalApi);

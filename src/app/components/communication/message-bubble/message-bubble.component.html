@@ -21,7 +21,7 @@
       [style.--bubble-bg]="colors().bg"
       [style.--bubble-fg]="colors().fg"
       tabindex="0"
-      [attr.aria-label]="'Message from ' + message().sender.fullName + ' at ' + time()"
+      [attr.aria-label]="text.messageFrom + message().sender.fullName + text.at + time()"
       (contextmenu)="openPicker($event)"
       (keydown.shift.f10)="openPicker($event)"
       [style.transform]="swipe() ? 'translateX(' + swipe() + 'px)' : null"
@@ -40,7 +40,7 @@
         <p class="sender">
           <span [style.color]="leader() ? '#fff' : null">{{ message().sender.fullName }}</span>
           @if (leader()) {
-            <span class="badge leader"><mat-icon>star</mat-icon>Leader</span>
+            <span class="badge leader"><mat-icon>star</mat-icon>{{ text.leader }}</span>
           }
         </p>
       }
@@ -69,7 +69,7 @@
           <mat-icon
             class="ticks"
             [class.read]="readByAll()"
-            [matTooltip]="readByAll() ? 'Read' : 'Sent'"
+            [matTooltip]="readByAll() ? text.read : text.sent"
             >done_all</mat-icon
           >
         }

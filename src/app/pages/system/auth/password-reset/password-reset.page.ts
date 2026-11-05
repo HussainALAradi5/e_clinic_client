@@ -48,6 +48,8 @@ import { PASSWORD_RESET_TEXT } from '@constants/system/password-reset.constants'
   templateUrl: './password-reset.page.html',
 })
 export class PasswordResetPage implements OnInit {
+  protected readonly text = PASSWORD_RESET_TEXT;
+
   /** Invitation link: route parameter (`/password/reset/:token`) or query parameter. */
   readonly token = input<string | undefined>();
   readonly email = input<string | undefined>();

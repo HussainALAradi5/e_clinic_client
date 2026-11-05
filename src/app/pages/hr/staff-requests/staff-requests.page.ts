@@ -75,6 +75,7 @@ export class StaffRequestsPage implements OnInit {
   private readonly auth = inject(AuthStore);
   private readonly access = inject(AccessService);
 
+  protected readonly text = STAFF_REQUESTS_TEXT;
   protected readonly tabs = TABS;
   protected readonly types = StaffRequestType;
   protected readonly timeFormat = TIME_FORMAT;

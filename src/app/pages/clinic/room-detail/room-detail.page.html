@@ -13,7 +13,7 @@
             [variant]="variants.Outlined"
             access="rooms.write"
             [action]="outOfService"
-            >Out of service</ui-button
+            >{{ text.outOfService }}</ui-button
           >
         } @else {
           <ui-button
@@ -21,7 +21,7 @@
             [variant]="variants.Tonal"
             access="rooms.write"
             [action]="backInService"
-            >Back in service</ui-button
+            >{{ text.backInService }}</ui-button
           >
         }
       }
@@ -44,26 +44,26 @@
       role="alert"
     >
       <p class="m-0 mb-2 flex items-center gap-2 font-medium">
-        <mat-icon>move_down</mat-icon> Bookings to move to another room
+        <mat-icon>move_down</mat-icon> {{ text.bookingsToMoveTo }}
       </p>
       <app-appointment-rows [appointments]="affected()" />
     </div>
   }
 
   <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
-    <mat-tab label="Details">
+    <mat-tab [label]="text.details">
       <div class="grid gap-4 pt-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <mat-card appearance="outlined" class="!p-5"><ui-facts [items]="facts()" /></mat-card>
         <mat-card appearance="outlined" class="!p-5">
           <div class="flex items-center gap-3">
-            <h2 class="m-0 flex-1 text-base font-semibold">Bookings</h2>
-            <ui-text class="w-44" label="Day" type="date" [control]="day" />
+            <h2 class="m-0 flex-1 text-base font-semibold">{{ text.bookings }}</h2>
+            <ui-text class="w-44" [label]="text.day" type="date" [control]="day" />
           </div>
-          <app-appointment-rows empty="The room is free that day." [appointments]="bookings()" />
+          <app-appointment-rows [empty]="text.theRoomIsFree" [appointments]="bookings()" />
         </mat-card>
       </div>
     </mat-tab>
-    <mat-tab label="History" *hasAccess="'audit.read_all | audit.read_own'">
+    <mat-tab [label]="text.history" *hasAccess="'audit.read_all | audit.read_own'">
       <ng-template matTabContent
         ><ui-audit-history class="block pt-4" type="room" [id]="room.id"
       /></ng-template>

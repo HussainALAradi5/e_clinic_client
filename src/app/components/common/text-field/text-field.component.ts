@@ -16,6 +16,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { errorMessage } from '@validations/validators';
 import { TimeField } from '@components/common/time-field/time-field.component';
+import { TEXT_FIELD_TEXT } from '@constants/common/text-field.constants';
 
 /**
  * `<ui-text label="First name" [control]="form.controls.firstName" />` — label, hint, error and counter wired once.
@@ -37,6 +38,8 @@ import { TimeField } from '@components/common/time-field/time-field.component';
   templateUrl: './text-field.component.html',
 })
 export class TextField {
+  protected readonly text = TEXT_FIELD_TEXT;
+
   readonly label = input.required<string>();
   readonly control = input.required<FormControl>();
   readonly type = input<'text' | 'email' | 'number' | 'password' | 'tel' | 'date' | 'time'>('text');

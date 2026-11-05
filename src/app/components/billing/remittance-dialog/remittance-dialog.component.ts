@@ -17,6 +17,7 @@ import { InsuranceClaimApi } from '@services/billing/insurance-claim-api.service
 import { clinicIsoDate } from '@utilities/clinic-time';
 import { defaultQuery } from '@utilities/list-query';
 import { fromMinor, toMinor } from '@utilities/money';
+import { REMITTANCE_DIALOG_TEXT } from '@constants/billing/remittance-dialog.constants';
 
 /**
  * An insurer's bank transfer: pick the insurer, tick the approved claims it pays (the total must match the
@@ -39,6 +40,8 @@ import { fromMinor, toMinor } from '@utilities/money';
 export class RemittanceDialog {
   protected readonly ref = inject(MatDialogRef<RemittanceDialog, InsuranceClaim[]>);
   private readonly api = inject(InsuranceClaimApi);
+
+  protected readonly text = REMITTANCE_DIALOG_TEXT;
   private readonly key = newIdempotencyKey();
 
   protected readonly insurers: FilterGroup = { and: [{ type: { eq: CompanyType.Insurer } }] };

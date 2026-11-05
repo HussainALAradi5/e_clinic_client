@@ -1,14 +1,14 @@
 <ui-resource-list
   resource="departments"
   endpoint="hr/departments"
-  title="Departments"
-  subtitle="Where every employee belongs; rooms and cost centers follow them."
-  emptyTitle="No departments found"
+  [title]="text.departments"
+  [subtitle]="text.whereEveryEmployeeBelongs"
+  [emptyTitle]="text.noDepartmentsFound"
   rowLink="/hr/departments/:id"
 >
-  <ui-button actions icon="add" access="departments.create" [action]="create"
-    >New department</ui-button
-  >
+  <ui-button actions icon="add" access="departments.create" [action]="create">{{
+    text.newDepartment
+  }}</ui-button>
   <ng-template uiCell="name" let-row
     ><span class="font-medium">{{ row.name }}</span></ng-template
   >

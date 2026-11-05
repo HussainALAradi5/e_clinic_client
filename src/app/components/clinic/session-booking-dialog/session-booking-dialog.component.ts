@@ -45,6 +45,8 @@ import { SESSION_BOOKING_DIALOG_TEXT } from '@constants/clinic/session-booking-d
   templateUrl: './session-booking-dialog.component.html',
 })
 export class SessionBookingDialog {
+  protected readonly text = SESSION_BOOKING_DIALOG_TEXT;
+
   protected readonly data = inject<TreatmentDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<SessionBookingDialog, Appointment>);
   private readonly api = inject(TreatmentApi);

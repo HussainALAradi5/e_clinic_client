@@ -50,6 +50,8 @@ const QR_PAYLOAD = /^[a-z_]+:[A-Z0-9-]+\.[a-f0-9]+$/;
   templateUrl: './dispense.page.html',
 })
 export class DispensePage implements OnInit {
+  protected readonly text = DISPENSE_TEXT;
+
   /** `?rx=<id>` opens that prescription (the Dispense button of a prescription page). */
   readonly rx = input<string | undefined>();
 

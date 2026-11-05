@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Book a session · {{ data.treatment.title }}</h2>
+<h2 mat-dialog-title>{{ text.bookASession }} {{ data.treatment.title }}</h2>
 <mat-dialog-content>
   <p class="mt-0 text-sm text-on-surface-variant">
     {{ data.treatment.patient?.fullName }} · {{ summary() }}
@@ -6,14 +6,14 @@
   <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
     <ui-select
       class="sm:col-span-2"
-      label="Therapist or doctor"
+      [label]="text.therapistOrDoctor"
       [required]="true"
       [options]="providers()"
       [control]="form.controls.providerId"
     />
-    <ui-text label="Date" type="date" [control]="form.controls.date" />
+    <ui-text [label]="text.date" type="date" [control]="form.controls.date" />
     <ui-entity-select
-      label="Room (optional)"
+      [label]="text.roomOptional"
       endpoint="rooms"
       [display]="roomName"
       [filter]="sessionRooms"
@@ -28,16 +28,16 @@
     [roomId]="roomId()"
     [(start)]="start"
   />
-  <ui-text label="Notes for the session" [control]="form.controls.notes" />
+  <ui-text [label]="text.notesForTheSession" [control]="form.controls.notes" />
   @if (deadlineMissed() && canOverride) {
-    <mat-checkbox class="-ml-2 mb-2 block" [formControl]="form.controls.override"
-      >Book anyway — I accept the delay (recorded in the audit trail)</mat-checkbox
-    >
+    <mat-checkbox class="-ml-2 mb-2 block" [formControl]="form.controls.override">{{
+      text.bookAnywayIAccept
+    }}</mat-checkbox>
   }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button matButton type="button" (click)="ref.close()">Cancel</button>
-  <ui-button icon="event_available" [disabled]="!start() || form.invalid" [action]="book"
-    >Book session</ui-button
-  >
+  <button matButton type="button" (click)="ref.close()">{{ text.cancel }}</button>
+  <ui-button icon="event_available" [disabled]="!start() || form.invalid" [action]="book">{{
+    text.bookSession
+  }}</ui-button>
 </mat-dialog-actions>

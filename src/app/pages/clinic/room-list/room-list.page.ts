@@ -25,6 +25,7 @@ export class RoomListPage {
   private readonly notify = inject(NotifyService);
   private readonly router = inject(Router);
 
+  protected readonly text = ROOM_LIST_TEXT;
   protected readonly create = async (): Promise<void> => {
     const room = await this.dialogs.open<RoomFormDialog, RoomFormDialogData, Room>(
       RoomFormDialog,

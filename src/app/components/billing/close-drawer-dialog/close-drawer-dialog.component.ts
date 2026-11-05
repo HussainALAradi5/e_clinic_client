@@ -14,6 +14,7 @@ import { MoneyPipe } from '@pipes/money.pipe';
 import { CashSessionApi } from '@services/finance/cash-session-api.service';
 import { fromMinor, toMinor } from '@utilities/money';
 import { AppValidators } from '@validations/validators';
+import { CLOSE_DRAWER_DIALOG_TEXT } from '@constants/billing/close-drawer-dialog.constants';
 
 /**
  * End of shift: count the drawer note by note (or type the total), see the expected cash and the difference as
@@ -34,6 +35,8 @@ import { AppValidators } from '@validations/validators';
   templateUrl: './close-drawer-dialog.component.html',
 })
 export class CloseDrawerDialog {
+  protected readonly text = CLOSE_DRAWER_DIALOG_TEXT;
+
   protected readonly data = inject<CloseDrawerDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<CloseDrawerDialog, CashSession>);
   private readonly api = inject(CashSessionApi);

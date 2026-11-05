@@ -1,32 +1,33 @@
-<h2 mat-dialog-title>Correct the count</h2>
+<h2 mat-dialog-title>{{ text.correctTheCount }}</h2>
 <mat-dialog-content>
   <p class="m-0 mb-4 text-sm text-on-surface-variant">
-    {{ batch.medication?.name }} · lot <span class="font-mono">{{ batch.batchNumber }}</span> ·
-    {{ batch.qtyOnHand | qty }} on hand
+    {{ batch.medication?.name }} {{ text.lot }}
+    <span class="font-mono">{{ batch.batchNumber }}</span> · {{ batch.qtyOnHand | qty }}
+    {{ text.onHand }}
   </p>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Correct"
+    [submitLabel]="text.correct"
     [compact]="true"
     (cancelled)="ref.close()"
   >
     <mat-button-toggle-group
       class="mb-4"
       hideSingleSelectionIndicator
-      aria-label="Direction"
+      [attr.aria-label]="text.direction"
       [value]="direction()"
       (change)="setDirection($event.value)"
     >
-      <mat-button-toggle value="out">Missing or damaged</mat-button-toggle>
-      <mat-button-toggle value="in">Found more</mat-button-toggle>
+      <mat-button-toggle value="out">{{ text.missingOrDamaged }}</mat-button-toggle>
+      <mat-button-toggle value="in">{{ text.foundMore }}</mat-button-toggle>
     </mat-button-toggle-group>
-    <ui-text label="Units" type="number" [control]="form.controls.quantity" />
-    <ui-text label="Why" hint="e.g. broken vial, monthly count" [control]="form.controls.reason" />
+    <ui-text [label]="text.units" type="number" [control]="form.controls.quantity" />
+    <ui-text [label]="text.why" [hint]="text.eGBrokenVial" [control]="form.controls.reason" />
     @if (needsApproval()) {
       <ui-select
-        label="Approved by"
-        hint="Another pharmacist confirms large corrections and controlled drugs"
+        [label]="text.approvedBy"
+        [hint]="text.anotherPharmacistConfirmsLarge"
         [options]="approvers()"
         [required]="true"
         [control]="form.controls.approvedBy"

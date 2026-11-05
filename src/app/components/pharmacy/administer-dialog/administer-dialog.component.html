@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Give medicine</h2>
+<h2 mat-dialog-title>{{ text.giveMedicine }}</h2>
 <mat-dialog-content>
   @if (data.patient; as p) {
     <p class="m-0 mb-3 text-sm">
@@ -9,27 +9,27 @@
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Record"
+    [submitLabel]="text.record"
     submitIcon="vaccines"
     [compact]="true"
     (cancelled)="ref.close()"
   >
-    <p class="m-0 mb-1 text-xs font-medium text-on-surface-variant">Take the stock from</p>
+    <p class="m-0 mb-1 text-xs font-medium text-on-surface-variant">{{ text.takeTheStockFrom }}</p>
     <mat-button-toggle-group
       class="mb-4 w-full"
       hideSingleSelectionIndicator
-      aria-label="Take the stock from"
+      [attr.aria-label]="text.takeTheStockFrom"
       [formControl]="form.controls.from"
     >
       <mat-button-toggle class="flex-1" [value]="places.TreatmentRoom">
-        <mat-icon>medical_services</mat-icon> Treatment room
+        <mat-icon>medical_services</mat-icon> {{ text.treatmentRoom }}
       </mat-button-toggle>
       <mat-button-toggle class="flex-1" [value]="places.Pharmacy">
-        <mat-icon>local_pharmacy</mat-icon> Collected from the pharmacy
+        <mat-icon>local_pharmacy</mat-icon> {{ text.collectedFromThePharmacy }}
       </mat-button-toggle>
     </mat-button-toggle-group>
 
-    <ol class="m-0 list-none p-0" aria-label="Medicines given">
+    <ol class="m-0 list-none p-0" [attr.aria-label]="text.medicinesGiven">
       @for (group of items.controls; track group; let i = $index) {
         <li
           class="mb-3 grid grid-cols-2 gap-x-3 rounded-xl border border-outline-variant/70 px-4 pt-4 sm:grid-cols-[minmax(0,2fr)_6rem_minmax(0,1fr)_minmax(0,1fr)_auto]"
@@ -37,7 +37,7 @@
         >
           <ui-entity-select
             class="col-span-2 sm:col-span-1"
-            label="Medicine"
+            [label]="text.medicine"
             endpoint="pharmacy/medications"
             icon="medication"
             [display]="medicationName"
@@ -45,19 +45,19 @@
             [control]="group.controls.medicationId"
             (picked)="pick(i, $any($event))"
           />
-          <ui-text label="Units" type="number" [control]="group.controls.quantity" />
+          <ui-text [label]="text.units" type="number" [control]="group.controls.quantity" />
           <ui-select
-            label="Route"
+            [label]="text.route"
             enum="MedicationRoute"
             [required]="true"
             [control]="group.controls.route"
           />
-          <ui-text label="Dose given" hint="e.g. 1 g" [control]="group.controls.dose" />
+          <ui-text [label]="text.doseGiven" [hint]="text.eG1G" [control]="group.controls.dose" />
           <div class="flex items-start justify-end pt-1">
             <button
               matIconButton
               type="button"
-              aria-label="Remove medicine"
+              [attr.aria-label]="text.removeMedicine"
               [disabled]="items.length <= 1"
               (click)="remove(i)"
             >
@@ -68,18 +68,22 @@
       }
     </ol>
     <button class="mb-4" matButton type="button" (click)="add()">
-      <mat-icon>add</mat-icon> Medicine
+      <mat-icon>add</mat-icon> {{ text.medicine }}
     </button>
 
     @if (controlled()) {
       <ui-select
-        label="Witness"
-        hint="A controlled drug is given in front of a colleague"
+        [label]="text.witness"
+        [hint]="text.aControlledDrugIs"
         [options]="witnesses()"
         [required]="true"
         [control]="form.controls.witnessId"
       />
     }
-    <ui-text label="Notes" hint="Site, reaction, observation" [control]="form.controls.notes" />
+    <ui-text
+      [label]="text.notes"
+      [hint]="text.siteReactionObservation"
+      [control]="form.controls.notes"
+    />
   </ui-form>
 </mat-dialog-content>

@@ -41,6 +41,8 @@ import { RECEIVE_STOCK_DIALOG_TEXT } from '@constants/pharmacy/receive-stock-dia
   templateUrl: './receive-stock-dialog.component.html',
 })
 export class ReceiveStockDialog {
+  protected readonly text = RECEIVE_STOCK_DIALOG_TEXT;
+
   protected readonly data = inject<ReceiveStockDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<ReceiveStockDialog, MedicationBatch>);
   private readonly api = inject(InventoryApi);

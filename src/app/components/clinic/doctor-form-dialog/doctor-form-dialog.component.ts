@@ -19,6 +19,7 @@ import { FilterGroup } from '@interfaces/list/filter-group.interface';
 import { DoctorApi } from '@services/clinic/doctor-api.service';
 import { dirtyPayload } from '@utilities/form-payload';
 import { formatMoney } from '@utilities/money';
+import { DOCTOR_FORM_DIALOG_TEXT } from '@constants/clinic/doctor-form-dialog.constants';
 
 /**
  * Doctor profile: pick an active employee (their id becomes the doctor id), specialty, licence, the price-list
@@ -31,6 +32,8 @@ import { formatMoney } from '@utilities/money';
   templateUrl: './doctor-form-dialog.component.html',
 })
 export class DoctorFormDialog {
+  protected readonly text = DOCTOR_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<DoctorFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<DoctorFormDialog, Doctor>);
   private readonly api = inject(DoctorApi);

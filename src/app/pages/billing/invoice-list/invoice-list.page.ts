@@ -12,6 +12,7 @@ import { Invoice } from '@interfaces/billing/invoice.interface';
 import { EnumService } from '@services/data/enum.service';
 import { DATE_FORMAT } from '@constants/app.constants';
 import { MoneyPipe } from '@pipes/money.pipe';
+import { INVOICE_LIST_TEXT } from '@constants/billing/invoice-list.constants';
 
 /**
  * `/billing/invoices` — every draft and issued invoice; filters by status, patient, amount and balance;
@@ -27,6 +28,8 @@ export class InvoiceListPage {
   private readonly actions = inject(BillingActions);
   private readonly router = inject(Router);
   private readonly enums = inject(EnumService);
+
+  protected readonly text = INVOICE_LIST_TEXT;
   protected readonly dateFormat = DATE_FORMAT;
 
   protected readonly paymentState = signal<string | null>(null);

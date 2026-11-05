@@ -1,43 +1,45 @@
 <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
   <ui-entity-select
-    label="Department"
+    [label]="text.department"
     endpoint="hr/departments"
     [display]="departmentName"
     [initial]="$any(department())"
     [control]="form().controls.departmentId"
   />
-  <ui-text label="Job title" [control]="form().controls.jobTitle" />
+  <ui-text [label]="text.jobTitle" [control]="form().controls.jobTitle" />
   <ui-select
-    label="Contract"
+    [label]="text.contract"
     enum="EmploymentType"
     [required]="true"
     [control]="form().controls.employmentType"
   />
-  <ui-text label="Hire date" type="date" [control]="form().controls.hireDate" />
-  <ui-text label="Probation ends" type="date" [control]="form().controls.probationEndDate" />
+  <ui-text [label]="text.hireDate" type="date" [control]="form().controls.hireDate" />
+  <ui-text [label]="text.probationEnds" type="date" [control]="form().controls.probationEndDate" />
   <ui-select
-    label="Weekly days off"
+    [label]="text.weeklyDaysOff"
     [multiple]="true"
     [options]="days"
     [control]="form().controls.weeklyOffDays"
   />
-  <ui-text label="Shift starts" type="time" [control]="form().controls.workStartTime" />
-  <ui-text label="Shift ends" type="time" [control]="form().controls.workEndTime" />
+  <ui-text [label]="text.shiftStarts" type="time" [control]="form().controls.workStartTime" />
+  <ui-text [label]="text.shiftEnds" type="time" [control]="form().controls.workEndTime" />
 </div>
 @if (salary()) {
-  <h3 class="m-0 mb-2 mt-1 text-sm font-semibold text-on-surface-variant">Salary</h3>
+  <h3 class="m-0 mb-2 mt-1 text-sm font-semibold text-on-surface-variant">{{ text.salary }}</h3>
   <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
-    <ui-money label="Basic salary (monthly)" [control]="form().controls.basicSalary" />
-    <ui-text label="Bank" [control]="form().controls.bankName" />
+    <ui-money [label]="text.basicSalaryMonthly" [control]="form().controls.basicSalary" />
+    <ui-text [label]="text.bank" [control]="form().controls.bankName" />
     <ui-text
-      label="IBAN"
+      [label]="text.iban"
       [hint]="
-        storedIban() ? 'Stored: ' + storedIban() + ' — leave blank to keep' : 'BH + 20 characters'
+        storedIban()
+          ? text.storedPrefix + storedIban() + text.leaveBlankToKeep
+          : text.bh20Characters
       "
       [control]="form().controls.iban"
     />
     <ui-text
-      label="Social insurance (GOSI) number"
+      [label]="text.socialInsuranceGosiNumber"
       [control]="form().controls.socialInsuranceNumber"
     />
   </div>

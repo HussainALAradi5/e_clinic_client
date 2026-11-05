@@ -32,6 +32,8 @@ import { COMPLETE_DIALOG_TEXT } from '@constants/clinic/complete-dialog.constant
   templateUrl: './complete-dialog.component.html',
 })
 export class CompleteDialog {
+  protected readonly text = COMPLETE_DIALOG_TEXT;
+
   protected readonly data = inject<AppointmentDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<CompleteDialog, Appointment>);
   private readonly api = inject(AppointmentApi);

@@ -1,9 +1,9 @@
-<h2 mat-dialog-title>Register patient</h2>
+<h2 mat-dialog-title>{{ text.registerPatient }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Register"
+    [submitLabel]="text.register"
     [compact]="true"
     (saved)="close()"
     (cancelled)="ref.close()"
@@ -13,10 +13,10 @@
       hideSingleSelectionIndicator
       [value]="mode()"
       (change)="setMode($event.value)"
-      aria-label="Person"
+      [attr.aria-label]="text.person"
     >
-      <mat-button-toggle value="new">New person</mat-button-toggle>
-      <mat-button-toggle value="existing">Already on file</mat-button-toggle>
+      <mat-button-toggle value="new">{{ text.newPerson }}</mat-button-toggle>
+      <mat-button-toggle value="existing">{{ text.alreadyOnFile }}</mat-button-toggle>
     </mat-button-toggle-group>
 
     @if (mode() === 'new') {
@@ -26,14 +26,15 @@
           class="mb-4 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm dark:border-amber-700 dark:bg-amber-950/40"
           role="alert"
         >
-          <p class="m-0 mb-2 font-medium">This might be someone already on file:</p>
+          <p class="m-0 mb-2 font-medium">{{ text.thisMightBeSomeone }}</p>
           @for (c of candidates(); track c.id) {
             <div class="flex items-center gap-3 py-1">
               <span class="flex-1"
-                >{{ c.fullName }} · {{ c.code }} · {{ c.phone }} · born {{ c.dateOfBirth }}</span
+                >{{ c.fullName }} · {{ c.code }} · {{ c.phone }} {{ text.born }}
+                {{ c.dateOfBirth }}</span
               >
               <button matButton type="button" (click)="useCandidate(c)">
-                <mat-icon>how_to_reg</mat-icon> Use this person
+                <mat-icon>how_to_reg</mat-icon> {{ text.useThisPerson }}
               </button>
             </div>
           }
@@ -41,10 +42,10 @@
       }
     } @else {
       <ui-entity-select
-        label="Person"
+        [label]="text.person"
         endpoint="people"
         icon="person_search"
-        hint="Search by name, file number or mobile"
+        [hint]="text.searchByNameFile"
         [display]="personName"
         [detail]="personDetail"
         [initial]="$any(chosen())"

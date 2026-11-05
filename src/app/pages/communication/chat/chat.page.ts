@@ -105,6 +105,7 @@ export class ChatPage implements OnInit {
   private readonly settingsStore = inject(ChatSettingsStore);
   private readonly enums = inject(EnumService);
 
+  protected readonly text = CHAT_TEXT;
   private readonly scroller = viewChild<ElementRef<HTMLElement>>('scroller');
   private readonly rowMenu = viewChild<MatMenuTrigger>('rowMenuTrigger');
   private readonly rowAnchor = viewChild<ElementRef<HTMLElement>>('rowAnchor');

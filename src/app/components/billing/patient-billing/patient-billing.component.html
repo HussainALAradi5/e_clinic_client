@@ -13,7 +13,7 @@
 @if (invoices(); as list) {
   <div class="mb-3 flex flex-wrap items-center gap-3">
     <div class="flex-1">
-      <p class="m-0 text-xs text-on-surface-variant">Still to pay</p>
+      <p class="m-0 text-xs text-on-surface-variant">{{ labels.stillToPay }}</p>
       <p class="m-0 text-2xl font-semibold tabular-nums">{{ owed() | money }}</p>
     </div>
     <ui-button
@@ -21,7 +21,7 @@
       [variant]="variants.Outlined"
       access="invoices.create"
       [action]="addLines"
-      >{{ draft() ? 'Add to draft' : 'New invoice' }}</ui-button
+      >{{ draft() ? labels.addToDraft : labels.newInvoice }}</ui-button
     >
   </div>
   @if (list.length) {
@@ -34,10 +34,11 @@
             <a
               class="font-mono font-medium hover:underline"
               [routerLink]="['/billing/invoices', inv.id]"
-              >{{ inv.invoiceNumber ?? 'Draft · ' + inv.code }}</a
+              >{{ inv.invoiceNumber ?? labels.draft + inv.code }}</a
             >
             <p class="m-0 text-xs text-on-surface-variant">
-              {{ inv.issueDate ? (inv.issueDate | date: dateFormat) : 'Not issued yet' }} · total
+              {{ inv.issueDate ? (inv.issueDate | date: dateFormat) : labels.notIssuedYet }}
+              {{ labels.total }}
               {{ inv.total | money }}
             </p>
             @if (inv.invoiceNumber) {
@@ -52,7 +53,7 @@
               [variant]="variants.Tonal"
               access="payments.create"
               [action]="pay.bind(this, inv)"
-              >Pay</ui-button
+              >{{ labels.pay }}</ui-button
             >
             @if (walletMoney()) {
               <ui-button
@@ -68,8 +69,8 @@
       }
     </ul>
   } @else {
-    <p class="m-0 text-sm text-on-surface-variant">No invoices yet.</p>
+    <p class="m-0 text-sm text-on-surface-variant">{{ labels.noInvoicesYet }}</p>
   }
 } @else {
-  <p class="m-0 text-sm text-on-surface-variant">Loading…</p>
+  <p class="m-0 text-sm text-on-surface-variant">{{ labels.loading }}</p>
 }

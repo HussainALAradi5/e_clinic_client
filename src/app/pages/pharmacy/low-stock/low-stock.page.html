@@ -1,7 +1,4 @@
-<ui-page-header
-  title="Low stock"
-  subtitle="Medicines at or below their reorder level — only lots that can still be dispensed count."
-/>
+<ui-page-header [title]="text.lowStock" [subtitle]="text.medicinesAtOrBelow" />
 @if (error()) {
   <ui-error [error]="error()" (retry)="load()" />
 } @else if (medications(); as list) {
@@ -31,7 +28,8 @@
                 {{ m.stockOnHand | qty }}
               </p>
               <p class="m-0 text-xs text-on-surface-variant">
-                of {{ m.reorderLevel }} {{ m.unit | enumLabel: 'DispenseUnit' }} reorder level
+                {{ text.of }} {{ m.reorderLevel }} {{ m.unit | enumLabel: 'DispenseUnit' }}
+                {{ text.reorderLevel }}
               </p>
             </div>
             <ui-button
@@ -39,7 +37,7 @@
               [variant]="variants.Tonal"
               access="inventory.create & inventory.receive"
               [action]="receive.bind(this, m)"
-              >Receive</ui-button
+              >{{ text.receive }}</ui-button
             >
           </li>
         }
@@ -48,8 +46,8 @@
   } @else {
     <ui-empty
       icon="check_circle"
-      title="Nothing to reorder"
-      message="Every medicine is above its reorder level."
+      [title]="text.nothingToReorder"
+      [message]="text.everyMedicineIsAbove"
     />
   }
 } @else {

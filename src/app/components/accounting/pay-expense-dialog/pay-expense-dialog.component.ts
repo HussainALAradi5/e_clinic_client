@@ -13,6 +13,7 @@ import { MoneyPipe } from '@pipes/money.pipe';
 import { EnumService } from '@services/data/enum.service';
 import { ExpenseApi } from '@services/finance/expense-api.service';
 import { AppValidators } from '@validations/validators';
+import { PAY_EXPENSE_DIALOG_TEXT } from '@constants/accounting/pay-expense-dialog.constants';
 
 /** Pay an approved expense: cash comes out of the payer's open drawer; other methods need the bank reference. */
 @Component({
@@ -22,6 +23,8 @@ import { AppValidators } from '@validations/validators';
   templateUrl: './pay-expense-dialog.component.html',
 })
 export class PayExpenseDialog {
+  protected readonly text = PAY_EXPENSE_DIALOG_TEXT;
+
   protected readonly data = inject<PayExpenseDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<PayExpenseDialog, Expense>);
   private readonly api = inject(ExpenseApi);

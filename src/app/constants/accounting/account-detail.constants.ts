@@ -17,4 +17,12 @@ export const ACCOUNT_DETAIL_TEXT = {
   accountBackInPickers: 'Account back in pickers.',
   accountRestored: 'Account restored.',
   accountDeleted: 'Account deleted.',
+  accountsInThisGroup: 'Accounts in this group',
+  noAccountsYet: 'No accounts yet.',
+  usedBy: 'Used by',
+  nothingPostsToThis: 'Nothing posts to this account yet.',
+  anAccountInUse: 'An account in use cannot be deleted — archive it instead.',
+  details: 'Details',
+  history: 'History',
+  account: ' account',
 };

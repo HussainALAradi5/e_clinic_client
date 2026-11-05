@@ -39,6 +39,8 @@ import { COMPANY_DETAIL_TEXT } from '@constants/reference/company-detail.constan
   templateUrl: './company-detail.page.html',
 })
 export class CompanyDetailPage implements OnInit {
+  protected readonly text = COMPANY_DETAIL_TEXT;
+
   /** Route parameter. */
   readonly id = input.required<string>();
 

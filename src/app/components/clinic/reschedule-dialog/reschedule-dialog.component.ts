@@ -10,6 +10,7 @@ import { TextField } from '@components/common/text-field/text-field.component';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
 import { AppointmentApi } from '@services/clinic/appointment-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { RESCHEDULE_DIALOG_TEXT } from '@constants/clinic/reschedule-dialog.constants';
 
 /** Move a booking to another free time with the same doctor: a new linked booking; the old one becomes rescheduled. */
 @Component({
@@ -19,6 +20,8 @@ import { clinicIsoDate } from '@utilities/clinic-time';
   templateUrl: './reschedule-dialog.component.html',
 })
 export class RescheduleDialog {
+  protected readonly text = RESCHEDULE_DIALOG_TEXT;
+
   protected readonly data = inject<AppointmentDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<RescheduleDialog, Appointment>);
   private readonly api = inject(AppointmentApi);

@@ -16,6 +16,8 @@ import { AUTH_TEXT } from '@constants/layout/auth.constants';
   styleUrl: './auth.layout.scss',
 })
 export class AuthLayout {
+  protected readonly text = AUTH_TEXT;
+
   protected readonly clinic = CLINIC_INFO;
   /** What a signed-in patient or doctor sees: a glimpse of the product beside the form. */
   protected readonly highlights: Highlight[] = [

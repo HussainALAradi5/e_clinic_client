@@ -1,4 +1,28 @@
 /** Text of hr/payslip-print/payslip-print.page (labels, messages, confirmations). */
 export const PAYSLIP_PRINT_TEXT = {
   payslip: (p0: unknown, p1: unknown) => `Payslip — ${p0}${p1}`,
+  employee: 'Employee',
+  staffNo: 'Staff no.',
+  jobTitle: 'Job title',
+  department: 'Department',
+  paidTo: 'Paid to',
+  paidOn: 'Paid on',
+  earnings: 'Earnings',
+  gross: 'Gross',
+  deductions: 'Deductions',
+  none: 'None',
+  totalDeducted: 'Total deducted',
+  netPay: 'Net pay',
+  ofDeductionsDidNot: 'of deductions did not fit this month and is carried to the next payslip.',
+  attendanceThisMonth: 'Attendance this month',
+  workingDays: 'working days ·',
+  worked: 'worked ·',
+  absent: 'absent ·',
+  paidLeave: 'paid leave ·',
+  unpaidLeave: 'unpaid leave ·',
+  hApprovedOvertime: 'h approved overtime',
+  loading: 'Loading…',
+  confidentialForTheEmployee:
+    'Confidential — for the employee named above. Questions about this payslip go to HR.',
+  notYet: 'Not yet',
 };

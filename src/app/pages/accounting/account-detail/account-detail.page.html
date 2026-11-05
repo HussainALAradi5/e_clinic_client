@@ -3,7 +3,7 @@
 } @else if (detail.record(); as account) {
   <ui-page-header
     [title]="account.code + ' · ' + account.name"
-    [subtitle]="(account.type | enumLabel: 'AccountType') + ' account'"
+    [subtitle]="(account.type | enumLabel: 'AccountType') + text.account"
   >
     <ui-entity-actions
       actions
@@ -20,7 +20,7 @@
   </ui-page-header>
 
   <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
-    <mat-tab label="Details">
+    <mat-tab [label]="text.details">
       <div class="grid gap-4 pt-4 lg:grid-cols-[minmax(0,1fr)_340px]">
         <mat-card appearance="outlined" class="!p-5">
           <ui-facts [items]="facts()" />
@@ -28,7 +28,7 @@
         <div class="flex flex-col gap-4">
           @if (account.isGroup) {
             <mat-card appearance="outlined" class="!p-5">
-              <h2 class="m-0 mb-2 text-base font-semibold">Accounts in this group</h2>
+              <h2 class="m-0 mb-2 text-base font-semibold">{{ text.accountsInThisGroup }}</h2>
               @for (child of account.children ?? []; track child.id) {
                 <a
                   class="flex justify-between gap-3 rounded px-1 py-1.5 text-sm hover:bg-surface-container"
@@ -38,30 +38,30 @@
                   <span class="flex-1">{{ child.name }}</span>
                 </a>
               } @empty {
-                <p class="m-0 text-sm text-on-surface-variant">No accounts yet.</p>
+                <p class="m-0 text-sm text-on-surface-variant">{{ text.noAccountsYet }}</p>
               }
             </mat-card>
           }
           <mat-card appearance="outlined" class="!p-5">
-            <h2 class="m-0 mb-2 text-base font-semibold">Used by</h2>
+            <h2 class="m-0 mb-2 text-base font-semibold">{{ text.usedBy }}</h2>
             @for (entry of usage(); track entry[0]) {
               <div class="flex justify-between py-1 text-sm">
                 <span>{{ label(entry[0]) }}</span
                 ><span class="tabular-nums">{{ entry[1] }}</span>
               </div>
             } @empty {
-              <p class="m-0 text-sm text-on-surface-variant">Nothing posts to this account yet.</p>
+              <p class="m-0 text-sm text-on-surface-variant">{{ text.nothingPostsToThis }}</p>
             }
             @if (usage().length) {
               <p class="mb-0 mt-2 text-xs text-on-surface-variant">
-                An account in use cannot be deleted — archive it instead.
+                {{ text.anAccountInUse }}
               </p>
             }
           </mat-card>
         </div>
       </div>
     </mat-tab>
-    <mat-tab label="History" *hasAccess="'audit.read_all | audit.read_own'">
+    <mat-tab [label]="text.history" *hasAccess="'audit.read_all | audit.read_own'">
       <ng-template matTabContent>
         <ui-audit-history class="block pt-4" type="account" [id]="account.id" />
       </ng-template>

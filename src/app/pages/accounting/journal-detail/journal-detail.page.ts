@@ -53,6 +53,8 @@ const SOURCE_PAGES: Record<string, { label: string; route: string }> = {
   templateUrl: './journal-detail.page.html',
 })
 export class JournalDetailPage implements OnInit {
+  protected readonly text = JOURNAL_DETAIL_TEXT;
+
   readonly id = input.required<string>();
 
   protected readonly detail = new EntityDetail(inject(JournalApi));

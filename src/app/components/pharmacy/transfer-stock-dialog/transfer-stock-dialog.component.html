@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Move lot {{ batch.batchNumber }}</h2>
+<h2 mat-dialog-title>{{ text.moveLot }} {{ batch.batchNumber }}</h2>
 <mat-dialog-content>
   <p class="m-0 mb-3 flex flex-wrap items-center gap-2 text-sm">
     <span class="font-medium">{{ batch.medication?.name }}</span>
@@ -7,21 +7,20 @@
     <ui-status enum="StockLocation" [value]="to" />
   </p>
   <p class="m-0 mb-3 text-sm text-on-surface-variant">
-    {{ batch.qtyOnHand | qty }} on hand here. The same batch and expiry go over; given in a session,
-    the treatment room's stock is used first.
+    {{ batch.qtyOnHand | qty }} {{ text.onHandHereThe }}
   </p>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Move"
+    [submitLabel]="text.move"
     submitIcon="move_down"
     [compact]="true"
     (cancelled)="ref.close()"
   >
-    <ui-text label="Units to move" type="number" [control]="form.controls.quantity" />
+    <ui-text [label]="text.unitsToMove" type="number" [control]="form.controls.quantity" />
     <ui-text
-      label="Why (optional)"
-      hint="e.g. weekly ward top-up"
+      [label]="text.whyOptional"
+      [hint]="text.eGWeeklyWard"
       [control]="form.controls.reason"
     />
   </ui-form>

@@ -6,6 +6,7 @@ import { GenericForm } from '@components/common/generic-form/generic-form.compon
 import { TextField } from '@components/common/text-field/text-field.component';
 import { SaveViewDialogData } from '@interfaces/view/save-view-dialog-data.interface';
 import { SavedView } from '@interfaces/view/saved-view.interface';
+import { SAVE_VIEW_DIALOG_TEXT } from '@constants/common/save-view-dialog.constants';
 
 /** Saves the current filters, sort and columns of a list as a named view. */
 @Component({
@@ -15,6 +16,8 @@ import { SavedView } from '@interfaces/view/saved-view.interface';
   templateUrl: './save-view-dialog.component.html',
 })
 export class SaveViewDialog {
+  protected readonly text = SAVE_VIEW_DIALOG_TEXT;
+
   protected readonly data = inject<SaveViewDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<SaveViewDialog, SavedView>);
 

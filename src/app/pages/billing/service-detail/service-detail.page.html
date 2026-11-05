@@ -19,28 +19,28 @@
     />
   </ui-page-header>
   <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
-    <mat-tab label="Details">
+    <mat-tab [label]="text.details">
       <div class="grid gap-4 pt-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <mat-card appearance="outlined" class="!p-5"><ui-facts [items]="facts()" /></mat-card>
         <mat-card appearance="outlined" class="!p-5">
-          <h2 class="m-0 mb-2 text-base font-semibold">Used by</h2>
+          <h2 class="m-0 mb-2 text-base font-semibold">{{ text.usedBy }}</h2>
           @for (entry of usage(); track entry[0]) {
             <div class="flex justify-between py-1 text-sm">
               <span>{{ label(entry[0]) }}</span
               ><span class="tabular-nums">{{ entry[1] }}</span>
             </div>
           } @empty {
-            <p class="m-0 text-sm text-on-surface-variant">Not used yet.</p>
+            <p class="m-0 text-sm text-on-surface-variant">{{ text.notUsedYet }}</p>
           }
           @if (usage().length) {
             <p class="mb-0 mt-2 text-xs text-on-surface-variant">
-              A service in use cannot be deleted — archive it to stop offering it.
+              {{ text.aServiceInUse }}
             </p>
           }
         </mat-card>
       </div>
     </mat-tab>
-    <mat-tab label="History" *hasAccess="'audit.read_all | audit.read_own'">
+    <mat-tab [label]="text.history" *hasAccess="'audit.read_all | audit.read_own'">
       <ng-template matTabContent
         ><ui-audit-history class="block pt-4" type="billable_service" [id]="service.id"
       /></ng-template>

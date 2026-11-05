@@ -23,6 +23,7 @@ import { RelativeTimePipe } from '@pipes/relative-time.pipe';
 import { NotificationApi } from '@services/notification/notification-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 import { poll } from '@utilities/poll';
+import { NOTIFICATION_BELL_TEXT } from '@constants/layout/notification-bell.constants';
 
 const POLL_MS = 60_000;
 const INBOX_SIZE = 10;
@@ -48,6 +49,8 @@ const INBOX_SIZE = 10;
   templateUrl: './notification-bell.component.html',
 })
 export class NotificationBell implements OnInit {
+  protected readonly text = NOTIFICATION_BELL_TEXT;
+
   readonly inboxLink = input<string | null>(null);
 
   private readonly api = inject(NotificationApi);

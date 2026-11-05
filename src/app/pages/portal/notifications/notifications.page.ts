@@ -10,6 +10,7 @@ import { AppNotification } from '@interfaces/notification/notification.interface
 import { RelativeTimePipe } from '@pipes/relative-time.pipe';
 import { NotificationApi } from '@services/notification/notification-api.service';
 import { NotificationKindIcon } from '@components/notification/notification-kind-icon/notification-kind-icon.component';
+import { NOTIFICATIONS_TEXT } from '@constants/portal/notifications.constants';
 
 const PAGE_SIZE = 25;
 
@@ -31,6 +32,7 @@ export class PortalNotificationsPage {
   private readonly api = inject(NotificationApi);
   private readonly router = inject(Router);
 
+  protected readonly text = NOTIFICATIONS_TEXT;
   protected readonly items = signal<AppNotification[] | null>(null);
   protected readonly more = signal(false);
   protected readonly unread = computed(() => (this.items() ?? []).some((n) => !n.readAt));

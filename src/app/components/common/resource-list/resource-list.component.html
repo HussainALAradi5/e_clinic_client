@@ -14,7 +14,7 @@
       <ng-container actions>
         @if (schema.importable) {
           <button matButton="outlined" type="button" (click)="openImport()">
-            <mat-icon>upload_file</mat-icon> Import
+            <mat-icon>upload_file</mat-icon> {{ text.import }}
           </button>
         }
         @if (schema.exportFormats.length) {
@@ -55,11 +55,7 @@
 @if (store.error(); as error) {
   <ui-error [error]="error" (retry)="store.reload()" />
 } @else if (!store.loading() && store.isEmpty()) {
-  <ui-empty
-    [title]="emptyTitle()"
-    icon="search_off"
-    message="Try changing the filters or the period."
-  />
+  <ui-empty [title]="emptyTitle()" icon="search_off" [message]="text.tryChangingTheFilters" />
 } @else {
   <ui-data-table
     [columns]="tableColumns()"

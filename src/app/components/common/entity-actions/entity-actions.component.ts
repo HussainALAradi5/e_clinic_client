@@ -19,6 +19,8 @@ import { ENTITY_ACTIONS_TEXT } from '@constants/common/entity-actions.constants'
   templateUrl: './entity-actions.component.html',
 })
 export class EntityActions {
+  protected readonly text = ENTITY_ACTIONS_TEXT;
+
   readonly record = input.required<GenericEntity>();
   /** Permission prefix, e.g. `rooms`. */
   readonly resource = input.required<string>();

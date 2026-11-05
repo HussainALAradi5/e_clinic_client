@@ -1,27 +1,36 @@
-<h2 mat-dialog-title>{{ account ? 'Edit account' : 'New account' }}</h2>
+<h2 mat-dialog-title>{{ account ? text.editAccount : text.newAccount }}</h2>
 <mat-dialog-content>
   <ui-form
     [form]="form"
     [submit]="submit"
-    [submitLabel]="account ? 'Save' : 'Create account'"
+    [submitLabel]="account ? text.save : text.createAccount"
     [compact]="true"
     (saved)="close()"
     (cancelled)="ref.close()"
   >
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-[10rem_1fr]">
       @if (!account) {
-        <ui-text label="Code" hint="3–10 digits, e.g. 4110" [control]="form.controls.code" />
+        <ui-text [label]="text.code" [hint]="text.n310DigitsE" [control]="form.controls.code" />
       } @else {
-        <ui-text label="Code" [control]="form.controls.code" hint="The code never changes" />
+        <ui-text
+          [label]="text.code"
+          [control]="form.controls.code"
+          [hint]="text.theCodeNeverChanges"
+        />
       }
-      <ui-text label="Name" [control]="form.controls.name" />
+      <ui-text [label]="text.name" [control]="form.controls.name" />
     </div>
     <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
-      <ui-select label="Type" enum="AccountType" [required]="true" [control]="form.controls.type" />
+      <ui-select
+        [label]="text.type"
+        enum="AccountType"
+        [required]="true"
+        [control]="form.controls.type"
+      />
       <ui-entity-select
-        label="Parent group"
+        [label]="text.parentGroup"
         endpoint="accounting/accounts"
-        hint="Empty = top level"
+        [hint]="text.emptyTopLevel"
         [display]="accountName"
         [filter]="parentFilter()"
         [initial]="$any(parent)"
@@ -30,9 +39,9 @@
     </div>
     @if (!account) {
       <mat-checkbox class="-ml-2 mb-2 block" [formControl]="form.controls.isGroup">
-        Group account — holds other accounts, never posted to
+        {{ text.groupAccountHoldsOther }}
       </mat-checkbox>
     }
-    <ui-text label="Description" [multiline]="true" [control]="form.controls.description" />
+    <ui-text [label]="text.description" [multiline]="true" [control]="form.controls.description" />
   </ui-form>
 </mat-dialog-content>

@@ -3,7 +3,7 @@
   <mat-date-range-input [rangePicker]="picker" separator="–" (click)="picker.open()">
     <input
       matStartDate
-      placeholder="Any time"
+      [placeholder]="text.anyTime"
       autocomplete="off"
       [value]="range().from"
       (dateChange)="picked('from', $event.value)"
@@ -18,7 +18,7 @@
   </mat-date-range-input>
   <span matIconSuffix class="flex items-center">
     @if (active()) {
-      <button matIconButton type="button" aria-label="Any time" (click)="clear($event)">
+      <button matIconButton type="button" [attr.aria-label]="text.anyTime" (click)="clear($event)">
         <mat-icon>close</mat-icon>
       </button>
     }

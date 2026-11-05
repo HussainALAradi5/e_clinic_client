@@ -1,7 +1,7 @@
-<h2 mat-dialog-title>Roles</h2>
+<h2 mat-dialog-title>{{ text.roles }}</h2>
 <mat-dialog-content>
   <p class="mt-0 text-sm text-on-surface-variant">
-    Rights are the sum of all roles. Saving signs the user out of every device.
+    {{ text.rightsAreTheSum }}
   </p>
   @if (roles.isLoading()) {
     <ui-skeleton [rows]="6" />
@@ -26,6 +26,8 @@
   }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button matButton mat-dialog-close>Cancel</button>
-  <ui-button [action]="save" [disabled]="!changed() || selected().size === 0">Save roles</ui-button>
+  <button matButton mat-dialog-close>{{ text.cancel }}</button>
+  <ui-button [action]="save" [disabled]="!changed() || selected().size === 0">{{
+    text.saveRoles
+  }}</ui-button>
 </mat-dialog-actions>

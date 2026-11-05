@@ -1,21 +1,23 @@
 @if (record().isArchived && !record().isDeleted) {
-  <span class="rounded-full bg-surface-container-high px-2.5 py-0.5 text-xs font-medium"
-    >Archived</span
-  >
+  <span class="rounded-full bg-surface-container-high px-2.5 py-0.5 text-xs font-medium">{{
+    text.archived
+  }}</span>
 }
 @if (record().isDeleted) {
   <span
     class="rounded-full bg-error-container px-2.5 py-0.5 text-xs font-medium text-on-error-container"
-    >Deleted</span
+    >{{ text.deleted }}</span
   >
   @if (restore(); as run) {
-    <ui-button icon="restore_from_trash" [access]="resource() + '.delete'" [action]="run"
-      >Restore</ui-button
-    >
+    <ui-button icon="restore_from_trash" [access]="resource() + '.delete'" [action]="run">{{
+      text.restore
+    }}</ui-button>
   }
 } @else {
   @if (edit(); as run) {
-    <ui-button icon="edit" [access]="resource() + '.write'" [action]="run">Edit</ui-button>
+    <ui-button icon="edit" [access]="resource() + '.write'" [action]="run">{{
+      text.edit
+    }}</ui-button>
   }
   @if (record().isArchived) {
     @if (unarchive(); as run) {
@@ -24,7 +26,7 @@
         [variant]="variants.Outlined"
         [access]="resource() + '.write'"
         [action]="run"
-        >Unarchive</ui-button
+        >{{ text.unarchive }}</ui-button
       >
     }
   } @else if (archive(); as run) {
@@ -33,7 +35,7 @@
       [variant]="variants.Outlined"
       [access]="resource() + '.write'"
       [action]="run"
-      >Archive</ui-button
+      >{{ text.archive }}</ui-button
     >
   }
   @if (remove(); as run) {
@@ -44,7 +46,7 @@
       [disabled]="deleteBlocked()"
       [confirm]="deleteConfirm()"
       [action]="run"
-      >Delete</ui-button
+      >{{ text.delete }}</ui-button
     >
   }
 }

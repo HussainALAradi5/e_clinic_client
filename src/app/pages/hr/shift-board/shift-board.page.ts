@@ -68,6 +68,7 @@ export class ShiftBoardPage implements OnInit {
   private readonly notify = inject(NotifyService);
   private readonly access = inject(AccessService);
 
+  protected readonly text = SHIFT_BOARD_TEXT;
   protected readonly none = NONE;
   protected readonly canEdit = this.access.can('shifts.write & employees.write');
   protected readonly shifts = signal<Shift[]>([]);

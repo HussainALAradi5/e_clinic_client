@@ -7,6 +7,7 @@ import { MoneyInput } from '@components/common/money-input/money-input.component
 import { CashSession } from '@interfaces/finance/cash-session.interface';
 import { CashSessionApi } from '@services/finance/cash-session-api.service';
 import { AppValidators } from '@validations/validators';
+import { OPEN_DRAWER_DIALOG_TEXT } from '@constants/billing/open-drawer-dialog.constants';
 
 /** Start a shift: the float (change) put in the drawer. Every cash payment, refund and expense then lands in it. */
 @Component({
@@ -19,6 +20,7 @@ export class OpenDrawerDialog {
   protected readonly ref = inject(MatDialogRef<OpenDrawerDialog, CashSession>);
   private readonly api = inject(CashSessionApi);
 
+  protected readonly text = OPEN_DRAWER_DIALOG_TEXT;
   protected readonly form = new FormGroup({
     openingFloat: new FormControl<string | null>('0.000', [
       Validators.required,

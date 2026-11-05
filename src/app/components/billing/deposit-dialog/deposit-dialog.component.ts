@@ -11,6 +11,7 @@ import { CashSession } from '@interfaces/finance/cash-session.interface';
 import { CashSessionApi } from '@services/finance/cash-session-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 import { AppValidators } from '@validations/validators';
+import { DEPOSIT_DIALOG_TEXT } from '@constants/billing/deposit-dialog.constants';
 
 /** Bank deposit of a closed drawer's cash (posts bank / cash on hand). */
 @Component({
@@ -20,6 +21,8 @@ import { AppValidators } from '@validations/validators';
   templateUrl: './deposit-dialog.component.html',
 })
 export class DepositDialog {
+  protected readonly text = DEPOSIT_DIALOG_TEXT;
+
   protected readonly data = inject<DepositDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<DepositDialog, CashSession>);
   private readonly api = inject(CashSessionApi);

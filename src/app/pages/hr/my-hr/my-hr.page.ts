@@ -37,6 +37,7 @@ import { defaultQuery } from '@utilities/list-query';
 
 /** `/hr/me` — the staff member's own corner: today's check-in, this month, leave left and requested, payslips. */
 import { MyEarningsCard } from '@components/hr/my-earnings-card/my-earnings-card.component';
+import { MY_HR_TEXT } from '@constants/hr/my-hr.constants';
 @Component({
   selector: 'app-my-hr-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -65,6 +66,8 @@ export class MyHrPage implements OnInit {
   private readonly actions = inject(HrActions);
   private readonly access = inject(AccessService);
   protected readonly me = inject(AuthStore).user()?.id ?? '';
+
+  protected readonly text = MY_HR_TEXT;
   protected readonly dateFormat = DATE_FORMAT;
   protected readonly variants = ButtonVariant;
 

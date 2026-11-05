@@ -8,6 +8,7 @@ import { TextField } from '@components/common/text-field/text-field.component';
 import { Country } from '@interfaces/reference/country.interface';
 import { CountryPayload } from '@interfaces/reference/country-payload.type';
 import { Flag } from '@components/common/flag/flag.component';
+import { COUNTRY_FORM_DIALOG_TEXT } from '@constants/reference/country-form-dialog.constants';
 
 /** Edits a country's labels, dial code, picker order and active flag (deactivating keeps existing data). */
 @Component({
@@ -24,6 +25,8 @@ import { Flag } from '@components/common/flag/flag.component';
   templateUrl: './country-form-dialog.component.html',
 })
 export class CountryFormDialog {
+  protected readonly text = COUNTRY_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<CountryFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<CountryFormDialog, Country>);
   private readonly country = this.data.country;

@@ -13,7 +13,7 @@
           [variant]="variants.Tonal"
           access="roles.write & roles.assign"
           [action]="editRoles"
-          >Roles</ui-button
+          >{{ text.roles }}</ui-button
         >
         <ui-button
           icon="toggle_on"
@@ -21,7 +21,7 @@
           access="users.write & users.change_status"
           [action]="changeStatus"
         >
-          Change status
+          {{ text.changeStatus }}
         </ui-button>
       </ng-container>
     }
@@ -33,33 +33,33 @@
       [confirm]="resetConfirm"
       [action]="sendResetLink"
     >
-      Send reset link
+      {{ text.sendResetLink }}
     </ui-button>
   </ui-page-header>
 
   <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
-    <mat-tab label="Overview">
+    <mat-tab [label]="text.overview">
       <div class="grid grid-cols-1 gap-4 pt-4 xl:grid-cols-2">
         <mat-card appearance="outlined" class="!p-5">
           <div class="mb-3 flex items-center">
-            <h2 class="m-0 flex-1 text-base font-semibold">Personal data</h2>
+            <h2 class="m-0 flex-1 text-base font-semibold">{{ text.personalData }}</h2>
             <ui-button
               icon="edit"
               [variant]="variants.Text"
               access="people.write"
               [action]="editPerson"
-              >Edit</ui-button
+              >{{ text.edit }}</ui-button
             >
           </div>
           @if (user.person; as person) {
             <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm">
-              <dt class="text-on-surface-variant">Gender</dt>
+              <dt class="text-on-surface-variant">{{ text.gender }}</dt>
               <dd class="m-0"><ui-status enum="Gender" [value]="person.gender" /></dd>
-              <dt class="text-on-surface-variant">Date of birth</dt>
+              <dt class="text-on-surface-variant">{{ text.dateOfBirth }}</dt>
               <dd class="m-0">{{ person.dateOfBirth | date: dateFormat }}</dd>
-              <dt class="text-on-surface-variant">National ID</dt>
+              <dt class="text-on-surface-variant">{{ text.nationalId }}</dt>
               <dd class="m-0 font-mono">{{ person.nationalId ?? '—' }}</dd>
-              <dt class="text-on-surface-variant">Nationality</dt>
+              <dt class="text-on-surface-variant">{{ text.nationality }}</dt>
               <dd class="m-0">
                 @if (person.nationality; as n) {
                   <span
@@ -70,22 +70,22 @@
                   —
                 }
               </dd>
-              <dt class="text-on-surface-variant">Mobile</dt>
+              <dt class="text-on-surface-variant">{{ text.mobile }}</dt>
               <dd class="m-0">{{ person.phone }}</dd>
-              <dt class="text-on-surface-variant">Email</dt>
+              <dt class="text-on-surface-variant">{{ text.email }}</dt>
               <dd class="m-0">{{ person.email ?? '—' }}</dd>
-              <dt class="text-on-surface-variant">Address</dt>
+              <dt class="text-on-surface-variant">{{ text.address }}</dt>
               <dd class="m-0">{{ person.address?.formatted ?? '—' }}</dd>
             </dl>
           }
         </mat-card>
 
         <mat-card appearance="outlined" class="!p-5">
-          <h2 class="m-0 mb-3 text-base font-semibold">Account</h2>
+          <h2 class="m-0 mb-3 text-base font-semibold">{{ text.account }}</h2>
           <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm">
-            <dt class="text-on-surface-variant">Roles</dt>
+            <dt class="text-on-surface-variant">{{ text.roles }}</dt>
             <dd class="m-0">
-              <mat-chip-set aria-label="Roles">
+              <mat-chip-set [attr.aria-label]="text.roles">
                 @for (role of user.roles ?? []; track role.id) {
                   <mat-chip>{{ role.displayName }}</mat-chip>
                 } @empty {
@@ -93,25 +93,25 @@
                 }
               </mat-chip-set>
             </dd>
-            <dt class="text-on-surface-variant">Email verified</dt>
+            <dt class="text-on-surface-variant">{{ text.emailVerified }}</dt>
             <dd class="m-0">
-              {{ user.emailVerifiedAt ? (user.emailVerifiedAt | date: dateTimeFormat) : 'No' }}
+              {{ user.emailVerifiedAt ? (user.emailVerifiedAt | date: dateTimeFormat) : text.no }}
             </dd>
-            <dt class="text-on-surface-variant">Two-factor</dt>
+            <dt class="text-on-surface-variant">{{ text.twoFactor }}</dt>
             <dd class="m-0">
-              {{ user.twoFactor.enabled ? 'On' : 'Off'
-              }}{{ user.twoFactor.required ? ' (required by role)' : '' }}
+              {{ user.twoFactor.enabled ? text.on : text.off
+              }}{{ user.twoFactor.required ? text.requiredByRole : '' }}
             </dd>
-            <dt class="text-on-surface-variant">Last sign-in</dt>
+            <dt class="text-on-surface-variant">{{ text.lastSignIn }}</dt>
             <dd class="m-0">
               {{
                 user.lastLoginAt
                   ? (user.lastLoginAt | date: dateTimeFormat) + ' · ' + user.lastLoginIp
-                  : 'Never'
+                  : text.never
               }}
             </dd>
             @if (user.lockedAt) {
-              <dt class="text-on-surface-variant">Locked</dt>
+              <dt class="text-on-surface-variant">{{ text.locked }}</dt>
               <dd class="m-0">{{ user.lockedAt | date: dateTimeFormat }}</dd>
             }
           </dl>
@@ -119,11 +119,13 @@
       </div>
     </mat-tab>
 
-    <mat-tab label="History" *hasAccess="'audit.read_all | audit.read_own'">
+    <mat-tab [label]="text.history" *hasAccess="'audit.read_all | audit.read_own'">
       <ng-template matTabContent>
         <div class="pt-4">
           <ui-audit-history type="user" [id]="user.id" />
-          <h3 class="mt-6 mb-2 text-sm font-semibold text-on-surface-variant">Personal data</h3>
+          <h3 class="mt-6 mb-2 text-sm font-semibold text-on-surface-variant">
+            {{ text.personalData }}
+          </h3>
           <ui-audit-history type="person" [id]="user.id" />
         </div>
       </ng-template>

@@ -26,6 +26,7 @@ import { InvoiceApi } from '@services/billing/invoice-api.service';
 import { formatAmount, formatMoney } from '@utilities/money';
 import { AppValidators } from '@validations/validators';
 import { LineGroup } from '@interfaces/billing/invoice-editor-dialog.interface';
+import { INVOICE_EDITOR_DIALOG_TEXT } from '@constants/billing/invoice-editor-dialog.constants';
 
 /**
  * Draft invoice lines with a live preview of the totals. Visit, session and order lines arrive by themselves when
@@ -51,6 +52,8 @@ import { LineGroup } from '@interfaces/billing/invoice-editor-dialog.interface';
   templateUrl: './invoice-editor-dialog.component.html',
 })
 export class InvoiceEditorDialog {
+  protected readonly text = INVOICE_EDITOR_DIALOG_TEXT;
+
   protected readonly data = inject<InvoiceEditorDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<InvoiceEditorDialog, Invoice>);
   private readonly api = inject(InvoiceApi);

@@ -1,18 +1,17 @@
-<h2 mat-dialog-title>Open cash drawer</h2>
+<h2 mat-dialog-title>{{ text.openCashDrawer }}</h2>
 <mat-dialog-content>
   <p class="mt-0 text-sm text-on-surface-variant">
-    Count the change you start with. At the end of the shift you count again and the clinic compares
-    it with the cash you took.
+    {{ text.countTheChangeYou }}
   </p>
   <ui-form
     [form]="form"
     [submit]="submit"
-    submitLabel="Open drawer"
+    [submitLabel]="text.openDrawer"
     submitIcon="lock_open"
     [compact]="true"
     [allowPristine]="true"
     (cancelled)="ref.close()"
   >
-    <ui-money label="Opening float" [control]="form.controls.openingFloat" />
+    <ui-money [label]="text.openingFloat" [control]="form.controls.openingFloat" />
   </ui-form>
 </mat-dialog-content>

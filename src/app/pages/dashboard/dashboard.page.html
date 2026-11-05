@@ -4,12 +4,12 @@
     <h1 class="mt-1 mb-0 text-3xl font-bold tracking-tight">{{ greeting() }}</h1>
     <p class="mt-2 mb-0 max-w-xl text-white/75">
       @if (auth.roles().length) {
-        Your access:
+        {{ text.yourAccess }}
         @for (role of auth.roles(); track role; let last = $last) {
           {{ role | enumLabel: 'RoleName' }}{{ last ? '' : ', ' }}
         }
       } @else {
-        {{ user.userType | enumLabel: 'UserType' }} account
+        {{ user.userType | enumLabel: 'UserType' }} {{ text.account }}
       }
     </p>
   </ui-brand-surface>
@@ -20,9 +20,7 @@
       class="mt-4 flex items-center gap-3 rounded-2xl border border-error/30 bg-error-container p-4 text-on-error-container no-underline"
     >
       <mat-icon>gpp_maybe</mat-icon>
-      <span class="flex-1 text-sm font-medium"
-        >Set up two-factor authentication to open protected areas.</span
-      >
+      <span class="flex-1 text-sm font-medium">{{ text.setUpTwoFactor }}</span>
       <mat-icon>chevron_right</mat-icon>
     </a>
   }
@@ -34,7 +32,7 @@
       <p
         class="m-0 h-fit rounded-2xl border border-dashed border-outline-variant p-6 text-sm text-on-surface-variant"
       >
-        Your roles do not open any area yet. Ask an administrator for access.
+        {{ text.yourRolesDoNot }}
       </p>
     }
 
@@ -55,21 +53,25 @@
         </div>
       </div>
       <dl class="mt-5 mb-0 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2.5 text-sm">
-        <dt class="text-on-surface-variant">Code</dt>
+        <dt class="text-on-surface-variant">{{ text.code }}</dt>
         <dd class="m-0 font-medium">{{ user.code }}</dd>
-        <dt class="text-on-surface-variant">Last sign-in</dt>
+        <dt class="text-on-surface-variant">{{ text.lastSignIn }}</dt>
         <dd class="m-0">
-          {{ user.lastLoginAt ? (user.lastLoginAt | date: dateTimeFormat) : 'First time' }}
+          {{ user.lastLoginAt ? (user.lastLoginAt | date: dateTimeFormat) : text.firstTime }}
         </dd>
-        <dt class="text-on-surface-variant">Two-factor</dt>
+        <dt class="text-on-surface-variant">{{ text.twoFactor }}</dt>
         <dd class="m-0">
           {{
-            user.twoFactor.enabled ? 'On' : user.twoFactor.required ? 'Required, not set up' : 'Off'
+            user.twoFactor.enabled
+              ? text.on
+              : user.twoFactor.required
+                ? text.requiredNotSetUp
+                : text.off
           }}
         </dd>
       </dl>
       <a matButton="tonal" class="mt-5 w-full" [routerLink]="securityPath">
-        <mat-icon>shield_person</mat-icon> Account &amp; security
+        <mat-icon>shield_person</mat-icon> {{ text.accountSecurity }}
       </a>
     </aside>
   </div>

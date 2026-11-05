@@ -18,6 +18,7 @@ import { EnumService } from '@services/data/enum.service';
 import { AttendanceApi } from '@services/hr/attendance-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
 import { AppValidators } from '@validations/validators';
+import { MANUAL_ATTENDANCE_DIALOG_TEXT } from '@constants/hr/manual-attendance-dialog.constants';
 
 /** HR correction of one day: the times worked, or what the day was (absent, on leave, holiday …). */
 @Component({
@@ -35,6 +36,8 @@ import { AppValidators } from '@validations/validators';
   templateUrl: './manual-attendance-dialog.component.html',
 })
 export class ManualAttendanceDialog {
+  protected readonly text = MANUAL_ATTENDANCE_DIALOG_TEXT;
+
   protected readonly data = inject<ManualAttendanceDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<ManualAttendanceDialog, Attendance>);
   private readonly api = inject(AttendanceApi);

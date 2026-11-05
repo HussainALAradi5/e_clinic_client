@@ -8,6 +8,7 @@ import { EnumOption } from '@interfaces/common/enum-option.interface';
 import { PayrollRun } from '@interfaces/hr/payroll-run.interface';
 import { PayrollApi } from '@services/hr/payroll-api.service';
 import { clinicIsoDate } from '@utilities/clinic-time';
+import { PAYROLL_RUN_DIALOG_TEXT } from '@constants/hr/payroll-run-dialog.constants';
 
 /** Open the payroll of a month (last month by default); it is calculated once the month has ended. */
 @Component({
@@ -20,6 +21,7 @@ export class PayrollRunDialog {
   protected readonly ref = inject(MatDialogRef<PayrollRunDialog, PayrollRun>);
   private readonly api = inject(PayrollApi);
 
+  protected readonly text = PAYROLL_RUN_DIALOG_TEXT;
   /** The last twelve months, most recent first (value `YYYY-MM`). */
   protected readonly months: EnumOption<string>[] = Array.from({ length: 12 }, (_, i) => {
     const [y, m] = clinicIsoDate().split('-').map(Number);

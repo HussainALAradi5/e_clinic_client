@@ -74,6 +74,8 @@ const METHODS: readonly { value: PaymentMethod; label: string; icon: string }[] 
   templateUrl: './payment-dialog.component.html',
 })
 export class PaymentDialog implements OnInit {
+  protected readonly text = PAYMENT_DIALOG_TEXT;
+
   protected readonly data = inject<PaymentDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<PaymentDialog, Payment[]>);
   private readonly api = inject(PaymentApi);

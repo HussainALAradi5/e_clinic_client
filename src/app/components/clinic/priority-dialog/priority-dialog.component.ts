@@ -9,6 +9,7 @@ import { TextField } from '@components/common/text-field/text-field.component';
 import { TreatmentPriority } from '@enums/clinic/treatment-priority.enum';
 import { Treatment } from '@interfaces/clinic/treatment.interface';
 import { TreatmentApi } from '@services/clinic/treatment-api.service';
+import { PRIORITY_DIALOG_TEXT } from '@constants/clinic/priority-dialog.constants';
 
 /** Re-prioritise an open plan; the reason is kept in the audit trail and the queue re-sorts. */
 @Component({
@@ -18,6 +19,8 @@ import { TreatmentApi } from '@services/clinic/treatment-api.service';
   templateUrl: './priority-dialog.component.html',
 })
 export class PriorityDialog {
+  protected readonly text = PRIORITY_DIALOG_TEXT;
+
   protected readonly data = inject<TreatmentDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<PriorityDialog, Treatment>);
   private readonly api = inject(TreatmentApi);

@@ -3,49 +3,49 @@
 } @else if (order(); as o) {
   <app-print-sheet
     [document]="documentType.Result"
-    title="Referral letter"
+    [title]="text.referralLetter"
     entity="clinical_order"
     [recordId]="o.id"
     [reference]="o.code"
   >
     <dl class="m-0 mb-6 grid grid-cols-[9rem_1fr] gap-y-1">
-      <dt class="text-black/60">To</dt>
+      <dt class="text-black/60">{{ text.to }}</dt>
       <dd class="m-0 font-medium">
         {{
           o.referredToDoctor?.fullName ??
             o.referredToCompany?.name ??
-            'The ' + o.referredToSpecialty?.name + ' clinic'
+            text.the + o.referredToSpecialty?.name + text.clinic
         }}
       </dd>
-      <dt class="text-black/60">Patient</dt>
+      <dt class="text-black/60">{{ text.patient }}</dt>
       <dd class="m-0">
-        {{ o.patient?.fullName }} · {{ o.patient?.code }} · born
+        {{ o.patient?.fullName }} · {{ o.patient?.code }} {{ text.born }}
         {{ o.patient?.dateOfBirth | date: dateFormat }} ·
         {{ o.patient?.gender | enumLabel: 'Gender' }}
       </dd>
-      <dt class="text-black/60">Priority</dt>
+      <dt class="text-black/60">{{ text.priority }}</dt>
       <dd class="m-0">{{ o.priority | enumLabel: 'TreatmentPriority' }}</dd>
-      <dt class="text-black/60">Date</dt>
+      <dt class="text-black/60">{{ text.date }}</dt>
       <dd class="m-0">{{ o.createdAt | date: dateFormat }}</dd>
     </dl>
-    <p class="m-0 mb-4">Dear colleague,</p>
-    <p class="m-0 mb-4">Thank you for seeing this patient. The reason for referral:</p>
+    <p class="m-0 mb-4">{{ text.dearColleague }}</p>
+    <p class="m-0 mb-4">{{ text.thankYouForSeeing }}</p>
     <p class="m-0 mb-6 whitespace-pre-line rounded border border-black/15 px-4 py-3">
       {{ o.clinicalNotes || '—' }}
     </p>
     @if (diagnoses().length) {
-      <h2 class="m-0 mb-2 text-[12pt] font-semibold">Diagnoses</h2>
+      <h2 class="m-0 mb-2 text-[12pt] font-semibold">{{ text.diagnoses }}</h2>
       <ul class="m-0 mb-6 pl-5">
         @for (d of diagnoses(); track d.icd10CodeId) {
           <li>
             <span class="font-mono">{{ d.code }}</span> {{ d.title
-            }}{{ d.isPrimary ? ' (primary)' : '' }}
+            }}{{ d.isPrimary ? text.primary : '' }}
           </li>
         }
       </ul>
     }
-    <p class="m-0 mt-10">Kind regards,</p>
+    <p class="m-0 mt-10">{{ text.kindRegards }}</p>
     <p class="m-0 mt-8 font-semibold">{{ o.orderingDoctor?.fullName }}</p>
-    <p class="m-0 text-black/60">Signature ____________________</p>
+    <p class="m-0 text-black/60">{{ text.signature }}</p>
   </app-print-sheet>
 }

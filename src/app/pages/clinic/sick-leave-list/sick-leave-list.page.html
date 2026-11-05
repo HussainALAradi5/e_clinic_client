@@ -1,15 +1,15 @@
 <ui-resource-list
   resource="sick_leaves"
   endpoint="sick-leaves"
-  title="Sick leaves"
-  subtitle="Certificates issued at visits. Open one to print it; employers check it with its QR code."
-  emptyTitle="No sick leaves found"
+  [title]="text.sickLeaves"
+  [subtitle]="text.certificatesIssuedAtVisits"
+  [emptyTitle]="text.noSickLeavesFound"
   (rowClick)="open($any($event))"
 >
   <ng-template uiCell="code" let-row>
     <span class="font-mono" [class.line-through]="row.isCancelled">{{ row.code }}</span>
     @if (row.isCancelled) {
-      <span class="ml-2 text-xs font-semibold text-error">Cancelled</span>
+      <span class="ml-2 text-xs font-semibold text-error">{{ text.cancelled }}</span>
     }
   </ng-template>
   <ng-template uiCell="patient" let-row

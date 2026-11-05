@@ -22,6 +22,7 @@ import { TextField } from '@components/common/text-field/text-field.component';
 import { LOGIN_PATH } from '@constants/app.constants';
 import { TOTP_LENGTH, TRUSTED_DEVICE_DAYS } from '@constants/limits.constants';
 import { SessionService } from '@services/auth/session.service';
+import { TWO_FACTOR_TEXT } from '@constants/system/two-factor.constants';
 
 /**
  * `/login/2fa` — 6-digit TOTP code (auto-submits) or a one-time recovery code. "Don't ask again on this device"
@@ -46,6 +47,8 @@ export class TwoFactorPage implements OnInit {
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
+
+  protected readonly text = TWO_FACTOR_TEXT;
   private readonly formRef = viewChild.required(GenericForm);
 
   protected readonly useRecoveryCode = signal(false);

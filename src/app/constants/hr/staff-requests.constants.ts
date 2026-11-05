@@ -16,4 +16,27 @@ export const STAFF_REQUESTS_TEXT = {
   withdraw: 'Withdraw',
   sentToHr: (p0: unknown) => `Sent to HR — ${p0}.`,
   withdraw2: (p0: unknown) => `Withdraw ${p0}?`,
+  allKinds: 'All kinds',
+  lateExcuses: 'Late excuses',
+  overtime: 'Overtime',
+  askHrAboutA: 'Ask HR about a day',
+  yourLast31Days: 'Your last 31 days with late minutes or overtime not settled yet.',
+  nothingToAskAbout:
+    'Nothing to ask about — no late arrivals or unpaid overtime, or HR has these requests switched off.',
+  kindOfRequest: 'Kind of request',
+  searchRequests: 'Search requests',
+  lateExcusesAndOvertime:
+    'Late excuses and overtime from the team. Approve with an optional note; a rejection always says why.',
+  askHrToExcuse:
+    'Ask HR to excuse a late arrival or to pay your overtime, and follow the decision.',
+  codeOrReason: 'Code or reason',
+  searchMyRequests: 'Search my requests',
+  nothingWaiting: 'Nothing waiting',
+  noRequestsHere: 'No requests here',
+  everyLateExcuseAnd: 'Every late excuse and overtime request has been decided.',
+  youHaveNoRequest: 'You have no request waiting for HR.',
+  tryAnotherTabOr: 'Try another tab or kind.',
+  askHrToExcuseIt: 'Ask HR to excuse it',
+  askHrToPay: 'Ask HR to pay it',
+  late: 'Late',
 };

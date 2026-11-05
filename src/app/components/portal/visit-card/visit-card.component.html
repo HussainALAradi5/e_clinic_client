@@ -3,7 +3,7 @@
   <article class="pass">
     <div class="px-5 pt-5 pb-4">
       <div class="flex items-center justify-between gap-3">
-        <p class="m-0 text-sm text-white/70">Your next visit</p>
+        <p class="m-0 text-sm text-white/70">{{ text.yourNextVisit }}</p>
         <ui-status [value]="v.status" enum="AppointmentStatus" />
       </div>
       <p class="m-0 mt-3 text-lg font-semibold">{{ day() | date: 'EEEE d MMMM' }}</p>
@@ -15,7 +15,7 @@
         <span class="text-white/55">
           ·
           @if (session()) {
-            Session {{ v.sessionNumber }}
+            {{ text.session }} {{ v.sessionNumber }}
           } @else {
             {{ v.type | enumLabel: 'AppointmentType' }}
           }
@@ -29,14 +29,14 @@
     <div class="flex flex-wrap items-center gap-2 px-5 pt-3 pb-4">
       @if (showCode()) {
         <button type="button" class="btn-on-brand btn-sm" (click)="code()">
-          <mat-icon>qr_code_2</mat-icon> Check-in code
+          <mat-icon>qr_code_2</mat-icon> {{ text.checkInCode }}
         </button>
       }
       <span class="flex-1"></span>
       @if (selfCancel()) {
-        <button type="button" class="pass-link" (click)="cancel()">Cancel visit</button>
+        <button type="button" class="pass-link" (click)="cancel()">{{ text.cancelVisit }}</button>
       } @else if (cancellable()) {
-        <span class="text-xs opacity-80">To cancel now, call reception.</span>
+        <span class="text-xs opacity-80">{{ text.toCancelNowCall }}</span>
       }
     </div>
   </article>
@@ -60,7 +60,7 @@
       </div>
       <p class="m-0 text-sm text-on-surface-variant">
         @if (session()) {
-          Treatment session {{ v.sessionNumber }}
+          {{ text.treatmentSession }} {{ v.sessionNumber }}
         } @else {
           {{ v.type | enumLabel: 'AppointmentType' }}
         }
@@ -70,20 +70,20 @@
       </p>
       @if (v.cancellationReason) {
         <p class="m-0 mt-1 text-xs text-on-surface-variant">
-          Cancelled: {{ v.cancellationReason }}
+          {{ text.cancelled }} {{ v.cancellationReason }}
         </p>
       }
       @if (showCode() || cancellable()) {
         <div class="mt-2 flex flex-wrap items-center gap-1">
           @if (showCode()) {
             <button matButton="tonal" class="!h-9 whitespace-nowrap" (click)="code()">
-              <mat-icon>qr_code_2</mat-icon> Check-in code
+              <mat-icon>qr_code_2</mat-icon> {{ text.checkInCode }}
             </button>
           }
           @if (cancellable()) {
-            <ui-button [variant]="variants.Text" [size]="sizes.Small" [action]="cancel"
-              >Cancel</ui-button
-            >
+            <ui-button [variant]="variants.Text" [size]="sizes.Small" [action]="cancel">{{
+              text.cancel
+            }}</ui-button>
           }
         </div>
       }

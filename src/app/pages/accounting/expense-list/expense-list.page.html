@@ -1,12 +1,14 @@
 <ui-resource-list
   resource="expenses"
   endpoint="finance/expenses"
-  title="Expenses"
-  subtitle="Rent, supplies, services: entered with the vendor's invoice, approved by someone else, then paid."
-  emptyTitle="No expenses found"
+  [title]="text.expenses"
+  [subtitle]="text.rentSuppliesServicesEntered"
+  [emptyTitle]="text.noExpensesFound"
   rowLink="/accounting/expenses/:id"
 >
-  <ui-button actions icon="add" access="expenses.create" [action]="create">New expense</ui-button>
+  <ui-button actions icon="add" access="expenses.create" [action]="create">{{
+    text.newExpense
+  }}</ui-button>
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template
   >

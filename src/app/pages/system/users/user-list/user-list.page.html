@@ -1,7 +1,7 @@
 <ui-resource-list
   resource="users"
-  title="Users"
-  subtitle="Login accounts of staff and patients. Staff accounts can also be imported from Excel; each new user gets a link to set a password."
+  [title]="text.users"
+  [subtitle]="text.loginAccountsOfStaff"
   rowLink="/system/users/:id"
   [columns]="columns"
 >
@@ -9,6 +9,6 @@
     <span class="font-medium">{{ row.fullName }}</span>
   </ng-template>
   <ng-template uiCell="last_login_at" let-row>
-    {{ row.lastLoginAt ? (row.lastLoginAt | relativeTime) : 'Never' }}
+    {{ row.lastLoginAt ? (row.lastLoginAt | relativeTime) : text.never }}
   </ng-template>
 </ui-resource-list>

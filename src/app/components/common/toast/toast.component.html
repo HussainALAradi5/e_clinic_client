@@ -12,7 +12,13 @@
   }
 </div>
 
-<button matIconButton class="toast-close" type="button" aria-label="Close" (click)="ref.dismiss()">
+<button
+  matIconButton
+  class="toast-close"
+  type="button"
+  [attr.aria-label]="text.close"
+  (click)="ref.dismiss()"
+>
   <mat-icon>close</mat-icon>
 </button>
 

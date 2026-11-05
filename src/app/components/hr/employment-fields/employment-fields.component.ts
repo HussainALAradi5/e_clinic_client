@@ -7,6 +7,7 @@ import { TextField } from '@components/common/text-field/text-field.component';
 import { Department } from '@interfaces/hr/department.interface';
 import { DepartmentRef } from '@interfaces/hr/department-ref.interface';
 import { EnumService } from '@services/data/enum.service';
+import { EMPLOYMENT_FIELDS_TEXT } from '@constants/hr/employment-fields.constants';
 
 /** Employment fields shared by the hire and edit dialogs; salary fields only when `salary` is true. */
 @Component({
@@ -17,6 +18,8 @@ import { EnumService } from '@services/data/enum.service';
   templateUrl: './employment-fields.component.html',
 })
 export class EmploymentFields {
+  protected readonly text = EMPLOYMENT_FIELDS_TEXT;
+
   readonly form = input.required<EmploymentForm>();
   readonly salary = input(true);
   readonly department = input<DepartmentRef | null>(null);

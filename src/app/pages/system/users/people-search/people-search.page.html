@@ -1,8 +1,8 @@
 <div class="grid grid-cols-1 gap-4 2xl:grid-cols-[1fr_22rem]">
   <ui-resource-list
     resource="people"
-    title="People"
-    subtitle="Every patient and staff member has one person record. Search here before registering anyone."
+    [title]="text.people"
+    [subtitle]="text.everyPatientAndStaff"
     [columns]="columns"
     (rowClick)="edit($event)"
   >
@@ -23,20 +23,24 @@
   </ui-resource-list>
 
   <mat-card appearance="outlined" class="h-fit !p-5">
-    <h2 class="m-0 mb-1 text-base font-semibold">Duplicate check</h2>
+    <h2 class="m-0 mb-1 text-base font-semibold">{{ text.duplicateCheck }}</h2>
     <p class="mt-0 mb-4 text-sm text-on-surface-variant">
-      Exact national ID, or the same mobile and date of birth.
+      {{ text.exactNationalIdOr }}
     </p>
     <ui-form
       [form]="duplicateForm"
       [submit]="checkDuplicates"
-      submitLabel="Check"
+      [submitLabel]="text.check"
       [cancelLabel]="null"
       [compact]="true"
     >
-      <ui-text label="National ID / passport" [control]="duplicateForm.controls.nationalId" />
-      <ui-text label="Mobile" type="tel" [control]="duplicateForm.controls.phone" />
-      <ui-text label="Date of birth" type="date" [control]="duplicateForm.controls.dateOfBirth" />
+      <ui-text [label]="text.nationalIdPassport" [control]="duplicateForm.controls.nationalId" />
+      <ui-text [label]="text.mobile" type="tel" [control]="duplicateForm.controls.phone" />
+      <ui-text
+        [label]="text.dateOfBirth"
+        type="date"
+        [control]="duplicateForm.controls.dateOfBirth"
+      />
     </ui-form>
 
     @if (candidates(); as found) {
@@ -53,7 +57,7 @@
           </div>
         } @empty {
           <p class="m-0 flex items-center gap-2 text-sm text-emerald-700 dark:text-emerald-400">
-            <mat-icon>check_circle</mat-icon> No existing person matches.
+            <mat-icon>check_circle</mat-icon> {{ text.noExistingPersonMatches }}
           </p>
         }
       </div>

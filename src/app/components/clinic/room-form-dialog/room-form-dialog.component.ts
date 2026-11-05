@@ -11,6 +11,7 @@ import { Room } from '@interfaces/clinic/room.interface';
 import { RoomPayload } from '@interfaces/clinic/room-payload.interface';
 import { Department } from '@interfaces/hr/department.interface';
 import { dirtyPayload } from '@utilities/form-payload';
+import { ROOM_FORM_DIALOG_TEXT } from '@constants/clinic/room-form-dialog.constants';
 
 /** Create or edit a room (the type decides which bookings may use it). */
 @Component({
@@ -20,6 +21,8 @@ import { dirtyPayload } from '@utilities/form-payload';
   templateUrl: './room-form-dialog.component.html',
 })
 export class RoomFormDialog {
+  protected readonly text = ROOM_FORM_DIALOG_TEXT;
+
   protected readonly data = inject<RoomFormDialogData>(MAT_DIALOG_DATA);
   protected readonly ref = inject(MatDialogRef<RoomFormDialog, Room>);
   protected readonly room = this.data.room;
