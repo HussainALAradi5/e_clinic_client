@@ -4,7 +4,9 @@ import { firstValueFrom } from 'rxjs';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { TextField } from '@components/common/text-field/text-field.component';
+import { CountrySelect } from '@components/common/country-select/country-select.component';
 import { ClinicImageField } from '@components/settings/clinic-image-field/clinic-image-field.component';
+import { OnlinePaymentSettingsCard } from '@components/settings/online-payment-settings/online-payment-settings.component';
 import {
   CLINIC_IMAGE_MAX_BYTES,
   CLINIC_PROFILE_TEXT,
@@ -14,11 +16,18 @@ import { ClinicProfile } from '@interfaces/reference/clinic-profile.interface';
 import { ClinicProfileApi } from '@services/reference/clinic-profile-api.service';
 import { NotifyService } from '@services/ui/notify.service';
 
-/** `/system/clinic-profile` (admins) — the letterhead of every PDF: name, tagline, contacts, logo and stamp. */
+/** `/system/clinic-profile` (admins) — the letterhead of every PDF (name, tagline, contacts, logo, stamp) and online payments. */
 @Component({
   selector: 'app-clinic-profile-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ClinicImageField, GenericForm, PageHeader, TextField],
+  imports: [
+    ClinicImageField,
+    CountrySelect,
+    GenericForm,
+    OnlinePaymentSettingsCard,
+    PageHeader,
+    TextField,
+  ],
   templateUrl: './clinic-profile.page.html',
 })
 export class ClinicProfilePage implements OnInit {
@@ -36,6 +45,7 @@ export class ClinicProfilePage implements OnInit {
     }),
     tagline: new FormControl<string | null>(null, [Validators.maxLength(160)]),
     address: new FormControl<string | null>(null, [Validators.maxLength(255)]),
+    countryCode: new FormControl<string | null>(null),
     phone: new FormControl<string | null>(null, [Validators.maxLength(40)]),
     email: new FormControl<string | null>(null, [Validators.email, Validators.maxLength(120)]),
     website: new FormControl<string | null>(null, [Validators.maxLength(120)]),
@@ -92,6 +102,7 @@ export class ClinicProfilePage implements OnInit {
       name: profile.name,
       tagline: profile.tagline,
       address: profile.address,
+      countryCode: profile.countryCode,
       phone: profile.phone,
       email: profile.email,
       website: profile.website,

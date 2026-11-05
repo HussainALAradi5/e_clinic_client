@@ -7,7 +7,7 @@ export const environment = {
   reverb: {
     key: 'e51a81b62540d2866355',
     host: 'localhost',
-    port: 8080,
+    port: 8085,
     scheme: 'http',
   } as ReverbConfig | null,
 };

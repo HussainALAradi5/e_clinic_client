@@ -31,3 +31,7 @@ export const PRESENCE_TEXT = {
   isOnline: 'Online',
   isOffline: 'Offline',
 };
+
+/** Live Online / Offline of colleagues (Reverb private channel and event, as in the server's routes/channels.php). */
+export const PRESENCE_CHANNEL = 'staff.presence';
+export const PRESENCE_EVENT = 'presence.changed';

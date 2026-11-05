@@ -11,7 +11,8 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, firstValueFrom, map, of } from 'rxjs';
 import { EmptyState } from '@components/common/empty-state/empty-state.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
@@ -20,6 +21,7 @@ import { Invoice } from '@interfaces/billing/invoice.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { InvoiceApi } from '@services/billing/invoice-api.service';
+import { ClinicProfileApi } from '@services/reference/clinic-profile-api.service';
 import { formatMoney, fromMinor, money, toMinor } from '@utilities/money';
 import { EnumFilter } from '@components/common/enum-filter/enum-filter.component';
 import { DateRangeFilter } from '@components/common/date-range-filter/date-range-filter.component';
@@ -109,6 +111,16 @@ export class MyInvoicesPage {
   /** Bumped to load the list again (after an online payment settles). */
   private readonly version = signal(0);
   protected readonly payText = ONLINE_PAY_TEXT;
+  /** Pay online shows only while the clinic has switched online payments on (admin settings). */
+  protected readonly onlinePay = toSignal(
+    inject(ClinicProfileApi)
+      .get()
+      .pipe(
+        map((profile) => profile.onlinePaymentsEnabled),
+        catchError(() => of(false)),
+      ),
+    { initialValue: false },
+  );
 
   protected reload(): void {
     this.version.update((v) => v + 1);

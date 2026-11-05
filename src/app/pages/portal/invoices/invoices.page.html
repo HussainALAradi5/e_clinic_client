@@ -64,7 +64,7 @@
             }
           </span>
         </button>
-        @if (owing(inv)) {
+        @if (owing(inv) && onlinePay()) {
           <div class="flex flex-wrap items-center gap-2 px-4 pb-3">
             <app-pay-online-button [invoice]="inv" />
             <span class="text-xs text-on-surface-variant">{{ payText.secure }}</span>

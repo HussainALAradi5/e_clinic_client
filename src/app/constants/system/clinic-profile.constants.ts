@@ -10,6 +10,7 @@ export const CLINIC_PROFILE_TEXT = {
   tagline: 'Tagline',
   taglineHint: 'e.g. Family medicine · Imaging · Laboratory',
   address: 'Address',
+  country: 'Country',
   phone: 'Phone',
   email: 'Email',
   website: 'Website',

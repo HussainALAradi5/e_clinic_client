@@ -12,5 +12,6 @@ export enum NotificationKind {
   Chat = 'chat',
   Support = 'support',
   Urgent = 'urgent',
+  Files = 'files',
   System = 'system',
 }

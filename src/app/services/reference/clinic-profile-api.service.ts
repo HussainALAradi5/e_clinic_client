@@ -5,6 +5,8 @@ import { ENDPOINTS } from '@config/endpoints';
 import { ClinicImage } from '@enums/reference/clinic-image.enum';
 import { ClinicProfile } from '@interfaces/reference/clinic-profile.interface';
 import { ClinicProfilePayload } from '@interfaces/reference/clinic-profile-payload.interface';
+import { OnlinePaymentSettings } from '@interfaces/reference/online-payment-settings.interface';
+import { OnlinePaymentSettingsPayload } from '@interfaces/reference/online-payment-settings-payload.interface';
 import { ApiClient } from '@services/api/api-client.service';
 
 /** The clinic profile: read by everyone, changed by admins (name, contacts, logo, stamp on every PDF). */
@@ -28,6 +30,15 @@ export class ClinicProfileApi {
 
   removeImage(image: ClinicImage): Observable<void> {
     return this.api.delete(`${ENDPOINTS.clinicProfile.manage}/${image}`);
+  }
+
+  /** Online payments: the switch, Tap settings and the addresses to give Tap (admins). */
+  onlinePayments(): Observable<OnlinePaymentSettings> {
+    return this.api.get<OnlinePaymentSettings>(ENDPOINTS.clinicProfile.onlinePayments);
+  }
+
+  updateOnlinePayments(payload: OnlinePaymentSettingsPayload): Observable<OnlinePaymentSettings> {
+    return this.api.put<OnlinePaymentSettings>(ENDPOINTS.clinicProfile.onlinePayments, payload);
   }
 
   /** Full URL of a public image path from the profile (images are public, so an <img> loads them directly). */

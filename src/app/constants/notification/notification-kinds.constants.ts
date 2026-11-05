@@ -11,6 +11,7 @@ export const NOTIFICATION_KIND_ICONS: Record<NotificationKind, string> = {
   [NotificationKind.Chat]: 'forum',
   [NotificationKind.Support]: 'support_agent',
   [NotificationKind.Urgent]: 'priority_high',
+  [NotificationKind.Files]: 'download_done',
   [NotificationKind.System]: 'notifications',
 };
 

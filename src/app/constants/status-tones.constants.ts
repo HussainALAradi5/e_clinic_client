@@ -90,6 +90,7 @@ export const STATUS_TONES: Record<string, Record<string, StatusTone>> = {
     chat: Cyan,
     support: Orange,
     urgent: Red,
+    files: Pink,
     system: Grey,
   },
   // Where a visit sits in time: rows and cards carry this colour, the filter shows the same dots.

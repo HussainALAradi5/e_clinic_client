@@ -19,12 +19,14 @@ const BY_AREA: Record<string, NotificationKind> = {
   expense: NotificationKind.Billing,
   invoice: NotificationKind.Billing,
   payment: NotificationKind.Billing,
+  report: NotificationKind.Billing,
   leave: NotificationKind.Hr,
   attendance: NotificationKind.Hr,
   staff_request: NotificationKind.Hr,
   payroll: NotificationKind.Hr,
   chat: NotificationKind.Chat,
   ticket: NotificationKind.Support,
+  task: NotificationKind.Files,
 };
 
 /** The kind of a message from its server template. */

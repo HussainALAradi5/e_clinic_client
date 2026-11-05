@@ -65,6 +65,7 @@ export const ENDPOINTS = {
   clinicProfile: {
     public: 'public/clinic-profile',
     manage: 'reference/clinic-profile',
+    onlinePayments: 'reference/clinic-profile/online-payments',
   },
   chat: {
     root: 'chat',

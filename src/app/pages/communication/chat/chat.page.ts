@@ -27,6 +27,7 @@ import { ParticipantRole } from '@enums/communication/participant-role.enum';
 import { ChatMessage } from '@interfaces/communication/chat-message.interface';
 import { Conversation } from '@interfaces/communication/conversation.interface';
 import { ConversationQuery } from '@interfaces/communication/conversation-query.interface';
+import { PresenceChange } from '@interfaces/communication/presence-change.interface';
 import { ReadReceipt } from '@interfaces/communication/read-receipt.interface';
 import { SendMessagePayload } from '@interfaces/communication/send-message-payload.interface';
 import { AuthStore } from '@services/auth/auth.store';
@@ -50,7 +51,12 @@ import { NewChatDialog } from '@components/communication/new-chat-dialog/new-cha
 import { chatStamp, dayLabel } from '@utilities/communication/chat-style';
 import { MessageRow } from '@interfaces/communication/message-row.interface';
 import { CHAT_TEXT } from '@constants/communication/chat.constants';
-import { CHAT_ACTIONS_TEXT, PRESENCE_TEXT } from '@constants/communication/chat-actions.constants';
+import {
+  CHAT_ACTIONS_TEXT,
+  PRESENCE_CHANNEL,
+  PRESENCE_EVENT,
+  PRESENCE_TEXT,
+} from '@constants/communication/chat-actions.constants';
 import { PresenceStatus } from '@enums/identity/presence-status.enum';
 import { CHAT_MENU_TEXT, MUTE_CHOICES } from '@constants/communication/chat-menu.constants';
 import { MuteDuration } from '@enums/communication/mute-duration.enum';
@@ -221,6 +227,16 @@ export class ChatPage implements OnInit {
         takeUntilDestroyed(),
       )
       .subscribe((event) => this.onUserEvent(event));
+
+    // Colleagues going Online / Offline: dots and the open chat's subtitle change at once.
+    toObservable(this.me)
+      .pipe(
+        switchMap((id) =>
+          id ? this.realtime.listen<PresenceChange>(PRESENCE_CHANNEL, PRESENCE_EVENT) : EMPTY,
+        ),
+        takeUntilDestroyed(),
+      )
+      .subscribe((change) => this.applyPresence(change));
 
     // The open chat: its messages, reactions and read receipts (matched on the chat id).
     toObservable(this.selectedId)
@@ -556,6 +572,21 @@ export class ChatPage implements OnInit {
   }
 
   // ---- live events ------------------------------------------------------------------------------------------
+
+  /** Someone's Online / Offline changed: their dot in my list, the open chat, and my own switch when it is me. */
+  private applyPresence({ userId, presence }: PresenceChange): void {
+    const patch = (chat: Conversation): Conversation => ({
+      ...chat,
+      partnerPresence: chat.partnerId === userId ? presence : chat.partnerPresence,
+      members: chat.members.map((m) => (m.userId === userId ? { ...m, presence } : m)),
+    });
+    this.chats.update((list) => list.map(patch));
+    const open = this.chat();
+    if (open) this.chat.set(patch(open));
+    const user = this.auth.user();
+    if (user && user.id === userId && user.presence !== presence)
+      this.auth.setUser({ ...user, presence });
+  }
 
   private onUserEvent(event: ChatMessage | { conversationId: string } | ReadReceipt): void {
     if ('sender' in event) {

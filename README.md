@@ -135,6 +135,10 @@ npx ng test --watch=false
 npx ng build
 ```
 
+The first download is about 640 kB (about 160 kB compressed): Angular, the router, Angular Material and the
+styles. Every page is lazy-loaded on top of it. The size budget in `angular.json` warns above 700 kB and fails the
+build above 1 MB, so real growth still shows up.
+
 ## Screenshots
 
 Taken from the running web app (1440 × 900, phone width 390 × 844 where noted) against the local API with the demo data, signed in as each demo user. Every screen is shown in **light** and **dark**. The same images, with notes per feature, are in the [documentation repository](https://github.com/HussainALAradi5/e_clinic_documentation/tree/main/screenshots).

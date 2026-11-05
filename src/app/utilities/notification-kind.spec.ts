@@ -11,7 +11,9 @@ describe('notificationKindOf', () => {
     expect(notificationKindOf('leave.approved')).toBe(NotificationKind.Hr);
     expect(notificationKindOf('chat.mention')).toBe(NotificationKind.Chat);
     expect(notificationKindOf('ticket.resolved')).toBe(NotificationKind.Support);
-    expect(notificationKindOf('task.completed')).toBe(NotificationKind.System);
+    expect(notificationKindOf('task.completed')).toBe(NotificationKind.Files);
+    expect(notificationKindOf('report.month_summary')).toBe(NotificationKind.Billing);
+    expect(notificationKindOf('welcome.sent')).toBe(NotificationKind.System);
     expect(notificationKindOf(null)).toBe(NotificationKind.System);
   });
 });

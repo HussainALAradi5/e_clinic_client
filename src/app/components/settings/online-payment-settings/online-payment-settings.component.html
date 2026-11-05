@@ -1,0 +1,59 @@
+<section class="rounded-2xl border border-outline-variant bg-surface p-5">
+  <h2 class="m-0 mb-1 text-base font-semibold">{{ text.title }}</h2>
+  <p class="m-0 mb-4 text-sm text-on-surface-variant">{{ text.intro }}</p>
+
+  @if (settings(); as s) {
+    <ui-form [form]="form" [submit]="submit" [submitLabel]="text.save" submitIcon="save">
+      <mat-slide-toggle class="mb-4" [formControl]="form.controls.enabled">
+        {{ text.enabled }}
+      </mat-slide-toggle>
+
+      <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+        <ui-text
+          [label]="text.baseUrl"
+          [hint]="text.baseUrlHint"
+          [control]="form.controls.baseUrl"
+        />
+        <ui-text [label]="text.source" [hint]="text.sourceHint" [control]="form.controls.source" />
+      </div>
+      <ui-text
+        [label]="text.secretKey"
+        type="password"
+        autocomplete="off"
+        [hint]="s.hasSecretKey ? text.keySaved(s.secretKeyHint ?? '') : text.secretKeyHint"
+        [control]="form.controls.secretKey"
+      />
+      @if (s.hasSecretKey) {
+        <mat-slide-toggle class="mb-4" [formControl]="form.controls.clearSecretKey">
+          {{ text.clearKey }}
+        </mat-slide-toggle>
+      } @else {
+        <p class="m-0 mb-4 text-xs text-on-surface-variant">{{ text.noKey }}</p>
+      }
+    </ui-form>
+
+    <h3 class="m-0 mt-5 mb-2 text-sm font-semibold">{{ text.addresses }}</h3>
+    @for (
+      row of [
+        { label: text.webhookUrl, value: s.webhookUrl },
+        { label: text.returnUrl, value: s.returnUrl },
+      ];
+      track row.label
+    ) {
+      <div class="mb-2 flex items-center gap-2 rounded-xl bg-surface-container px-3 py-2">
+        <span class="min-w-0 flex-1">
+          <span class="block text-xs text-on-surface-variant">{{ row.label }}</span>
+          <code class="block truncate text-sm">{{ row.value }}</code>
+        </span>
+        <button
+          mat-icon-button
+          type="button"
+          [attr.aria-label]="text.copy"
+          (click)="copy(row.value)"
+        >
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </div>
+    }
+  }
+</section>
