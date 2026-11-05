@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { EmptyState } from '@components/common/empty-state/empty-state.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
@@ -11,6 +10,7 @@ import { RelativeTimePipe } from '@pipes/relative-time.pipe';
 import { NotificationApi } from '@services/notification/notification-api.service';
 import { NotificationKindIcon } from '@components/notification/notification-kind-icon/notification-kind-icon.component';
 import { NOTIFICATIONS_TEXT } from '@constants/portal/notifications.constants';
+import { NotificationOpener } from '@services/notification/notification-opener.service';
 
 const PAGE_SIZE = 25;
 
@@ -30,7 +30,7 @@ const PAGE_SIZE = 25;
 })
 export class PortalNotificationsPage {
   private readonly api = inject(NotificationApi);
-  private readonly router = inject(Router);
+  private readonly opener = inject(NotificationOpener);
 
   protected readonly text = NOTIFICATIONS_TEXT;
   protected readonly items = signal<AppNotification[] | null>(null);
@@ -58,7 +58,7 @@ export class PortalNotificationsPage {
       if (read) this.replace(read);
     }
     const route = item.relatedType ? PORTAL_RELATED_ROUTES[item.relatedType] : undefined;
-    if (route) await this.router.navigateByUrl(route);
+    await this.opener.show(item, route ?? null);
   }
 
   protected async markAllRead(): Promise<void> {

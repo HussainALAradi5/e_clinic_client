@@ -1,0 +1,19 @@
+<div mat-dialog-title class="!flex items-center gap-3">
+  <app-notification-kind-icon [template]="data.notification.template" />
+  <span class="min-w-0">{{ data.notification.subject ?? text.message }}</span>
+</div>
+<mat-dialog-content class="!flex flex-col gap-3">
+  <p class="m-0 whitespace-pre-line">{{ data.notification.body }}</p>
+  <p class="m-0 text-xs text-on-surface-variant">
+    {{ data.notification.createdAt | date: dateTimeFormat }}
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>{{ text.close }}</button>
+  @if (data.link) {
+    <button mat-button [mat-dialog-close]="true">
+      {{ data.linkLabel }}
+      <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+    </button>
+  }
+</mat-dialog-actions>

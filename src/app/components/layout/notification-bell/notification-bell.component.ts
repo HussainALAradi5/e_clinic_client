@@ -18,6 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, switchMap } from 'rxjs';
 import { notificationLink } from '@constants/notification-links.constants';
+import { NotificationOpener } from '@services/notification/notification-opener.service';
 import { AppNotification } from '@interfaces/notification/notification.interface';
 import { RelativeTimePipe } from '@pipes/relative-time.pipe';
 import { NotificationApi } from '@services/notification/notification-api.service';
@@ -56,6 +57,7 @@ export class NotificationBell implements OnInit {
   private readonly api = inject(NotificationApi);
   private readonly notify = inject(NotifyService);
   private readonly router = inject(Router);
+  private readonly opener = inject(NotificationOpener);
   private readonly destroyRef = inject(DestroyRef);
 
   protected readonly unread = signal(0);
@@ -98,8 +100,7 @@ export class NotificationBell implements OnInit {
         );
       });
     }
-    const link = notificationLink(item);
-    if (link) void this.router.navigateByUrl(link);
+    void this.opener.show(item, notificationLink(item));
   }
 
   protected markAllRead(event: Event): void {

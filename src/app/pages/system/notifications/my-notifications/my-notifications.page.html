@@ -68,8 +68,8 @@
       role="listitem"
       class="row"
       [class.notice-unread]="!n.readAt"
-      [class.clickable]="!!link(n)"
-      [attr.tabindex]="link(n) ? 0 : null"
+      class="clickable"
+      tabindex="0"
       (click)="open(n)"
       (keydown.enter)="open(n)"
     >
@@ -101,8 +101,11 @@
           <mat-icon>mark_email_read</mat-icon>
         </button>
       }
-      @if (link(n)) {
-        <span class="open">{{ text.open }} <mat-icon>chevron_right</mat-icon></span>
+      @if (link(n); as to) {
+        <button mat-button class="open" (click)="go(n, to, $event)">
+          {{ linkLabel(n.relatedType) }}
+          <mat-icon iconPositionEnd>chevron_right</mat-icon>
+        </button>
       }
     </div>
   } @empty {

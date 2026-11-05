@@ -15,7 +15,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Router } from '@angular/router';
 import { debounceTime, Subject, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DateRangeFilter } from '@components/common/date-range-filter/date-range-filter.component';
@@ -24,7 +23,12 @@ import { PageHeader } from '@components/common/page-header/page-header.component
 import { Paginator } from '@components/common/paginator/paginator.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { DATE_TIME_FORMAT } from '@constants/app.constants';
-import { NOTIFICATION_TOPICS, notificationLink } from '@constants/notification-links.constants';
+import {
+  NOTIFICATION_TOPICS,
+  notificationLink,
+  notificationLinkLabel,
+} from '@constants/notification-links.constants';
+import { NotificationOpener } from '@services/notification/notification-opener.service';
 import { PageMeta } from '@interfaces/api/page-meta.interface';
 import { DateRangeValue } from '@interfaces/list/date-range-filter.interface';
 import { ListQuery } from '@interfaces/list/list-query.interface';
@@ -68,7 +72,7 @@ const PAGE_SIZE = 20;
 })
 export class MyNotificationsPage {
   private readonly api = inject(NotificationApi);
-  private readonly router = inject(Router);
+  private readonly opener = inject(NotificationOpener);
   private readonly notify = inject(NotifyService);
 
   protected readonly text = MY_NOTIFICATIONS_TEXT;
@@ -169,11 +173,18 @@ export class MyNotificationsPage {
   }
 
   protected link = notificationLink;
+  protected linkLabel = notificationLinkLabel;
 
   protected open(item: AppNotification): void {
     if (!item.readAt) this.markRead(item);
-    const link = notificationLink(item);
-    if (link) void this.router.navigateByUrl(link);
+    void this.opener.show(item, notificationLink(item));
+  }
+
+  /** The row's "Open …" button: straight to the place, without the message. */
+  protected go(item: AppNotification, link: string, event: Event): void {
+    event.stopPropagation();
+    if (!item.readAt) this.markRead(item);
+    void this.opener.go(link);
   }
 
   protected markRead(item: AppNotification, event?: Event): void {
