@@ -1,5 +1,7 @@
 # e-Clinic — Web client (Angular)
 
+[![tests](https://github.com/HussainALAradi5/e_clinic_client/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/HussainALAradi5/e_clinic_client/actions/workflows/tests.yml) [![licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
+
 ## Live demo
 
 | | Address |
@@ -314,3 +316,7 @@ Sections: [Public](#public) · [Patient](#patient) · [Receptionist](#receptioni
 | Nurse open from notification | ![](docs/screenshots/notifications/nurse-open-from-notification-light.png) | ![](docs/screenshots/notifications/nurse-open-from-notification-dark.png) |
 | Nurse unread | ![](docs/screenshots/notifications/nurse-unread-light.png) | ![](docs/screenshots/notifications/nurse-unread-dark.png) |
 <!-- screenshots:end -->
+
+## Licence
+
+[MIT](LICENSE)
