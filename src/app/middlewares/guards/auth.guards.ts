@@ -1,17 +1,17 @@
 import { inject } from '@angular/core';
 import { CanMatchFn, Router } from '@angular/router';
 import { catchError, map, of } from 'rxjs';
-import { FORBIDDEN_PATH, LOGIN_PATH, PORTAL_PATH } from '@constants/app.constants';
+import { PORTAL_PATH } from '@constants/app.constants';
+import { AccessNotice } from '@services/auth/access-notice.service';
 import { AccessService } from '@services/auth/access.service';
 import { AuthStore } from '@services/auth/auth.store';
 
-/** Signed-in users only; keeps the requested URL as returnUrl. */
+/** Signed-in users only; others go to the home page with a "Sign in" toast that brings them back. */
 export const authGuard: CanMatchFn = (_route, segments) => {
   if (inject(AuthStore).isAuthenticated()) {
     return true;
   }
-  const returnUrl = '/' + segments.map((s) => s.path).join('/');
-  return inject(Router).createUrlTree([LOGIN_PATH], { queryParams: { returnUrl } });
+  return inject(AccessNotice).signInNeeded('/' + segments.map((s) => s.path).join('/'));
 };
 
 /** Portal pages: patients only. */
@@ -27,14 +27,17 @@ export const staffGuard: CanMatchFn = () =>
  */
 export const guestGuard: CanMatchFn = () => !inject(AuthStore).isAuthenticated();
 
-/** `canMatch: [accessGuard('invoices.read_all | invoices.read_own')]` — the lazy feature is not even downloaded when false. */
+/**
+ * `canMatch: [accessGuard('invoices.read_all | invoices.read_own')]` — the lazy feature is not even downloaded when false;
+ * the user goes back to their home page with a "no access" toast.
+ */
 export function accessGuard(expression: string): CanMatchFn {
   return () => {
     const access = inject(AccessService);
-    const router = inject(Router);
+    const notice = inject(AccessNotice);
     return access.ensureLoaded().pipe(
-      map((loaded) => (loaded && access.can(expression)) || router.createUrlTree([FORBIDDEN_PATH])),
-      catchError(() => of(router.createUrlTree([FORBIDDEN_PATH]))),
+      map((loaded) => (loaded && access.can(expression)) || notice.noAccess()),
+      catchError(() => of(notice.noAccess())),
     );
   };
 }

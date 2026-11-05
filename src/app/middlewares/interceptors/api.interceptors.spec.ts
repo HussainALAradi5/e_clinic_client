@@ -1,12 +1,15 @@
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { API_INTERCEPTORS } from './api.interceptors';
 import { withIdempotencyKey } from './http-context';
 import { ApiError } from '@interfaces/api/api-error.interface';
 import { User } from '@interfaces/identity/user.interface';
 import { AuthStore } from '@services/auth/auth.store';
+import { NotifyService } from '@services/ui/notify.service';
+import { ACCESS_NOTICE_TEXT } from '@constants/common/access-notice.constants';
+import { EMPTY } from 'rxjs';
 
 describe('API interceptors', () => {
   let http: HttpClient;
@@ -82,12 +85,20 @@ describe('API interceptors', () => {
     });
   });
 
-  it('signs the user out on 401', () => {
+  it('signs the user out on 401 and sends them home with a "session ended" toast', () => {
+    const warning = vi.spyOn(TestBed.inject(NotifyService), 'warning').mockReturnValue(EMPTY);
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
     http.get('meta/enums').subscribe({ error: () => undefined });
     backend
       .expectOne((r) => r.url.endsWith('/api/v1/meta/enums'))
       .flush({ error_code: 'UNAUTHENTICATED' }, { status: 401, statusText: 'Unauthorized' });
 
     expect(TestBed.inject(AuthStore).isAuthenticated()).toBe(false);
+    expect(warning).toHaveBeenCalledWith(ACCESS_NOTICE_TEXT.sessionEnded, {
+      title: ACCESS_NOTICE_TEXT.title,
+      action: ACCESS_NOTICE_TEXT.signIn,
+      duration: 10_000,
+    });
+    expect(navigate).toHaveBeenCalledWith('/');
   });
 });

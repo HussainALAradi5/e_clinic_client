@@ -12,12 +12,12 @@ import { blobText } from '@utilities/download';
 import {
   ACCOUNT_SECURITY_PATH,
   IDEMPOTENCY_HEADER,
-  LOGIN_PATH,
   REQUEST_ID_HEADER,
 } from '@constants/app.constants';
 import { apiUrl } from '@config/api.config';
 import { ErrorCode } from '@enums/api/error-code.enum';
 import { ApiError } from '@interfaces/api/api-error.interface';
+import { AccessNotice } from '@services/auth/access-notice.service';
 import { AuthStore } from '@services/auth/auth.store';
 import { LoadingService } from '@services/ui/loading.service';
 import { convertKeys, toCamel, toSnake, toSnakeParam } from '@utilities/case';
@@ -94,12 +94,13 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
 };
 
 /**
- * 7 — Error envelope → ApiError; 401 → sign out; 403 AUTH_2FA_REQUIRED (privileged role without 2FA) → security page;
+ * 7 — Error envelope → ApiError; 401 → sign out, home page + "session ended" toast; 403 AUTH_2FA_REQUIRED (privileged role without 2FA) → security page;
  * 429 on GET → one retry after Retry-After (≤ 10 s).
  */
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthStore);
   const router = inject(Router);
+  const notice = inject(AccessNotice);
 
   return next(req).pipe(
     retry({
@@ -124,8 +125,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       }
       const apiError = toApiError(error, req.headers.get(REQUEST_ID_HEADER));
       if (apiError.status === 401 && auth.isAuthenticated()) {
-        auth.clear();
-        void router.navigate([LOGIN_PATH], { queryParams: { returnUrl: router.url } });
+        notice.sessionEnded(router.url);
       } else if (apiError.status === 403 && apiError.code === ErrorCode.TwoFactorRequired) {
         void router.navigate([ACCOUNT_SECURITY_PATH], { queryParams: { setup: '2fa' } });
       }

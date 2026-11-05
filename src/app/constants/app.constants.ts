@@ -3,6 +3,8 @@
 export const REQUEST_ID_HEADER = 'X-Request-Id';
 export const IDEMPOTENCY_HEADER = 'Idempotency-Key';
 
+/** The public website's home page, where signed-out users land. */
+export const PUBLIC_HOME_PATH = '/';
 /** Staff workspace start page (the public website lives at `/`). */
 export const HOME_PATH = '/dashboard';
 /** Patient portal start page; patients never enter the staff workspace. */
