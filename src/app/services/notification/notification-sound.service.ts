@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NOTIFICATION_KIND_SOUNDS } from '@constants/notification/notification-kinds.constants';
+import { PushedMessage } from '@interfaces/notification/pushed-message.interface';
 import { notificationKindOf } from '@utilities/notification-kind';
-
-/** What the service worker posts to open tabs for each pushed message (public/push-sw.js). */
-interface PushedMessage {
-  type: 'clinic-push';
-  template?: string;
-}
 
 /**
  * Plays the kind's sound when a message is pushed while e-Clinic is open in a tab (browsers do not let a

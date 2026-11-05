@@ -14,9 +14,7 @@ import { InvoiceApi } from '@services/billing/invoice-api.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CoverageNote],
   host: { class: 'block' },
-  template: `@if (coverage(); as c) {
-    <app-coverage-note [coverage]="c" [choosable]="false" />
-  }`,
+  templateUrl: './invoice-coverage.component.html',
 })
 export class InvoiceCoverage {
   readonly invoice = input.required<Invoice>();

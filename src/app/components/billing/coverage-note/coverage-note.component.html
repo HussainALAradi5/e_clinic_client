@@ -1,0 +1,24 @@
+@let c = coverage();
+@if (c.covered) {
+  <div class="motion-rise rounded-xl border border-primary/40 bg-primary-container/40 px-4 py-3">
+    <p class="m-0 flex items-center gap-2 text-sm font-medium">
+      <mat-icon class="text-primary">health_and_safety</mat-icon>
+      {{ text.insurer(c.insurer ?? '', c.coveragePercent) }}
+    </p>
+    <div class="mt-2 grid grid-cols-2 gap-2 text-sm">
+      <span class="text-on-surface-variant">{{ text.insurerShare }}</span>
+      <span class="text-right tabular-nums">{{ c.insurerShare | money }}</span>
+      <span class="font-semibold">{{ text.patientDue }}</span>
+      <span class="text-right font-semibold tabular-nums">{{ c.patientDue | money }}</span>
+    </div>
+    @if (choosable()) {
+      <mat-checkbox class="-ml-2 mt-1" [(ngModel)]="payAll">{{ text.payAll }}</mat-checkbox>
+    }
+  </div>
+} @else if (reasonText(); as why) {
+  <p
+    class="motion-rise m-0 flex items-center gap-2 rounded-xl bg-secondary-container px-4 py-3 text-sm text-on-secondary-container"
+  >
+    <mat-icon>info</mat-icon>{{ why }}
+  </p>
+}

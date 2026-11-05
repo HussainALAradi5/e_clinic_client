@@ -31,40 +31,7 @@ import { AppValidators } from '@validations/validators';
     MoneyInput,
     TextField,
   ],
-  template: `
-    <h2 mat-dialog-title>{{ pkg ? text.editTitle : text.createTitle }}</h2>
-    <mat-dialog-content>
-      <ui-form
-        [form]="form"
-        [submit]="submit"
-        [submitLabel]="text.save"
-        [compact]="true"
-        (cancelled)="ref.close()"
-      >
-        <ui-text [label]="text.name" [control]="form.controls.name" [maxLength]="150" />
-        <ui-entity-select
-          [label]="text.service"
-          endpoint="billing/services"
-          [display]="serviceName"
-          [initial]="$any(pkg?.coveredService ?? null)"
-          [control]="form.controls.coveredServiceId"
-        />
-        <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-3">
-          <ui-text [label]="text.sessions" type="number" [control]="form.controls.sessions" />
-          <ui-money [label]="text.price" [control]="form.controls.price" [hint]="perSession()" />
-          <ui-text [label]="text.validity" type="number" [control]="form.controls.validityDays" />
-        </div>
-        <ui-text
-          [label]="text.description"
-          [control]="form.controls.description"
-          [multiline]="true"
-          [rows]="2"
-          [maxLength]="500"
-        />
-        <mat-checkbox [formControl]="form.controls.isActive">{{ text.onSale }}</mat-checkbox>
-      </ui-form>
-    </mat-dialog-content>
-  `,
+  templateUrl: './package-form-dialog.component.html',
 })
 export class PackageFormDialog {
   protected readonly pkg = inject<ServicePackage | null>(MAT_DIALOG_DATA);

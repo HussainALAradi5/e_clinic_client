@@ -5,14 +5,14 @@ import { HOME_PATH, LOGIN_PATH, PORTAL_PATH, PUBLIC_HOME_PATH } from '@constants
 import { AuthStore } from '@services/auth/auth.store';
 import { NotifyService } from '@services/ui/notify.service';
 
+/** Long enough to reach the toast's "Sign in" button. */
+const SIGN_IN_TOAST_MS = 10_000;
+
 /**
  * Where a refused user goes, with a toast saying why:
  * signed out (page guard or a 401) → the public home page, the toast's "Sign in" brings them back to `returnUrl`;
  * signed in without the right → their own home (dashboard, or the portal for patients).
  */
-/** Long enough to reach the toast's "Sign in" button. */
-const SIGN_IN_TOAST_MS = 10_000;
-
 @Injectable({ providedIn: 'root' })
 export class AccessNotice {
   private readonly router = inject(Router);

@@ -36,21 +36,7 @@ export const CHAT_PATH = '/chat';
     RouterLink,
     TapMotionDirective,
   ],
-  template: `
-    <a
-      matIconButton
-      tapMotion="bounce"
-      [routerLink]="path"
-      [matTooltip]="unread() ? unread() + ' unread messages' : 'Chat'"
-      aria-label="Chat"
-      [matBadge]="badge()"
-      [matBadgeHidden]="!unread()"
-      [matBadgeSize]="settings().countInBadge ? 'medium' : 'small'"
-      matBadgeColor="primary"
-    >
-      <mat-icon>chat</mat-icon>
-    </a>
-  `,
+  templateUrl: './chat-launcher.component.html',
 })
 export class ChatLauncher {
   /** I muted the chat and was not mentioned: stay quiet. */

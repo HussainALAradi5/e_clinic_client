@@ -1,12 +1,6 @@
 import { StatusTone } from '@enums/ui/status-tone.enum';
-import { Money } from '@interfaces/common/money.interface';
+import { InvoiceProgressSource } from '@interfaces/billing/invoice-progress-source.interface';
 import { toMinor } from '@utilities/money';
-
-/** The amounts an invoice's payment progress is worked out from. */
-export interface InvoiceProgressSource {
-  total: Money;
-  balanceDue: Money;
-}
 
 /** Share of the invoice already paid, 0–100 (exact, in fils). */
 export function paidPercent(invoice: InvoiceProgressSource): number {

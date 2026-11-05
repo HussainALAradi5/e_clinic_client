@@ -7,49 +7,8 @@ import { initials, tintFor } from '@utilities/communication/chat-style';
   selector: 'app-chat-avatar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule],
-  template: `
-    <span
-      class="avatar"
-      [style.width.px]="size()"
-      [style.height.px]="size()"
-      [style.font-size.px]="size() * 0.4"
-      [style.background]="url() && !failed() ? 'transparent' : tint()"
-      [attr.aria-label]="name()"
-      role="img"
-    >
-      @if (url() && !failed()) {
-        <img [src]="url()" [alt]="name()" (error)="failed.set(true)" />
-      } @else if (group()) {
-        <mat-icon
-          [style.font-size.px]="size() * 0.55"
-          [style.width.px]="size() * 0.55"
-          [style.height.px]="size() * 0.55"
-          >groups</mat-icon
-        >
-      } @else {
-        {{ letters() }}
-      }
-    </span>
-  `,
-  styles: `
-    .avatar {
-      display: inline-flex;
-      flex-shrink: 0;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      border-radius: 9999px;
-      color: #fff;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      user-select: none;
-    }
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  `,
+  templateUrl: './chat-avatar.component.html',
+  styleUrl: './chat-avatar.component.scss',
 })
 export class ChatAvatar {
   readonly name = input.required<string>();

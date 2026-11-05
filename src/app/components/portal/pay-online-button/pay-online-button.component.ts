@@ -15,15 +15,7 @@ import { OnlinePaymentApi } from '@services/billing/online-payment-api.service';
   selector: 'app-pay-online-button',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AppButton],
-  template: `<ui-button
-    icon="credit_card"
-    [variant]="variants.Filled"
-    access="online_payments.create"
-    lock="once"
-    [action]="pay"
-    [attr.title]="text.secure"
-    >{{ text.pay }}</ui-button
-  >`,
+  templateUrl: './pay-online-button.component.html',
 })
 export class PayOnlineButton {
   readonly invoice = input.required<Invoice>();

@@ -18,30 +18,7 @@ import { formatMoney } from '@utilities/money';
   selector: 'app-sell-package-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatDialogModule, GenericForm, EntitySelect],
-  template: `
-    <h2 mat-dialog-title>
-      {{ text.sellTitle }}
-      <span class="block text-sm font-normal text-on-surface-variant">{{ patient.fullName }}</span>
-    </h2>
-    <mat-dialog-content>
-      <p class="mt-0 text-sm text-on-surface-variant">{{ text.sellHint }}</p>
-      <ui-form
-        [form]="form"
-        [submit]="submit"
-        [submitLabel]="text.sell"
-        [compact]="true"
-        (cancelled)="ref.close()"
-      >
-        <ui-entity-select
-          [label]="text.title"
-          endpoint="billing/packages"
-          [display]="packageName"
-          [filter]="onSale"
-          [control]="form.controls.packageId"
-        />
-      </ui-form>
-    </mat-dialog-content>
-  `,
+  templateUrl: './sell-package-dialog.component.html',
 })
 export class SellPackageDialog {
   protected readonly patient = inject<PatientSummary>(MAT_DIALOG_DATA);

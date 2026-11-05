@@ -15,21 +15,7 @@ import { DoctorEarningApi } from '@services/hr/doctor-earning-api.service';
   selector: 'app-my-earnings-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, MoneyPipe],
-  template: `
-    @if (mine(); as r) {
-      <section class="motion-rise rounded-2xl border border-outline-variant bg-surface p-4">
-        <p class="m-0 flex items-center gap-2 text-sm text-on-surface-variant">
-          <mat-icon class="text-primary">trending_up</mat-icon>{{ text.myTitle }}
-        </p>
-        <p class="m-0 mt-1 text-2xl font-semibold tabular-nums">{{ r.commission | money }}</p>
-        <p class="m-0 text-xs text-on-surface-variant">
-          {{ text.termsLabel(r.commissionType, r.rate) }} · {{ r.visits }} {{ text.visits }} ·
-          {{ r.revenue | money }}
-        </p>
-        <p class="m-0 mt-1 text-xs text-on-surface-variant">{{ text.myHint }}</p>
-      </section>
-    }
-  `,
+  templateUrl: './my-earnings-card.component.html',
 })
 export class MyEarningsCard {
   protected readonly text = EARNINGS_TEXT;

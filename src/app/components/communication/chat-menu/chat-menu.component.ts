@@ -28,44 +28,7 @@ import { NotifyService } from '@services/ui/notify.service';
     TapMotionDirective,
     DatePipe,
   ],
-  template: `
-    <button
-      matIconButton
-      tapMotion
-      [matMenuTriggerFor]="menu"
-      [matTooltip]="text.more"
-      [attr.aria-label]="text.more"
-    >
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu" xPosition="before">
-      <button mat-menu-item (click)="info.emit()">
-        <mat-icon>info</mat-icon>{{ isGroup() ? text.groupInfo : text.info }}
-      </button>
-      @if (chat().muted) {
-        <button mat-menu-item (click)="mute(null)">
-          <mat-icon>notifications_active</mat-icon>
-          <span>
-            {{ text.unmute }}
-            @if (chat().mutedUntil; as until) {
-              <span class="block text-xs text-on-surface-variant">{{
-                text.mutedUntil((until | date: dateFormat) ?? '')
-              }}</span>
-            }
-          </span>
-        </button>
-      } @else {
-        <button mat-menu-item [matMenuTriggerFor]="durations">
-          <mat-icon>notifications_off</mat-icon>{{ text.mute }}
-        </button>
-      }
-    </mat-menu>
-    <mat-menu #durations="matMenu">
-      @for (choice of choices; track choice.value) {
-        <button mat-menu-item (click)="mute(choice.value)">{{ choice.label }}</button>
-      }
-    </mat-menu>
-  `,
+  templateUrl: './chat-menu.component.html',
 })
 export class ChatMenu {
   readonly chat = input.required<Conversation>();

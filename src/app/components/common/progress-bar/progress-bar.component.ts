@@ -10,32 +10,7 @@ import { StatusTone } from '@enums/ui/status-tone.enum';
   selector: 'ui-progress-bar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block' },
-  template: `
-    @if (label() || showValue()) {
-      <div class="mb-1 flex items-center justify-between gap-2 text-xs text-on-surface-variant">
-        <span class="truncate">{{ label() }}</span>
-        @if (showValue()) {
-          <span class="font-semibold tabular-nums text-on-surface">{{ percent() }}%</span>
-        }
-      </div>
-    }
-    <div
-      class="track"
-      [style.height.px]="height()"
-      role="progressbar"
-      [attr.aria-label]="label() || null"
-      aria-valuemin="0"
-      aria-valuemax="100"
-      [attr.aria-valuenow]="percent()"
-    >
-      <div
-        class="fill"
-        [class]="'fill tone-' + tone()"
-        [class.active]="active()"
-        [style.width.%]="percent()"
-      ></div>
-    </div>
-  `,
+  templateUrl: './progress-bar.component.html',
   styleUrl: './progress-bar.component.scss',
 })
 export class ProgressBar {

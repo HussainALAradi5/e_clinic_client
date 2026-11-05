@@ -25,22 +25,7 @@ import { OnlinePaymentApi } from '@services/billing/online-payment-api.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule],
   host: { class: 'block' },
-  template: `
-    @if (result(); as r) {
-      <div
-        class="motion-rise flex items-start gap-3 rounded-2xl px-4 py-3"
-        [class]="tone()"
-        role="status"
-        aria-live="polite"
-      >
-        <mat-icon class="shrink-0" [class.animate-pulse]="waiting()">{{ r.icon }}</mat-icon>
-        <span>
-          <strong class="block">{{ r.title }}</strong>
-          <span class="text-sm">{{ r.message }}</span>
-        </span>
-      </div>
-    }
-  `,
+  templateUrl: './online-payment-notice.component.html',
 })
 export class OnlinePaymentNotice implements OnInit {
   readonly settled = output<void>();

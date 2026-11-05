@@ -16,24 +16,7 @@ import { formatMoney } from '@utilities/money';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule],
   host: { class: 'block' },
-  template: `
-    @if (kind()) {
-      <p
-        class="motion-rise m-0 flex items-center gap-2 rounded-xl px-3 py-2 text-sm"
-        [class]="
-          note().charged
-            ? 'bg-secondary-container text-on-secondary-container'
-            : 'bg-surface-container text-on-surface-variant'
-        "
-        role="status"
-      >
-        <mat-icon class="shrink-0">{{
-          note().charged ? 'payments' : 'volunteer_activism'
-        }}</mat-icon>
-        {{ note().text }}
-      </p>
-    }
-  `,
+  templateUrl: './document-fee-note.component.html',
 })
 export class DocumentFeeNote {
   readonly kind = input<WrittenDocumentKind | null>(null);

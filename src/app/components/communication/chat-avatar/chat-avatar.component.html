@@ -1,0 +1,22 @@
+<span
+  class="avatar"
+  [style.width.px]="size()"
+  [style.height.px]="size()"
+  [style.font-size.px]="size() * 0.4"
+  [style.background]="url() && !failed() ? 'transparent' : tint()"
+  [attr.aria-label]="name()"
+  role="img"
+>
+  @if (url() && !failed()) {
+    <img [src]="url()" [alt]="name()" (error)="failed.set(true)" />
+  } @else if (group()) {
+    <mat-icon
+      [style.font-size.px]="size() * 0.55"
+      [style.width.px]="size() * 0.55"
+      [style.height.px]="size() * 0.55"
+      >groups</mat-icon
+    >
+  } @else {
+    {{ letters() }}
+  }
+</span>

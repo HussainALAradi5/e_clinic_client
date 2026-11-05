@@ -11,12 +11,7 @@ import { notificationKindOf } from '@utilities/notification-kind';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule],
   host: { class: 'inline-flex shrink-0' },
-  template: `<span
-    class="inline-flex size-9 items-center justify-center rounded-full"
-    [class]="classes()"
-    aria-hidden="true"
-    ><mat-icon class="!text-[20px]">{{ icon() }}</mat-icon></span
-  >`,
+  templateUrl: './notification-kind-icon.component.html',
 })
 export class NotificationKindIcon {
   readonly template = input<string | null | undefined>(null);

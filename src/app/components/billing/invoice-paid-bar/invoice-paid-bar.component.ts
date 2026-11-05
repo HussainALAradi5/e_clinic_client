@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { ProgressBar } from '@components/common/progress-bar/progress-bar.component';
 import { INVOICE_PROGRESS_TEXT } from '@constants/billing/invoice-progress.constants';
-import { paidPercent, paidTone, InvoiceProgressSource } from '@utilities/billing/invoice-progress';
+import { InvoiceProgressSource } from '@interfaces/billing/invoice-progress-source.interface';
+import { paidPercent, paidTone } from '@utilities/billing/invoice-progress';
 
 /** How much of an invoice is paid, as a bar coloured by how far it is (amber → blue → green). */
 @Component({
@@ -9,13 +10,7 @@ import { paidPercent, paidTone, InvoiceProgressSource } from '@utilities/billing
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ProgressBar],
   host: { class: 'block' },
-  template: `<ui-progress-bar
-    [value]="percent()"
-    [tone]="tone()"
-    [label]="label() ? text.paid : ''"
-    [showValue]="label()"
-    [height]="label() ? 8 : 4"
-  />`,
+  templateUrl: './invoice-paid-bar.component.html',
 })
 export class InvoicePaidBar {
   readonly invoice = input.required<InvoiceProgressSource>();

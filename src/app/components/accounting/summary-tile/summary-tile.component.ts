@@ -14,31 +14,7 @@ import { monthChange } from '@utilities/accounting/month-change';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, MoneyPipe],
   host: { class: 'block' },
-  template: `
-    <div class="motion-rise h-full rounded-2xl border border-outline-variant bg-surface p-4">
-      <p class="m-0 text-xs text-on-surface-variant">{{ label() }}</p>
-      <p class="m-0 mt-1 text-2xl font-semibold tabular-nums">
-        @if (isMoney()) {
-          {{ $any(value()) | money }}
-        } @else {
-          {{ value() }}
-        }
-      </p>
-      <p class="m-0 mt-1 flex items-center gap-1 text-xs" [class]="tone()">
-        @if (change(); as c) {
-          <mat-icon class="!size-4 !text-base">{{
-            c > 0 ? 'trending_up' : 'trending_down'
-          }}</mat-icon>
-          {{ c > 0 ? '+' : '' }}{{ c }} %
-        } @else if (change() === null) {
-          {{ text.newFigure }}
-        } @else {
-          ±0 %
-        }
-        <span class="text-on-surface-variant">{{ text.vsBefore }}</span>
-      </p>
-    </div>
-  `,
+  templateUrl: './summary-tile.component.html',
 })
 export class SummaryTile {
   readonly label = input.required<string>();

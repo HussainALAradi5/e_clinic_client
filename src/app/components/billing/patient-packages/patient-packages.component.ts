@@ -33,48 +33,7 @@ import { PackageApi } from '@services/billing/package-api.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AppButton, ProgressBar, StatusChip, MatIconModule, DatePipe],
   host: { class: 'block' },
-  template: `
-    @if (packages(); as list) {
-      @if (list.length || manage()) {
-        <section class="rounded-2xl border border-outline-variant bg-surface p-4">
-          <div class="mb-2 flex items-center gap-3">
-            <mat-icon class="text-primary">redeem</mat-icon>
-            <p class="m-0 flex-1 font-medium">{{ text.patientTitle }}</p>
-            @if (manage()) {
-              <ui-button
-                icon="add"
-                [variant]="variants.Tonal"
-                access="patient_packages.create & packages.read_all"
-                [action]="sell"
-                >{{ text.sell }}</ui-button
-              >
-            }
-          </div>
-          @for (p of list; track p.id) {
-            <div class="motion-rise border-t border-outline-variant/60 py-3">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="flex-1 font-medium">{{ p.name }}</span>
-                <ui-status [value]="p.status" enum="PatientPackageStatus" />
-              </div>
-              <ui-progress-bar
-                class="mt-2"
-                [value]="(p.sessionsUsed / p.sessionsTotal) * 100"
-                [tone]="p.status === statuses.Active ? tones.Green : tones.Grey"
-                [label]="text.sessionsLeft(p.sessionsLeft, p.sessionsTotal)"
-              />
-              @if (p.expiresOn) {
-                <p class="m-0 mt-1 text-xs text-on-surface-variant">
-                  {{ text.validUntil((p.expiresOn | date: dateFormat) ?? '') }}
-                </p>
-              }
-            </div>
-          } @empty {
-            <p class="m-0 text-sm text-on-surface-variant">{{ text.none }}</p>
-          }
-        </section>
-      }
-    }
-  `,
+  templateUrl: './patient-packages.component.html',
 })
 export class PatientPackages implements OnInit {
   readonly patient = input.required<PatientSummary>();

@@ -17,32 +17,7 @@ import { AppValidators } from '@validations/validators';
   selector: 'app-commission-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatDialogModule, GenericForm, SelectField, TextField],
-  template: `
-    <h2 mat-dialog-title>{{ text.dialogTitle(row.doctor.fullName) }}</h2>
-    <mat-dialog-content>
-      <ui-form
-        [form]="form"
-        [submit]="submit"
-        [submitLabel]="text.save"
-        [compact]="true"
-        (cancelled)="ref.close()"
-      >
-        <ui-select
-          [label]="text.type"
-          enum="CommissionType"
-          [required]="true"
-          [control]="form.controls.type"
-        />
-        @if (type() !== types.None) {
-          <ui-text
-            [label]="type() === types.Percent ? text.percent : text.perVisit"
-            type="number"
-            [control]="form.controls.value"
-          />
-        }
-      </ui-form>
-    </mat-dialog-content>
-  `,
+  templateUrl: './commission-dialog.component.html',
 })
 export class CommissionDialog {
   protected readonly row = inject<DoctorEarning>(MAT_DIALOG_DATA);
