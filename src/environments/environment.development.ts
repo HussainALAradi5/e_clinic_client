@@ -1,3 +1,5 @@
+import { ReverbConfig } from '../app/interfaces/config/reverb-config.interface';
+
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:8000',
@@ -9,10 +11,3 @@ export const environment = {
     scheme: 'http',
   } as ReverbConfig | null,
 };
-
-export interface ReverbConfig {
-  key: string;
-  host: string;
-  port: number;
-  scheme: 'http' | 'https';
-}

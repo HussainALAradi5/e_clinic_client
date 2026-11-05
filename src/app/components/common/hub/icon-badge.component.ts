@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
     '[class.icon-badge-lg]': "size() === 'lg'",
     'aria-hidden': 'true',
   },
-  template: '<mat-icon>{{ icon() }}</mat-icon>',
+  templateUrl: './icon-badge.component.html',
 })
 export class IconBadge {
   readonly icon = input.required<string>();

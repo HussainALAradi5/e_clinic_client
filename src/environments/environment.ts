@@ -1,4 +1,4 @@
-import { ReverbConfig } from './environment.development';
+import { ReverbConfig } from '../app/interfaces/config/reverb-config.interface';
 
 /**
  * Production: the API origin, set at deploy time (`scripts/set-api-url.mjs`, e.g. https://api.example.com). The API
