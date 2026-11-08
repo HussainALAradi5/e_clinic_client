@@ -1,10 +1,10 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { ErrorState } from '@components/common/error-state/error-state.component';
 import { PrintSheet } from '@components/common/print-sheet/print-sheet.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { PaymentStatus } from '@enums/billing/payment-status.enum';
 import { Payment } from '@interfaces/billing/payment.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
@@ -28,7 +28,7 @@ export class ReceiptPrintPage implements OnInit {
   private readonly api = inject(PaymentApi);
   protected readonly payment = signal<Payment | null>(null);
   protected readonly error = signal<unknown>(null);
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly voided = PaymentStatus.Voided;
 
   async ngOnInit(): Promise<void> {

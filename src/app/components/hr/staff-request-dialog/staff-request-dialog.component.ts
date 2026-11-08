@@ -1,3 +1,5 @@
+import { ClockPipe } from '@pipes/clock.pipe';
+import { timeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -7,7 +9,7 @@ import { firstValueFrom } from 'rxjs';
 import { GenericForm } from '@components/common/generic-form/generic-form.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { TextField } from '@components/common/text-field/text-field.component';
-import { DATE_FORMAT, TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { StaffRequestType } from '@enums/hr/staff-request-type.enum';
 import { Attendance } from '@interfaces/hr/attendance.interface';
 import { StaffRequest } from '@interfaces/hr/staff-request.interface';
@@ -24,6 +26,7 @@ import { STAFF_REQUEST_DIALOG_TEXT } from '@constants/hr/staff-request-dialog.co
   selector: 'app-staff-request-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ClockPipe,
     DatePipe,
     MatDialogModule,
     MatIconModule,
@@ -44,7 +47,7 @@ export class StaffRequestDialog {
   private readonly api = inject(StaffRequestApi);
 
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly timeFormat = TIME_FORMAT;
+  protected readonly timeFormat = timeFormat;
   protected readonly zone = '+0300';
   protected readonly isLate = this.data.type === StaffRequestType.LateExcuse;
   protected readonly minutes = computed(() =>

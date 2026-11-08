@@ -8,7 +8,7 @@
   (rowClick)="open($event)"
 >
   <ng-template uiCell="created_at" let-row>
-    <span class="whitespace-nowrap tabular-nums">{{ row.createdAt | date: dateTimeFormat }}</span>
+    <span class="whitespace-nowrap tabular-nums">{{ row.createdAt | date: dateTimeFormat() }}</span>
   </ng-template>
   <ng-template uiCell="user" let-row>{{ row.user?.fullName ?? text.system }}</ng-template>
   <ng-template uiCell="auditable" let-row>

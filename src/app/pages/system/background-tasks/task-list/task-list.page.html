@@ -7,7 +7,7 @@
   rowLink="/system/background-tasks/:id"
 >
   <ng-template uiCell="created_at" let-row>
-    <span class="whitespace-nowrap tabular-nums">{{ row.createdAt | date: dateTimeFormat }}</span>
+    <span class="whitespace-nowrap tabular-nums">{{ row.createdAt | date: dateTimeFormat() }}</span>
   </ng-template>
   <ng-template uiCell="type" let-row>
     <ui-status [value]="row.type" enum="TaskType" />
@@ -23,7 +23,7 @@
   </ng-template>
   <ng-template uiCell="finished_at" let-row>
     <span class="whitespace-nowrap tabular-nums">{{
-      row.finishedAt ? (row.finishedAt | date: dateTimeFormat) : '—'
+      row.finishedAt ? (row.finishedAt | date: dateTimeFormat()) : '—'
     }}</span>
   </ng-template>
 </ui-resource-list>

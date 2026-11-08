@@ -97,7 +97,7 @@
           }}</mat-icon>
           <span class="min-w-0 flex-1 truncate" [title]="entry.payload">{{ entry.label }}</span>
           <span class="tabular-nums text-xs text-on-surface-variant">{{
-            entry.at | date: timeFormat
+            entry.at | date: timeFormat()
           }}</span>
         </li>
       } @empty {

@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe } from '@angular/common';
 import {
@@ -12,7 +13,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { ErrorState } from '@components/common/error-state/error-state.component';
 import { PrintSheet } from '@components/common/print-sheet/print-sheet.component';
-import { DATE_FORMAT, DATE_TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { PaymentStatus } from '@enums/billing/payment-status.enum';
 import { Invoice } from '@interfaces/billing/invoice.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
@@ -38,7 +39,7 @@ export class InvoicePrintPage implements OnInit {
   protected readonly invoice = signal<Invoice | null>(null);
   protected readonly error = signal<unknown>(null);
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly title = computed(() =>
     (toMinor(this.invoice()?.taxTotal.amount) ?? 0n) > 0n
       ? INVOICE_PRINT_TEXT.taxInvoice

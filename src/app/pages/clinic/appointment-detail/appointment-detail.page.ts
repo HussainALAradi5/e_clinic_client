@@ -1,3 +1,5 @@
+import { ClockPipe } from '@pipes/clock.pipe';
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -23,7 +25,7 @@ import { Facts } from '@components/common/facts/facts.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_FORMAT, DATE_TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { AppointmentStatus } from '@enums/clinic/appointment-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
@@ -44,6 +46,7 @@ import {
   selector: 'app-appointment-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ClockPipe,
     HasAccessDirective,
     PageHeader,
     ErrorState,
@@ -75,7 +78,7 @@ export class AppointmentDetailPage implements OnInit {
   protected readonly error = signal<unknown>(null);
   protected readonly trail = signal<StatusStep[]>([]);
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
 
   /** A visit gets its note from check-in on. */
   protected readonly documentable = computed(() =>

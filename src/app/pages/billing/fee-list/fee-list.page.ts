@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -5,7 +6,7 @@ import { AppButton } from '@components/common/app-button/app-button.component';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_FORMAT, DATE_TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { FEE_TEXT } from '@constants/billing/appointment-fee.constants';
 import { AppointmentFeeStatus } from '@enums/billing/appointment-fee-status.enum';
 import { InvoiceStatus } from '@enums/billing/invoice-status.enum';
@@ -33,7 +34,7 @@ export class FeeListPage {
   protected readonly text = FEE_TEXT;
   protected readonly variants = ButtonVariant;
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly columns = [
     'code',
     'created_at',

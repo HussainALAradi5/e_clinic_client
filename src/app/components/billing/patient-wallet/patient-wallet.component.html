@@ -41,7 +41,7 @@
           <li class="flex flex-wrap items-center gap-3 py-2 text-sm">
             <ui-status [value]="e.type" enum="WalletEntryType" />
             <span class="min-w-0 flex-1 truncate text-on-surface-variant">
-              {{ e.createdAt | date: dateFormat }}
+              {{ e.createdAt | date: dateFormat() }}
               @if (e.reason) {
                 · {{ e.reason }}
               }

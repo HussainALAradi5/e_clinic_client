@@ -1,3 +1,5 @@
+import { wallClock } from '@utilities/clock-format';
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,7 +19,6 @@ import { Facts } from '@components/common/facts/facts.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { ClinicalOrderType } from '@enums/clinic/clinical-order-type.enum';
 import { GenericStatus } from '@enums/shared/generic-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
@@ -72,7 +73,7 @@ export class OrderDetailPage implements OnInit {
   private readonly enums = inject(EnumService);
 
   protected readonly variants = ButtonVariant;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly cancellable = computed(
     () => this.detail.record()?.allowedTransitions.includes(GenericStatus.Cancelled) ?? false,
   );
@@ -157,7 +158,7 @@ export class OrderDetailPage implements OnInit {
       {
         label: ORDER_DETAIL_TEXT.referredVisit,
         value: o.referralAppointment
-          ? `${o.referralAppointment.code} · ${o.referralAppointment.scheduledDate} ${o.referralAppointment.startTime}`
+          ? `${o.referralAppointment.code} · ${o.referralAppointment.scheduledDate} ${wallClock(o.referralAppointment.startTime)}`
           : null,
       },
       { label: ORDER_DETAIL_TEXT.room, value: o.room ? `${o.room.code} · ${o.room.name}` : null },

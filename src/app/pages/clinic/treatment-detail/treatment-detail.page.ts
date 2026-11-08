@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import { DatePipe, formatDate } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -43,6 +44,7 @@ import { TREATMENT_DETAIL_TEXT } from '@constants/clinic/treatment-detail.consta
   selector: 'app-treatment-detail-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ClockPipe,
     PageHeader,
     AppButton,
     EntityActions,

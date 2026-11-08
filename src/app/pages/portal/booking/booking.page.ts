@@ -1,3 +1,5 @@
+import { wallClock } from '@utilities/clock-format';
+import { ClockPipe } from '@pipes/clock.pipe';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -35,6 +37,7 @@ const DAYS_SHOWN = 21;
   selector: 'app-portal-booking-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ClockPipe,
     DatePipe,
     ReactiveFormsModule,
     RouterLink,
@@ -92,7 +95,9 @@ export class PortalBookingPage {
   });
   protected readonly summary = computed(() => {
     const [d, day, s] = [this.doctor(), this.date(), this.slot()];
-    return d && day && s ? `${visitDay(day)} at ${s.startTime} with ${d.displayName}` : null;
+    return d && day && s
+      ? `${visitDay(day)} at ${wallClock(s.startTime)} with ${d.displayName}`
+      : null;
   });
 
   private key = newIdempotencyKey();

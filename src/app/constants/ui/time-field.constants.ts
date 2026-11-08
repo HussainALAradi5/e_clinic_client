@@ -17,7 +17,7 @@ export const TIME_FIELD_TEXT = {
   hours: 'Hours',
   minutes: 'Minutes',
   cardTitle: 'Time picker',
-  cardHint: 'How time fields open on this browser. Times always show with AM / PM.',
+  cardHint: 'How time fields open on this browser.',
   styles: {
     [TimePickerStyle.Wheel]: { label: 'Wheels (iPhone style)', icon: 'view_day' },
     [TimePickerStyle.Dial]: { label: 'Clock dial (Android style)', icon: 'schedule' },

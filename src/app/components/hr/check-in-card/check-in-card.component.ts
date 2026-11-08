@@ -1,3 +1,5 @@
+import { ClockPipe } from '@pipes/clock.pipe';
+import { timeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -13,7 +15,6 @@ import { firstValueFrom } from 'rxjs';
 import { HrActions } from '@services/hr/hr-actions.service';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { TIME_FORMAT } from '@constants/app.constants';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { AttendanceToday } from '@interfaces/hr/attendance-today.interface';
 import { AttendanceApi } from '@services/hr/attendance-api.service';
@@ -23,7 +24,7 @@ import { CHECK_IN_CARD_TEXT } from '@constants/hr/check-in-card.constants';
 @Component({
   selector: 'app-check-in-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatCardModule, MatIconModule, AppButton, StatusChip, DatePipe],
+  imports: [ClockPipe, MatCardModule, MatIconModule, AppButton, StatusChip, DatePipe],
   templateUrl: './check-in-card.component.html',
 })
 export class CheckInCard implements OnInit {
@@ -33,7 +34,7 @@ export class CheckInCard implements OnInit {
   protected readonly text = CHECK_IN_CARD_TEXT;
   protected readonly today = signal<AttendanceToday | null>(null);
   protected readonly variants = ButtonVariant;
-  protected readonly timeFormat = TIME_FORMAT;
+  protected readonly timeFormat = timeFormat;
   protected readonly zone = '+0300';
 
   protected readonly day = computed(() => this.today()?.attendance ?? null);

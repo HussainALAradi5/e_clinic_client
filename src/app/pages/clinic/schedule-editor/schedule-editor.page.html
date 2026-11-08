@@ -88,7 +88,7 @@
           </p>
           <ul class="m-0 pl-5">
             @for (a of conflicts(); track a.id) {
-              <li>{{ a.date }} {{ a.startTime }} — {{ a.patient }} ({{ a.code }})</li>
+              <li>{{ a.date }} {{ a.startTime | clock }} — {{ a.patient }} ({{ a.code }})</li>
             }
           </ul>
         </div>
@@ -115,7 +115,7 @@
         <span class="w-24 text-on-surface-variant">{{ e.date | date: dateFormat }}</span>
         <span class="flex-1">
           {{ e.type | enumLabel: 'ScheduleExceptionType'
-          }}{{ e.startTime ? ' ' + e.startTime + '–' + e.endTime : '' }}
+          }}{{ e.startTime ? ' ' + (e.startTime | clock) + '–' + (e.endTime | clock) : '' }}
           @if (e.reason) {
             <span class="block text-xs text-on-surface-variant">{{ e.reason }}</span>
           }

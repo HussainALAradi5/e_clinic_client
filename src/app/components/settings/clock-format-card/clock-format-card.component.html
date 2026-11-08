@@ -1,0 +1,22 @@
+<section class="rounded-2xl border border-outline-variant bg-surface p-5">
+  <h2 class="m-0 mb-1 text-base font-semibold">{{ text.title }}</h2>
+  <p class="m-0 mb-4 text-sm text-on-surface-variant">{{ text.hint }}</p>
+  <div class="grid grid-cols-2 gap-2" role="radiogroup" [attr.aria-label]="text.title">
+    @for (choice of choices; track choice) {
+      <button
+        type="button"
+        role="radio"
+        class="rounded-xl border p-3 text-left text-sm font-medium transition"
+        [class.border-primary]="selected() === choice"
+        [class.bg-primary-container]="selected() === choice"
+        [attr.aria-checked]="selected() === choice"
+        (click)="choose(choice)"
+      >
+        <span class="block">{{ text.choices[choice].label }}</span>
+        <span class="block text-xs font-normal text-on-surface-variant">{{
+          text.choices[choice].example
+        }}</span>
+      </button>
+    }
+  </div>
+</section>

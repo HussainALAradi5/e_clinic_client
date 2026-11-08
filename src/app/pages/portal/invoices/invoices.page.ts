@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -16,7 +17,7 @@ import { catchError, firstValueFrom, map, of } from 'rxjs';
 import { EmptyState } from '@components/common/empty-state/empty-state.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { CLINIC_TIME_ZONE, DATE_FORMAT, DATE_TIME_FORMAT } from '@constants/app.constants';
+import { CLINIC_TIME_ZONE, DATE_FORMAT } from '@constants/app.constants';
 import { Invoice } from '@interfaces/billing/invoice.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { MoneyPipe } from '@pipes/money.pipe';
@@ -82,7 +83,7 @@ export class MyInvoicesPage {
   });
 
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly zone = CLINIC_TIME_ZONE;
   protected readonly invoices = signal<Invoice[] | null>(null);
   protected readonly open = signal<string | null>(null);

@@ -1,3 +1,4 @@
+import { wallClock } from '@utilities/clock-format';
 import { ComponentType } from '@angular/cdk/portal';
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
@@ -113,7 +114,7 @@ export class AppointmentActions {
     );
     if (booked) {
       this.notify.success(
-        `Booked ${booked.patient?.fullName ?? 'the patient'} with ${booked.provider?.fullName ?? 'the doctor'} on ${booked.scheduledDate} at ${booked.startTime}.`,
+        `Booked ${booked.patient?.fullName ?? 'the patient'} with ${booked.provider?.fullName ?? 'the doctor'} on ${booked.scheduledDate} at ${wallClock(booked.startTime)}.`,
       );
     }
     return booked;
@@ -187,7 +188,7 @@ export class AppointmentActions {
   private async noShow(appointment: Appointment): Promise<Appointment | undefined> {
     const ok = await this.dialogs.confirm({
       title: 'Mark as no-show?',
-      message: `${appointment.patient?.fullName ?? 'The patient'} did not arrive for ${appointment.startTime}.`,
+      message: `${appointment.patient?.fullName ?? 'The patient'} did not arrive for ${wallClock(appointment.startTime)}.`,
       confirmLabel: 'Mark no-show',
       danger: true,
     });

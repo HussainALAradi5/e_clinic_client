@@ -4,7 +4,11 @@
   <ui-page-header
     [title]="a.code"
     [subtitle]="
-      (a.scheduledDate | date: 'EEEE ' + dateFormat) + ' · ' + a.startTime + '–' + a.endTime
+      (a.scheduledDate | date: 'EEEE ' + dateFormat) +
+      ' · ' +
+      (a.startTime | clock) +
+      '–' +
+      (a.endTime | clock)
     "
   >
     <ui-status status [value]="a.status" enum="AppointmentStatus" />
@@ -56,7 +60,7 @@
       <a class="text-primary underline" [routerLink]="['/clinic/appointments', from.id]">{{
         from.code
       }}</a>
-      ({{ from.scheduledDate | date: dateFormat }} {{ from.startTime }})
+      ({{ from.scheduledDate | date: dateFormat }} {{ from.startTime | clock }})
     </p>
   }
 
@@ -68,7 +72,12 @@
           class="block rounded-lg p-2 -mx-2 hover:bg-surface-container"
           [routerLink]="['/clinic/patients', p.id]"
         >
-          <ui-status class="mb-1" [value]="p.fullName" [text]="p.fullName" [tone]="personTones.patient" />
+          <ui-status
+            class="mb-1"
+            [value]="p.fullName"
+            [text]="p.fullName"
+            [tone]="personTones.patient"
+          />
           <span class="flex flex-wrap items-center gap-2 text-sm text-on-surface-variant">
             <ui-status [value]="p.code" [text]="p.code" [tone]="personTones.file" />
             <span
@@ -83,7 +92,12 @@
           class="mt-2 block rounded-lg p-2 -mx-2 hover:bg-surface-container"
           [routerLink]="['/clinic/doctors', d.id]"
         >
-          <ui-status class="mb-1" [value]="d.fullName" [text]="d.fullName" [tone]="personTones.doctor" />
+          <ui-status
+            class="mb-1"
+            [value]="d.fullName"
+            [text]="d.fullName"
+            [tone]="personTones.doctor"
+          />
           <span class="block text-sm text-on-surface-variant">{{ d.jobTitle }}</span>
         </a>
       }
@@ -101,12 +115,12 @@
               step.status | enumLabel: 'AppointmentStatus'
             }}</span>
             <span class="block text-xs text-on-surface-variant"
-              >{{ step.at | date: dateTimeFormat }}{{ step.by ? ' · ' + step.by : '' }}</span
+              >{{ step.at | date: dateTimeFormat() }}{{ step.by ? ' · ' + step.by : '' }}</span
             >
           </li>
         } @empty {
           <li class="text-sm text-on-surface-variant">
-            {{ text.booked }} {{ a.createdAt | date: dateTimeFormat }}
+            {{ text.booked }} {{ a.createdAt | date: dateTimeFormat() }}
             {{ text.noStatusChangesSince }}
           </li>
         }

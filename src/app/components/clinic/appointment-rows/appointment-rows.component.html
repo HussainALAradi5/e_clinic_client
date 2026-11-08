@@ -4,7 +4,7 @@
     [routerLink]="['/clinic/appointments', a.id]"
   >
     <span class="text-on-surface-variant">{{ a.scheduledDate | date: dateFormat }}</span>
-    <span class="font-medium tabular-nums">{{ a.startTime }}</span>
+    <span class="font-medium tabular-nums">{{ a.startTime | clock }}</span>
     <span class="min-w-0 truncate">
       {{ show() === 'patient' ? a.patient?.fullName : a.provider?.fullName }}
       @if (a.room) {

@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,7 +21,7 @@ import { PageHeader } from '@components/common/page-header/page-header.component
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { Flag } from '@components/common/flag/flag.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_FORMAT, TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { ConfirmConfig } from '@interfaces/ui/confirm-config.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
@@ -63,7 +64,7 @@ export class UserDetailPage implements OnInit {
   private readonly notify = inject(NotifyService);
 
   protected readonly variants = ButtonVariant;
-  protected readonly dateTimeFormat = `${DATE_FORMAT}, ${TIME_FORMAT}`;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly dateFormat = DATE_FORMAT;
   protected readonly resetConfirm: ConfirmConfig = {
     title: USER_DETAIL_TEXT.sendAPasswordResetLink,

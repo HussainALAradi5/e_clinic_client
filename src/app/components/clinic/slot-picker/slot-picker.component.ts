@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -25,7 +26,7 @@ import { SLOT_PICKER_TEXT } from '@constants/clinic/slot-picker.constants';
 @Component({
   selector: 'app-slot-picker',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatChipsModule, MatIconModule, MatProgressBarModule],
+  imports: [ClockPipe, MatChipsModule, MatIconModule, MatProgressBarModule],
   host: { class: 'block' },
   templateUrl: './slot-picker.component.html',
 })

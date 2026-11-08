@@ -1,3 +1,4 @@
+import { timeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -30,7 +31,7 @@ import { EmptyState } from '@components/common/empty-state/empty-state.component
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_FORMAT, TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { InvoiceStatus } from '@enums/billing/invoice-status.enum';
 import { CashSessionStatus } from '@enums/finance/cash-session-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
@@ -86,7 +87,7 @@ export class CashierDeskPage implements OnInit {
 
   protected readonly variants = ButtonVariant;
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly timeFormat = TIME_FORMAT;
+  protected readonly timeFormat = timeFormat;
   protected readonly drawerStates = CashSessionStatus;
   protected readonly invoiceStates = InvoiceStatus;
   protected readonly operatesDrawer = this.access.can('cash_sessions.operate');

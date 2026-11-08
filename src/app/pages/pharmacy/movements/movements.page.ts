@@ -1,8 +1,8 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { QtyPipe } from '@pipes/qty.pipe';
 import { MOVEMENTS_TEXT } from '@constants/pharmacy/movements.constants';
 
@@ -16,5 +16,5 @@ import { MOVEMENTS_TEXT } from '@constants/pharmacy/movements.constants';
 export class MovementsPage {
   protected readonly text = MOVEMENTS_TEXT;
 
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
 }

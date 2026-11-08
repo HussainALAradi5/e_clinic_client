@@ -1,4 +1,5 @@
 import { PresenceStatus } from '@enums/identity/presence-status.enum';
+import { TimeFormat } from '@enums/identity/time-format.enum';
 import { UserStatus } from '@enums/identity/user-status.enum';
 import { UserType } from '@enums/identity/user-type.enum';
 import { Person } from '@interfaces/identity/person.interface';
@@ -16,6 +17,8 @@ export interface User {
   avatarUrl?: string | null;
   email: string | null;
   phone: string;
+  /** How this person reads times; 12-hour unless they chose otherwise. */
+  timeFormat?: TimeFormat;
   userType: UserType;
   status: UserStatus;
   /** Online / Offline in chat (Online on sign-in, switchable). */

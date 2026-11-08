@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe, KeyValuePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -18,7 +19,6 @@ import { ErrorState } from '@components/common/error-state/error-state.component
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_FORMAT, TIME_FORMAT } from '@constants/app.constants';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { ApiError } from '@interfaces/api/api-error.interface';
 import { BackgroundTask } from '@interfaces/task/background-task.interface';
@@ -67,7 +67,7 @@ export class TaskDetailPage implements OnInit {
     () => !this.task()?.requestedBy || this.task()?.requestedBy?.id === this.auth.user()?.id,
   );
   protected readonly variants = ButtonVariant;
-  protected readonly dateTimeFormat = `${DATE_FORMAT}, ${TIME_FORMAT}`;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly label = humanise;
   protected readonly cancelConfirm: ConfirmConfig = {
     title: TASK_DETAIL_TEXT.cancelThisTask,

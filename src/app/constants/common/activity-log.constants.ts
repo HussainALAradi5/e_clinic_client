@@ -1,10 +1,5 @@
-import { DATE_FORMAT } from '@constants/app.constants';
-
 /** Entries always on show; the rest sit inside the collapse. */
 export const ACTIVITY_LOG_VISIBLE_ENTRIES = 3;
-
-/** To the second, on the 12-hour clock: an event log says exactly when. */
-export const ACTIVITY_LOG_DATE_FORMAT = `${DATE_FORMAT}, h:mm:ss a`;
 
 /** Text of common/activity-log/activity-log.component (sentence parts, labels, empty state). */
 export const ACTIVITY_LOG_TEXT = {

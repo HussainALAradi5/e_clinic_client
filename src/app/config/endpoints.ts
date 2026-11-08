@@ -42,6 +42,7 @@ export const ENDPOINTS = {
     login: 'auth/login',
     presence: 'auth/presence',
     signature: 'auth/signature',
+    timeFormat: 'auth/time-format',
     logout: 'auth/logout',
     logoutAll: 'auth/logout-all',
     me: 'auth/me',

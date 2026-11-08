@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -56,6 +57,7 @@ function hhmm(total: number): string {
   selector: 'app-calendar-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ClockPipe,
     PageHeader,
     EntitySelect,
     MatButtonModule,

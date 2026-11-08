@@ -14,10 +14,10 @@
       <dt class="text-black/60">{{ text.cashier }}</dt>
       <dd class="m-0 text-right">{{ s.cashier?.fullName }}</dd>
       <dt class="text-black/60">{{ text.opened }}</dt>
-      <dd class="m-0 text-right">{{ s.openedAt | date: dateTimeFormat }}</dd>
+      <dd class="m-0 text-right">{{ s.openedAt | date: dateTimeFormat() }}</dd>
       @if (s.closedAt) {
         <dt class="text-black/60">{{ text.closed }}</dt>
-        <dd class="m-0 text-right">{{ s.closedAt | date: dateTimeFormat }}</dd>
+        <dd class="m-0 text-right">{{ s.closedAt | date: dateTimeFormat() }}</dd>
       }
       @if (s.report; as r) {
         <dt class="mt-2 border-t border-dashed border-black/40 pt-2 text-black/60">

@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -33,7 +34,6 @@ import { Facts } from '@components/common/facts/facts.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { ApiError } from '@interfaces/api/api-error.interface';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
@@ -97,7 +97,7 @@ export class PatientDetailPage implements OnInit {
   protected readonly past = signal<Appointment[]>([]);
   protected readonly timeline = signal<PatientTimelineEntry[] | null>(null);
   protected readonly variants = ButtonVariant;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly portalConfirm: ConfirmConfig = {
     title: PATIENT_DETAIL_TEXT.createAPortalAccount,
     message: PATIENT_DETAIL_TEXT.thePatientReceivesAnEmail,

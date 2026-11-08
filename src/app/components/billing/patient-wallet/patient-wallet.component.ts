@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -13,7 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { firstValueFrom } from 'rxjs';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { WALLET_TEXT } from '@constants/billing/wallet.constants';
 import { WalletMovement } from '@enums/billing/wallet-movement.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
@@ -48,7 +48,7 @@ export class PatientWallet implements OnInit {
   protected readonly text = WALLET_TEXT;
   protected readonly movements = WalletMovement;
   protected readonly variants = ButtonVariant;
-  protected readonly dateFormat = DATE_TIME_FORMAT;
+  protected readonly dateFormat = dateTimeFormat;
   protected readonly hasMoney = computed(() => (toMinor(this.wallet()?.balance.amount) ?? 0n) > 0n);
 
   ngOnInit(): void {

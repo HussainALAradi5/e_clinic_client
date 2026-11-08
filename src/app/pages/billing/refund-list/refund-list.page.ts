@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -6,7 +7,6 @@ import { AppButton } from '@components/common/app-button/app-button.component';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { ApprovalStatus } from '@enums/shared/approval-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { Refund } from '@interfaces/billing/refund.interface';
@@ -32,7 +32,7 @@ export class RefundListPage {
   private readonly list = viewChild.required(ResourceListPage);
 
   protected readonly variants = ButtonVariant;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   /** Actions sit in the last column. */
   protected readonly columns = [
     'code',

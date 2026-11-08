@@ -227,7 +227,7 @@
             <span class="font-mono text-xs">{{ mv.batch?.batchNumber }}</span>
             <span class="min-w-0 flex-1 truncate text-on-surface-variant">{{ mv.reason }}</span>
             <span class="text-xs text-on-surface-variant"
-              >{{ mv.createdAt | date: dateTimeFormat }} ·
+              >{{ mv.createdAt | date: dateTimeFormat() }} ·
               {{ mv.createdBy?.fullName ?? text.system }}</span
             >
           </li>

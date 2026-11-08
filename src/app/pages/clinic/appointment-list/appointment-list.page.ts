@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -27,7 +28,7 @@ import { APPOINTMENT_LIST_TEXT } from '@constants/clinic/appointment-list.consta
 @Component({
   selector: 'app-appointment-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ResourceListPage, CellDef, AppButton, DatePipe, StatusChip, EnumFilter],
+  imports: [ClockPipe, ResourceListPage, CellDef, AppButton, DatePipe, StatusChip, EnumFilter],
   templateUrl: './appointment-list.page.html',
 })
 export class AppointmentListPage {

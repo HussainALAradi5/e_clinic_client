@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,6 +18,7 @@ import { TREATMENTS_TEXT } from '@constants/portal/treatments.constants';
   selector: 'app-my-treatments-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ClockPipe,
     DatePipe,
     MatButtonModule,
     MatIconModule,
