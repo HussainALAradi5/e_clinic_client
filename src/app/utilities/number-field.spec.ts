@@ -6,7 +6,7 @@ const money = { min: 0, max: 1000, step: 0.5, decimals: 3 };
 describe('number field', () => {
   it('keeps numbers only, with no minus sign', () => {
     expect(sanitizeNumber('-12a3', 0)).toBe('123');
-    expect(sanitizeNumber('1.5', 0)).toBe('15');
+    expect(sanitizeNumber('1.5', 0)).toBe('1');
     expect(sanitizeNumber('1.2345.6', 3)).toBe('1.234');
   });
 

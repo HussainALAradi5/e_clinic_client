@@ -4,7 +4,7 @@ import { NumberFieldOptions } from '@interfaces/ui/number-field-options.interfac
 export function sanitizeNumber(raw: string, decimals: number): string {
   const cleaned = raw.replace(/[^\d.]/g, '');
   if (decimals === 0) {
-    return cleaned.replace(/\./g, '');
+    return cleaned.split('.')[0];
   }
   const [whole, ...rest] = cleaned.split('.');
   return rest.length ? `${whole}.${rest.join('').slice(0, decimals)}` : whole;

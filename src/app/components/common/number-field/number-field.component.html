@@ -20,6 +20,7 @@
     [formControl]="field()"
     (input)="onInput($event)"
     (blur)="settle()"
+    (keydown.enter)="settle()"
     (keydown.arrowup)="onArrow($event, 1)"
     (keydown.arrowdown)="onArrow($event, -1)"
   />

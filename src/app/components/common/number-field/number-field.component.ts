@@ -40,7 +40,7 @@ export class NumberField {
 
   readonly label = input.required<string>();
   readonly control = input<FormControl<string | null> | null>(null);
-  readonly value = input<string | null>(null);
+  readonly value = input<string | number | null>(null);
   readonly min = input(NUMBER_FIELD_DEFAULTS.min);
   readonly max = input<number | null>(null);
   readonly step = input(NUMBER_FIELD_DEFAULTS.step);
@@ -53,6 +53,8 @@ export class NumberField {
   readonly valueChange = output<string | null>();
 
   private readonly own = new FormControl<string | null>(null);
+  /** The last value reported, so tabbing through an unchanged field reports nothing. */
+  private settled: string | null = null;
   protected readonly field = computed(() => this.control() ?? this.own);
   private readonly options = computed<NumberFieldOptions>(() => ({
     min: this.min(),
@@ -63,8 +65,12 @@ export class NumberField {
 
   constructor() {
     effect(() => {
-      const value = this.value();
-      untracked(() => this.own.setValue(value || null, { emitEvent: false }));
+      const raw = this.value();
+      const value = raw === null || raw === undefined || raw === '' ? null : String(raw);
+      untracked(() => {
+        this.own.setValue(value, { emitEvent: false });
+        this.settled = normaliseNumber(value, this.options());
+      });
     });
   }
 
@@ -113,6 +119,9 @@ export class NumberField {
       field.setValue(value);
       field.markAsDirty();
     }
-    this.valueChange.emit(value);
+    if (value !== this.settled) {
+      this.settled = value;
+      this.valueChange.emit(value);
+    }
   }
 }
