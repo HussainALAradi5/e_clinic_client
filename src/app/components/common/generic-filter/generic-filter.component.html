@@ -178,27 +178,24 @@
 
 <ng-template #range let-def>
   @let d = draft(def);
+  @let decimals = def.type === types.Money ? 3 : 0;
   <div class="inline-flex gap-1">
-    <mat-form-field subscriptSizing="dynamic" class="w-32">
-      <mat-label>{{ label(def.field) }} {{ text.from }}</mat-label>
-      <input
-        matInput
-        type="number"
-        inputmode="decimal"
-        [value]="d.min"
-        (change)="setDraft(def, { min: inputValue($event) })"
-      />
-    </mat-form-field>
-    <mat-form-field subscriptSizing="dynamic" class="w-32">
-      <mat-label>{{ text.to }}</mat-label>
-      <input
-        matInput
-        type="number"
-        inputmode="decimal"
-        [value]="d.max"
-        (change)="setDraft(def, { max: inputValue($event) })"
-      />
-    </mat-form-field>
+    <ui-number
+      class="w-44"
+      subscript="dynamic"
+      [label]="label(def.field) + ' ' + text.from"
+      [decimals]="decimals"
+      [value]="d.min || null"
+      (valueChange)="setDraft(def, { min: $event ?? '' })"
+    />
+    <ui-number
+      class="w-44"
+      subscript="dynamic"
+      [label]="text.to"
+      [decimals]="decimals"
+      [value]="d.max || null"
+      (valueChange)="setDraft(def, { max: $event ?? '' })"
+    />
   </div>
 </ng-template>
 

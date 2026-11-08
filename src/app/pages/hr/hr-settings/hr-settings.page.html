@@ -27,7 +27,6 @@
       <p class="m-0 text-sm">{{ s.description }}</p>
 
       <p class="state">
-        <mat-icon aria-hidden="true">{{ s.isEnabled ? 'toggle_on' : 'toggle_off' }}</mat-icon>
         @if (s.key === 'late_excuse') {
           {{ s.isEnabled ? text.onStaffCanSend : text.offLatenessIsRecorded }}
         } @else {
@@ -36,18 +35,48 @@
       </p>
 
       @if (s.hasAmount) {
-        <div class="rate">
-          <ui-money
-            [label]="text.overtimePayPerHour"
-            [control]="rate"
-            [hint]="text.emptyEachEmployeesHourly"
-          />
-          @if (canEdit) {
-            <ui-button icon="save" variant="tonal" [action]="saveRate" [disabled]="rate.invalid">{{
-              text.saveRate
-            }}</ui-button>
-          }
+        <div>
+          <h3 class="m-0 text-sm font-semibold">{{ text.payByTimeOfDay }}</h3>
+          <p class="m-0 text-xs text-on-surface-variant">{{ text.emptyEachEmployeesHourly }}</p>
         </div>
+        @for (band of bands.controls; track band; let i = $index) {
+          <div class="band">
+            <ui-text [label]="text.from" type="time" [control]="band.controls.start" />
+            <ui-text [label]="text.to" type="time" [control]="band.controls.end" />
+            <ui-number
+              [label]="text.perHour"
+              [control]="band.controls.rate"
+              [decimals]="3"
+              [step]="0.5"
+              [max]="1000"
+            />
+            @if (canEdit) {
+              <button
+                matIconButton
+                type="button"
+                [attr.aria-label]="text.removeTimeBand"
+                (click)="removeBand(i)"
+              >
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            }
+          </div>
+        }
+
+        @if (canEdit) {
+          <div class="actions">
+            <button matButton type="button" (click)="addBand()">
+              <mat-icon>add</mat-icon>{{ text.addTimeBand }}
+            </button>
+            <ui-button
+              icon="save"
+              variant="tonal"
+              [action]="saveRate"
+              [disabled]="bands.invalid"
+              >{{ text.saveRate }}</ui-button
+            >
+          </div>
+        }
       }
     </section>
   }

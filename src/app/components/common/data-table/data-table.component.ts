@@ -11,13 +11,16 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { CellDef, ROW_ACTIONS } from './cell.directive';
+import { NumberField } from '@components/common/number-field/number-field.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { Page } from '@interfaces/api/page.interface';
+import { NumberCellChange } from '@interfaces/ui/number-cell-change.interface';
 import { TableColumn } from '@interfaces/ui/table.interface';
 import { ListSelection } from '@utilities/list-selection';
 import { readPath } from '@utilities/read-path';
 import { DATA_TABLE_TEXT } from '@constants/common/data-table.constants';
+import { NUMBER_FIELD_DEFAULTS } from '@constants/common/number-field.constants';
 
 const SELECT = '__select';
 
@@ -33,6 +36,7 @@ const SELECT = '__select';
     MatSortModule,
     MatCheckboxModule,
     NgTemplateOutlet,
+    NumberField,
     Skeleton,
     StatusChip,
   ],
@@ -55,6 +59,7 @@ export class DataTable<T extends { id: string }> {
 
   readonly sortChange = output<string[]>();
   readonly rowClick = output<T>();
+  readonly numberChange = output<NumberCellChange<T>>();
   readonly selectAllMatching = output<void>();
 
   private readonly ownCells = contentChildren(CellDef<T>);
@@ -63,6 +68,7 @@ export class DataTable<T extends { id: string }> {
   protected readonly selectColumn = SELECT;
   protected readonly actionsColumn = ROW_ACTIONS;
   protected readonly read = readPath;
+  protected readonly cellDefaults = NUMBER_FIELD_DEFAULTS;
   protected readonly rows = computed(() => this.page()?.data ?? []);
   protected readonly total = computed(() => this.page()?.meta.total ?? 0);
   protected readonly pageIds = computed(() => this.rows().map((r) => r.id));

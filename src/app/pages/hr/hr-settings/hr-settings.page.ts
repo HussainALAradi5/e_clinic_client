@@ -1,14 +1,18 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { firstValueFrom } from 'rxjs';
 import { AppButton } from '@components/common/app-button/app-button.component';
-import { MoneyInput } from '@components/common/money-input/money-input.component';
+import { NumberField } from '@components/common/number-field/number-field.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
+import { TextField } from '@components/common/text-field/text-field.component';
 import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { SettingKey } from '@enums/hr/setting-key.enum';
+import { OvertimeBand } from '@interfaces/hr/overtime-band.interface';
+import { OvertimeBandForm } from '@interfaces/hr/overtime-band-form.interface';
 import { Setting } from '@interfaces/hr/setting.interface';
 import { AccessService } from '@services/auth/access.service';
 import { SettingApi } from '@services/hr/setting-api.service';
@@ -32,12 +36,14 @@ const LOOK: Record<SettingKey, { icon: string; tone: string }> = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePipe,
+    MatButtonModule,
     MatIconModule,
     MatSlideToggleModule,
     ReactiveFormsModule,
     AppButton,
-    MoneyInput,
+    NumberField,
     PageHeader,
+    TextField,
   ],
   templateUrl: './hr-settings.page.html',
   styleUrl: './hr-settings.page.scss',
@@ -53,37 +59,70 @@ export class HrSettingsPage implements OnInit {
   protected readonly zone = '+0300';
   protected readonly settings = signal<Setting[]>([]);
   protected readonly saving = signal<SettingKey | null>(null);
-  /** Overtime pay per hour; empty = the employee's hourly wage × 1.25. */
-  protected readonly rate = new FormControl<string | null>(null, [
-    Validators.min(0),
-    Validators.max(1000),
-    AppValidators.money,
-  ]);
+
+  /** Overtime pay by time of day; minutes outside every band are paid at the hourly wage × 1.25. */
+  protected readonly bands = new FormArray<FormGroup<OvertimeBandForm>>([]);
 
   async ngOnInit(): Promise<void> {
     const page = await firstValueFrom(this.api.list());
     this.settings.set(page.data);
-    this.rate.setValue(page.data.find((s) => s.hasAmount)?.amount?.amount ?? null);
-    if (!this.canEdit) this.rate.disable();
+    const overtime = page.data.find((s) => s.hasAmount);
+    this.loadBands(overtime?.bands ?? []);
+    if (!this.canEdit) this.bands.disable();
   }
 
   protected async toggle(setting: Setting, change: MatSlideToggleChange): Promise<void> {
     await this.save(setting, change.checked, () => (change.source.checked = setting.isEnabled));
   }
 
+  protected addBand(): void {
+    this.bands.push(this.bandGroup());
+  }
+
+  protected removeBand(index: number): void {
+    this.bands.removeAt(index);
+  }
+
   protected readonly saveRate = async (): Promise<void> => {
     const overtime = this.settings().find((s) => s.hasAmount);
-    if (!overtime || this.rate.invalid) return;
-    await this.save(overtime, overtime.isEnabled);
+    if (!overtime || this.bands.invalid) return;
+    await this.save(overtime, overtime.isEnabled, undefined, true);
+    this.loadBands(this.settings().find((s) => s.hasAmount)?.bands ?? []);
   };
 
-  private async save(setting: Setting, enabled: boolean, undo?: () => void): Promise<void> {
+  private bandGroup(band?: OvertimeBand): FormGroup<OvertimeBandForm> {
+    return new FormGroup<OvertimeBandForm>({
+      start: new FormControl(band?.start ?? null, Validators.required),
+      end: new FormControl(band?.end ?? null, Validators.required),
+      rate: new FormControl(band?.rate.amount ?? null, [Validators.required, AppValidators.money]),
+    });
+  }
+
+  private loadBands(bands: OvertimeBand[]): void {
+    this.bands.clear();
+    bands.forEach((band) => this.bands.push(this.bandGroup(band)));
+  }
+
+  private async save(
+    setting: Setting,
+    enabled: boolean,
+    undo?: () => void,
+    withBands = false,
+  ): Promise<void> {
     this.saving.set(setting.key);
     try {
       const saved = await firstValueFrom(
         this.api.save(setting.key, {
           isEnabled: enabled,
-          ...(setting.hasAmount ? { amount: this.rate.value || null } : {}),
+          ...(withBands
+            ? {
+                bands: this.bands.getRawValue().map((band) => ({
+                  start: band.start ?? '',
+                  end: band.end ?? '',
+                  rate: band.rate ?? '',
+                })),
+              }
+            : {}),
         }),
       );
       this.settings.update((list) => list.map((s) => (s.key === saved.key ? saved : s)));

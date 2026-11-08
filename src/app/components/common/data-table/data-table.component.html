@@ -69,6 +69,18 @@
                 context: { $implicit: row, value: read(row, column.field) }
               "
             />
+          } @else if (column.number; as number) {
+            <ui-number
+              [label]="column.label"
+              [value]="$any(read(row, column.field))"
+              [min]="number.min ?? cellDefaults.min"
+              [max]="number.max ?? null"
+              [step]="number.step ?? cellDefaults.step"
+              [decimals]="number.decimals ?? cellDefaults.decimals"
+              subscript="dynamic"
+              (click)="$event.stopPropagation()"
+              (valueChange)="numberChange.emit({ row, field: column.field, value: $event })"
+            />
           } @else if (column.enum) {
             <ui-status [value]="$any(read(row, column.field))" [enum]="column.enum" />
           } @else {
