@@ -36,8 +36,9 @@ describe('PageActivity', () => {
     });
     await TestBed.inject(Router).navigateByUrl(url);
     const fixture = TestBed.createComponent(PageActivity);
-    fixture.detectChanges();
     await fixture.whenStable();
+    await new Promise((resolve) => setTimeout(resolve));
+    fixture.detectChanges();
     return (fixture.nativeElement as HTMLElement).textContent ?? '';
   }
 
