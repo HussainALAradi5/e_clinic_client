@@ -22,7 +22,7 @@ import { ActivityLogStore } from '@services/identity/activity-log.store';
 
 /**
  * Read-only event log of any record: `<app-activity-log entity="invoice" [recordId]="invoice.id" />`.
- * Shown only to users who may read it — wrap it in `*hasAccess="'activity.read_all'"`.
+ * Record pages get it from their route (`activityLogRoute`); the patient file has it as a tab.
  */
 @Component({
   selector: 'app-activity-log',

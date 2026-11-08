@@ -1,7 +1,9 @@
+import { Data } from '@angular/router';
 import { AUDIT_EMPTY_VALUE } from '@constants/common/audit-changes.constants';
 import { ACTIVITY_LOG_TEXT } from '@constants/common/activity-log.constants';
 import { ActivityChange } from '@interfaces/identity/activity-change.interface';
 import { ActivityEntry } from '@interfaces/identity/activity-entry.interface';
+import { ActivityRouteData } from '@interfaces/identity/activity-route-data.interface';
 import { displayAuditValue } from '@utilities/audit';
 
 function describeChange(change: ActivityChange): string {
@@ -25,4 +27,10 @@ export function describeChanges(changes: ActivityChange[]): string {
 /** A stable sort, so entries of the same moment keep the server's order. */
 export function newestFirst(entries: ActivityEntry[]): ActivityEntry[] {
   return [...entries].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+}
+
+/** Route data that puts the event log below a record page; [access] is who sees it there. */
+export function activityLogRoute(entity: string, access: string): Data {
+  const activityLog: ActivityRouteData = { entity, access };
+  return { activityLog };
 }

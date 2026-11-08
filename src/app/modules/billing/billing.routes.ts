@@ -1,3 +1,4 @@
+import { activityLogRoute } from '@utilities/activity-log';
 import { Routes } from '@angular/router';
 import { accessGuard } from '@middlewares/guards/auth.guards';
 
@@ -30,6 +31,7 @@ export const BILLING_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Invoice · e-Clinic',
+        data: activityLogRoute('invoice', 'invoices.read_all'),
         loadComponent: () =>
           import('@pages/billing/invoice-detail/invoice-detail.page').then(
             (m) => m.InvoiceDetailPage,
@@ -77,6 +79,7 @@ export const BILLING_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Insurance claim · e-Clinic',
+        data: activityLogRoute('insurance_claim', 'claims.read_all'),
         loadComponent: () =>
           import('@pages/billing/claim-detail/claim-detail.page').then((m) => m.ClaimDetailPage),
       },
@@ -97,6 +100,7 @@ export const BILLING_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Cash drawer · e-Clinic',
+        data: activityLogRoute('cash_session', 'cash_sessions.read_all'),
         loadComponent: () =>
           import('@pages/billing/cash-session-detail/cash-session-detail.page').then(
             (m) => m.CashSessionDetailPage,
@@ -117,6 +121,7 @@ export const BILLING_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Service · e-Clinic',
+        data: activityLogRoute('billable_service', 'services.read_all'),
         loadComponent: () =>
           import('@pages/billing/service-detail/service-detail.page').then(
             (m) => m.ServiceDetailPage,
