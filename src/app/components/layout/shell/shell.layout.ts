@@ -60,6 +60,8 @@ export class ShellLayout {
   private readonly session = inject(SessionService);
 
   protected readonly text = SHELL_TEXT;
+  /** The photo link that failed (it is short-lived): the initials show instead until a new one arrives. */
+  protected readonly brokenAvatar = signal<string | null | undefined>(null);
   protected readonly securityPath = ACCOUNT_SECURITY_PATH;
   protected readonly handset = toSignal(
     inject(BreakpointObserver)
