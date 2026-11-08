@@ -3,12 +3,9 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } f
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
 import { RouterLink } from '@angular/router';
 import { BillingActions } from '@services/billing/billing-actions.service';
-import { HasAccessDirective } from '@directives/has-access.directive';
 import { AppButton } from '@components/common/app-button/app-button.component';
-import { AuditHistory } from '@components/common/audit-history/audit-history.component';
 import { ErrorState } from '@components/common/error-state/error-state.component';
 import { Facts } from '@components/common/facts/facts.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
@@ -40,7 +37,7 @@ const SOURCE_ROUTES: Record<string, string> = {
 
 /**
  * `/billing/invoices/:id` — the bill as the patient sees it: lines, totals and balance; the next step (edit and
- * issue a draft, take payment); payments with receipt, void and refund; refunds with their approval; history.
+ * issue a draft, take payment); payments with receipt, void and refund; refunds with their approval.
  */
 import { InvoicePaidBar } from '@components/billing/invoice-paid-bar/invoice-paid-bar.component';
 import { InvoiceCoverage } from '@components/billing/invoice-coverage/invoice-coverage.component';
@@ -57,14 +54,11 @@ import { REMINDER_TEXT } from '@constants/billing/reminder.constants';
     Skeleton,
     Facts,
     StatusChip,
-    AuditHistory,
-    HasAccessDirective,
     MoneyPipe,
     DatePipe,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-    MatTabsModule,
     RouterLink,
   ],
   templateUrl: './invoice-detail.page.html',
