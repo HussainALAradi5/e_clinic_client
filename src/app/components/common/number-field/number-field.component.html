@@ -1,0 +1,40 @@
+<mat-form-field class="w-full" [subscriptSizing]="subscript()">
+  <mat-label>{{ label() }}</mat-label>
+  <button
+    matIconPrefix
+    matIconButton
+    type="button"
+    [attr.aria-label]="text.decrease + ' ' + label()"
+    [disabled]="!canDecrease()"
+    (click)="change(-1)"
+  >
+    <mat-icon>remove</mat-icon>
+  </button>
+  @if (prefix()) {
+    <span matTextPrefix class="pe-1 text-on-surface-variant">{{ prefix() }}</span>
+  }
+  <input
+    matInput
+    class="tabular-nums"
+    [attr.inputmode]="decimals() ? 'decimal' : 'numeric'"
+    [formControl]="field()"
+    (input)="onInput($event)"
+    (blur)="settle()"
+    (keydown.arrowup)="onArrow($event, 1)"
+    (keydown.arrowdown)="onArrow($event, -1)"
+  />
+  <button
+    matIconSuffix
+    matIconButton
+    type="button"
+    [attr.aria-label]="text.increase + ' ' + label()"
+    [disabled]="!canIncrease()"
+    (click)="change(1)"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+  @if (hint()) {
+    <mat-hint>{{ hint() }}</mat-hint>
+  }
+  <mat-error>{{ error() }}</mat-error>
+</mat-form-field>

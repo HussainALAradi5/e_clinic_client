@@ -25,6 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { DateRangeFilter } from '@components/common/date-range-filter/date-range-filter.component';
 import { EntitySelect } from '@components/common/entity-select/entity-select.component';
+import { NumberField } from '@components/common/number-field/number-field.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { RELATION_ENDPOINTS } from '@constants/relation-lookups.constants';
 import { hasTones } from '@constants/status-tones.constants';
@@ -73,6 +74,7 @@ const SEARCH_HINT_WORDS = 2;
     MatSelectModule,
     MatSlideToggleModule,
     MatTooltipModule,
+    NumberField,
     DateRangeFilter,
     EntitySelect,
     StatusChip,
