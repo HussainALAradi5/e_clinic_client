@@ -143,6 +143,50 @@ html {
       container-background-color: transparent,
     )
   );
+  // Switches: a slim 40 x 22 pill with a white knob and no icons; both themes follow the tokens.
+  @include mat.slide-toggle-overrides(
+    (
+      track-width: 40px,
+      track-height: 22px,
+      track-shape: 999px,
+      track-outline-width: 0,
+      selected-track-outline-width: 0,
+      disabled-unselected-track-outline-width: 0,
+      handle-width: 18px,
+      handle-height: 18px,
+      handle-shape: 999px,
+      selected-handle-size: 18px,
+      unselected-handle-size: 18px,
+      with-icon-handle-size: 18px,
+      pressed-handle-size: 18px,
+      selected-icon-size: 0,
+      unselected-icon-size: 0,
+      state-layer-size: 34px,
+      // The knob sits 2 px inside both ends of the pill.
+      unselected-handle-horizontal-margin: 0 2px,
+      unselected-with-icon-handle-horizontal-margin: 0 2px,
+      unselected-pressed-handle-horizontal-margin: 0 2px,
+      selected-handle-horizontal-margin: 0 -2px,
+      selected-with-icon-handle-horizontal-margin: 0 -2px,
+      selected-pressed-handle-horizontal-margin: 0 -2px,
+      selected-track-color: var(--mat-sys-primary),
+      selected-hover-track-color: var(--mat-sys-primary),
+      selected-focus-track-color: var(--mat-sys-primary),
+      selected-pressed-track-color: var(--mat-sys-primary),
+      unselected-track-color: color-mix(in srgb, var(--mat-sys-outline) 45%, transparent),
+      unselected-hover-track-color: color-mix(in srgb, var(--mat-sys-outline) 60%, transparent),
+      unselected-focus-track-color: color-mix(in srgb, var(--mat-sys-outline) 60%, transparent),
+      unselected-pressed-track-color: color-mix(in srgb, var(--mat-sys-outline) 70%, transparent),
+      selected-handle-color: #ffffff,
+      selected-hover-handle-color: #ffffff,
+      selected-focus-handle-color: #ffffff,
+      selected-pressed-handle-color: #ffffff,
+      unselected-handle-color: #ffffff,
+      unselected-hover-handle-color: #ffffff,
+      unselected-focus-handle-color: #ffffff,
+      unselected-pressed-handle-color: #ffffff,
+    )
+  );
 }
 
 html[data-theme='light'] {

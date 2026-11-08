@@ -8,7 +8,7 @@
     [disabled]="control().disabled"
     [attr.aria-label]="label()"
     (click)="pick()"
-    (keydown.enter)="pick()"
+    (keydown.enter)="$event.preventDefault(); pick()"
     (keydown.space)="$event.preventDefault(); pick()"
   />
   <button
