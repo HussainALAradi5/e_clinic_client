@@ -177,6 +177,11 @@
         </div>
       </ng-template>
     </mat-tab>
+    <mat-tab [label]="text.activity" *hasAccess="'activity.read_all'">
+      <ng-template matTabContent
+        ><app-activity-log class="pt-4" entity="patient_profile" [recordId]="patient.id"
+      /></ng-template>
+    </mat-tab>
   </mat-tab-group>
 } @else {
   <ui-skeleton [rows]="8" />

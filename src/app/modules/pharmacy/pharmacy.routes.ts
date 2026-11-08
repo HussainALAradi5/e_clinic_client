@@ -1,3 +1,4 @@
+import { activityLogRoute } from '@utilities/activity-log';
 import { Routes } from '@angular/router';
 import { accessGuard } from '@middlewares/guards/auth.guards';
 
@@ -35,6 +36,7 @@ export const PHARMACY_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Prescription · e-Clinic',
+        data: activityLogRoute('prescription', 'prescriptions.read_all'),
         loadComponent: () =>
           import('@pages/pharmacy/prescription-detail/prescription-detail.page').then(
             (m) => m.PrescriptionDetailPage,
@@ -57,6 +59,7 @@ export const PHARMACY_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Dispensation · e-Clinic',
+        data: activityLogRoute('dispensation', 'dispensing.read_all'),
         loadComponent: () =>
           import('@pages/pharmacy/dispensation-detail/dispensation-detail.page').then(
             (m) => m.DispensationDetailPage,
@@ -79,6 +82,7 @@ export const PHARMACY_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Medication · e-Clinic',
+        data: activityLogRoute('medication', 'medications.read_all'),
         loadComponent: () =>
           import('@pages/pharmacy/medication-detail/medication-detail.page').then(
             (m) => m.MedicationDetailPage,

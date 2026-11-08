@@ -1,0 +1,85 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 0.75rem;
+  background: transparent;
+  color: var(--mat-sys-primary);
+  font: inherit;
+  font-weight: 500;
+  text-align: start;
+  cursor: pointer;
+  transition: background-color var(--motion-fast, 140ms) var(--motion-ease, ease-out);
+
+  &:hover {
+    background: var(--mat-sys-surface-container);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+  }
+}
+
+.label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.chevron {
+  flex: none;
+  transition: transform var(--motion-base, 240ms) var(--motion-ease, ease-out);
+}
+
+.chevron-open {
+  transform: rotate(180deg);
+}
+
+// Animating the row from 0fr to 1fr gives a smooth height for content of any size. Hidden content leaves the tab
+// order and the accessibility tree through `visibility`, which flips only after the closing animation.
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  grid-template-columns: minmax(0, 1fr);
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    grid-template-rows var(--motion-base, 240ms) var(--motion-ease, ease-out),
+    opacity var(--motion-base, 240ms) var(--motion-ease, ease-out),
+    visibility 0s linear var(--motion-base, 240ms);
+}
+
+.panel-open {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  opacity: 1;
+  transition:
+    grid-template-rows var(--motion-base, 240ms) var(--motion-ease, ease-out),
+    opacity var(--motion-base, 240ms) var(--motion-ease, ease-out),
+    visibility 0s;
+}
+
+.clip {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.content {
+  padding-top: 0.75rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .chevron,
+  .panel,
+  .panel-open {
+    transition: none;
+  }
+}

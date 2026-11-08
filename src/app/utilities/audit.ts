@@ -1,13 +1,15 @@
+import { AUDIT_EMPTY_VALUE } from '@constants/common/audit-changes.constants';
 import { humanise } from '@utilities/text';
 import { AuditChange } from '@interfaces/identity/audit-change.interface';
 import { AuditLog } from '@interfaces/identity/audit-log.interface';
 
-function display(value: unknown): string {
+/** A stored value as text; empty values read as AUDIT_EMPTY_VALUE. */
+export function displayAuditValue(value: unknown): string {
   if (value === null || value === undefined || value === '') {
-    return '—';
+    return AUDIT_EMPTY_VALUE;
   }
   if (Array.isArray(value)) {
-    return value.length ? value.map(display).join(', ') : '—';
+    return value.length ? value.map(displayAuditValue).join(', ') : AUDIT_EMPTY_VALUE;
   }
   return typeof value === 'object' ? JSON.stringify(value) : String(value);
 }
@@ -18,7 +20,7 @@ export function auditChanges(entry: Pick<AuditLog, 'oldValues' | 'newValues'>): 
   const after = entry.newValues ?? {};
   return [...new Set([...Object.keys(before), ...Object.keys(after)])].map((key) => ({
     field: humanise(key.replace(/([A-Z])/g, '_$1').toLowerCase()),
-    before: display(before[key]),
-    after: display(after[key]),
+    before: displayAuditValue(before[key]),
+    after: displayAuditValue(after[key]),
   }));
 }

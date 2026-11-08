@@ -1,0 +1,8 @@
+@if (target(); as log) {
+  <section class="mt-6">
+    <h2 class="mb-2 text-base font-semibold">{{ text.title }}</h2>
+    <mat-card appearance="outlined" class="!p-5">
+      <app-activity-log [entity]="log.entity" [recordId]="log.recordId" />
+    </mat-card>
+  </section>
+}

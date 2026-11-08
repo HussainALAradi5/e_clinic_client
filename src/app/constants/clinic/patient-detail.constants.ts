@@ -47,6 +47,7 @@ export const PATIENT_DETAIL_TEXT = {
   medicines: 'Medicines',
   timeline: 'Timeline',
   history: 'History',
+  activity: 'Activity',
   y: ' y · ',
   visits: 'Visits (',
 };

@@ -1,3 +1,4 @@
+import { activityLogRoute } from '@utilities/activity-log';
 import { Routes } from '@angular/router';
 import { accessGuard } from '@middlewares/guards/auth.guards';
 
@@ -26,6 +27,7 @@ export const SUPPORT_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Ticket · e-Clinic',
+        data: activityLogRoute('support_ticket', 'tickets.read_all'),
         loadComponent: () =>
           import('@pages/communication/ticket-detail/ticket-detail.page').then(
             (m) => m.TicketDetailPage,

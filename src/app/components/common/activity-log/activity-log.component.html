@@ -1,0 +1,27 @@
+@if (store.entries().length) {
+  <app-activity-entries [entries]="latest()" />
+  @if (earlier().length) {
+    <ui-collapse class="mt-3" [label]="earlierLabel()" [(expanded)]="expanded">
+      <app-activity-entries [entries]="earlier()" />
+    </ui-collapse>
+  }
+  @if (store.error(); as error) {
+    <ui-error [error]="error" (retry)="store.retry()" />
+  } @else if (store.nextCursor()) {
+    <button
+      matButton
+      type="button"
+      class="mt-2 w-full"
+      [disabled]="store.loading()"
+      (click)="loadMore()"
+    >
+      {{ store.loading() ? text.loading : text.loadMore }}
+    </button>
+  }
+} @else if (store.loading()) {
+  <ui-skeleton [rows]="4" />
+} @else if (store.error(); as error) {
+  <ui-error [error]="error" (retry)="store.retry()" />
+} @else {
+  <ui-empty icon="history" [title]="text.noActivityYet" />
+}
