@@ -1,5 +1,6 @@
 /** Mirror of App\Enums\Identity\AuditAction — Action recorded in audit_logs. */
 export enum AuditAction {
+  Viewed = 'viewed',
   Created = 'created',
   Updated = 'updated',
   Deleted = 'deleted',

@@ -1,0 +1,17 @@
+<ol class="m-0 flex list-none flex-col gap-3 p-0">
+  @for (row of rows(); track row.entry.id) {
+    <li class="min-w-0 text-sm leading-6 [overflow-wrap:anywhere]">
+      <span class="font-medium">{{ row.entry.changedBy ?? text.system }}</span
+      >&ngsp;<ui-status class="align-middle" enum="AuditAction" [value]="row.entry.action" [text]="row.entry.actionLabel" />&ngsp;
+      @if (row.changes) {
+        <span>{{ row.changes }}</span
+        >&ngsp;
+      }
+      <span class="text-on-surface-variant"
+        >{{ text.separator }}&ngsp;<time [attr.datetime]="row.entry.createdAt">{{
+          row.entry.createdAt | date: dateFormat
+        }}</time></span
+      >
+    </li>
+  }
+</ol>

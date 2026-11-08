@@ -12,9 +12,13 @@ import { EnumService } from '@services/data/enum.service';
 export class StatusChip {
   readonly value = input.required<string | number | null | undefined>();
   readonly enum = input.required<string>();
+  /** Text to show instead of the enum's own label, when the server already sent the exact wording. */
+  readonly text = input<string | null>(null);
 
   private readonly enums = inject(EnumService);
-  protected readonly label = computed(() => this.enums.label(this.enum(), this.value()));
+  protected readonly label = computed(
+    () => this.text() ?? this.enums.label(this.enum(), this.value()),
+  );
   protected readonly classes = computed(
     () => TONE_CLASSES[this.enums.tone(this.enum(), this.value())],
   );

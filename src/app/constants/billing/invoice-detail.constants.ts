@@ -36,6 +36,7 @@ export const INVOICE_DETAIL_TEXT = {
   reject: 'Reject',
   payOut: 'Pay out',
   history: 'History',
+  activity: 'Activity',
   invoice: 'Invoice ',
   draftInvoice: 'Draft invoice',
   freeTextLine: 'Free-text line',

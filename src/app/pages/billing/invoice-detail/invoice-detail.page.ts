@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
 import { BillingActions } from '@services/billing/billing-actions.service';
 import { HasAccessDirective } from '@directives/has-access.directive';
 import { AppButton } from '@components/common/app-button/app-button.component';
+import { ActivityLog } from '@components/common/activity-log/activity-log.component';
 import { AuditHistory } from '@components/common/audit-history/audit-history.component';
 import { ErrorState } from '@components/common/error-state/error-state.component';
 import { Facts } from '@components/common/facts/facts.component';
@@ -58,6 +59,7 @@ import { REMINDER_TEXT } from '@constants/billing/reminder.constants';
     Facts,
     StatusChip,
     AuditHistory,
+    ActivityLog,
     HasAccessDirective,
     MoneyPipe,
     DatePipe,

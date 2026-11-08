@@ -311,6 +311,13 @@
     </mat-card>
   }
 
+  <section *hasAccess="'activity.read_all'">
+    <h2 class="mb-2 mt-6 text-base font-semibold">{{ text.activity }}</h2>
+    <mat-card appearance="outlined" class="!p-5">
+      <app-activity-log entity="invoice" [recordId]="inv.id" />
+    </mat-card>
+  </section>
+
   <mat-tab-group
     *hasAccess="'audit.read_all | audit.read_own'"
     class="mt-4"
