@@ -1,3 +1,8 @@
+import { StatusTone } from '@enums/ui/status-tone.enum';
+
+/** Badge colour of the people on an appointment. */
+export const APPOINTMENT_PERSON_TONES = { patient: StatusTone.Teal, doctor: StatusTone.Indigo };
+
 /** Text of clinic/appointment-detail/appointment-detail.page (labels, messages, confirmations). */
 export const APPOINTMENT_DETAIL_TEXT = {
   type: 'Type',

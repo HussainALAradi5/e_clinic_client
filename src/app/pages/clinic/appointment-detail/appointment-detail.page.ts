@@ -34,7 +34,10 @@ import { AppointmentApi } from '@services/clinic/appointment-api.service';
 import { EnumService } from '@services/data/enum.service';
 import { formatMoney } from '@utilities/money';
 import { StatusStep } from '@interfaces/clinic/appointment-detail.interface';
-import { APPOINTMENT_DETAIL_TEXT } from '@constants/clinic/appointment-detail.constants';
+import {
+  APPOINTMENT_DETAIL_TEXT,
+  APPOINTMENT_PERSON_TONES,
+} from '@constants/clinic/appointment-detail.constants';
 
 /** `/clinic/appointments/:id` — who, when, where; the next status actions; the status trail. */
 @Component({
@@ -61,6 +64,7 @@ import { APPOINTMENT_DETAIL_TEXT } from '@constants/clinic/appointment-detail.co
 })
 export class AppointmentDetailPage implements OnInit {
   protected readonly text = APPOINTMENT_DETAIL_TEXT;
+  protected readonly personTones = APPOINTMENT_PERSON_TONES;
 
   readonly id = input.required<string>();
 
@@ -105,15 +109,12 @@ export class AppointmentDetailPage implements OnInit {
     const a = this.appointment();
     if (!a) return [];
     return [
-      { label: APPOINTMENT_DETAIL_TEXT.type, value: this.enums.label('AppointmentType', a.type) },
+      { label: APPOINTMENT_DETAIL_TEXT.type, value: a.type, enum: 'AppointmentType' },
       {
         label: APPOINTMENT_DETAIL_TEXT.room,
         value: a.room ? `${a.room.code} · ${a.room.name}` : null,
       },
-      {
-        label: APPOINTMENT_DETAIL_TEXT.bookedVia,
-        value: this.enums.label('AppointmentSource', a.source),
-      },
+      { label: APPOINTMENT_DETAIL_TEXT.bookedVia, value: a.source, enum: 'AppointmentSource' },
       {
         label: APPOINTMENT_DETAIL_TEXT.service,
         value: a.billableService

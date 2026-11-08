@@ -68,7 +68,7 @@
           class="block rounded-lg p-2 -mx-2 hover:bg-surface-container"
           [routerLink]="['/clinic/patients', p.id]"
         >
-          <span class="block font-medium">{{ p.fullName }}</span>
+          <ui-status class="mb-1" [value]="p.fullName" [text]="p.fullName" [tone]="personTones.patient" />
           <span class="block text-sm text-on-surface-variant"
             >{{ p.code }} · {{ p.gender | enumLabel: 'Gender' }} ·
             {{ p.dateOfBirth | date: dateFormat }} · {{ p.phone }}</span
@@ -80,7 +80,7 @@
           class="mt-2 block rounded-lg p-2 -mx-2 hover:bg-surface-container"
           [routerLink]="['/clinic/doctors', d.id]"
         >
-          <span class="block font-medium">{{ d.fullName }}</span>
+          <ui-status class="mb-1" [value]="d.fullName" [text]="d.fullName" [tone]="personTones.doctor" />
           <span class="block text-sm text-on-surface-variant">{{ d.jobTitle }}</span>
         </a>
       }
