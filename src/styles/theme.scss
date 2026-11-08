@@ -390,3 +390,14 @@ body {
 .mat-button-toggle-button {
   border-radius: 999px;
 }
+
+// Switches: no halo around the knob; the pill's own colour answers hover and a ring shows keyboard focus.
+.mat-mdc-slide-toggle .mdc-switch__ripple,
+.mat-mdc-slide-toggle .mat-mdc-slide-toggle-ripple {
+  display: none;
+}
+
+.mat-mdc-slide-toggle .mdc-switch:focus-visible .mdc-switch__track {
+  outline: 2px solid var(--mat-sys-primary);
+  outline-offset: 2px;
+}
