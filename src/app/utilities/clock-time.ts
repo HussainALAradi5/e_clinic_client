@@ -1,3 +1,4 @@
+import { wallClock } from '@utilities/clock-format';
 import { ClockTime } from '@interfaces/ui/clock-time.interface';
 
 /** Times are stored as 24-hour "HH:mm" (what the API takes) and shown on the 12-hour clock with AM / PM. */
@@ -16,12 +17,8 @@ export const ClockTimes = {
     return `${String(h).padStart(2, '0')}:${String(time.minute).padStart(2, '0')}`;
   },
 
-  /** "16:05" → "4:05 PM"; empty → "". */
+  /** "16:05" → "4:05 PM", or "16:05" on the 24-hour clock; empty → "". */
   label(value: string | null | undefined): string {
-    if (!value) {
-      return '';
-    }
-    const t = ClockTimes.parse(value);
-    return `${t.hour}:${String(t.minute).padStart(2, '0')} ${t.pm ? 'PM' : 'AM'}`;
+    return wallClock(value);
   },
 };

@@ -1,3 +1,4 @@
+import { wallClock } from '@utilities/clock-format';
 import { CLINIC_TIME_ZONE } from '@constants/app.constants';
 import { addDays, clinicIsoDate, clinicTime } from '@utilities/clinic-time';
 import { BubbleColor } from '@enums/communication/bubble-color.enum';
@@ -43,7 +44,7 @@ export function chatStamp(iso: string | null): string {
   const instant = new Date(iso);
   const day = clinicIsoDate(instant);
   const today = clinicIsoDate();
-  if (day === today) return clinicTime(instant);
+  if (day === today) return wallClock(clinicTime(instant));
   if (day > addDays(today, -6)) {
     return new Intl.DateTimeFormat('en-GB', {
       timeZone: CLINIC_TIME_ZONE,

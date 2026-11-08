@@ -1,3 +1,4 @@
+import { wallClock } from '@utilities/clock-format';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -128,7 +129,9 @@ export class MessageBubble {
     return others.length > 0 && others.every((m) => !!m.lastReadAt && m.lastReadAt >= sent);
   });
 
-  protected readonly time = computed(() => clinicTime(new Date(this.message().createdAt)));
+  protected readonly time = computed(() =>
+    wallClock(clinicTime(new Date(this.message().createdAt))),
+  );
 
   protected reactedByMe(userIds: string[]): boolean {
     return userIds.includes(this.meId());
