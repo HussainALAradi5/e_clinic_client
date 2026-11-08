@@ -3,7 +3,7 @@
   <p class="mt-0 text-sm text-on-surface-variant">
     {{ data.appointment.patient?.fullName }} {{ text.with }}
     {{ data.appointment.provider?.fullName }} {{ text.on }} {{ data.appointment.scheduledDate }}
-    {{ text.at }} {{ data.appointment.startTime }}{{ text.thePatientGetsA }}
+    {{ text.at }} {{ data.appointment.startTime | clock }}{{ text.thePatientGetsA }}
   </p>
   <ui-form
     [form]="form"

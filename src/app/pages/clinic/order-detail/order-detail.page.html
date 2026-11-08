@@ -86,7 +86,7 @@
           </h2>
           @if (o.completedAt) {
             <span class="text-xs text-on-surface-variant">{{
-              o.completedAt | date: dateTimeFormat
+              o.completedAt | date: dateTimeFormat()
             }}</span>
           }
         </div>

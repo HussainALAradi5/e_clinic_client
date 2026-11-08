@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -28,6 +29,7 @@ import { SCHEDULE_EXCEPTION_DIALOG_TEXT } from '@constants/clinic/schedule-excep
   selector: 'app-schedule-exception-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ClockPipe,
     MatDialogModule,
     MatCheckboxModule,
     MatIconModule,

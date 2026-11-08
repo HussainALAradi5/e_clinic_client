@@ -1,3 +1,4 @@
+import { wallClock } from '@utilities/clock-format';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -156,7 +157,7 @@ export class PortalHomePage {
     const done = `${t.progress?.attendedSessions ?? 0} of ${t.plannedSessions} sessions`;
     return {
       detail: next
-        ? `${t.title}: next ${visitDay(next.scheduledDate)}, ${next.startTime}`
+        ? `${t.title}: next ${visitDay(next.scheduledDate)}, ${wallClock(next.startTime)}`
         : `${t.title}: ${done}`,
       flag: false,
     };

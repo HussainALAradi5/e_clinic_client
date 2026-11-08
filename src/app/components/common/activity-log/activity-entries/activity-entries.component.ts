@@ -1,10 +1,8 @@
+import { dateTimeSecondsFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import {
-  ACTIVITY_LOG_DATE_FORMAT,
-  ACTIVITY_LOG_TEXT,
-} from '@constants/common/activity-log.constants';
+import { ACTIVITY_LOG_TEXT } from '@constants/common/activity-log.constants';
 import { ActivityEntry } from '@interfaces/identity/activity-entry.interface';
 import { describeChanges } from '@utilities/activity-log';
 
@@ -18,7 +16,7 @@ import { describeChanges } from '@utilities/activity-log';
 })
 export class ActivityEntries {
   protected readonly text = ACTIVITY_LOG_TEXT;
-  protected readonly dateFormat = ACTIVITY_LOG_DATE_FORMAT;
+  protected readonly dateFormat = dateTimeSecondsFormat;
 
   readonly entries = input.required<ActivityEntry[]>();
 

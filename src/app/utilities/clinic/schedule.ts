@@ -1,3 +1,4 @@
+import { wallClock } from '@utilities/clock-format';
 import { ScheduleBlock } from '@interfaces/clinic/schedule.interface';
 
 /** Clinic week order: Sunday first (Bahrain weekend Friday–Saturday). */
@@ -14,7 +15,7 @@ export function weekRows(
       blocks
         .filter((b) => b.dayOfWeek === day)
         .sort((a, b) => a.startTime.localeCompare(b.startTime))
-        .map((b) => `${b.startTime}–${b.endTime}`)
+        .map((b) => `${wallClock(b.startTime)}–${wallClock(b.endTime)}`)
         .join(', ') || 'Off',
   }));
 }

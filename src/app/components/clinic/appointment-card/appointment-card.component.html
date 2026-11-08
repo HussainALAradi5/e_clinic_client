@@ -5,7 +5,7 @@
 >
   <a class="block" [routerLink]="['/clinic/appointments', a.id]">
     <div class="flex items-baseline gap-2">
-      <span class="text-lg font-semibold tabular-nums">{{ a.startTime }}</span>
+      <span class="text-lg font-semibold tabular-nums">{{ a.startTime | clock }}</span>
       @if (late()) {
         <span class="flex items-center gap-1 text-xs font-medium text-error"
           ><mat-icon class="!size-4 !text-base">schedule</mat-icon> {{ text.late }}</span

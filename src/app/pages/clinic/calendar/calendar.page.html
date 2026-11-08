@@ -146,7 +146,7 @@
               [style.top.px]="top(a)"
               [style.height.px]="blockHeight(a)"
               [attr.aria-label]="
-                a.startTime +
+                (a.startTime | clock) +
                 ' ' +
                 a.patient?.fullName +
                 ', ' +
@@ -154,7 +154,7 @@
               "
               (click)="open(a, $event)"
             >
-              <span class="font-semibold tabular-nums">{{ a.startTime }}</span>
+              <span class="font-semibold tabular-nums">{{ a.startTime | clock }}</span>
               {{ a.patient?.fullName }}
               @if (blockHeight(a) >= 34) {
                 <span class="block truncate opacity-80"

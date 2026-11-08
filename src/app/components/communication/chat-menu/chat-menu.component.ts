@@ -1,10 +1,10 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { CHAT_MENU_TEXT, MUTE_CHOICES } from '@constants/communication/chat-menu.constants';
 import { TapMotionDirective } from '@directives/tap-motion.directive';
 import { ConversationType } from '@enums/communication/chat.enum';
@@ -42,7 +42,7 @@ export class ChatMenu {
   protected readonly text = CHAT_MENU_TEXT;
   protected readonly actionText = CHAT_ACTIONS_TEXT;
   protected readonly choices = MUTE_CHOICES;
-  protected readonly dateFormat = DATE_TIME_FORMAT;
+  protected readonly dateFormat = dateTimeFormat;
   protected readonly isGroup = computed(() => this.chat().type === ConversationType.Group);
 
   protected async mute(duration: MuteDuration | null): Promise<void> {

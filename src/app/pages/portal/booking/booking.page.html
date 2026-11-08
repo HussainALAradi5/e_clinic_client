@@ -115,7 +115,7 @@
                 [attr.aria-checked]="slot()?.start === s.start"
                 (click)="slot.set(s)"
               >
-                {{ s.startTime }}
+                {{ s.startTime | clock }}
               </button>
             }
           </div>

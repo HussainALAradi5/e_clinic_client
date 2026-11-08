@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -28,7 +29,15 @@ const CODE_STATUSES = [
 @Component({
   selector: 'app-visit-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, MatButtonModule, MatIconModule, AppButton, StatusChip, EnumLabelPipe],
+  imports: [
+    ClockPipe,
+    DatePipe,
+    MatButtonModule,
+    MatIconModule,
+    AppButton,
+    StatusChip,
+    EnumLabelPipe,
+  ],
   templateUrl: './visit-card.component.html',
   styleUrl: './visit-card.component.scss',
 })

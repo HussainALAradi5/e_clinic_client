@@ -87,7 +87,7 @@
                   @for (p of d.payments; track p.id) {
                     <li class="flex items-center gap-3 py-1">
                       <span class="flex-1">
-                        {{ p.paidAt | date: dateTimeFormat : zone }} ·
+                        {{ p.paidAt | date: dateTimeFormat() : zone }} ·
                         {{ p.method | enumLabel: 'PaymentMethod' }}
                       </span>
                       <span class="tabular-nums">{{ p.amount | money }}</span>

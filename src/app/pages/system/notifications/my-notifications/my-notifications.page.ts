@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -22,7 +23,6 @@ import { EmptyState } from '@components/common/empty-state/empty-state.component
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Paginator } from '@components/common/paginator/paginator.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import {
   NOTIFICATION_TOPICS,
   notificationLink,
@@ -77,7 +77,7 @@ export class MyNotificationsPage {
 
   protected readonly text = MY_NOTIFICATIONS_TEXT;
   protected readonly topics = NOTIFICATION_TOPICS;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly dateFields = [{ value: 'created_at', label: MY_NOTIFICATIONS_TEXT.received }];
   protected readonly chips: { value: ReadFilter; label: string }[] = [
     { value: 'all', label: MY_NOTIFICATIONS_TEXT.all },

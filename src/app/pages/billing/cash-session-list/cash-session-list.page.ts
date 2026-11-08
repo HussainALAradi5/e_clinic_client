@@ -1,8 +1,9 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
-import { DATE_FORMAT, DATE_TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { CASH_SESSION_LIST_TEXT } from '@constants/billing/cash-session-list.constants';
 
@@ -17,5 +18,5 @@ export class CashSessionListPage {
   protected readonly text = CASH_SESSION_LIST_TEXT;
 
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
 }

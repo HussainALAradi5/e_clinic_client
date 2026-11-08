@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
@@ -16,7 +17,7 @@ import { RESCHEDULE_DIALOG_TEXT } from '@constants/clinic/reschedule-dialog.cons
 @Component({
   selector: 'app-reschedule-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatDialogModule, TextField, SlotPicker, AppButton],
+  imports: [ClockPipe, MatDialogModule, TextField, SlotPicker, AppButton],
   templateUrl: './reschedule-dialog.component.html',
 })
 export class RescheduleDialog {

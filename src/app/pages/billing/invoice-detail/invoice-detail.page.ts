@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe, formatDate } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,7 +12,7 @@ import { Facts } from '@components/common/facts/facts.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_FORMAT, DATE_TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { DiscountType } from '@enums/billing/discount-type.enum';
 import { InvoiceStatus, PAYABLE_INVOICE_STATUSES } from '@enums/billing/invoice-status.enum';
 import { PaymentStatus } from '@enums/billing/payment-status.enum';
@@ -73,7 +74,7 @@ export class InvoiceDetailPage implements OnInit {
 
   protected readonly variants = ButtonVariant;
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly discountTypes = DiscountType;
 
   protected readonly isDraft = computed(() => this.detail.record()?.status === InvoiceStatus.Draft);
@@ -168,7 +169,7 @@ export class InvoiceDetailPage implements OnInit {
     const i = this.detail.record();
     if (!i?.remindersSent) return null;
     const last = i.lastRemindedAt
-      ? ' · ' + formatDate(i.lastRemindedAt, DATE_TIME_FORMAT, 'en-GB')
+      ? ' · ' + formatDate(i.lastRemindedAt, dateTimeFormat(), 'en-GB')
       : '';
     return REMINDER_TEXT.count(i.remindersSent) + last;
   });

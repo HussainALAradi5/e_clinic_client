@@ -3,7 +3,7 @@
 } @else if (task(); as task) {
   <ui-page-header
     [title]="task.type | enumLabel: 'TaskType'"
-    [subtitle]="text.startedPrefix + (task.createdAt | date: dateTimeFormat)"
+    [subtitle]="text.startedPrefix + (task.createdAt | date: dateTimeFormat())"
   >
     <ui-status status enum="GenericStatus" [value]="task.status" />
     @if (task.hasResult) {
@@ -50,15 +50,15 @@
     }
     <dt class="text-on-surface-variant">{{ text.started }}</dt>
     <dd class="m-0 tabular-nums">
-      {{ task.startedAt ? (task.startedAt | date: dateTimeFormat) : '—' }}
+      {{ task.startedAt ? (task.startedAt | date: dateTimeFormat()) : '—' }}
     </dd>
     <dt class="text-on-surface-variant">{{ text.finished }}</dt>
     <dd class="m-0 tabular-nums">
-      {{ task.finishedAt ? (task.finishedAt | date: dateTimeFormat) : '—' }}
+      {{ task.finishedAt ? (task.finishedAt | date: dateTimeFormat()) : '—' }}
     </dd>
     @if (task.expiresAt) {
       <dt class="text-on-surface-variant">{{ text.resultAvailableUntil }}</dt>
-      <dd class="m-0 tabular-nums">{{ task.expiresAt | date: dateTimeFormat }}</dd>
+      <dd class="m-0 tabular-nums">{{ task.expiresAt | date: dateTimeFormat() }}</dd>
     }
     @for (entry of task.resultSummary ?? {} | keyvalue; track entry.key) {
       <dt class="text-on-surface-variant">{{ label(entry.key) }}</dt>

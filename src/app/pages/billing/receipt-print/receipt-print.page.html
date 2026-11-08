@@ -12,7 +12,7 @@
   >
     <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5">
       <dt class="text-black/60">{{ text.date }}</dt>
-      <dd class="m-0 text-right">{{ p.paidAt | date: dateTimeFormat }}</dd>
+      <dd class="m-0 text-right">{{ p.paidAt | date: dateTimeFormat() }}</dd>
       <dt class="text-black/60">{{ text.patient }}</dt>
       <dd class="m-0 text-right">{{ p.patient?.fullName }}</dd>
       <dt class="text-black/60">{{ text.file }}</dt>

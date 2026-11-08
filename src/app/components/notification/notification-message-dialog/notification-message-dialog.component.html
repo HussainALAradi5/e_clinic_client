@@ -5,7 +5,7 @@
 <mat-dialog-content class="!flex flex-col gap-3">
   <p class="m-0 whitespace-pre-line">{{ data.notification.body }}</p>
   <p class="m-0 text-xs text-on-surface-variant">
-    {{ data.notification.createdAt | date: dateTimeFormat }}
+    {{ data.notification.createdAt | date: dateTimeFormat() }}
   </p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

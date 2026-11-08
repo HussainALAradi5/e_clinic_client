@@ -6,11 +6,11 @@
       <p class="m-0 font-semibold">{{ data.day.date | date: dateFormat }}</p>
       <p class="m-0 text-sm text-on-surface-variant">
         {{ text.in }}
-        {{ data.day.checkInAt ? (data.day.checkInAt | date: timeFormat : zone) : '—' }}
+        {{ data.day.checkInAt ? (data.day.checkInAt | date: timeFormat() : zone) : '—' }}
         {{ text.out }}
-        {{ data.day.checkOutAt ? (data.day.checkOutAt | date: timeFormat : zone) : '—' }}
+        {{ data.day.checkOutAt ? (data.day.checkOutAt | date: timeFormat() : zone) : '—' }}
         @if (data.day.shift; as s) {
-          · {{ s.name }} ({{ s.arriveBy }}–{{ s.expectedEnd }})
+          · {{ s.name }} ({{ s.arriveBy | clock }}–{{ s.expectedEnd | clock }})
         }
       </p>
     </div>

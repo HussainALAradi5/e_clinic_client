@@ -1,4 +1,5 @@
 import { SignatureCard } from '@components/settings/signature-card/signature-card.component';
+import { ClockFormatCard } from '@components/settings/clock-format-card/clock-format-card.component';
 import { TimePickerCard } from '@components/settings/time-picker-card/time-picker-card.component';
 import {
   ChangeDetectionStrategy,
@@ -51,6 +52,7 @@ import { ACCOUNT_SECURITY_TEXT } from '@constants/system/account-security.consta
     MatIconModule,
     NotificationSettingsCard,
     SignatureCard,
+    ClockFormatCard,
     TimePickerCard,
   ],
   templateUrl: './account-security.page.html',

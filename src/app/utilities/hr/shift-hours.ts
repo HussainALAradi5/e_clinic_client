@@ -1,3 +1,4 @@
+import { wallClock } from '@utilities/clock-format';
 import { ShiftType } from '@enums/hr/shift-type.enum';
 import { Shift } from '@interfaces/hr/shift.interface';
 
@@ -20,7 +21,7 @@ export function hoursText(
 ): string {
   if (shift.type === ShiftType.Fixed) {
     const length = Math.max(0, minutesOf(shift.endTime) - minutesOf(shift.startTime));
-    return `${shift.startTime} – ${shift.endTime} · ${hoursLabel(length)}`;
+    return `${wallClock(shift.startTime)} – ${wallClock(shift.endTime)} · ${hoursLabel(length)}`;
   }
-  return `In by ${shift.latestStart ?? '—'} · ${hoursLabel(shift.requiredMinutes)} a day between ${shift.startTime} and ${shift.endTime}`;
+  return `In by ${shift.latestStart ? wallClock(shift.latestStart) : '—'} · ${hoursLabel(shift.requiredMinutes)} a day between ${wallClock(shift.startTime)} and ${wallClock(shift.endTime)}`;
 }

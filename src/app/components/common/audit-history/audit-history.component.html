@@ -12,7 +12,7 @@
           }}</mat-panel-title>
           <mat-panel-description class="flex flex-wrap gap-x-3">
             <span>{{ entry.user?.fullName ?? text.system }}</span>
-            <span>{{ entry.createdAt | date: dateTimeFormat }}</span>
+            <span>{{ entry.createdAt | date: dateTimeFormat() }}</span>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <ui-audit-changes [entry]="entry" />

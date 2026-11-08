@@ -41,12 +41,14 @@
       <span class="label">{{ text.inOut }}</span>
       <span
         >{{
-          r.attendance?.checkInAt ? (r.attendance?.checkInAt | date: timeFormat : zone) : text.none
+          r.attendance?.checkInAt
+            ? (r.attendance?.checkInAt | date: timeFormat() : zone)
+            : text.none
         }}
         –
         {{
           r.attendance?.checkOutAt
-            ? (r.attendance?.checkOutAt | date: timeFormat : zone)
+            ? (r.attendance?.checkOutAt | date: timeFormat() : zone)
             : text.none
         }}</span
       >
@@ -61,7 +63,7 @@
     <div class="ml-auto text-right">
       <span class="label">{{ r.code }}</span>
       <span class="text-xs text-on-surface-variant">{{
-        r.createdAt | date: dateTimeFormat : zone
+        r.createdAt | date: dateTimeFormat() : zone
       }}</span>
     </div>
   </div>
@@ -82,7 +84,7 @@
             r.status === statuses.Rejected ? text.rejected : text.approved
           }}</span>
           {{ text.by(r.reviewedBy?.fullName) }}
-          {{ r.reviewedAt | date: dateTimeFormat : zone }}
+          {{ r.reviewedAt | date: dateTimeFormat() : zone }}
         </p>
         @if (r.reviewReason) {
           <p class="m-0 text-sm">“{{ r.reviewReason }}”</p>

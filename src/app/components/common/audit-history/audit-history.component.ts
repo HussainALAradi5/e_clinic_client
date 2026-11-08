@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
@@ -6,7 +7,6 @@ import { AuditChanges } from '@components/common/audit-changes/audit-changes.com
 import { EmptyState } from '@components/common/empty-state/empty-state.component';
 import { ErrorState } from '@components/common/error-state/error-state.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
-import { DATE_FORMAT, TIME_FORMAT } from '@constants/app.constants';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { AuditLogApi } from '@services/identity/audit-log-api.service';
 import { AUDIT_HISTORY_TEXT } from '@constants/common/audit-history.constants';
@@ -37,7 +37,7 @@ export class AuditHistory {
   readonly id = input.required<string>();
 
   private readonly api = inject(AuditLogApi);
-  protected readonly dateTimeFormat = `${DATE_FORMAT}, ${TIME_FORMAT}`;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly entries = rxResource({
     params: () => ({ type: this.type(), id: this.id() }),
     stream: ({ params }) => this.api.forModel(params.type, params.id),

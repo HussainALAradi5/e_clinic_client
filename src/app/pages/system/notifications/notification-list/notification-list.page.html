@@ -6,7 +6,7 @@
 >
   <ng-template uiCell="scheduled_for" let-row>
     <span class="whitespace-nowrap tabular-nums">{{
-      row.scheduledFor | date: dateTimeFormat
+      row.scheduledFor | date: dateTimeFormat()
     }}</span>
     @if (row.person) {
       <span class="block text-xs text-on-surface-variant">{{ row.person.fullName }}</span>
@@ -31,7 +31,7 @@
   </ng-template>
   <ng-template uiCell="sent_at" let-row>
     <span class="whitespace-nowrap tabular-nums">{{
-      row.sentAt ? (row.sentAt | date: dateTimeFormat) : '—'
+      row.sentAt ? (row.sentAt | date: dateTimeFormat()) : '—'
     }}</span>
   </ng-template>
 </ui-resource-list>

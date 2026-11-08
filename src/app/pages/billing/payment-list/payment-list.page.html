@@ -10,7 +10,7 @@
       row.code
     }}</a></ng-template
   >
-  <ng-template uiCell="paid_at" let-row>{{ row.paidAt | date: dateTimeFormat }}</ng-template>
+  <ng-template uiCell="paid_at" let-row>{{ row.paidAt | date: dateTimeFormat() }}</ng-template>
   <ng-template uiCell="patient" let-row>
     <span class="font-medium">{{ row.patient?.fullName }}</span>
     <span class="block text-xs text-on-surface-variant">{{ row.patient?.code }}</span>

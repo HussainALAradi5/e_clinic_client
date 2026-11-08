@@ -13,7 +13,7 @@
       (change)="start.set($event.value)"
     >
       @for (slot of list; track slot.start) {
-        <mat-chip-option [value]="slot.startTime">{{ slot.startTime }}</mat-chip-option>
+        <mat-chip-option [value]="slot.startTime">{{ slot.startTime | clock }}</mat-chip-option>
       }
     </mat-chip-listbox>
   } @else {

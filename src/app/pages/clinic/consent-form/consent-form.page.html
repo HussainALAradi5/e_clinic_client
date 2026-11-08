@@ -37,7 +37,7 @@
       <div>
         <p class="m-0 font-semibold">{{ c.signedByName }}</p>
         <p class="m-0 text-black/60">
-          {{ relationship(c.signerRelationship) }} · {{ c.signedAt | date: dateTimeFormat }}
+          {{ relationship(c.signerRelationship) }} · {{ c.signedAt | date: dateTimeFormat() }}
         </p>
         <p class="m-0 mt-8 border-t border-black/40 pt-1 text-black/60">{{ text.signature }}</p>
       </div>

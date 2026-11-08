@@ -101,7 +101,7 @@
           }
         </span>
         <span class="text-xs text-on-surface-variant"
-          >{{ d.dispensedAt | date: dateTimeFormat }} · {{ d.dispensedBy?.fullName }}</span
+          >{{ d.dispensedAt | date: dateTimeFormat() }} · {{ d.dispensedBy?.fullName }}</span
         >
         <ui-status [value]="d.status" enum="GenericStatus" />
       </div>

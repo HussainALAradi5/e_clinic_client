@@ -90,8 +90,13 @@
           [matMenuTriggerFor]="userMenu"
           [attr.aria-label]="text.accountMenu"
         >
-          @if (user.avatarUrl) {
-            <img [src]="user.avatarUrl" alt="" class="size-9 rounded-lg object-cover" />
+          @if (user.avatarUrl && user.avatarUrl !== brokenAvatar()) {
+            <img
+              [src]="user.avatarUrl"
+              alt=""
+              class="size-9 rounded-lg object-cover"
+              (error)="brokenAvatar.set(user.avatarUrl)"
+            />
           } @else {
             <span
               class="grid size-9 place-items-center rounded-lg bg-primary text-xs font-bold text-on-primary"

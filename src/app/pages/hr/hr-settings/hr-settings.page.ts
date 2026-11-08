@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -9,7 +10,6 @@ import { AppButton } from '@components/common/app-button/app-button.component';
 import { NumberField } from '@components/common/number-field/number-field.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { TextField } from '@components/common/text-field/text-field.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { SettingKey } from '@enums/hr/setting-key.enum';
 import { OvertimeBand } from '@interfaces/hr/overtime-band.interface';
 import { OvertimeBandForm } from '@interfaces/hr/overtime-band-form.interface';
@@ -55,7 +55,7 @@ export class HrSettingsPage implements OnInit {
   protected readonly text = HR_SETTINGS_TEXT;
   protected readonly canEdit = inject(AccessService).can('settings.write');
   protected readonly look = LOOK;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly zone = '+0300';
   protected readonly settings = signal<Setting[]>([]);
   protected readonly saving = signal<SettingKey | null>(null);

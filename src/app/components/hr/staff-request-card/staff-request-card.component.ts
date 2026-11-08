@@ -1,9 +1,10 @@
+import { dateTimeFormat, timeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { STAFF_REQUEST_CARD_TEXT } from '@constants/hr/staff-request-card.constants';
 import { STAFF_REQUESTS_TEXT } from '@constants/hr/staff-requests.constants';
 import { StaffRequestType } from '@enums/hr/staff-request-type.enum';
@@ -38,8 +39,8 @@ export class StaffRequestCard {
   protected readonly types = StaffRequestType;
   protected readonly statuses = ApprovalStatus;
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
-  protected readonly timeFormat = TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
+  protected readonly timeFormat = timeFormat;
   protected readonly zone = '+0300';
 
   protected readonly mine = computed(() => this.request().employeeId === this.meId());

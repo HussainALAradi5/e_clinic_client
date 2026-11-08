@@ -105,11 +105,13 @@
             <span class="font-semibold">{{ a.attendance.date | date: 'EEE d MMM' }}</span>
             <span class="text-xs text-on-surface-variant">
               {{
-                a.attendance.checkInAt ? (a.attendance.checkInAt | date: timeFormat : zone) : '—'
+                a.attendance.checkInAt ? (a.attendance.checkInAt | date: timeFormat() : zone) : '—'
               }}
               –
               {{
-                a.attendance.checkOutAt ? (a.attendance.checkOutAt | date: timeFormat : zone) : '—'
+                a.attendance.checkOutAt
+                  ? (a.attendance.checkOutAt | date: timeFormat() : zone)
+                  : '—'
               }}
             </span>
           </div>

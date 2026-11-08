@@ -1,10 +1,10 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { MoneyPipe } from '@pipes/money.pipe';
 import { PAYMENT_LIST_TEXT } from '@constants/billing/payment-list.constants';
 
@@ -18,5 +18,5 @@ import { PAYMENT_LIST_TEXT } from '@constants/billing/payment-list.constants';
 export class PaymentListPage {
   protected readonly text = PAYMENT_LIST_TEXT;
 
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
 }

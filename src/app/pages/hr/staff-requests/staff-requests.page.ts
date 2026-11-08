@@ -1,3 +1,4 @@
+import { timeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -18,7 +19,6 @@ import { StaffRequestDialogData } from '@interfaces/hr/staff-request-dialog.inte
 import { EmptyState } from '@components/common/empty-state/empty-state.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Paginator } from '@components/common/paginator/paginator.component';
-import { TIME_FORMAT } from '@constants/app.constants';
 import { StaffRequestType } from '@enums/hr/staff-request-type.enum';
 import { ApprovalStatus } from '@enums/shared/approval-status.enum';
 import { PageMeta } from '@interfaces/api/page-meta.interface';
@@ -78,7 +78,7 @@ export class StaffRequestsPage implements OnInit {
   protected readonly text = STAFF_REQUESTS_TEXT;
   protected readonly tabs = TABS;
   protected readonly types = StaffRequestType;
-  protected readonly timeFormat = TIME_FORMAT;
+  protected readonly timeFormat = timeFormat;
   protected readonly zone = '+0300';
   /** HR: everyone's requests and the decision buttons. */
   protected readonly canReview = this.access.can('staff_requests.review');

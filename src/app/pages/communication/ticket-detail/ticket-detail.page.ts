@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -20,7 +21,6 @@ import { Facts } from '@components/common/facts/facts.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { AttachmentCategory } from '@enums/attachment/attachment-category.enum';
 import { TicketConfirmation } from '@enums/communication/ticket-confirmation.enum';
 import { GenericStatus } from '@enums/shared/generic-status.enum';
@@ -78,7 +78,7 @@ export class TicketDetailPage implements OnInit {
   private readonly notify = inject(NotifyService);
   private readonly access = inject(AccessService);
 
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly ticket = signal<SupportTicket | null>(null);
   protected readonly error = signal<ApiError | null>(null);
   protected readonly reply = signal('');

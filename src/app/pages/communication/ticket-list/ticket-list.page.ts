@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, viewChild } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
@@ -7,7 +8,6 @@ import { debounceTime, EMPTY, merge, switchMap } from 'rxjs';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { SupportTicket } from '@interfaces/communication/support-ticket.interface';
 import { AccessService } from '@services/auth/access.service';
 import { AuthStore } from '@services/auth/auth.store';
@@ -34,7 +34,7 @@ export class TicketListPage {
   protected readonly text = TICKET_LIST_TEXT;
   private readonly list = viewChild.required(ResourceListPage);
 
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly desk = computed(() => this.access.can('tickets.resolve'));
 
   constructor() {

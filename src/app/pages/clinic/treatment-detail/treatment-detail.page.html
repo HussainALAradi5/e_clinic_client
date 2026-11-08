@@ -81,7 +81,8 @@
         <h2 class="m-0 flex-1 text-base font-semibold">{{ text.progress }}</h2>
         @if (t.progress?.nextSession; as next) {
           <a class="text-sm text-primary underline" [routerLink]="['/clinic/appointments', next.id]"
-            >{{ text.next }} {{ next.scheduledDate | date: dateFormat }} {{ next.startTime }}</a
+            >{{ text.next }} {{ next.scheduledDate | date: dateFormat }}
+            {{ next.startTime | clock }}</a
           >
         }
       </div>
@@ -108,12 +109,12 @@
               >{{ s.scheduledDate | date: dateFormat }}</a
             >
             <span class="tabular-nums max-sm:hidden"
-              >{{ s.startTime }}–{{ s.endTime }}
+              >{{ s.startTime | clock }}–{{ s.endTime | clock }}
               <span class="text-on-surface-variant">({{ s.durationMinutes }}′)</span></span
             >
             <span class="min-w-0 truncate">
               <a class="sm:hidden" [routerLink]="['/clinic/appointments', s.id]"
-                >{{ s.scheduledDate | date: dateFormat }} {{ s.startTime }} ·
+                >{{ s.scheduledDate | date: dateFormat }} {{ s.startTime | clock }} ·
               </a>
               {{ s.provider.fullName }}{{ s.room ? ' · ' + s.room.code : '' }}
             </span>
