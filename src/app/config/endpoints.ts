@@ -3,6 +3,7 @@
  * server module). Services build sub-paths from these: `${ENDPOINTS.hr.requests}/${id}/approve`.
  */
 export const ENDPOINTS = {
+  activity: 'activity',
   appointments: 'appointments',
   attachments: 'attachments',
   auditLogs: 'audit-logs',

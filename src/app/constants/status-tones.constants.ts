@@ -37,6 +37,7 @@ export const STATUS_TONES: Record<string, Record<string, StatusTone>> = {
   },
   AppointmentSource: { walk_in: Orange, phone: Blue, portal: Teal, referral: Purple },
   AuditAction: {
+    viewed: Cyan,
     created: Green,
     updated: Blue,
     deleted: Red,

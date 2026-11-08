@@ -26,6 +26,7 @@ import { PersonFormDialog } from '@components/system/users/person-form-dialog/pe
 import { PersonFormDialogData } from '@interfaces/system/users/person-form-dialog-data.interface';
 import { AppointmentActions } from '@services/clinic/appointment-actions.service';
 import { AppButton } from '@components/common/app-button/app-button.component';
+import { ActivityLog } from '@components/common/activity-log/activity-log.component';
 import { AuditHistory } from '@components/common/audit-history/audit-history.component';
 import { ErrorState } from '@components/common/error-state/error-state.component';
 import { Facts } from '@components/common/facts/facts.component';
@@ -62,6 +63,7 @@ import { emergencyContactLine } from '@utilities/clinic/emergency-contacts-form'
     Facts,
     StatusChip,
     AuditHistory,
+    ActivityLog,
     AppointmentRows,
     PatientCare,
     ConsentsPanel,
