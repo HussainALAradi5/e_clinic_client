@@ -98,7 +98,7 @@ describe('ActivityLog', () => {
     });
     const fixture = await setup(() => of(page([edited])));
     expect(text(fixture)).toContain('Rana Saleh');
-    expect(text(fixture)).toContain('Email from a@x.com to b@x.com · 02 Nov 2026, 18:27:');
+    expect(text(fixture)).toContain('Email from a@x.com to b@x.com · 02 Nov 2026, 6:27:00 PM');
     expect(html(fixture).querySelectorAll('ui-status').length).toBe(1);
   });
 
