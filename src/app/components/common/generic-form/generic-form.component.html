@@ -1,5 +1,7 @@
 <form [formGroup]="form()" (ngSubmit)="requestSubmit()" novalidate class="flex flex-col gap-6">
   <ng-content />
+  <!-- Browsers submit on Enter only when the form has a submit button; ui-button below stays type="button". -->
+  <button type="submit" class="sr-only" tabindex="-1" aria-hidden="true"></button>
   <footer
     class="flex justify-end gap-2"
     [class]="
