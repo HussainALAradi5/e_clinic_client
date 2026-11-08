@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,7 +12,6 @@ import { ORDER_DESKS } from '@utilities/clinic/clinical';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { ClinicalOrderType } from '@enums/clinic/clinical-order-type.enum';
 import { GenericStatus } from '@enums/shared/generic-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
@@ -51,7 +51,7 @@ export class OrderWorklistPage {
   protected readonly desk = signal(0);
   protected readonly orders = signal<ClinicalOrder[] | null>(null);
   protected readonly variants = ButtonVariant;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly pending = GenericStatus.Pending;
   protected readonly referral = ClinicalOrderType.Referral;
 

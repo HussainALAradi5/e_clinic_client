@@ -36,5 +36,3 @@ export const STORAGE_KEYS = {
 export const CLINIC_TIME_ZONE = 'Asia/Bahrain';
 export const CLINIC_LOCALE = 'en-GB';
 export const DATE_FORMAT = 'dd MMM yyyy';
-export const TIME_FORMAT = 'HH:mm';
-export const DATE_TIME_FORMAT = `${DATE_FORMAT}, ${TIME_FORMAT}`;

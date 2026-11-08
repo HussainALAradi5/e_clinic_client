@@ -2,7 +2,7 @@
 <mat-dialog-content>
   <p class="mt-0 text-sm text-on-surface-variant">
     {{ text.now }} {{ data.appointment.scheduledDate }} {{ text.at }}
-    {{ data.appointment.startTime }} {{ text.with }} {{ data.appointment.provider?.fullName
+    {{ data.appointment.startTime | clock }} {{ text.with }} {{ data.appointment.provider?.fullName
     }}{{ text.pickANewFree }}
   </p>
   <ui-text class="max-w-48" [label]="text.newDate" type="date" [control]="dateControl" />

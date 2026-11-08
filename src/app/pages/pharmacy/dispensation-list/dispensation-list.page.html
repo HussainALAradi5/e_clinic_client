@@ -10,7 +10,7 @@
     ><span class="font-mono">{{ row.code }}</span></ng-template
   >
   <ng-template uiCell="dispensed_at" let-row
-    ><span class="tabular-nums">{{ row.dispensedAt | date: dateTimeFormat }}</span></ng-template
+    ><span class="tabular-nums">{{ row.dispensedAt | date: dateTimeFormat() }}</span></ng-template
   >
   <ng-template uiCell="patient" let-row>
     <span class="block font-medium">{{ row.patient?.fullName }}</span>

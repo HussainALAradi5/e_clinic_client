@@ -6,7 +6,7 @@
   [emptyTitle]="text.noMovementsFound"
 >
   <ng-template uiCell="created_at" let-row
-    ><span class="tabular-nums">{{ row.createdAt | date: dateTimeFormat }}</span></ng-template
+    ><span class="tabular-nums">{{ row.createdAt | date: dateTimeFormat() }}</span></ng-template
   >
   <ng-template uiCell="medication" let-row
     ><span class="font-medium">{{ row.medication?.name }}</span></ng-template

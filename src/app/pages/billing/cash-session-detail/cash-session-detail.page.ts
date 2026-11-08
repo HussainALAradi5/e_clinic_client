@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -23,7 +24,7 @@ import { Facts } from '@components/common/facts/facts.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_FORMAT, DATE_TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { CashSessionStatus } from '@enums/finance/cash-session-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { ApiError } from '@interfaces/api/api-error.interface';
@@ -81,7 +82,7 @@ export class CashSessionDetailPage implements OnInit {
   private readonly me = inject(AuthStore).user;
 
   protected readonly variants = ButtonVariant;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly dateFormat = DATE_FORMAT;
   protected readonly session = signal<CashSession | null>(null);
   protected readonly error = signal<ApiError | null>(null);

@@ -26,7 +26,7 @@
                 {{ text.nextSession }}
                 <strong
                   >{{ n.scheduledDate + 'T00:00:00' | date: 'EEE d MMM' }},
-                  {{ n.startTime }}</strong
+                  {{ n.startTime | clock }}</strong
                 >
               </p>
             }
@@ -51,7 +51,8 @@
                     s.sessionNumber
                   }}</span>
                   <span class="flex-1">
-                    {{ s.scheduledDate + 'T00:00:00' | date: 'EEE d MMM' }}, {{ s.startTime }}
+                    {{ s.scheduledDate + 'T00:00:00' | date: 'EEE d MMM' }},
+                    {{ s.startTime | clock }}
                     <span class="text-on-surface-variant">· {{ s.provider.fullName }}</span>
                   </span>
                   <ui-status [value]="s.status" enum="AppointmentStatus" />

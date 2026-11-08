@@ -57,7 +57,7 @@
         <dd class="m-0 font-medium">{{ user.code }}</dd>
         <dt class="text-on-surface-variant">{{ text.lastSignIn }}</dt>
         <dd class="m-0">
-          {{ user.lastLoginAt ? (user.lastLoginAt | date: dateTimeFormat) : text.firstTime }}
+          {{ user.lastLoginAt ? (user.lastLoginAt | date: dateTimeFormat()) : text.firstTime }}
         </dd>
         <dt class="text-on-surface-variant">{{ text.twoFactor }}</dt>
         <dd class="m-0">

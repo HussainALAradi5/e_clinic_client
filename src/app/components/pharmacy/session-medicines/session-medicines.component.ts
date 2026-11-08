@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -15,7 +16,6 @@ import { firstValueFrom } from 'rxjs';
 import { PharmacyActions } from '@services/pharmacy/pharmacy-actions.service';
 import { AppButton } from '@components/common/app-button/app-button.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { DispensationKind } from '@enums/pharmacy/dispensation-kind.enum';
 import { GenericStatus } from '@enums/shared/generic-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
@@ -58,7 +58,7 @@ export class SessionMedicines implements OnInit {
   private readonly actions = inject(PharmacyActions);
   protected readonly medicines = signal<AppointmentMedicines | null>(null);
   protected readonly variants = ButtonVariant;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly administered = DispensationKind.Administered;
   protected readonly cancelled = GenericStatus.Cancelled;
   protected readonly empty = computed(() => {

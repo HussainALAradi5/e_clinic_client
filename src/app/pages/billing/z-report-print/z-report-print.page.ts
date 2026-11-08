@@ -1,10 +1,10 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { ErrorState } from '@components/common/error-state/error-state.component';
 import { PrintSheet } from '@components/common/print-sheet/print-sheet.component';
-import { DATE_TIME_FORMAT } from '@constants/app.constants';
 import { CashSession } from '@interfaces/finance/cash-session.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { MoneyPipe } from '@pipes/money.pipe';
@@ -29,7 +29,7 @@ export class ZReportPrintPage implements OnInit {
   private readonly api = inject(CashSessionApi);
   protected readonly session = signal<CashSession | null>(null);
   protected readonly error = signal<unknown>(null);
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
 
   async ngOnInit(): Promise<void> {
     try {

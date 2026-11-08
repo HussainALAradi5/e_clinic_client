@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -10,7 +11,7 @@ import { APPOINTMENT_ROWS_TEXT } from '@constants/clinic/appointment-rows.consta
 @Component({
   selector: 'app-appointment-rows',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, StatusChip, DatePipe],
+  imports: [ClockPipe, RouterLink, StatusChip, DatePipe],
   host: { class: 'block' },
   templateUrl: './appointment-rows.component.html',
 })

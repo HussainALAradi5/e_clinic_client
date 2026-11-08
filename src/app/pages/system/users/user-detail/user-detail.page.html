@@ -95,7 +95,7 @@
             </dd>
             <dt class="text-on-surface-variant">{{ text.emailVerified }}</dt>
             <dd class="m-0">
-              {{ user.emailVerifiedAt ? (user.emailVerifiedAt | date: dateTimeFormat) : text.no }}
+              {{ user.emailVerifiedAt ? (user.emailVerifiedAt | date: dateTimeFormat()) : text.no }}
             </dd>
             <dt class="text-on-surface-variant">{{ text.twoFactor }}</dt>
             <dd class="m-0">
@@ -106,13 +106,13 @@
             <dd class="m-0">
               {{
                 user.lastLoginAt
-                  ? (user.lastLoginAt | date: dateTimeFormat) + ' · ' + user.lastLoginIp
+                  ? (user.lastLoginAt | date: dateTimeFormat()) + ' · ' + user.lastLoginIp
                   : text.never
               }}
             </dd>
             @if (user.lockedAt) {
               <dt class="text-on-surface-variant">{{ text.locked }}</dt>
-              <dd class="m-0">{{ user.lockedAt | date: dateTimeFormat }}</dd>
+              <dd class="m-0">{{ user.lockedAt | date: dateTimeFormat() }}</dd>
             }
           </dl>
         </mat-card>

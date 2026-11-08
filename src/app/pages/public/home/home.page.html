@@ -51,7 +51,7 @@
             >
               <span>{{ weekdays[h.day] }}</span>
               <span class="tabular-nums">{{
-                h.opens ? h.opens + ' – ' + h.closes : text.closed
+                h.opens ? (h.opens | clock) + ' – ' + (h.closes | clock) : text.closed
               }}</span>
             </li>
           }

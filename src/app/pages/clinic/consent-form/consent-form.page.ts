@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DocumentType } from '@enums/documents/document-type.enum';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
@@ -5,7 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { PrintSheet } from '@components/common/print-sheet/print-sheet.component';
 import { SIGNER_RELATIONSHIPS } from '@utilities/clinic/consent';
 import { ErrorState } from '@components/common/error-state/error-state.component';
-import { DATE_FORMAT, DATE_TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { PatientConsent } from '@interfaces/clinic/consent.interface';
 import { Patient } from '@interfaces/clinic/patient.interface';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
@@ -32,7 +33,7 @@ export class ConsentFormPage implements OnInit {
   protected readonly patient = signal<Patient | null>(null);
   protected readonly error = signal<unknown>(null);
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
 
   async ngOnInit(): Promise<void> {
     try {

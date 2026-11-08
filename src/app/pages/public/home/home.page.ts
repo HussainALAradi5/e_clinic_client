@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -31,6 +32,7 @@ const STATUS_REFRESH_MS = 60_000;
   selector: 'app-home-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ClockPipe,
     ReactiveFormsModule,
     MatButtonModule,
     MatIconModule,

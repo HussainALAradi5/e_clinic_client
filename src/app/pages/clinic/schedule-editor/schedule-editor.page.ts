@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -50,6 +51,7 @@ const EXCEPTION_DAYS = 90;
   selector: 'app-schedule-editor-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ClockPipe,
     PageHeader,
     GenericForm,
     TextField,

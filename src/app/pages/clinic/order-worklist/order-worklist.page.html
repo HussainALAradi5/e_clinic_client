@@ -32,7 +32,7 @@
           <span class="block font-semibold hover:underline">{{ o.description }}</span>
           <span class="block text-sm text-on-surface-variant">
             {{ o.patient?.fullName }} · {{ o.patient?.code }} {{ text.by }}
-            {{ o.orderingDoctor?.fullName }} · {{ o.createdAt | date: dateTimeFormat }}
+            {{ o.orderingDoctor?.fullName }} · {{ o.createdAt | date: dateTimeFormat() }}
           </span>
         </a>
         <span class="font-mono text-xs text-on-surface-variant">{{ o.code }}</span>

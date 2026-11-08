@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,7 +27,7 @@ import { REFERRAL_LINK_DIALOG_TEXT } from '@constants/clinic/referral-link-dialo
 @Component({
   selector: 'app-referral-link-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatDialogModule, MatButtonModule, MatIconModule, AppButton, DatePipe],
+  imports: [ClockPipe, MatDialogModule, MatButtonModule, MatIconModule, AppButton, DatePipe],
   templateUrl: './referral-link-dialog.component.html',
 })
 export class ReferralLinkDialog implements OnInit {

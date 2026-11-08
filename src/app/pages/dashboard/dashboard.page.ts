@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -5,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { BrandSurface } from '@components/common/hub/brand-surface.component';
 import { HubNav } from '@components/common/hub/hub-nav.component';
-import { ACCOUNT_SECURITY_PATH, DATE_FORMAT, TIME_FORMAT } from '@constants/app.constants';
+import { ACCOUNT_SECURITY_PATH } from '@constants/app.constants';
 import { EnumLabelPipe } from '@pipes/enum-label.pipe';
 import { AuthStore } from '@services/auth/auth.store';
 import { NavigationService } from '@services/ui/navigation.service';
@@ -31,7 +32,7 @@ export class DashboardPage {
 
   protected readonly text = DASHBOARD_TEXT;
   protected readonly securityPath = ACCOUNT_SECURITY_PATH;
-  protected readonly dateTimeFormat = `${DATE_FORMAT}, ${TIME_FORMAT}`;
+  protected readonly dateTimeFormat = dateTimeFormat;
   protected readonly today = new Date();
   protected readonly greeting = computed(() => {
     const hour = this.today.getHours();

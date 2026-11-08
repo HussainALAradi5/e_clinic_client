@@ -86,7 +86,7 @@
         }
         <p
           class="m-0 mt-1 text-xs text-on-surface-variant"
-          [matTooltip]="(n.createdAt | date: dateTimeFormat) ?? ''"
+          [matTooltip]="(n.createdAt | date: dateTimeFormat()) ?? ''"
         >
           {{ n.createdAt | relativeTime }}
         </p>

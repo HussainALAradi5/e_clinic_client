@@ -1,3 +1,4 @@
+import { wallClock } from '@utilities/clock-format';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -68,7 +69,7 @@ export class EmergencyAccessDialog {
     this.notify.info(
       EMERGENCY_ACCESS_DIALOG_TEXT.emergencyAccessToUntilIt(
         patient.fullName,
-        clinicTime(new Date(result.expiresAt)),
+        wallClock(clinicTime(new Date(result.expiresAt))),
       ),
     );
     this.ref.close(patient.id);

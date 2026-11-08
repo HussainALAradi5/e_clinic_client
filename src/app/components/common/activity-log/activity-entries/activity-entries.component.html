@@ -14,7 +14,7 @@
       }
       <span class="text-on-surface-variant"
         >{{ text.separator }}&ngsp;<time [attr.datetime]="row.entry.createdAt">{{
-          row.entry.createdAt | date: dateFormat
+          row.entry.createdAt | date: dateFormat()
         }}</time></span
       >
     </li>

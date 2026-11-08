@@ -37,7 +37,7 @@
         </p>
         <ul class="m-0 pl-5">
           @for (a of affected(); track a.id) {
-            <li>{{ a.date }} {{ a.startTime }} — {{ a.patient }} ({{ a.code }})</li>
+            <li>{{ a.date }} {{ a.startTime | clock }} — {{ a.patient }} ({{ a.code }})</li>
           }
         </ul>
       </div>

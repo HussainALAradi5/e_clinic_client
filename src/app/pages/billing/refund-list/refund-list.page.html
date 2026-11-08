@@ -11,7 +11,7 @@
     ><span class="font-mono">{{ row.code }}</span></ng-template
   >
   <ng-template uiCell="created_at" let-row>
-    {{ row.createdAt | date: dateTimeFormat }}
+    {{ row.createdAt | date: dateTimeFormat() }}
     <span class="block text-xs text-on-surface-variant">{{ row.requestedBy?.fullName }}</span>
   </ng-template>
   <ng-template uiCell="patient" let-row>
@@ -29,7 +29,7 @@
     ><span class="line-clamp-2 max-w-72">{{ row.reason }}</span></ng-template
   >
   <ng-template uiCell="processed_at" let-row>{{
-    row.processedAt ? (row.processedAt | date: dateTimeFormat) : '—'
+    row.processedAt ? (row.processedAt | date: dateTimeFormat()) : '—'
   }}</ng-template>
   <ng-template uiCell="status" let-row>
     <div class="flex flex-wrap items-center gap-1">

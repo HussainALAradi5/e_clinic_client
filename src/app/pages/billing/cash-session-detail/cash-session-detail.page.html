@@ -95,7 +95,7 @@
         @for (p of taken(); track p.id) {
           <tr class="border-b border-outline-variant/60 last:border-0">
             <td class="px-4 py-2 font-mono">{{ p.code }}</td>
-            <td class="px-2 py-2">{{ p.paidAt | date: dateTimeFormat }}</td>
+            <td class="px-2 py-2">{{ p.paidAt | date: dateTimeFormat() }}</td>
             <td class="px-2 py-2">{{ p.patient?.fullName }}</td>
             <td class="px-2 py-2">
               <a class="font-mono text-primary" [routerLink]="['/billing/invoices', p.invoiceId]">{{

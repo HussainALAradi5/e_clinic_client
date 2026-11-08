@@ -1,3 +1,4 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -23,7 +24,7 @@ import { Facts } from '@components/common/facts/facts.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_FORMAT, DATE_TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { MedicationBatch } from '@interfaces/pharmacy/inventory.interface';
 import { StockMovement } from '@interfaces/pharmacy/stock-movement.interface';
@@ -86,7 +87,7 @@ export class MedicationDetailPage implements OnInit {
   protected readonly movements = signal<StockMovement[] | null>(null);
   protected readonly variants = ButtonVariant;
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
   /** Lots still holding stock first (soonest expiry first); emptied ones below, dimmed. */
   protected readonly orderedLots = computed(() => {
     const lots = this.lots() ?? [];

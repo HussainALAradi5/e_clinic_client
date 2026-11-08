@@ -10,7 +10,9 @@
   <ng-template uiCell="code" let-row
     ><span class="font-mono">{{ row.code }}</span></ng-template
   >
-  <ng-template uiCell="created_at" let-row>{{ row.createdAt | date: dateTimeFormat }}</ng-template>
+  <ng-template uiCell="created_at" let-row>{{
+    row.createdAt | date: dateTimeFormat()
+  }}</ng-template>
   <ng-template uiCell="patient" let-row>
     <a class="font-medium hover:underline" [routerLink]="['/clinic/patients', row.patient.id]">{{
       row.patient.fullName

@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -25,7 +26,7 @@ import { CANCEL_DIALOG_TEXT } from '@constants/clinic/cancel-dialog.constants';
 @Component({
   selector: 'app-cancel-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatDialogModule, MatIconModule, GenericForm, SelectField, TextField],
+  imports: [ClockPipe, MatDialogModule, MatIconModule, GenericForm, SelectField, TextField],
   templateUrl: './cancel-dialog.component.html',
 })
 export class CancelDialog {

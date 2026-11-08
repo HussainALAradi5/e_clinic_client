@@ -1,3 +1,4 @@
+import { wallClock } from '@utilities/clock-format';
 import { CLINIC_TIME_ZONE } from '@constants/app.constants';
 import { DateRangePreset } from '@enums/shared/date-range-preset.enum';
 
@@ -85,9 +86,9 @@ export function clinicTime(instant: Date = new Date()): string {
   }).format(instant);
 }
 
-/** '2026-11-01 08:15' — date and time of an ISO instant in the clinic time zone (for facts and prints). */
+/** '2026-11-01 8:15 AM' — date and time of an ISO instant in the clinic time zone (for facts and prints). */
 export function clinicDateTime(iso: string | null | undefined): string | null {
   if (!iso) return null;
   const instant = new Date(iso);
-  return `${clinicIsoDate(instant)} ${clinicTime(instant)}`;
+  return `${clinicIsoDate(instant)} ${wallClock(clinicTime(instant))}`;
 }

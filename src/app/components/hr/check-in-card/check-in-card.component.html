@@ -8,11 +8,11 @@
             {{ t.shift.name }} ({{ t.shift.code }}) ·
             {{
               t.shift.type === 'flexible'
-                ? text.inBy + t.shift.start
-                : t.shift.start + '–' + t.shift.end
+                ? text.inBy + (t.shift.start | clock)
+                : (t.shift.start | clock) + '–' + (t.shift.end | clock)
             }}
           } @else {
-            {{ text.shift }} {{ t.shift.start }}–{{ t.shift.end }}
+            {{ text.shift }} {{ t.shift.start | clock }}–{{ t.shift.end | clock }}
           }
         </p>
       }
@@ -26,13 +26,13 @@
       <div>
         <dt class="text-on-surface-variant">{{ text.in }}</dt>
         <dd class="m-0 text-lg font-semibold tabular-nums">
-          {{ d.checkInAt ? (d.checkInAt | date: timeFormat : zone) : '—' }}
+          {{ d.checkInAt ? (d.checkInAt | date: timeFormat() : zone) : '—' }}
         </dd>
       </div>
       <div>
         <dt class="text-on-surface-variant">{{ text.out }}</dt>
         <dd class="m-0 text-lg font-semibold tabular-nums">
-          {{ d.checkOutAt ? (d.checkOutAt | date: timeFormat : zone) : '—' }}
+          {{ d.checkOutAt ? (d.checkOutAt | date: timeFormat() : zone) : '—' }}
         </dd>
       </div>
       <div>

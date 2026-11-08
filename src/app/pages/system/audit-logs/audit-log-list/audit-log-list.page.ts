@@ -1,10 +1,10 @@
+import { dateTimeFormat } from '@utilities/clock-format';
 import { humanise } from '@utilities/text';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AuditEntryDialog } from '@components/system/audit-logs/audit-entry-dialog/audit-entry-dialog.component';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
-import { DATE_FORMAT, TIME_FORMAT } from '@constants/app.constants';
 import { DateRangePreset } from '@enums/shared/date-range-preset.enum';
 import { AuditLog } from '@interfaces/identity/audit-log.interface';
 import { DialogService } from '@services/ui/dialog.service';
@@ -26,7 +26,7 @@ export class AuditLogListPage {
   private readonly dialogs = inject(DialogService);
 
   protected readonly defaults = defaultQuery({ dateRange: DateRangePreset.Last7Days });
-  protected readonly dateTimeFormat = `${DATE_FORMAT}, ${TIME_FORMAT}`;
+  protected readonly dateTimeFormat = dateTimeFormat;
 
   protected open(row: { id: string }): void {
     void this.dialogs.open<AuditEntryDialog, AuditLog, void>(AuditEntryDialog, row as AuditLog, {

@@ -1,3 +1,4 @@
+import { ClockPipe } from '@pipes/clock.pipe';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
@@ -14,7 +15,7 @@ const LATE_AFTER_MINUTES = 10;
 @Component({
   selector: 'app-appointment-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, MatIconModule, StatusChip, AppointmentActionsBar],
+  imports: [ClockPipe, RouterLink, MatIconModule, StatusChip, AppointmentActionsBar],
   host: { class: 'block' },
   templateUrl: './appointment-card.component.html',
 })

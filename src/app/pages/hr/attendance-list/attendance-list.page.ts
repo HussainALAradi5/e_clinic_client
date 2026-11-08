@@ -1,3 +1,5 @@
+import { ClockPipe } from '@pipes/clock.pipe';
+import { timeFormat } from '@utilities/clock-format';
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,7 +10,7 @@ import { AppButton } from '@components/common/app-button/app-button.component';
 import { CellDef } from '@components/common/data-table/cell.directive';
 import { ResourceListPage } from '@components/common/resource-list/resource-list.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
-import { DATE_FORMAT, TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { SettingKey } from '@enums/hr/setting-key.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { Attendance } from '@interfaces/hr/attendance.interface';
@@ -23,6 +25,7 @@ import { ATTENDANCE_LIST_TEXT } from '@constants/hr/attendance-list.constants';
   selector: 'app-attendance-list-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ClockPipe,
     ResourceListPage,
     CellDef,
     AppButton,
@@ -41,7 +44,7 @@ export class AttendanceListPage {
   private readonly list = viewChild.required(ResourceListPage);
   protected readonly me = inject(AuthStore).user()?.id;
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly timeFormat = TIME_FORMAT;
+  protected readonly timeFormat = timeFormat;
   protected readonly zone = '+0300';
   protected readonly variants = ButtonVariant;
   protected readonly today = clinicIsoDate();

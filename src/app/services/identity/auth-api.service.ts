@@ -1,3 +1,4 @@
+import { TimeFormat } from '@enums/identity/time-format.enum';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ChangePasswordPayload } from '@interfaces/auth/change-password-payload.interface';
@@ -24,6 +25,10 @@ export class AuthApi {
 
   twoFactorChallenge(body: TwoFactorChallengePayload): Observable<Session> {
     return this.api.post<Session>(`${ENDPOINTS.auth.twoFactor}/challenge`, body);
+  }
+
+  setTimeFormat(timeFormat: TimeFormat): Observable<void> {
+    return this.api.put<void>(ENDPOINTS.auth.timeFormat, { timeFormat });
   }
 
   logout(): Observable<void> {

@@ -33,7 +33,9 @@
         <p class="m-0 font-semibold">
           {{ text.solved }}{{ t.resolver ? text.by + t.resolver.fullName : '' }}
           @if (t.resolvedAt) {
-            <span class="font-normal opacity-80"> · {{ t.resolvedAt | date: dateTimeFormat }}</span>
+            <span class="font-normal opacity-80">
+              · {{ t.resolvedAt | date: dateTimeFormat() }}</span
+            >
           }
         </p>
         <p class="m-0 mt-1 whitespace-pre-line text-sm">{{ t.resolution }}</p>
@@ -127,7 +129,9 @@
                 @if (c.author.isSupport) {
                   <span class="tag">{{ text.support }}</span>
                 }
-                <span class="font-normal opacity-70">{{ c.createdAt | date: dateTimeFormat }}</span>
+                <span class="font-normal opacity-70">{{
+                  c.createdAt | date: dateTimeFormat()
+                }}</span>
               </p>
               <p class="m-0 mt-1 whitespace-pre-line text-sm">{{ c.body }}</p>
             </div>

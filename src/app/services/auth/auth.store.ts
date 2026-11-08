@@ -6,6 +6,7 @@ import { AuthState } from '@interfaces/auth/auth-state.interface';
 import { EffectiveAccess } from '@interfaces/auth/effective-access.interface';
 import { Session } from '@interfaces/auth/session.interface';
 import { User } from '@interfaces/identity/user.interface';
+import { clockFormat, DEFAULT_TIME_FORMAT } from '@utilities/clock-format';
 
 function readToken(): string | null {
   try {
@@ -57,6 +58,7 @@ export const AuthStore = signalStore(
     setSession(session: Session): void {
       const token = session.token ?? store.token();
       writeToken(token);
+      clockFormat.set(session.user.timeFormat ?? DEFAULT_TIME_FORMAT);
       patchState(store, {
         token,
         user: session.user,
@@ -66,6 +68,7 @@ export const AuthStore = signalStore(
       });
     },
     setUser(user: User): void {
+      clockFormat.set(user.timeFormat ?? DEFAULT_TIME_FORMAT);
       patchState(store, { user });
     },
     setAccess(access: EffectiveAccess): void {
@@ -77,6 +80,7 @@ export const AuthStore = signalStore(
     },
     clear(): void {
       writeToken(null);
+      clockFormat.set(DEFAULT_TIME_FORMAT);
       patchState(store, {
         token: null,
         user: null,

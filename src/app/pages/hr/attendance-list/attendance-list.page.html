@@ -22,8 +22,8 @@
         >{{ row.shift.code }} ·
         {{
           row.shift.type === 'flexible'
-            ? text.inBy + row.shift.arriveBy
-            : row.shift.arriveBy + '–' + row.shift.expectedEnd
+            ? text.inBy + (row.shift.arriveBy | clock)
+            : (row.shift.arriveBy | clock) + '–' + (row.shift.expectedEnd | clock)
         }}</span
       >
     } @else {
@@ -32,12 +32,12 @@
   </ng-template>
   <ng-template uiCell="check_in_at" let-row
     ><span class="tabular-nums">{{
-      row.checkInAt ? (row.checkInAt | date: timeFormat : zone) : '—'
+      row.checkInAt ? (row.checkInAt | date: timeFormat() : zone) : '—'
     }}</span></ng-template
   >
   <ng-template uiCell="check_out_at" let-row>
     <span class="tabular-nums">{{
-      row.checkOutAt ? (row.checkOutAt | date: timeFormat : zone) : '—'
+      row.checkOutAt ? (row.checkOutAt | date: timeFormat() : zone) : '—'
     }}</span>
     @if (row.needsReview) {
       <mat-icon

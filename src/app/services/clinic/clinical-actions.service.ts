@@ -1,3 +1,4 @@
+import { wallClock } from '@utilities/clock-format';
 import { inject, Injectable } from '@angular/core';
 import { ConsentDialog } from '@components/clinic/consent-dialog/consent-dialog.component';
 import { OrderFormDialog } from '@components/clinic/order-form-dialog/order-form-dialog.component';
@@ -48,7 +49,8 @@ export class ClinicalActions {
     return this.dialogs.openAction<SessionBookingDialog, TreatmentDialogData, Appointment>(
       SessionBookingDialog,
       { treatment },
-      (a) => `Session ${a.sessionNumber} booked on ${a.scheduledDate} at ${a.startTime}.`,
+      (a) =>
+        `Session ${a.sessionNumber} booked on ${a.scheduledDate} at ${wallClock(a.startTime)}.`,
       '680px',
     );
   }

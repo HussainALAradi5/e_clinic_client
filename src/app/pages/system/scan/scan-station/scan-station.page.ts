@@ -1,3 +1,4 @@
+import { timeSecondsFormat } from '@utilities/clock-format';
 import { DatePipe, KeyValuePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -18,7 +19,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { CodeImage } from '@components/common/code-image/code-image.component';
 import { PageHeader } from '@components/common/page-header/page-header.component';
-import { TIME_FORMAT } from '@constants/app.constants';
 import { ScanPurpose } from '@enums/code/scan-purpose.enum';
 import { ApiError } from '@interfaces/api/api-error.interface';
 import { BarcodeDetectorConstructor } from '@interfaces/code/barcode-detector-constructor.interface';
@@ -79,7 +79,7 @@ export class ScanStationPage {
   protected readonly canShowCode = computed(() =>
     this.access.can('(codes.read_all | codes.read_own) & codes.generate'),
   );
-  protected readonly timeFormat = `${TIME_FORMAT}:ss`;
+  protected readonly timeFormat = timeSecondsFormat;
   protected readonly label = humanise;
 
   private stream: MediaStream | null = null;

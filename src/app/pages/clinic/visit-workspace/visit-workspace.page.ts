@@ -1,3 +1,5 @@
+import { ClockPipe } from '@pipes/clock.pipe';
+import { dateTimeFormat, timeFormat } from '@utilities/clock-format';
 import { UserType } from '@enums/identity/user-type.enum';
 import { WriteDocumentDialog } from '@components/documents/write-document-dialog/write-document-dialog.component';
 import { WRITE_DOCUMENT_DIALOG_TEXT } from '@constants/documents/write-document-dialog.constants';
@@ -41,7 +43,7 @@ import { PageHeader } from '@components/common/page-header/page-header.component
 import { Skeleton } from '@components/common/skeleton/skeleton.component';
 import { StatusChip } from '@components/common/status-chip/status-chip.component';
 import { TextField } from '@components/common/text-field/text-field.component';
-import { DATE_FORMAT, DATE_TIME_FORMAT } from '@constants/app.constants';
+import { DATE_FORMAT } from '@constants/app.constants';
 import { AppointmentStatus } from '@enums/clinic/appointment-status.enum';
 import { ButtonVariant } from '@enums/ui/button.enum';
 import { Appointment } from '@interfaces/clinic/appointment.interface';
@@ -77,6 +79,7 @@ import { VISIT_WORKSPACE_TEXT } from '@constants/clinic/visit-workspace.constant
   selector: 'app-visit-workspace-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ClockPipe,
     PageHeader,
     AppButton,
     ErrorState,
@@ -101,6 +104,7 @@ import { VISIT_WORKSPACE_TEXT } from '@constants/clinic/visit-workspace.constant
   templateUrl: './visit-workspace.page.html',
 })
 export class VisitWorkspacePage implements OnInit {
+  protected readonly timeFormat = timeFormat;
   protected readonly text = VISIT_WORKSPACE_TEXT;
 
   readonly id = input.required<string>();
@@ -130,7 +134,7 @@ export class VisitWorkspacePage implements OnInit {
   protected readonly saveState = signal<SaveState>('idle');
   protected readonly variants = ButtonVariant;
   protected readonly dateFormat = DATE_FORMAT;
-  protected readonly dateTimeFormat = DATE_TIME_FORMAT;
+  protected readonly dateTimeFormat = dateTimeFormat;
 
   protected readonly notes = new FormGroup({
     chiefComplaint: new FormControl<string | null>(null, [Validators.maxLength(5000)]),

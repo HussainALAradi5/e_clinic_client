@@ -12,7 +12,7 @@
           <p class="m-0 text-xs text-on-surface-variant">
             {{ s.code }}
             @if (s.updatedAt) {
-              {{ text.changed }} {{ s.updatedAt | date: dateTimeFormat : zone }}
+              {{ text.changed }} {{ s.updatedAt | date: dateTimeFormat() : zone }}
             }
           </p>
         </div>
@@ -68,13 +68,9 @@
             <button matButton type="button" (click)="addBand()">
               <mat-icon>add</mat-icon>{{ text.addTimeBand }}
             </button>
-            <ui-button
-              icon="save"
-              variant="tonal"
-              [action]="saveRate"
-              [disabled]="bands.invalid"
-              >{{ text.saveRate }}</ui-button
-            >
+            <ui-button icon="save" variant="tonal" [action]="saveRate" [disabled]="bands.invalid">{{
+              text.saveRate
+            }}</ui-button>
           </div>
         }
       }
