@@ -151,7 +151,7 @@ The main screens from the running web app with the demo data, in light and dark.
 | Patient file event log | ![](docs/screenshots/patient-event-log-light.png) | ![](docs/screenshots/patient-event-log-dark.png) |
 | Doctor dashboard | ![](docs/screenshots/doctor-dashboard-light.png) | ![](docs/screenshots/doctor-dashboard-dark.png) |
 | Attendance | ![](docs/screenshots/hr-attendance-light.png) | ![](docs/screenshots/hr-attendance-dark.png) |
-| Invoice with event log | ![](docs/screenshots/invoice-light.png) | ![](docs/screenshots/invoice-dark.png) |
+| Invoice | ![](docs/screenshots/invoice-light.png) | ![](docs/screenshots/invoice-dark.png) |
 | Patient portal | ![](docs/screenshots/patient-portal-light.png) | ![](docs/screenshots/patient-portal-dark.png) |
 
 ## Licence
