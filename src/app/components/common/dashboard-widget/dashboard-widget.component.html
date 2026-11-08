@@ -1,0 +1,25 @@
+<section class="tile">
+  @if (isStat()) {
+    <p class="stat-value">{{ widget().value }}</p>
+    <p class="stat-label">{{ widget().title }}</p>
+  } @else {
+    <h2 class="list-title">{{ widget().title }}</h2>
+    @if (items().length) {
+      <ul class="rows">
+        @for (item of items(); track item.id) {
+          <li class="row">
+            <div class="min-w-0 flex-1">
+              <p class="row-title">{{ item.title }}</p>
+              @if (item.subtitle) {
+                <p class="row-subtitle">{{ item.subtitle }}</p>
+              }
+            </div>
+            <span class="row-value">{{ item.value }}</span>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="no-rows">{{ text.noRows }}</p>
+    }
+  }
+</section>

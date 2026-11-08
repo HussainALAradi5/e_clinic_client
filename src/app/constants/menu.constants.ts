@@ -148,6 +148,13 @@ export const MENU: NavGroup[] = [
         access: 'attendance.self | leaves.request',
       },
       {
+        label: 'Attendance dashboard',
+        description: "Today's attendance in figures: who is in, late, away, overtime to approve.",
+        icon: 'monitoring',
+        route: '/hr/dashboard',
+        access: 'dashboards.read_all & attendance.read_all',
+      },
+      {
         label: 'Attendance',
         description: "Everyone's days: lateness, overtime to approve, corrections.",
         icon: 'schedule',

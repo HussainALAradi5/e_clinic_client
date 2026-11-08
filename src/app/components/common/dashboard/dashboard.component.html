@@ -1,0 +1,20 @@
+@if (store.loading()) {
+  <div class="grid-layout">
+    @for (tile of skeletonTiles; track tile) {
+      <ui-skeleton class="placeholder" [rows]="2" [height]="24" />
+    }
+  </div>
+} @else if (store.error()) {
+  <ui-error [error]="store.error()" (retry)="reload()" />
+} @else if (store.isEmpty()) {
+  <ui-empty icon="dashboard" [title]="text.nothingToShow" [message]="text.noWidgetsForYou" />
+} @else {
+  @if (store.data(); as data) {
+    <p class="caption">{{ text.figuresFor }} {{ data.date | date: dateFormat }}</p>
+  }
+  <div class="grid-layout">
+    @for (widget of store.widgets(); track widget.metric) {
+      <ui-dashboard-widget [widget]="widget" />
+    }
+  </div>
+}

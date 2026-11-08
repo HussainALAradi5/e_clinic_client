@@ -11,6 +11,15 @@ export const HR_ROUTES: Routes = [
     data: { hub: '/hr' },
   },
   {
+    path: 'dashboard',
+    title: 'Attendance dashboard · e-Clinic',
+    canMatch: [accessGuard('dashboards.read_all & attendance.read_all')],
+    loadComponent: () =>
+      import('@pages/hr/attendance-dashboard/attendance-dashboard.page').then(
+        (m) => m.AttendanceDashboardPage,
+      ),
+  },
+  {
     path: 'departments',
     canMatch: [accessGuard('departments.read_all | departments.read_own')],
     children: [
