@@ -69,10 +69,13 @@
           [routerLink]="['/clinic/patients', p.id]"
         >
           <ui-status class="mb-1" [value]="p.fullName" [text]="p.fullName" [tone]="personTones.patient" />
-          <span class="block text-sm text-on-surface-variant"
-            >{{ p.code }} · {{ p.gender | enumLabel: 'Gender' }} ·
-            {{ p.dateOfBirth | date: dateFormat }} · {{ p.phone }}</span
-          >
+          <span class="flex flex-wrap items-center gap-2 text-sm text-on-surface-variant">
+            <ui-status [value]="p.code" [text]="p.code" [tone]="personTones.file" />
+            <span
+              >{{ p.gender | enumLabel: 'Gender' }} · {{ p.dateOfBirth | date: dateFormat }} ·
+              {{ p.phone }}</span
+            >
+          </span>
         </a>
       }
       @if (a.provider; as d) {
