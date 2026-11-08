@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { TONE_CLASSES } from '@constants/status-tones.constants';
+import { StatusTone } from '@enums/ui/status-tone.enum';
 import { EnumService } from '@services/data/enum.service';
 
 /** `<ui-status enum="GenericStatus" [value]="row.status" />` — coloured chip for any enum value, text always shown (WCAG). */
@@ -11,7 +12,9 @@ import { EnumService } from '@services/data/enum.service';
 })
 export class StatusChip {
   readonly value = input.required<string | number | null | undefined>();
-  readonly enum = input.required<string>();
+  /** Empty when the badge is not an enum value, such as a person's name with a [tone]. */
+  readonly enum = input('');
+  readonly tone = input<StatusTone | null>(null);
   /** Text to show instead of the enum's own label, when the server already sent the exact wording. */
   readonly text = input<string | null>(null);
 
@@ -20,6 +23,6 @@ export class StatusChip {
     () => this.text() ?? this.enums.label(this.enum(), this.value()),
   );
   protected readonly classes = computed(
-    () => TONE_CLASSES[this.enums.tone(this.enum(), this.value())],
+    () => TONE_CLASSES[this.tone() ?? this.enums.tone(this.enum(), this.value())],
   );
 }
