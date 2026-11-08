@@ -310,19 +310,6 @@
       </table>
     </mat-card>
   }
-
-  <mat-tab-group
-    *hasAccess="'audit.read_all | audit.read_own'"
-    class="mt-4"
-    mat-stretch-tabs="false"
-    animationDuration="0ms"
-  >
-    <mat-tab [label]="text.history">
-      <ng-template matTabContent
-        ><ui-audit-history class="block pt-4" type="invoice" [id]="inv.id"
-      /></ng-template>
-    </mat-tab>
-  </mat-tab-group>
 } @else {
   <ui-skeleton [rows]="8" />
 }
