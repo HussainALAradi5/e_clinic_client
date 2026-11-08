@@ -10,6 +10,7 @@ export const ENDPOINTS = {
   clinicalOrders: 'clinical-orders',
   codes: 'codes',
   consents: 'consents',
+  dashboards: 'dashboards',
   doctors: 'doctors',
   documents: 'documents',
   documentTemplates: 'document-templates',
