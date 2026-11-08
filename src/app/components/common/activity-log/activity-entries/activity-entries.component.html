@@ -2,7 +2,12 @@
   @for (row of rows(); track row.entry.id) {
     <li class="min-w-0 text-sm leading-6 [overflow-wrap:anywhere]">
       <span class="font-medium">{{ row.entry.changedBy ?? text.system }}</span
-      >&ngsp;<ui-status class="align-middle" enum="AuditAction" [value]="row.entry.action" [text]="row.entry.actionLabel" />&ngsp;
+      >&ngsp;<ui-status
+        class="align-middle"
+        enum="AuditAction"
+        [value]="row.entry.action"
+        [text]="row.entry.actionLabel"
+      />&ngsp;
       @if (row.changes) {
         <span>{{ row.changes }}</span
         >&ngsp;

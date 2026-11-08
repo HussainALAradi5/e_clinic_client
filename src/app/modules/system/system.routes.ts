@@ -1,3 +1,4 @@
+import { activityLogRoute } from '@utilities/activity-log';
 import { Routes } from '@angular/router';
 import { accessGuard } from '@middlewares/guards/auth.guards';
 import { AUTHENTICATED } from '@constants/app.constants';
@@ -25,6 +26,7 @@ export const SYSTEM_ROUTES: Routes = [
       {
         path: ':id',
         title: 'User · e-Clinic',
+        data: activityLogRoute('user', 'users.read_all'),
         loadComponent: () =>
           import('@pages/system/users/user-detail/user-detail.page').then((m) => m.UserDetailPage),
       },
@@ -52,6 +54,7 @@ export const SYSTEM_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Role · e-Clinic',
+        data: activityLogRoute('role', 'roles.read_all'),
         loadComponent: () =>
           import('@pages/system/roles/role-detail/role-detail.page').then((m) => m.RoleDetailPage),
       },
@@ -91,6 +94,7 @@ export const SYSTEM_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Background task · e-Clinic',
+        data: activityLogRoute('background_task', 'audit.read_all'),
         loadComponent: () =>
           import('@pages/system/background-tasks/task-detail/task-detail.page').then(
             (m) => m.TaskDetailPage,

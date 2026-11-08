@@ -7,6 +7,7 @@ export const ACTIVITY_LOG_DATE_FORMAT = DATE_TIME_FORMAT;
 
 /** Text of common/activity-log/activity-log.component (sentence parts, labels, empty state). */
 export const ACTIVITY_LOG_TEXT = {
+  title: 'Event log',
   system: 'System',
   separator: '·',
   from: 'from',

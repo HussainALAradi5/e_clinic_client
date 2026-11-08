@@ -1,3 +1,4 @@
+import { activityLogRoute } from '@utilities/activity-log';
 import { Routes } from '@angular/router';
 import { accessGuard } from '@middlewares/guards/auth.guards';
 
@@ -41,6 +42,7 @@ export const ACCOUNTING_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Journal entry · e-Clinic',
+        data: activityLogRoute('journal_entry', 'journal.read_all'),
         loadComponent: () =>
           import('@pages/accounting/journal-detail/journal-detail.page').then(
             (m) => m.JournalDetailPage,
@@ -61,6 +63,7 @@ export const ACCOUNTING_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Expense · e-Clinic',
+        data: activityLogRoute('expense', 'expenses.read_all'),
         loadComponent: () =>
           import('@pages/accounting/expense-detail/expense-detail.page').then(
             (m) => m.ExpenseDetailPage,
@@ -102,6 +105,7 @@ export const ACCOUNTING_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Account · e-Clinic',
+        data: activityLogRoute('account', 'accounts.read_all'),
         loadComponent: () =>
           import('@pages/accounting/account-detail/account-detail.page').then(
             (m) => m.AccountDetailPage,

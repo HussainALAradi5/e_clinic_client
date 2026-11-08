@@ -1,3 +1,4 @@
+import { activityLogRoute } from '@utilities/activity-log';
 import { Routes } from '@angular/router';
 import { accessGuard } from '@middlewares/guards/auth.guards';
 
@@ -34,6 +35,7 @@ export const HR_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Department · e-Clinic',
+        data: activityLogRoute('department', 'departments.read_all'),
         loadComponent: () =>
           import('@pages/hr/department-detail/department-detail.page').then(
             (m) => m.DepartmentDetailPage,
@@ -61,6 +63,7 @@ export const HR_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Employee · e-Clinic',
+        data: activityLogRoute('employee', 'employees.read_all'),
         loadComponent: () =>
           import('@pages/hr/employee-detail/employee-detail.page').then(
             (m) => m.EmployeeDetailPage,
@@ -108,6 +111,7 @@ export const HR_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Leave request · e-Clinic',
+        data: activityLogRoute('leave_request', 'leaves.read_all'),
         loadComponent: () =>
           import('@pages/hr/leave-detail/leave-detail.page').then((m) => m.LeaveDetailPage),
       },
@@ -140,6 +144,7 @@ export const HR_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Payroll · e-Clinic',
+        data: activityLogRoute('payroll_run', 'payroll.read_all'),
         loadComponent: () =>
           import('@pages/hr/payroll-detail/payroll-detail.page').then((m) => m.PayrollDetailPage),
       },

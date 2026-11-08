@@ -1,3 +1,4 @@
+import { activityLogRoute } from '@utilities/activity-log';
 import { Routes } from '@angular/router';
 import { accessGuard } from '@middlewares/guards/auth.guards';
 import { AUTHENTICATED } from '@constants/app.constants';
@@ -24,6 +25,7 @@ export const REFERENCE_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Company · e-Clinic',
+        data: activityLogRoute('company', 'companies.read_all'),
         loadComponent: () =>
           import('@pages/reference/company-detail/company-detail.page').then(
             (m) => m.CompanyDetailPage,

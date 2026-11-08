@@ -25,6 +25,7 @@ import { ThemeService } from '@services/ui/theme.service';
 import { NotificationSoundService } from '@services/notification/notification-sound.service';
 import { PushNotificationService } from '@services/notification/push-notification.service';
 import { SHELL_TEXT } from '@constants/layout/shell.constants';
+import { PageActivity } from '@components/common/activity-log/page-activity/page-activity.component';
 
 /**
  * Staff app frame: toolbar (menu toggle, notifications, theme, user menu) + side menu filtered by AccessService.
@@ -34,6 +35,7 @@ import { SHELL_TEXT } from '@constants/layout/shell.constants';
   selector: 'app-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    PageActivity,
     TapMotionDirective,
     RouterOutlet,
     RouterLink,

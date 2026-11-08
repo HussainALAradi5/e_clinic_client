@@ -1,3 +1,4 @@
+import { activityLogRoute } from '@utilities/activity-log';
 import { Routes } from '@angular/router';
 import { accessGuard } from '@middlewares/guards/auth.guards';
 import { AUTHENTICATED } from '@constants/app.constants';
@@ -41,6 +42,7 @@ export const CLINIC_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Appointment · e-Clinic',
+        data: activityLogRoute('appointment', 'appointments.read_all'),
         loadComponent: () =>
           import('@pages/clinic/appointment-detail/appointment-detail.page').then(
             (m) => m.AppointmentDetailPage,
@@ -96,6 +98,7 @@ export const CLINIC_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Treatment · e-Clinic',
+        data: activityLogRoute('treatment', 'treatments.read_all'),
         loadComponent: () =>
           import('@pages/clinic/treatment-detail/treatment-detail.page').then(
             (m) => m.TreatmentDetailPage,
@@ -124,6 +127,7 @@ export const CLINIC_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Clinical order · e-Clinic',
+        data: activityLogRoute('clinical_order', 'orders.read_all'),
         loadComponent: () =>
           import('@pages/clinic/order-detail/order-detail.page').then((m) => m.OrderDetailPage),
       },
@@ -162,6 +166,7 @@ export const CLINIC_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Doctor · e-Clinic',
+        data: activityLogRoute('doctor', 'doctors.read_all'),
         loadComponent: () =>
           import('@pages/clinic/doctor-detail/doctor-detail.page').then((m) => m.DoctorDetailPage),
       },
@@ -196,6 +201,7 @@ export const CLINIC_ROUTES: Routes = [
       {
         path: ':id',
         title: 'Room · e-Clinic',
+        data: activityLogRoute('room', 'rooms.read_all'),
         loadComponent: () =>
           import('@pages/clinic/room-detail/room-detail.page').then((m) => m.RoomDetailPage),
       },
